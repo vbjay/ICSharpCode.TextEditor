@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Util
             // return true if codepage is any UTF codepage
             return codepage == 65001 || codepage == 65000 || codepage == 1200 || codepage == 1201;
         }
-        
+
         public static string ReadFileContent(Stream fs, ref Encoding encoding)
         {
             using (StreamReader reader = OpenStream(fs, encoding)) {
@@ -31,19 +31,19 @@ namespace ICSharpCode.TextEditor.Util
                 return reader.ReadToEnd();
             }
         }
-        
+
         public static string ReadFileContent(string fileName, Encoding encoding)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
                 return ReadFileContent(fs, ref encoding);
             }
         }
-        
+
         public static StreamReader OpenStream(Stream fs, Encoding defaultEncoding)
         {
             if (fs == null)
                 throw new ArgumentNullException("fs");
-            
+
             if (fs.Length >= 2) {
                 // the autodetection of StreamReader is not capable of detecting the difference
                 // between ISO-8859-1 and UTF-8 without BOM.
@@ -138,7 +138,7 @@ namespace ICSharpCode.TextEditor.Util
                     if (IsUnicode(defaultEncoding)) {
                         // the file is not Unicode, so don't read it using Unicode even if the
                         // user has choosen Unicode as the default encoding.
-                        
+
                         // If we don't do this, SD will end up always adding a Byte Order Mark
                         // to ASCII files.
                         defaultEncoding = Encoding.Default; // use system encoding instead

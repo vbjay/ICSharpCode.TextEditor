@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         void ShowDeclarationViewWindow();
         void CloseDeclarationViewWindow();
     }
-    
+
     public class DeclarationViewWindow : Form, IDeclarationViewWindow
     {
         private string description = String.Empty;
@@ -39,7 +39,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 }
             }
         }
-        
+
         public bool FixedWidth { get; set; }
 
         public int GetRequiredLeftHandSideWidth(Point p) {
@@ -51,9 +51,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             }
             return 0;
         }
-        
+
         public bool HideOnClick;
-        
+
         public DeclarationViewWindow(Form parent)
         {
             SetStyle(ControlStyles.Selectable, false);
@@ -64,7 +64,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             Size            = new Size(0, 0);
             CreateHandle();
         }
-        
+
         protected override CreateParams CreateParams {
             get {
                 CreateParams p = base.CreateParams;
@@ -72,7 +72,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 return p;
             }
         }
-        
+
         protected override bool ShowWithoutActivation => true;
 
         protected override void OnClick(EventArgs e)
@@ -80,18 +80,18 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             base.OnClick(e);
             if (HideOnClick) Hide();
         }
-        
+
         public void ShowDeclarationViewWindow()
         {
             Show();
         }
-        
+
         public void CloseDeclarationViewWindow()
         {
             Close();
             Dispose();
         }
-        
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             if (description != null && description.Length > 0) {
@@ -102,7 +102,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 }
             }
         }
-        
+
         protected override void OnPaintBackground(PaintEventArgs pe)
         {
             pe.Graphics.FillRectangle(SystemBrushes.Info, pe.ClipRectangle);

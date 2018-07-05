@@ -13,7 +13,7 @@ namespace ICSharpCode.TextEditor.Document
     /// This delegate is used for document events.
     /// </summary>
     public delegate void DocumentEventHandler(object sender, DocumentEventArgs e);
-    
+
     /// <summary>
     /// This class contains more information on a document event
     /// </summary>
@@ -45,21 +45,21 @@ namespace ICSharpCode.TextEditor.Document
         public DocumentEventArgs(IDocument document) : this(document, -1, -1, null)
         {
         }
-        
+
         /// <summary>
         /// Creates a new instance off <see cref="DocumentEventArgs"/>
         /// </summary>
         public DocumentEventArgs(IDocument document, int offset) : this(document, offset, -1, null)
         {
         }
-        
+
         /// <summary>
         /// Creates a new instance off <see cref="DocumentEventArgs"/>
         /// </summary>
         public DocumentEventArgs(IDocument document, int offset, int length) : this(document, offset, length, null)
         {
         }
-        
+
         /// <summary>
         /// Creates a new instance off <see cref="DocumentEventArgs"/>
         /// </summary>

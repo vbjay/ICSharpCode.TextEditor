@@ -14,7 +14,7 @@ namespace ICSharpCode.TextEditor.Util
     {
         private readonly float triHeight = 10;
         private readonly float triWidth  = 10;
-        
+
         public CountTipText(Graphics graphics, Font font, string text) : base(graphics, font, text)
         {
         }
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Util
                                               new PointF(x + triWidth / 2, y + triHeight2 + triHeight4),
                                               new PointF(x + triWidth,     y + triHeight2 - triHeight4),
                                           });
-                
+
             } else {
                 Graphics.FillPolygon(brush, new PointF[] {
                                               new PointF(x,                y +  triHeight2 + triHeight4),
@@ -41,10 +41,10 @@ namespace ICSharpCode.TextEditor.Util
                                           });
             }
         }
-        
+
         public Rectangle DrawingRectangle1;
         public Rectangle DrawingRectangle2;
-        
+
         public override void Draw(PointF location)
         {
             if (tipText != null && tipText.Length > 0) {
@@ -61,7 +61,7 @@ namespace ICSharpCode.TextEditor.Util
                 DrawTriangle(location.X + AllocatedSize.Width - triWidth  - 2, location.Y + 2, true);
             }
         }
-        
+
         protected override void OnMaximumSizeChanged()
         {
             if (IsTextVisible()) {
@@ -74,7 +74,7 @@ namespace ICSharpCode.TextEditor.Util
                 SetRequiredSize(SizeF.Empty);
             }
         }
-        
+
     }
 
     internal class TipText: TipSection
@@ -85,49 +85,49 @@ namespace ICSharpCode.TextEditor.Util
         protected Font            tipFont;
         protected StringFormat    tipFormat;
         protected string          tipText;
-        
+
         public TipText(Graphics graphics, Font font, string text):
             base(graphics)
         {
             tipFont = font; tipText = text;
             if (text != null && text.Length > short.MaxValue)
                 throw new ArgumentException("TipText: text too long (max. is " + short.MaxValue + " characters)", "text");
-            
+
             Color               = SystemColors.InfoText;
             HorizontalAlignment = StringAlignment.Near;
             VerticalAlignment   = StringAlignment.Near;
         }
-        
+
         public override void Draw(PointF location)
         {
             if (IsTextVisible()) {
                 RectangleF drawRectangle = new RectangleF(location, AllocatedSize);
-                
+
                 Graphics.DrawString(tipText, tipFont,
                                     BrushRegistry.GetBrush(Color),
                                     drawRectangle,
                                     GetInternalStringFormat());
             }
         }
-        
+
         protected StringFormat GetInternalStringFormat()
         {
             if (tipFormat == null) {
                 tipFormat = CreateTipStringFormat(horzAlign, vertAlign);
             }
-            
+
             return tipFormat;
         }
-        
+
         protected override void OnMaximumSizeChanged()
         {
             base.OnMaximumSizeChanged();
-            
+
             if (IsTextVisible()) {
                 SizeF tipSize = Graphics.MeasureString
                     (tipText, tipFont, MaximumSize,
                      GetInternalStringFormat());
-                
+
                 SetRequiredSize(tipSize);
             } else {
                 SetRequiredSize(SizeF.Empty);
@@ -139,23 +139,23 @@ namespace ICSharpCode.TextEditor.Util
             StringFormat format = (StringFormat)StringFormat.GenericTypographic.Clone();
             format.FormatFlags = StringFormatFlags.FitBlackBox | StringFormatFlags.MeasureTrailingSpaces;
             // note: Align Near, Line Center seemed to do something before
-            
+
             format.Alignment     = horizontalAlignment;
             format.LineAlignment = verticalAlignment;
-            
+
             return format;
         }
-        
+
         protected bool IsTextVisible()
         {
             return tipText != null && tipText.Length > 0;
         }
-        
+
         public Color Color {
             get => tipColor;
             set => tipColor = value;
         }
-        
+
         public StringAlignment HorizontalAlignment {
             get => horzAlign;
             set {
@@ -163,7 +163,7 @@ namespace ICSharpCode.TextEditor.Util
                 tipFormat = null;
             }
         }
-        
+
         public StringAlignment VerticalAlignment {
             get => vertAlign;
             set {

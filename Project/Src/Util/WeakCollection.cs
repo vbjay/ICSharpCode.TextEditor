@@ -27,7 +27,7 @@ namespace ICSharpCode.TextEditor.Util
     public class WeakCollection<T> : IEnumerable<T> where T : class
     {
         private readonly List<WeakReference> innerList = new List<WeakReference>();
-        
+
         /// <summary>
         /// Adds an element to the collection. Runtime: O(n).
         /// </summary>
@@ -40,7 +40,7 @@ namespace ICSharpCode.TextEditor.Util
                 innerList.RemoveAll(delegate(WeakReference r) { return !r.IsAlive; });
             innerList.Add(new WeakReference(item));
         }
-        
+
         /// <summary>
         /// Removes all elements from the collection. Runtime: O(n).
         /// </summary>
@@ -49,7 +49,7 @@ namespace ICSharpCode.TextEditor.Util
             innerList.Clear();
             CheckNoEnumerator();
         }
-        
+
         /// <summary>
         /// Checks if the collection contains an item. Runtime: O(n).
         /// </summary>
@@ -64,7 +64,7 @@ namespace ICSharpCode.TextEditor.Util
             }
             return false;
         }
-        
+
         /// <summary>
         /// Removes an element from the collection. Returns true if the item is found and removed,
         /// false when the item is not found.
@@ -103,7 +103,7 @@ namespace ICSharpCode.TextEditor.Util
             if (hasEnumerator)
                 throw new InvalidOperationException("The WeakCollection is already being enumerated, it cannot be modified at the same time. Ensure you dispose the first enumerator before modifying the WeakCollection.");
         }
-        
+
         /// <summary>
         /// Enumerates the collection.
         /// Each MoveNext() call on the enumerator is O(1), thus the enumeration is O(n).
@@ -127,7 +127,7 @@ namespace ICSharpCode.TextEditor.Util
                 hasEnumerator = false;
             }
         }
-        
+
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

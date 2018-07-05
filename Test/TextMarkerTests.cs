@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor.Tests
     {
         private IDocument document;
         private TextMarker marker;
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor.Tests
             marker = new TextMarker(3, 3, TextMarkerType.Underlined);
             document.MarkerStrategy.AddMarker(marker);
         }
-        
+
         [Test]
         public void RemoveTextBeforeMarker()
         {
@@ -33,7 +33,7 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextImmediatelyBeforeMarker()
         {
@@ -41,7 +41,7 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextBeforeMarkerIntoMarker()
         {
@@ -49,21 +49,21 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("45", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextBeforeMarkerUntilMarkerEnd()
         {
             document.Remove(2, 4);
             Assert.AreEqual(0, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
         }
-        
+
         [Test]
         public void RemoveTextBeforeMarkerOverMarkerEnd()
         {
             document.Remove(2, 5);
             Assert.AreEqual(0, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
         }
-        
+
         [Test]
         public void RemoveTextFromMarkerStartIntoMarker()
         {
@@ -71,21 +71,21 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("45", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextFromMarkerStartUntilMarkerEnd()
         {
             document.Remove(3, 3);
             Assert.AreEqual(0, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
         }
-        
+
         [Test]
         public void RemoveTextFromMarkerStartOverMarkerEnd()
         {
             document.Remove(3, 4);
             Assert.AreEqual(0, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
         }
-        
+
         [Test]
         public void RemoveTextInsideMarker()
         {
@@ -93,7 +93,7 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("35", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextInsideMarkerUntilMarkerEnd()
         {
@@ -101,7 +101,7 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("3", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextInsideMarkerOverMarkerEnd()
         {
@@ -109,7 +109,7 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("3", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextImmediatelyAfterMarker()
         {
@@ -117,7 +117,7 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void RemoveTextAfterMarker()
         {
@@ -125,35 +125,35 @@ namespace ICSharpCode.TextEditor.Tests
             Assert.AreEqual(1, document.MarkerStrategy.GetMarkers(0, document.TextLength).Count);
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void InsertTextBeforeMarker()
         {
             document.Insert(1, "ab");
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void InsertTextImmediatelyBeforeMarker()
         {
             document.Insert(3, "ab");
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void InsertTextInsideMarker()
         {
             document.Insert(4, "ab");
             Assert.AreEqual("3ab45", document.GetText(marker));
         }
-        
+
         [Test]
         public void InsertTextImmediatelyAfterMarker()
         {
             document.Insert(6, "ab");
             Assert.AreEqual("345", document.GetText(marker));
         }
-        
+
         [Test]
         public void InsertTextAfterMarker()
         {

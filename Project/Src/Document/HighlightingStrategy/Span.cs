@@ -38,7 +38,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         public HighlightColor EndColor => endColor!=null ? endColor : Color;
 
         public char[] Begin { get; }
@@ -60,30 +60,30 @@ namespace ICSharpCode.TextEditor.Document
         public Span(XmlElement span)
         {
             Color   = new HighlightColor(span);
-            
+
             if (span.HasAttribute("rule")) {
                 Rule = span.GetAttribute("rule");
             }
-            
+
             if (span.HasAttribute("escapecharacter")) {
                 EscapeCharacter = span.GetAttribute("escapecharacter")[0];
             }
-            
+
             Name = span.GetAttribute("name");
             if (span.HasAttribute("stopateol")) {
                 StopEOL = Boolean.Parse(span.GetAttribute("stopateol"));
             }
-            
+
             Begin   = span["Begin"].InnerText.ToCharArray();
             beginColor = new HighlightColor(span["Begin"], Color);
-            
+
             if (span["Begin"].HasAttribute("singleword")) {
                 IsBeginSingleWord = Boolean.Parse(span["Begin"].GetAttribute("singleword"));
             }
             if (span["Begin"].HasAttribute("startofline")) {
                 IsBeginStartOfLine = Boolean.Parse(span["Begin"].GetAttribute("startofline"));
             }
-            
+
             if (span["End"] != null) {
                 End  = span["End"].InnerText.ToCharArray();
                 endColor = new HighlightColor(span["End"], Color);

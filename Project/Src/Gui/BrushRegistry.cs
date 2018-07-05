@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor
         private static readonly Dictionary<Color, Brush> brushes = new Dictionary<Color, Brush>();
         private static readonly Dictionary<Color, Pen> pens = new Dictionary<Color, Pen>();
         private static readonly Dictionary<Color, Pen> dotPens = new Dictionary<Color, Pen>();
-        
+
         public static Brush GetBrush(Color color)
         {
             lock (brushes) {
@@ -34,7 +34,7 @@ namespace ICSharpCode.TextEditor
                 return brush;
             }
         }
-        
+
         public static Pen GetPen(Color color)
         {
             lock (pens) {
@@ -48,7 +48,7 @@ namespace ICSharpCode.TextEditor
         }
 
         private static readonly float[] dotPattern = { 1, 1, 1, 1 };
-        
+
         public static Pen GetDotPen(Color color)
         {
             lock (dotPens) {

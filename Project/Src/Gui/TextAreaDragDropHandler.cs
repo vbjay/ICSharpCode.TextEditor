@@ -18,17 +18,17 @@ namespace ICSharpCode.TextEditor
         public static Action<Exception> OnDragDropException = ex => MessageBox.Show(ex.ToString());
 
         private TextArea textArea;
-        
+
         public void Attach(TextArea textArea)
         {
             this.textArea = textArea;
             textArea.AllowDrop = true;
-            
+
             textArea.DragEnter += MakeDragEventHandler(OnDragEnter);
             textArea.DragDrop  += MakeDragEventHandler(OnDragDrop);
             textArea.DragOver  += MakeDragEventHandler(OnDragOver);
         }
-        
+
         /// <summary>
         /// Create a drag'n'drop event handler.
         /// Windows Forms swallows unhandled exceptions during drag'n'drop, so we report them here.
@@ -56,7 +56,7 @@ namespace ICSharpCode.TextEditor
             }
             return DragDropEffects.None;
         }
-        
+
         protected void OnDragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(string))) {
@@ -64,22 +64,21 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-
         private void InsertString(int offset, string str)
         {
             textArea.Document.Insert(offset, str);
-            
+
             textArea.SelectionManager.SetSelection(new DefaultSelection(textArea.Document,
                                                                         textArea.Document.OffsetToPosition(offset),
                                                                         textArea.Document.OffsetToPosition(offset + str.Length)));
             textArea.Caret.Position = textArea.Document.OffsetToPosition(offset + str.Length);
             textArea.Refresh();
         }
-        
+
         protected void OnDragDrop(object sender, DragEventArgs e)
         {
             Point p = textArea.PointToClient(new Point(e.X, e.Y));
-            
+
             if (e.Data.GetDataPresent(typeof(string))) {
                 textArea.BeginUpdate();
                 textArea.Document.UndoStack.StartUndoGroup();
@@ -115,20 +114,20 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         protected void OnDragOver(object sender, DragEventArgs e)
         {
             if (!textArea.Focused) {
                 textArea.Focus();
             }
-            
+
             Point p = textArea.PointToClient(new Point(e.X, e.Y));
-            
+
             if (textArea.TextView.DrawingPosition.Contains(p.X, p.Y)) {
                 TextLocation realmousepos= textArea.TextView.GetLogicalPosition(p.X - textArea.TextView.DrawingPosition.X,
                                                                                 p.Y - textArea.TextView.DrawingPosition.Y);
                 int lineNr = Math.Min(textArea.Document.TotalNumberOfLines - 1, Math.Max(0, realmousepos.Y));
-                
+
                 textArea.Caret.Position = new TextLocation(realmousepos.X, lineNr);
                 textArea.SetDesiredColumn();
                 if (e.Data.GetDataPresent(typeof(string)) && !textArea.IsReadOnly(textArea.Caret.Offset)) {

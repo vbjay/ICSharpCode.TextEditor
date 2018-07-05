@@ -21,7 +21,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftCaretLeft : CaretLeft
     {
         public override void Execute(TextArea textArea)
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftCaretUp : CaretUp
     {
         public override void Execute(TextArea textArea)
@@ -43,7 +43,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftCaretDown : CaretDown
     {
         public override void Execute(TextArea textArea)
@@ -54,7 +54,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftWordRight : WordRight
     {
         public override void Execute(TextArea textArea)
@@ -65,7 +65,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftWordLeft : WordLeft
     {
         public override void Execute(TextArea textArea)
@@ -76,7 +76,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftHome : Home
     {
         public override void Execute(TextArea textArea)
@@ -87,7 +87,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftEnd : End
     {
         public override void Execute(TextArea textArea)
@@ -98,7 +98,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftMoveToStart : MoveToStart
     {
         public override void Execute(TextArea textArea)
@@ -109,7 +109,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftMoveToEnd : MoveToEnd
     {
         public override void Execute(TextArea textArea)
@@ -120,7 +120,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftMovePageUp : MovePageUp
     {
         public override void Execute(TextArea textArea)
@@ -131,7 +131,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class ShiftMovePageDown : MovePageDown
     {
         public override void Execute(TextArea textArea)
@@ -142,7 +142,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SelectionManager.ExtendSelection(oldCaretPos, textArea.Caret.Position);
         }
     }
-    
+
     public class SelectWholeDocument : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -165,7 +165,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SetDesiredColumn();
         }
     }
-    
+
     public class ClearAllSelections : AbstractEditAction
     {
         public override void Execute(TextArea textArea)

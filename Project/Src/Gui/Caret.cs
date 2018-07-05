@@ -24,15 +24,14 @@ namespace ICSharpCode.TextEditor
         /// inserted at the caret position
         /// </summary>
         InsertMode,
-        
+
         /// <summary>
         /// If the caret is in overwirte mode typed characters will
         /// overwrite the character at the caret position
         /// </summary>
         OverwriteMode
     }
-    
-    
+
     public class Caret : IDisposable
     {
         private int       line;
@@ -45,7 +44,7 @@ namespace ICSharpCode.TextEditor
         private Point    currentPos   = new Point(-1, -1);
         private Ime      ime;
         private readonly CaretImplementation caretImplementation;
-        
+
         /// <value>
         /// The 'prefered' xPos in which the caret moves, when it is moved
         /// up/down. Measured in pixels, not in characters!
@@ -62,7 +61,7 @@ namespace ICSharpCode.TextEditor
                 OnCaretModeChanged(EventArgs.Empty);
             }
         }
-        
+
         public int Line {
             get => line;
             set {
@@ -72,7 +71,7 @@ namespace ICSharpCode.TextEditor
                 OnPositionChanged(EventArgs.Empty);
             }
         }
-        
+
         public int Column {
             get => column;
             set {
@@ -82,7 +81,7 @@ namespace ICSharpCode.TextEditor
                 OnPositionChanged(EventArgs.Empty);
             }
         }
-        
+
         public TextLocation Position {
             get => new TextLocation(column, line);
             set {
@@ -93,7 +92,7 @@ namespace ICSharpCode.TextEditor
                 OnPositionChanged(EventArgs.Empty);
             }
         }
-        
+
         public int Offset => textArea.Document.PositionToOffset(Position);
 
         public Caret(TextArea textArea)
@@ -106,7 +105,7 @@ namespace ICSharpCode.TextEditor
             else
                 caretImplementation = new Win32Caret(this);
         }
-        
+
         public void Dispose()
         {
             textArea.GotFocus  -= new EventHandler(GotFocus);
@@ -114,19 +113,19 @@ namespace ICSharpCode.TextEditor
             textArea = null;
             caretImplementation.Dispose();
         }
-        
+
         public TextLocation ValidatePosition(TextLocation pos)
         {
             int line   = Math.Max(0, Math.Min(textArea.Document.TotalNumberOfLines - 1, pos.Y));
             int column = Math.Max(0, pos.X);
-            
+
             if (column == int.MaxValue || !textArea.TextEditorProperties.AllowCaretBeyondEOL) {
                 LineSegment lineSegment = textArea.Document.GetLineSegment(line);
                 column = Math.Min(column, lineSegment.Length);
             }
             return new TextLocation(column, line);
         }
-        
+
         /// <remarks>
         /// If the caret position is outside the document text bounds
         /// it is set to the correct position by calling ValidateCaretPos.
@@ -135,7 +134,7 @@ namespace ICSharpCode.TextEditor
         {
             line = Math.Max(0, Math.Min(textArea.Document.TotalNumberOfLines - 1, line));
             column = Math.Max(0, column);
-            
+
             if (column == int.MaxValue || !textArea.TextEditorProperties.AllowCaretBeyondEOL) {
                 LineSegment lineSegment = textArea.Document.GetLineSegment(line);
                 column = Math.Min(column, lineSegment.Length);
@@ -161,7 +160,7 @@ namespace ICSharpCode.TextEditor
             caretImplementation.SetPosition(currentPos.X, currentPos.Y);
             caretImplementation.Show();
         }
-        
+
         public void RecreateCaret()
         {
             Log("RecreateCaret");
@@ -196,7 +195,7 @@ namespace ICSharpCode.TextEditor
             hidden = true;
             DisposeCaret();
         }
-        
+
         public Point ScreenPosition {
             get {
                 int xpos = textArea.TextView.GetDrawingXPos(line, column);
@@ -209,7 +208,7 @@ namespace ICSharpCode.TextEditor
 
         private int oldLine = -1;
         private bool outstandingUpdate;
-        
+
         internal void OnEndUpdate()
         {
             if (outstandingUpdate)
@@ -233,7 +232,7 @@ namespace ICSharpCode.TextEditor
         public void UpdateCaretPosition()
         {
             Log("UpdateCaretPosition");
-            
+
             if (textArea.TextEditorProperties.CaretLine) {
                 textArea.Invalidate();
             } else {
@@ -249,8 +248,7 @@ namespace ICSharpCode.TextEditor
                 }
             }
             oldLine = line;
-            
-            
+
             if (hidden || textArea.MotherTextEditorControl.IsInUpdate) {
                 outstandingUpdate = true;
                 return;
@@ -273,7 +271,7 @@ namespace ICSharpCode.TextEditor
             } else {
                 caretImplementation.Destroy();
             }
-            
+
             // set the input method editor location
             if (ime == null) {
                 ime = new Ime(textArea.Handle, textArea.Document.TextEditorProperties.Font);
@@ -282,7 +280,7 @@ namespace ICSharpCode.TextEditor
                 ime.Font = textArea.Document.TextEditorProperties.Font;
             }
             ime.SetIMEWindowLocation(pos.X, pos.Y);
-            
+
             currentPos = pos;
         }
 
@@ -291,25 +289,25 @@ namespace ICSharpCode.TextEditor
         {
             //Console.WriteLine(text);
         }
-        
+
         #region Caret implementation
         internal void PaintCaret(Graphics g)
         {
             caretImplementation.PaintCaret(g);
             PaintCaretLine(g);
         }
-        
+
         abstract class CaretImplementation : IDisposable
         {
             public bool RequireRedrawOnPositionChange;
-            
+
             public abstract bool Create(int width, int height);
             public abstract void Hide();
             public abstract void Show();
             public abstract bool SetPosition(int x, int y);
             public abstract void PaintCaret(Graphics g);
             public abstract void Destroy();
-            
+
             public virtual void Dispose()
             {
                 Destroy();
@@ -324,7 +322,7 @@ namespace ICSharpCode.TextEditor
             private int x, y, width, height;
             private readonly TextArea textArea;
             private readonly Caret parentCaret;
-            
+
             public ManagedCaret(Caret caret)
             {
                 RequireRedrawOnPositionChange = true;
@@ -339,7 +337,7 @@ namespace ICSharpCode.TextEditor
                 if (visible)
                     textArea.UpdateLine(parentCaret.Line);
             }
-            
+
             public override bool Create(int width, int height)
             {
                 visible = true;
@@ -383,26 +381,26 @@ namespace ICSharpCode.TextEditor
         {
             [DllImport("User32.dll")]
             private static extern bool CreateCaret(IntPtr hWnd, int hBitmap, int nWidth, int nHeight);
-            
+
             [DllImport("User32.dll")]
             private static extern bool SetCaretPos(int x, int y);
-            
+
             [DllImport("User32.dll")]
             private static extern bool DestroyCaret();
-            
+
             [DllImport("User32.dll")]
             private static extern bool ShowCaret(IntPtr hWnd);
-            
+
             [DllImport("User32.dll")]
             private static extern bool HideCaret(IntPtr hWnd);
 
             private readonly TextArea textArea;
-            
+
             public Win32Caret(Caret caret)
             {
                 textArea = caret.textArea;
             }
-            
+
             public override bool Create(int width, int height)
             {
                 return CreateCaret(textArea.Handle, 0, width, height);
@@ -435,7 +433,7 @@ namespace ICSharpCode.TextEditor
         {
             OnPositionChanged(EventArgs.Empty);
         }
-        
+
         protected virtual void OnPositionChanged(EventArgs e)
         {
             if (textArea.MotherTextEditorControl.IsInUpdate) {
@@ -448,24 +446,24 @@ namespace ICSharpCode.TextEditor
                 textArea.Document.UpdateCommited -= FirePositionChangedAfterUpdateEnd;
                 firePositionChangedAfterUpdateEnd = false;
             }
-            
+
             List<FoldMarker> foldings = textArea.Document.FoldingManager.GetFoldingsFromPosition(line, column);
             bool  shouldUpdate = false;
             foreach (FoldMarker foldMarker in foldings) {
                 shouldUpdate |= foldMarker.IsFolded;
                 foldMarker.IsFolded = false;
             }
-            
+
             if (shouldUpdate) {
                 textArea.Document.FoldingManager.NotifyFoldingsChanged(EventArgs.Empty);
             }
-            
+
             if (PositionChanged != null) {
                 PositionChanged(this, e);
             }
             textArea.ScrollToCaret();
         }
-        
+
         protected virtual void OnCaretModeChanged(EventArgs e)
         {
             if (CaretModeChanged != null) {
@@ -477,12 +475,12 @@ namespace ICSharpCode.TextEditor
             CreateCaret();
             caretImplementation.Show();
         }
-        
+
         /// <remarks>
         /// Is called each time the caret is moved.
         /// </remarks>
         public event EventHandler PositionChanged;
-        
+
         /// <remarks>
         /// Is called each time the CaretMode has changed.
         /// </remarks>

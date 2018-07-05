@@ -17,12 +17,12 @@ namespace ICSharpCode.TextEditor.Util
         internal RedBlackTreeNode<T> left, right, parent;
         internal T val;
         internal bool color;
-        
+
         internal RedBlackTreeNode(T val)
         {
             this.val = val;
         }
-        
+
         internal RedBlackTreeNode<T> LeftMost {
             get {
                 RedBlackTreeNode<T> node = this;
@@ -31,7 +31,7 @@ namespace ICSharpCode.TextEditor.Util
                 return node;
             }
         }
-        
+
         internal RedBlackTreeNode<T> RightMost {
             get {
                 RedBlackTreeNode<T> node = this;
@@ -41,16 +41,16 @@ namespace ICSharpCode.TextEditor.Util
             }
         }
     }
-    
+
     internal interface IRedBlackTreeHost<T> : IComparer<T>
     {
         bool Equals(T a, T b);
-        
+
         void UpdateAfterChildrenChange(RedBlackTreeNode<T> node);
         void UpdateAfterRotateLeft(RedBlackTreeNode<T> node);
         void UpdateAfterRotateRight(RedBlackTreeNode<T> node);
     }
-    
+
     /// <summary>
     /// Description of RedBlackTree.
     /// </summary>
@@ -58,13 +58,13 @@ namespace ICSharpCode.TextEditor.Util
     {
         private readonly Host host;
         internal RedBlackTreeNode<T> root;
-        
+
         public AugmentableRedBlackTree(Host host)
         {
             if (host == null) throw new ArgumentNullException("host");
             this.host = host;
         }
-        
+
         public int Count { get; private set; }
 
         public void Clear()
@@ -72,7 +72,7 @@ namespace ICSharpCode.TextEditor.Util
             root = null;
             Count = 0;
         }
-        
+
         #region Debugging code
         #if DEBUG
         /// <summary>
@@ -83,14 +83,14 @@ namespace ICSharpCode.TextEditor.Util
         {
             int blackCount = -1;
             CheckNodeProperties(root, null, RED, 0, ref blackCount);
-            
+
             int nodeCount = 0;
             foreach (T val in this) {
                 nodeCount++;
             }
             Debug.Assert(Count == nodeCount);
         }
-        
+
         /*
         1. A node is either red or black.
         2. The root is black.
@@ -101,9 +101,9 @@ namespace ICSharpCode.TextEditor.Util
         private void CheckNodeProperties(RedBlackTreeNode<T> node, RedBlackTreeNode<T> parentNode, bool parentColor, int blackCount, ref int expectedBlackCount)
         {
             if (node == null) return;
-            
+
             Debug.Assert(node.parent == parentNode);
-            
+
             if (parentColor == RED) {
                 Debug.Assert(node.color == BLACK);
             }
@@ -120,7 +120,7 @@ namespace ICSharpCode.TextEditor.Util
             CheckNodeProperties(node.left, node, node.color, blackCount, ref expectedBlackCount);
             CheckNodeProperties(node.right, node, node.color, blackCount, ref expectedBlackCount);
         }
-        
+
         public string GetTreeAsString()
         {
             StringBuilder b = new StringBuilder();
@@ -149,7 +149,7 @@ namespace ICSharpCode.TextEditor.Util
         }
         #endif
         #endregion
-        
+
         #region Add
         public void Add(T item)
         {
@@ -185,7 +185,7 @@ namespace ICSharpCode.TextEditor.Util
                 }
             }
         }
-        
+
         internal void InsertAsLeft(RedBlackTreeNode<T> parentNode, RedBlackTreeNode<T> newNode)
         {
             Debug.Assert(parentNode.left == null);
@@ -196,7 +196,7 @@ namespace ICSharpCode.TextEditor.Util
             FixTreeOnInsert(newNode);
             Count++;
         }
-        
+
         internal void InsertAsRight(RedBlackTreeNode<T> parentNode, RedBlackTreeNode<T> newNode)
         {
             Debug.Assert(parentNode.right == null);
@@ -214,7 +214,7 @@ namespace ICSharpCode.TextEditor.Util
             Debug.Assert(node.color == RED);
             Debug.Assert(node.left == null || node.left.color == BLACK);
             Debug.Assert(node.right == null || node.right.color == BLACK);
-            
+
             RedBlackTreeNode<T> parentNode = node.parent;
             if (parentNode == null) {
                 // we inserted in the root -> the node must be black
@@ -230,7 +230,7 @@ namespace ICSharpCode.TextEditor.Util
                 return;
             }
             // parentNode is red, so there is a conflict here!
-            
+
             // because the root is black, parentNode is not the root -> there is a grandparent node
             RedBlackTreeNode<T> grandparentNode = parentNode.parent;
             RedBlackTreeNode<T> uncleNode = Sibling(parentNode);
@@ -253,7 +253,7 @@ namespace ICSharpCode.TextEditor.Util
             // because node might have changed, reassign variables:
             parentNode = node.parent;
             grandparentNode = parentNode.parent;
-            
+
             // Now recolor a bit:
             parentNode.color = BLACK;
             grandparentNode.color = RED;
@@ -292,7 +292,7 @@ namespace ICSharpCode.TextEditor.Util
             Debug.Assert(q.parent == p);
             // set q to be the new root
             ReplaceNode(p, q);
-            
+
             // set p's right child to be q's left child
             p.right = q.left;
             if (p.right != null) p.right.parent = p;
@@ -310,7 +310,7 @@ namespace ICSharpCode.TextEditor.Util
             Debug.Assert(q.parent == p);
             // set q to be the new root
             ReplaceNode(p, q);
-            
+
             // set p's left child to be q's right child
             p.left = q.right;
             if (p.left != null) p.left.parent = p;
@@ -328,7 +328,7 @@ namespace ICSharpCode.TextEditor.Util
                 return node.parent.left;
         }
         #endregion
-        
+
         #region Remove
         public void RemoveAt(RedBlackTreeIterator<T> iterator)
         {
@@ -344,15 +344,15 @@ namespace ICSharpCode.TextEditor.Util
             CheckProperties();
             #endif
         }
-        
+
         internal void RemoveNode(RedBlackTreeNode<T> removedNode)
         {
             if (removedNode.left != null && removedNode.right != null) {
                 // replace removedNode with it's in-order successor
-                
+
                 RedBlackTreeNode<T> leftMost = removedNode.right.LeftMost;
                 RemoveNode(leftMost); // remove leftMost from its current location
-                
+
                 // and overwrite the removedNode with it
                 ReplaceNode(removedNode, leftMost);
                 leftMost.left = removedNode.left;
@@ -360,14 +360,14 @@ namespace ICSharpCode.TextEditor.Util
                 leftMost.right = removedNode.right;
                 if (leftMost.right != null) leftMost.right.parent = leftMost;
                 leftMost.color = removedNode.color;
-                
+
                 host.UpdateAfterChildrenChange(leftMost);
                 if (leftMost.parent != null) host.UpdateAfterChildrenChange(leftMost.parent);
                 return;
             }
-            
+
             Count--;
-            
+
             // now either removedNode.left or removedNode.right is null
             // get the remaining child
             RedBlackTreeNode<T> parentNode = removedNode.parent;
@@ -405,7 +405,7 @@ namespace ICSharpCode.TextEditor.Util
             Debug.Assert(node == null || node.parent == parentNode);
             if (parentNode == null)
                 return;
-            
+
             // warning: node may be null
             RedBlackTreeNode<T> sibling = Sibling(node, parentNode);
             if (sibling.color == RED) {
@@ -416,10 +416,10 @@ namespace ICSharpCode.TextEditor.Util
                 } else {
                     RotateRight(parentNode);
                 }
-                
+
                 sibling = Sibling(node, parentNode); // update value of sibling after rotation
             }
-            
+
             if (parentNode.color == BLACK
                 && sibling.color == BLACK
                 && GetColor(sibling.left) == BLACK
@@ -429,7 +429,7 @@ namespace ICSharpCode.TextEditor.Util
                 FixTreeOnDelete(parentNode, parentNode.parent);
                 return;
             }
-            
+
             if (parentNode.color == RED
                 && sibling.color == BLACK
                 && GetColor(sibling.left) == BLACK
@@ -439,7 +439,7 @@ namespace ICSharpCode.TextEditor.Util
                 parentNode.color = BLACK;
                 return;
             }
-            
+
             if (node == parentNode.left &&
                 sibling.color == BLACK &&
                 GetColor(sibling.left) == RED &&
@@ -459,7 +459,7 @@ namespace ICSharpCode.TextEditor.Util
                 RotateLeft(sibling);
             }
             sibling = Sibling(node, parentNode); // update value of sibling after rotation
-            
+
             sibling.color = parentNode.color;
             parentNode.color = BLACK;
             if (node == parentNode.left) {
@@ -477,7 +477,7 @@ namespace ICSharpCode.TextEditor.Util
             }
         }
         #endregion
-        
+
         #region Find/LowerBound/UpperBound/GetEnumerator
         /// <summary>
         /// Returns the iterator pointing to the specified item, or an iterator in End state if the item is not found.
@@ -492,7 +492,7 @@ namespace ICSharpCode.TextEditor.Util
             }
             return default(RedBlackTreeIterator<T>);
         }
-        
+
         /// <summary>
         /// Returns the iterator pointing to the first item greater or equal to <paramref name="item"/>.
         /// </summary>
@@ -510,7 +510,7 @@ namespace ICSharpCode.TextEditor.Util
             }
             return new RedBlackTreeIterator<T>(resultNode);
         }
-        
+
         /// <summary>
         /// Returns the iterator pointing to the first item greater than <paramref name="item"/>.
         /// </summary>
@@ -522,7 +522,7 @@ namespace ICSharpCode.TextEditor.Util
             }
             return it;
         }
-        
+
         /// <summary>
         /// Gets a tree iterator that starts on the first node.
         /// </summary>
@@ -531,7 +531,7 @@ namespace ICSharpCode.TextEditor.Util
             if (root == null) return default(RedBlackTreeIterator<T>);
             return new RedBlackTreeIterator<T>(root.LeftMost);
         }
-        
+
         /// <summary>
         /// Gets a tree iterator that starts one node before the first node.
         /// </summary>
@@ -543,13 +543,13 @@ namespace ICSharpCode.TextEditor.Util
             return new RedBlackTreeIterator<T>(dummyNode);
         }
         #endregion
-        
+
         #region ICollection members
         public bool Contains(T item)
         {
             return Find(item).IsValid;
         }
-        
+
         public bool Remove(T item)
         {
             RedBlackTreeIterator<T> it = Find(item);
@@ -560,17 +560,17 @@ namespace ICSharpCode.TextEditor.Util
                 return true;
             }
         }
-        
+
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return GetEnumerator();
         }
-        
+
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-        
+
         bool ICollection<T>.IsReadOnly => false;
 
         public void CopyTo(T[] array, int arrayIndex)

@@ -117,11 +117,11 @@ namespace ICSharpCode.TextEditor
         private const int IMC_SETCOMPOSITIONFONT = 0x000a;
         private LOGFONT lf;
         private static bool disableIME;
-        
+
         private void SetIMEWindowFont(Font f)
         {
             if (disableIME || hIMEWnd == IntPtr.Zero) return;
-            
+
             if (lf == null) {
                 lf = new LOGFONT();
                 f.ToLogFont(lf);

@@ -21,7 +21,7 @@ namespace ICSharpCode.TextEditor.Document
         // OR from extension name to Pair SyntaxMode,ISyntaxModeFileProvider
 
         private readonly Hashtable extensionsToName = new Hashtable();
-        
+
         public Hashtable HighlightingDefinitions { get; } = new Hashtable();
 
         public static HighlightingManager Manager { get; }
@@ -31,12 +31,12 @@ namespace ICSharpCode.TextEditor.Document
             Manager = new HighlightingManager();
             Manager.AddSyntaxModeFileProvider(new ResourceSyntaxModeProvider());
         }
-        
+
         public HighlightingManager()
         {
             CreateDefaultHighlightingStrategy();
         }
-        
+
         public void AddSyntaxModeFileProvider(ISyntaxModeFileProvider syntaxModeFileProvider)
         {
             foreach (SyntaxMode syntaxMode in syntaxModeFileProvider.SyntaxModes) {
@@ -58,7 +58,7 @@ namespace ICSharpCode.TextEditor.Document
                 extensionsToName[extension.ToUpperInvariant()] = highlightingStrategy.Name;
             }
         }
-        
+
         public void ReloadSyntaxModes()
         {
             HighlightingDefinitions.Clear();
@@ -102,7 +102,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return highlightingStrategy;
         }
-        
+
         public DefaultHighlightingStrategy DefaultHighlighting => (DefaultHighlightingStrategy)HighlightingDefinitions["Default"];
 
         internal KeyValuePair<SyntaxMode, ISyntaxModeFileProvider> FindHighlighterEntry(string name)
@@ -116,7 +116,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return new KeyValuePair<SyntaxMode, ISyntaxModeFileProvider>(null, null);
         }
-        
+
         public IHighlightingStrategy FindHighlighter(string name)
         {
             object def = HighlightingDefinitions[name];
@@ -125,7 +125,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return def == null ? DefaultHighlighting : (IHighlightingStrategy)def;
         }
-        
+
         public IHighlightingStrategy FindHighlighterForFile(string fileName)
         {
             string highlighterName = (string)extensionsToName[Path.GetExtension(fileName).ToUpperInvariant()];
@@ -139,14 +139,14 @@ namespace ICSharpCode.TextEditor.Document
                 return DefaultHighlighting;
             }
         }
-        
+
         protected virtual void OnReloadSyntaxHighlighting(EventArgs e)
         {
             if (ReloadSyntaxHighlighting != null) {
                 ReloadSyntaxHighlighting(this, e);
             }
         }
-        
+
         public event EventHandler ReloadSyntaxHighlighting;
     }
 }

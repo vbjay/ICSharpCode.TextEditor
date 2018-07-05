@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor
         private TextAreaControl secondaryTextArea;
 
         private PrintDocument   printDocument;
-        
+
         [Browsable(false)]
         public PrintDocument PrintDocument {
             get {
@@ -42,31 +42,31 @@ namespace ICSharpCode.TextEditor
         }
 
         private TextAreaControl activeTextAreaControl;
-        
+
         public override TextAreaControl ActiveTextAreaControl => activeTextAreaControl;
 
         protected void SetActiveTextAreaControl(TextAreaControl value)
         {
             if (activeTextAreaControl != value) {
                 activeTextAreaControl = value;
-                
+
                 if (ActiveTextAreaControlChanged != null) {
                     ActiveTextAreaControlChanged(this, EventArgs.Empty);
                 }
             }
         }
-        
+
         public event EventHandler ActiveTextAreaControlChanged;
-        
+
         public TextEditorControl()
         {
             SetStyle(ControlStyles.ContainerControl, true);
-            
+
             textAreaPanel.Dock = DockStyle.Fill;
-            
+
             Document = (new DocumentFactory()).CreateDocument();
             Document.HighlightingStrategy = HighlightingStrategyFactory.CreateHighlightingStrategy();
-            
+
             primaryTextArea  = new TextAreaControl(this);
             activeTextAreaControl = primaryTextArea;
             primaryTextArea.TextArea.GotFocus += delegate {
@@ -80,11 +80,11 @@ namespace ICSharpCode.TextEditor
             Document.UpdateCommited += new EventHandler(CommitUpdateRequested);
             OptionsChanged();
         }
-        
+
         protected virtual void InitializeTextAreaControl(TextAreaControl newControl)
         {
         }
-        
+
         public override void OptionsChanged()
         {
             primaryTextArea.OptionsChanged();
@@ -92,18 +92,18 @@ namespace ICSharpCode.TextEditor
                 secondaryTextArea.OptionsChanged();
             }
         }
-        
+
         public void Split()
         {
             if (secondaryTextArea == null) {
                 secondaryTextArea = new TextAreaControl(this);
                 secondaryTextArea.Dock = DockStyle.Bottom;
                 secondaryTextArea.Height = Height / 2;
-                
+
                 secondaryTextArea.TextArea.GotFocus += delegate {
                     SetActiveTextAreaControl(secondaryTextArea);
                 };
-                
+
                 textAreaSplitter =  new Splitter();
                 textAreaSplitter.BorderStyle = BorderStyle.FixedSingle ;
                 textAreaSplitter.Height = 8;
@@ -114,17 +114,17 @@ namespace ICSharpCode.TextEditor
                 secondaryTextArea.OptionsChanged();
             } else {
                 SetActiveTextAreaControl(primaryTextArea);
-                
+
                 textAreaPanel.Controls.Remove(secondaryTextArea);
                 textAreaPanel.Controls.Remove(textAreaSplitter);
-                
+
                 secondaryTextArea.Dispose();
                 textAreaSplitter.Dispose();
                 secondaryTextArea = null;
                 textAreaSplitter  = null;
             }
         }
-        
+
         [Browsable(false)]
         public bool EnableUndo => Document.UndoStack.CanUndo;
 
@@ -139,7 +139,7 @@ namespace ICSharpCode.TextEditor
             if (Document.UndoStack.CanUndo) {
                 BeginUpdate();
                 Document.UndoStack.Undo();
-                
+
                 Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
                 primaryTextArea.TextArea.UpdateMatchingBracket();
                 if (secondaryTextArea != null) {
@@ -148,7 +148,7 @@ namespace ICSharpCode.TextEditor
                 EndUpdate();
             }
         }
-        
+
         public void Redo()
         {
             if (Document.ReadOnly) {
@@ -157,7 +157,7 @@ namespace ICSharpCode.TextEditor
             if (Document.UndoStack.CanRedo) {
                 BeginUpdate();
                 Document.UndoStack.Redo();
-                
+
                 Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
                 primaryTextArea.TextArea.UpdateMatchingBracket();
                 if (secondaryTextArea != null) {
@@ -166,12 +166,12 @@ namespace ICSharpCode.TextEditor
                 EndUpdate();
             }
         }
-        
+
         public virtual void SetHighlighting(string name)
         {
             Document.HighlightingStrategy = HighlightingStrategyFactory.CreateHighlightingStrategy(name);
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
@@ -198,7 +198,7 @@ namespace ICSharpCode.TextEditor
             }
             base.Dispose(disposing);
         }
-        
+
         #region Update Methods
         public override void EndUpdate()
         {
@@ -256,7 +256,7 @@ namespace ICSharpCode.TextEditor
 //            }
         }
         #endregion
-        
+
         #region Printing routines
 
         private int          curLineNr;
@@ -267,13 +267,13 @@ namespace ICSharpCode.TextEditor
         {
             curLineNr = 0;
             printingStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
-            
+
             // 100 should be enough for everyone ...err ?
             float[] tabStops = new float[100];
             for (int i = 0; i < tabStops.Length; ++i) {
                 tabStops[i] = TabIndent * primaryTextArea.TextArea.TextView.WideSpaceWidth;
             }
-            
+
             printingStringFormat.SetTabStops(0, tabStops);
         }
 
@@ -286,7 +286,7 @@ namespace ICSharpCode.TextEditor
                 y += fontHeight;
             }
         }
-        
+
         // btw. I hate source code duplication ... but this time I don't care !!!!
         private float MeasurePrintingHeight(Graphics g, LineSegment line, float maxWidth)
         {
@@ -329,7 +329,7 @@ namespace ICSharpCode.TextEditor
             float fontHeight = Font.GetHeight(g);
 //            bool  gotNonWhitespace = false;
             curTabIndent = 0 ;
-            
+
             FontContainer fontContainer = TextEditorProperties.FontContainer;
             foreach (TextWord word in line.Words) {
                 switch (word.Type) {
@@ -362,7 +362,7 @@ namespace ICSharpCode.TextEditor
         {
             Graphics g = ev.Graphics;
             float yPos = ev.MarginBounds.Top;
-            
+
             while (curLineNr < Document.TotalNumberOfLines) {
                 LineSegment curLine  = Document.GetLineSegment(curLineNr);
                 if (curLine.Words != null) {
@@ -370,13 +370,13 @@ namespace ICSharpCode.TextEditor
                     if (drawingHeight + yPos > ev.MarginBounds.Bottom) {
                         break;
                     }
-                    
+
                     DrawLine(g, curLine, yPos, ev.MarginBounds);
                     yPos += drawingHeight;
                 }
                 ++curLineNr;
             }
-            
+
             // If more lines exist, print another page.
             ev.HasMorePages = curLineNr < Document.TotalNumberOfLines;
         }

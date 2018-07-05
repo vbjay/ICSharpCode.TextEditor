@@ -35,14 +35,14 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="BookmarkManagerMemento"/>
         /// </summary>
         public BookmarkManagerMemento()
         {
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="BookmarkManagerMemento"/>
         /// </summary>
@@ -52,7 +52,7 @@ namespace ICSharpCode.TextEditor.Document
                 Bookmarks.Add(Int32.Parse(el.Attributes["line"].InnerText));
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="BookmarkManagerMemento"/>
         /// </summary>
@@ -60,7 +60,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             this.Bookmarks = bookmarks;
         }
-        
+
         /// <summary>
         /// Converts a xml element to a <see cref="BookmarkManagerMemento"/> object
         /// </summary>
@@ -68,24 +68,24 @@ namespace ICSharpCode.TextEditor.Document
         {
             return new BookmarkManagerMemento(element);
         }
-        
+
         /// <summary>
         /// Converts this <see cref="BookmarkManagerMemento"/> to a xml element
         /// </summary>
         public XmlElement ToXmlElement(XmlDocument doc)
         {
             XmlElement bookmarknode  = doc.CreateElement("Bookmarks");
-            
+
             foreach (int line in Bookmarks) {
                 XmlElement markNode = doc.CreateElement("Mark");
-                
+
                 XmlAttribute lineAttr = doc.CreateAttribute("line");
                 lineAttr.InnerText = line.ToString();
                 markNode.Attributes.Append(lineAttr);
-                        
+
                 bookmarknode.AppendChild(markNode);
             }
-            
+
             return bookmarknode;
         }
     }

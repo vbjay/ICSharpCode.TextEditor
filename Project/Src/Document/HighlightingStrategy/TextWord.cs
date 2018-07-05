@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor.Document
         Space,
         Tab
     }
-    
+
     /// <summary>
     /// This class represents single words with color information, two special versions of a word are
     /// spaces and tabs.
@@ -33,23 +33,23 @@ namespace ICSharpCode.TextEditor.Document
             {
                 Length = 1;
             }
-            
+
             public SpaceTextWord(HighlightColor color)
             {
                 Length = 1;
                 SyntaxColor = color;
             }
-            
+
             public override Font GetFont(FontContainer fontContainer)
             {
                 return null;
             }
-            
+
             public override TextWordType Type => TextWordType.Space;
 
             public override bool IsWhiteSpace => true;
         }
-        
+
         public sealed class TabTextWord : TextWord
         {
             public TabTextWord()
@@ -61,12 +61,12 @@ namespace ICSharpCode.TextEditor.Document
                 Length = 1;
                 SyntaxColor = color;
             }
-            
+
             public override Font GetFont(FontContainer fontContainer)
             {
                 return null;
             }
-            
+
             public override TextWordType Type => TextWordType.Tab;
 
             public override bool IsWhiteSpace => true;
@@ -98,7 +98,7 @@ namespace ICSharpCode.TextEditor.Document
             word = new TextWord(word.document, word.line, word.Offset, pos, word.color, word.HasDefaultColor);
             return after;
         }
-        
+
         public bool HasDefaultColor { get; }
 
         public virtual TextWordType Type => TextWordType.Word;
@@ -111,12 +111,12 @@ namespace ICSharpCode.TextEditor.Document
                 return document.GetText(line.Offset + Offset, Length);
             }
         }
-        
+
         public virtual Font GetFont(FontContainer fontContainer)
         {
             return color.GetFont(fontContainer);
         }
-        
+
         public Color Color {
             get {
                 if (color == null)
@@ -125,7 +125,7 @@ namespace ICSharpCode.TextEditor.Document
                     return color.Color;
             }
         }
-        
+
         public bool Bold {
             get {
                 if (color == null)
@@ -134,7 +134,7 @@ namespace ICSharpCode.TextEditor.Document
                     return color.Bold;
             }
         }
-        
+
         public bool Italic {
             get {
                 if (color == null)
@@ -143,7 +143,7 @@ namespace ICSharpCode.TextEditor.Document
                     return color.Italic;
             }
         }
-        
+
         public HighlightColor SyntaxColor {
             get => color;
             set {
@@ -151,20 +151,20 @@ namespace ICSharpCode.TextEditor.Document
                 color = value;
             }
         }
-        
+
         public virtual bool IsWhiteSpace => false;
 
         protected TextWord()
         {
         }
-        
+
         // TAB
         public TextWord(IDocument document, LineSegment line, int offset, int length, HighlightColor color, bool hasDefaultColor)
         {
             Debug.Assert(document != null);
             Debug.Assert(line != null);
             Debug.Assert(color != null);
-            
+
             this.document = document;
             this.line  = line;
             this.Offset = offset;
@@ -172,7 +172,7 @@ namespace ICSharpCode.TextEditor.Document
             this.color = color;
             this.HasDefaultColor = hasDefaultColor;
         }
-        
+
         /// <summary>
         /// Converts a <see cref="TextWord"/> instance to string (for debug purposes)
         /// </summary>

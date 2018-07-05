@@ -15,14 +15,14 @@ namespace ICSharpCode.TextEditor
     {
         public TextLocation OpenBrace { get; set; }
         public TextLocation CloseBrace { get; set; }
-        
+
         public Highlight(TextLocation openBrace, TextLocation closeBrace)
         {
             OpenBrace = openBrace;
             CloseBrace = closeBrace;
         }
     }
-    
+
     public class BracketHighlightingSheme
     {
         public char OpenTag { get; set; }
@@ -34,7 +34,7 @@ namespace ICSharpCode.TextEditor
             this.OpenTag    = opentag;
             this.ClosingTag = closingtag;
         }
-        
+
         public Highlight GetHighlight(IDocument document, int offset)
         {
             int searchOffset;
@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor
                 searchOffset = offset + 1;
             }
             char word = document.GetCharAt(Math.Max(0, Math.Min(document.TextLength - 1, searchOffset)));
-            
+
             TextLocation endP = document.OffsetToPosition(searchOffset);
             if (word == OpenTag) {
                 if (searchOffset < document.TextLength) {

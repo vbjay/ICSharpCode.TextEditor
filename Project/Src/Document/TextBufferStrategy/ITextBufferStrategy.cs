@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor.Document
         int Length {
             get;
         }
-        
+
         /// <summary>
         /// Inserts a string of characters into the sequence.
         /// </summary>
@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor.Document
         /// text to be inserted.
         /// </param>
         void Insert(int offset, string text);
-        
+
         /// <summary>
         /// Removes some portion of the sequence.
         /// </summary>
@@ -40,7 +40,7 @@ namespace ICSharpCode.TextEditor.Document
         /// number of characters to remove.
         /// </param>
         void Remove(int offset, int length);
-        
+
         /// <summary>
         /// Replace some portion of the sequence.
         /// </summary>
@@ -54,7 +54,7 @@ namespace ICSharpCode.TextEditor.Document
         /// text to be replaced with.
         /// </param>
         void Replace(int offset, int length, string text);
-        
+
         /// <summary>
         /// Fetches a string of characters contained in the sequence.
         /// </summary>
@@ -65,7 +65,7 @@ namespace ICSharpCode.TextEditor.Document
         /// number of characters to copy.
         /// </param>
         string GetText(int offset, int length);
-        
+
         /// <summary>
         /// Returns a specific char of the sequence.
         /// </summary>
@@ -73,7 +73,7 @@ namespace ICSharpCode.TextEditor.Document
         /// Offset of the char to get.
         /// </param>
         char GetCharAt(int offset);
-        
+
         /// <summary>
         /// This method sets the stored content.
         /// </summary>

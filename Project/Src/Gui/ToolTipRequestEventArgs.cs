@@ -11,7 +11,7 @@ using System.Drawing;
 namespace ICSharpCode.TextEditor
 {
     public delegate void ToolTipRequestEventHandler(object sender, ToolTipRequestEventArgs e);
-    
+
     public class ToolTipRequestEventArgs
     {
         public Point MousePosition { get; }
@@ -26,12 +26,12 @@ namespace ICSharpCode.TextEditor
         public bool ToolTipShown => toolTipText != null;
 
         internal string toolTipText;
-        
+
         public void ShowToolTip(string text)
         {
             toolTipText = text;
         }
-        
+
         public ToolTipRequestEventArgs(Point mousePosition, TextLocation logicalPosition, bool inDocument)
         {
             this.MousePosition = mousePosition;

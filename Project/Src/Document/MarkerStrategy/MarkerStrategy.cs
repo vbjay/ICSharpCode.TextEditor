@@ -27,25 +27,25 @@ namespace ICSharpCode.TextEditor.Document
             markersTable.Clear();
             textMarker.Add(item);
         }
-        
+
         public void InsertMarker(int index, TextMarker item)
         {
             markersTable.Clear();
             textMarker.Insert(index, item);
         }
-        
+
         public void RemoveMarker(TextMarker item)
         {
             markersTable.Clear();
             textMarker.Remove(item);
         }
-        
+
         public void RemoveAll(Predicate<TextMarker> match)
         {
             markersTable.Clear();
             textMarker.RemoveAll(match);
         }
-        
+
         public MarkerStrategy(IDocument document)
         {
             this.Document = document;
@@ -53,7 +53,7 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         private readonly Dictionary<int, List<TextMarker>> markersTable = new Dictionary<int, List<TextMarker>>();
-        
+
         public List<TextMarker> GetMarkers(int offset)
         {
             if (!markersTable.ContainsKey(offset)) {
@@ -68,7 +68,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return markersTable[offset];
         }
-        
+
         public List<TextMarker> GetMarkers(int offset, int length)
         {
             int endOffset = offset + length - 1;
@@ -92,7 +92,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return markers;
         }
-        
+
         public List<TextMarker> GetMarkers(TextLocation position)
         {
             if (position.Y >= Document.TotalNumberOfLines || position.Y < 0) {

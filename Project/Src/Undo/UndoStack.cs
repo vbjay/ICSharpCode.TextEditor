@@ -18,24 +18,24 @@ namespace ICSharpCode.TextEditor.Undo
     {
         private readonly Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
         private readonly Stack<IUndoableOperation> redostack = new Stack<IUndoableOperation>();
-        
+
         public TextEditorControlBase TextEditorControl = null;
-        
+
         /// <summary>
         /// </summary>
         public event EventHandler ActionUndone;
         /// <summary>
         /// </summary>
         public event EventHandler ActionRedone;
-        
+
         public event OperationEventHandler OperationPushed;
-        
+
         /// <summary>
         /// Gets/Sets if changes to the document are protocolled by the undo stack.
         /// Used internally to disable the undo stack temporarily while undoing an action.
         /// </summary>
         internal bool AcceptChanges = true;
-        
+
         /// <summary>
         /// Gets if there are actions on the undo stack.
         /// </summary>
@@ -58,7 +58,7 @@ namespace ICSharpCode.TextEditor.Undo
 
         private int undoGroupDepth;
         private int actionCountInUndoGroup;
-        
+
         public void StartUndoGroup()
         {
             if (undoGroupDepth == 0) {
@@ -67,7 +67,7 @@ namespace ICSharpCode.TextEditor.Undo
             undoGroupDepth++;
             //Util.LoggingService.Debug("Open undo group (new depth=" + undoGroupDepth + ")");
         }
-        
+
         public void EndUndoGroup()
         {
             if (undoGroupDepth == 0)
@@ -82,7 +82,7 @@ namespace ICSharpCode.TextEditor.Undo
                 }
             }
         }
-        
+
         public void AssertNoUndoGroupOpen()
         {
             if (undoGroupDepth != 0) {
@@ -90,7 +90,7 @@ namespace ICSharpCode.TextEditor.Undo
                 throw new InvalidOperationException("No undo group should be open at this point");
             }
         }
-        
+
         /// <summary>
         /// Call this method to undo the last operation on the stack
         /// </summary>
@@ -104,7 +104,7 @@ namespace ICSharpCode.TextEditor.Undo
                 OnActionUndone();
             }
         }
-        
+
         /// <summary>
         /// Call this method to redo the last undone operation
         /// </summary>
@@ -118,7 +118,7 @@ namespace ICSharpCode.TextEditor.Undo
                 OnActionRedone();
             }
         }
-        
+
         /// <summary>
         /// Call this method to push an UndoableOperation on the undostack, the redostack
         /// will be cleared, if you use this method.
@@ -128,7 +128,7 @@ namespace ICSharpCode.TextEditor.Undo
             if (operation == null) {
                 throw new ArgumentNullException("operation");
             }
-            
+
             if (AcceptChanges) {
                 StartUndoGroup();
                 undostack.Push(operation);
@@ -141,7 +141,7 @@ namespace ICSharpCode.TextEditor.Undo
                 ClearRedoStack();
             }
         }
-        
+
         /// <summary>
         /// Call this method, if you want to clear the redo stack
         /// </summary>
@@ -149,7 +149,7 @@ namespace ICSharpCode.TextEditor.Undo
         {
             redostack.Clear();
         }
-        
+
         /// <summary>
         /// Clears both the undo and redo stack.
         /// </summary>
@@ -160,7 +160,7 @@ namespace ICSharpCode.TextEditor.Undo
             redostack.Clear();
             actionCountInUndoGroup = 0;
         }
-        
+
         /// <summary>
         /// </summary>
         protected void OnActionUndone()
@@ -169,7 +169,7 @@ namespace ICSharpCode.TextEditor.Undo
                 ActionUndone(null, null);
             }
         }
-        
+
         /// <summary>
         /// </summary>
         protected void OnActionRedone()
@@ -184,20 +184,20 @@ namespace ICSharpCode.TextEditor.Undo
             private readonly UndoStack stack;
             private readonly TextLocation pos;
             private TextLocation redoPos;
-            
+
             public UndoableSetCaretPosition(UndoStack stack, TextLocation pos)
             {
                 this.stack = stack;
                 this.pos = pos;
             }
-            
+
             public void Undo()
             {
                 redoPos = stack.TextEditorControl.ActiveTextAreaControl.Caret.Position;
                 stack.TextEditorControl.ActiveTextAreaControl.Caret.Position = pos;
                 stack.TextEditorControl.ActiveTextAreaControl.SelectionManager.ClearSelection();
             }
-            
+
             public void Redo()
             {
                 stack.TextEditorControl.ActiveTextAreaControl.Caret.Position = redoPos;
@@ -205,7 +205,7 @@ namespace ICSharpCode.TextEditor.Undo
             }
         }
     }
-        
+
     public class OperationEventArgs : EventArgs
     {
         public OperationEventArgs(IUndoableOperation op)
@@ -215,6 +215,6 @@ namespace ICSharpCode.TextEditor.Undo
 
         public IUndoableOperation Operation { get; }
     }
-    
+
     public delegate void OperationEventHandler(object sender, OperationEventArgs e);
 }

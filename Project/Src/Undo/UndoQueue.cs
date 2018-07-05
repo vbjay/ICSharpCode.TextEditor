@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor.Undo
     internal sealed class UndoQueue : IUndoableOperation
     {
         private readonly List<IUndoableOperation> undolist = new List<IUndoableOperation>();
-        
+
         /// <summary>
         /// </summary>
         public UndoQueue(Stack<IUndoableOperation> stack, int numops)
@@ -26,12 +26,12 @@ namespace ICSharpCode.TextEditor.Undo
             if (stack == null)  {
                 throw new ArgumentNullException("stack");
             }
-            
+
             Debug.Assert(numops > 0 , "ICSharpCode.TextEditor.Undo.UndoQueue : numops should be > 0");
             if (numops > stack.Count) {
                 numops = stack.Count;
             }
-            
+
             for (int i = 0; i < numops; ++i) {
                 undolist.Add(stack.Pop());
             }
@@ -42,7 +42,7 @@ namespace ICSharpCode.TextEditor.Undo
                 undolist[i].Undo();
             }
         }
-        
+
         public void Redo()
         {
             for (int i = undolist.Count - 1 ; i >= 0 ; --i) {

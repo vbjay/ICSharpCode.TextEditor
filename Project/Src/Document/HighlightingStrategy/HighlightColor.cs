@@ -23,7 +23,6 @@ namespace ICSharpCode.TextEditor.Document
 
         public bool HasBackground { get; }
 
-
         /// <value>
         /// If true the font will be displayed bold style
         /// </value>
@@ -62,16 +61,16 @@ namespace ICSharpCode.TextEditor.Document
                                                                                       BindingFlags.Instance |
                                                                                       BindingFlags.Static);
             Color c = (Color)myPropInfo.GetValue(null, null);
-            
+
             if (cNames.Length == 2) {
                 // hack : can't figure out how to parse doubles with '.' (culture info might set the '.' to ',')
                 double factor = Double.Parse(cNames[1]) / 100;
                 c = Color.FromArgb((int)((double)c.R * factor), (int)((double)c.G * factor), (int)((double)c.B * factor));
             }
-            
+
             return c;
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightColor"/>
         /// </summary>
@@ -81,11 +80,11 @@ namespace ICSharpCode.TextEditor.Document
             if (el.Attributes["bold"] != null) {
                 Bold = Boolean.Parse(el.Attributes["bold"].InnerText);
             }
-            
+
             if (el.Attributes["italic"] != null) {
                 Italic = Boolean.Parse(el.Attributes["italic"].InnerText);
             }
-            
+
             if (el.Attributes["color"] != null) {
                 string c = el.Attributes["color"].InnerText;
                 if (c[0] == '#') {
@@ -99,7 +98,7 @@ namespace ICSharpCode.TextEditor.Document
             } else {
                 Color = Color.Transparent; // to set it to the default value.
             }
-            
+
             if (el.Attributes["bgcolor"] != null) {
                 string c = el.Attributes["bgcolor"].InnerText;
                 if (c[0] == '#') {
@@ -112,7 +111,7 @@ namespace ICSharpCode.TextEditor.Document
                 HasBackground = true;
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightColor"/>
         /// </summary>
@@ -124,13 +123,13 @@ namespace ICSharpCode.TextEditor.Document
             } else {
                 Bold = defaultColor.Bold;
             }
-            
+
             if (el.Attributes["italic"] != null) {
                 Italic = Boolean.Parse(el.Attributes["italic"].InnerText);
             } else {
                 Italic = defaultColor.Italic;
             }
-            
+
             if (el.Attributes["color"] != null) {
                 string c = el.Attributes["color"].InnerText;
                 if (c[0] == '#') {
@@ -144,7 +143,7 @@ namespace ICSharpCode.TextEditor.Document
             } else {
                 Color = defaultColor.Color;
             }
-            
+
             if (el.Attributes["bgcolor"] != null) {
                 string c = el.Attributes["bgcolor"].InnerText;
                 if (c[0] == '#') {
@@ -159,7 +158,7 @@ namespace ICSharpCode.TextEditor.Document
                 BackgroundColor = defaultColor.BackgroundColor;
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightColor"/>
         /// </summary>
@@ -170,7 +169,7 @@ namespace ICSharpCode.TextEditor.Document
             this.Bold   = bold;
             this.Italic = italic;
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightColor"/>
         /// </summary>
@@ -183,8 +182,7 @@ namespace ICSharpCode.TextEditor.Document
             this.Bold             = bold;
             this.Italic           = italic;
         }
-        
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightColor"/>
         /// </summary>
@@ -192,23 +190,23 @@ namespace ICSharpCode.TextEditor.Document
         {
             HasForeground = true;
             HasBackground  = true;
-            
+
             Color = ParseColorString(systemColor);
             BackgroundColor = ParseColorString(systemBackgroundColor);
-            
+
             this.Bold         = bold;
             this.Italic       = italic;
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightColor"/>
         /// </summary>
         public HighlightColor(string systemColor, bool bold, bool italic)
         {
             HasForeground = true;
-            
+
             Color = ParseColorString(systemColor);
-            
+
             this.Bold         = bold;
             this.Italic       = italic;
         }
@@ -221,13 +219,13 @@ namespace ICSharpCode.TextEditor.Document
                 offset = 2;
                 a = Int32.Parse(c.Substring(1,2), NumberStyles.HexNumber);
             }
-            
+
             int r = Int32.Parse(c.Substring(1 + offset,2), NumberStyles.HexNumber);
             int g = Int32.Parse(c.Substring(3 + offset,2), NumberStyles.HexNumber);
             int b = Int32.Parse(c.Substring(5 + offset,2), NumberStyles.HexNumber);
             return Color.FromArgb(a, r, g, b);
         }
-        
+
         /// <summary>
         /// Converts a <see cref="HighlightColor"/> instance to string (for debug purposes)
         /// </summary>

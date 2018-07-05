@@ -27,14 +27,14 @@ namespace ICSharpCode.TextEditor.Document
             this.Name       = name;
             this.Extensions = extensions.Split(';', '|', ',');
         }
-        
+
         public SyntaxMode(string fileName, string name, string[] extensions)
         {
             this.FileName = fileName;
             this.Name = name;
             this.Extensions = extensions;
         }
-        
+
         public static List<SyntaxMode> GetSyntaxModes(Stream xmlSyntaxModeStream)
         {
             XmlTextReader reader = new XmlTextReader(xmlSyntaxModeStream);

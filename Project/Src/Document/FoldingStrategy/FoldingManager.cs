@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Document
         private List<FoldMarker>    foldMarker      = new List<FoldMarker>();
         private List<FoldMarker>    foldMarkerByEnd = new List<FoldMarker>();
         private readonly IDocument document;
-        
+
         public IList<FoldMarker> FoldMarker => foldMarker.AsReadOnly();
 
         public IFoldingStrategy FoldingStrategy { get; set; } = null;
@@ -26,7 +26,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             this.document = document;
             document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
-            
+
 //            lineTracker.LineCountChanged  += new LineManagerEventHandler(LineManagerLineCountChanged);
 //            lineTracker.LineLengthChanged += new LineLengthEventHandler(LineManagerLineLengthChanged);
 //            foldMarker.Add(new FoldMarker(0, 5, 3, 5));
@@ -53,7 +53,7 @@ namespace ICSharpCode.TextEditor.Document
                 document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
             }
         }
-        
+
         public List<FoldMarker> GetFoldingsFromPosition(int line, int column)
         {
             List<FoldMarker> foldings = new List<FoldMarker>();
@@ -73,7 +73,7 @@ namespace ICSharpCode.TextEditor.Document
         private class StartComparer : IComparer<FoldMarker>
         {
             public readonly static StartComparer Instance = new StartComparer();
-            
+
             public int Compare(FoldMarker x, FoldMarker y)
             {
                 if (x.StartLine < y.StartLine)
@@ -88,7 +88,7 @@ namespace ICSharpCode.TextEditor.Document
         private class EndComparer : IComparer<FoldMarker>
         {
             public readonly static EndComparer Instance = new EndComparer();
-            
+
             public int Compare(FoldMarker x, FoldMarker y)
             {
                 if (x.EndLine < y.EndLine)
@@ -103,13 +103,13 @@ namespace ICSharpCode.TextEditor.Document
         private List<FoldMarker> GetFoldingsByStartAfterColumn(int lineNumber, int column, bool forceFolded)
         {
             List<FoldMarker> foldings = new List<FoldMarker>();
-            
+
             if (foldMarker != null) {
                 int index = foldMarker.BinarySearch(
                     new FoldMarker(document, lineNumber, column, lineNumber, column),
                     StartComparer.Instance);
                 if (index < 0) index = ~index;
-                
+
                 for (; index < foldMarker.Count; index++) {
                     FoldMarker fm = foldMarker[index];
                     if (fm.StartLine > lineNumber)
@@ -122,17 +122,17 @@ namespace ICSharpCode.TextEditor.Document
             }
             return foldings;
         }
-        
+
         public List<FoldMarker> GetFoldingsWithStart(int lineNumber)
         {
             return GetFoldingsByStartAfterColumn(lineNumber, -1, false);
         }
-        
+
         public List<FoldMarker> GetFoldedFoldingsWithStart(int lineNumber)
         {
             return GetFoldingsByStartAfterColumn(lineNumber, -1, true);
         }
-        
+
         public List<FoldMarker> GetFoldedFoldingsWithStartAfterColumn(int lineNumber, int column)
         {
             return GetFoldingsByStartAfterColumn(lineNumber, column, true);
@@ -141,13 +141,13 @@ namespace ICSharpCode.TextEditor.Document
         private List<FoldMarker> GetFoldingsByEndAfterColumn(int lineNumber, int column, bool forceFolded)
         {
             List<FoldMarker> foldings = new List<FoldMarker>();
-            
+
             if (foldMarker != null) {
                 int index =  foldMarkerByEnd.BinarySearch(
                     new FoldMarker(document, lineNumber, column, lineNumber, column),
                     EndComparer.Instance);
                 if (index < 0) index = ~index;
-                
+
                 for (; index < foldMarkerByEnd.Count; index++) {
                     FoldMarker fm = foldMarkerByEnd[index];
                     if (fm.EndLine > lineNumber)
@@ -160,27 +160,27 @@ namespace ICSharpCode.TextEditor.Document
             }
             return foldings;
         }
-        
+
         public List<FoldMarker> GetFoldingsWithEnd(int lineNumber)
         {
             return GetFoldingsByEndAfterColumn(lineNumber, -1, false);
         }
-        
+
         public List<FoldMarker> GetFoldedFoldingsWithEnd(int lineNumber)
         {
             return GetFoldingsByEndAfterColumn(lineNumber, -1, true);
         }
-        
+
         public bool IsFoldStart(int lineNumber)
         {
             return GetFoldingsWithStart(lineNumber).Count > 0;
         }
-        
+
         public bool IsFoldEnd(int lineNumber)
         {
             return GetFoldingsWithEnd(lineNumber).Count > 0;
         }
-        
+
         public List<FoldMarker> GetFoldingsContainsLineNumber(int lineNumber)
         {
             List<FoldMarker> foldings = new List<FoldMarker>();
@@ -193,12 +193,12 @@ namespace ICSharpCode.TextEditor.Document
             }
             return foldings;
         }
-        
+
         public bool IsBetweenFolding(int lineNumber)
         {
             return GetFoldingsContainsLineNumber(lineNumber).Count > 0;
         }
-        
+
         public bool IsLineVisible(int lineNumber)
         {
             foreach (FoldMarker fm in GetFoldingsContainsLineNumber(lineNumber)) {
@@ -207,7 +207,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return true;
         }
-        
+
         public List<FoldMarker> GetTopLevelFoldedFoldings()
         {
             List<FoldMarker> foldings = new List<FoldMarker>();
@@ -222,12 +222,12 @@ namespace ICSharpCode.TextEditor.Document
             }
             return foldings;
         }
-        
+
         public void UpdateFoldings(string fileName, object parseInfo)
         {
             UpdateFoldings(FoldingStrategy.GenerateFoldMarkers(document, fileName, parseInfo));
         }
-        
+
         public void UpdateFoldings(List<FoldMarker> newFoldings)
         {
             int oldFoldingsCount = foldMarker.Count;
@@ -267,7 +267,7 @@ namespace ICSharpCode.TextEditor.Document
                 document.CommitUpdate();
             }
         }
-        
+
         public string SerializeToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -279,7 +279,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return sb.ToString();
         }
-        
+
         public void DeserializeFromString(string str)
         {
             try {
@@ -307,15 +307,14 @@ namespace ICSharpCode.TextEditor.Document
             } catch (Exception) {
             }
         }
-        
+
         public void NotifyFoldingsChanged(EventArgs e)
         {
             if (FoldingsChanged != null) {
                 FoldingsChanged(this, e);
             }
         }
-        
-        
+
         public event EventHandler FoldingsChanged;
     }
 }

@@ -49,4 +49,3 @@
         private ICSharpCode.TextEditor.TextEditorControl textEditor;
     }
 }
-

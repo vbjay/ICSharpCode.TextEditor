@@ -21,9 +21,9 @@ namespace ICSharpCode.TextEditor
     public class GutterMargin : AbstractMargin, IDisposable
     {
         private readonly StringFormat numberStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
-        
+
         public static Cursor RightLeftCursor;
-        
+
         static GutterMargin()
         {
             Stream cursorStream = Assembly.GetCallingAssembly().GetManifestResourceStream("ICSharpCode.TextEditor.Resources.RightArrow.cur");
@@ -31,12 +31,12 @@ namespace ICSharpCode.TextEditor
             RightLeftCursor = new Cursor(cursorStream);
             cursorStream.Close();
         }
-        
+
         public void Dispose()
         {
             numberStringFormat.Dispose();
         }
-        
+
         public override Cursor Cursor => RightLeftCursor;
 
         public override Size Size => new Size((int)(textArea.TextView.WideSpaceWidth
@@ -51,7 +51,7 @@ namespace ICSharpCode.TextEditor
             numberStringFormat.FormatFlags   = StringFormatFlags.MeasureTrailingSpaces | StringFormatFlags.FitBlackBox |
                 StringFormatFlags.NoWrap | StringFormatFlags.NoClip;
         }
-        
+
         public override void Paint(Graphics g, Rectangle rect)
         {
             if (rect.Width <= 0 || rect.Height <= 0) {
@@ -67,7 +67,7 @@ namespace ICSharpCode.TextEditor
                 if (rect.IntersectsWith(backgroundRectangle)) {
                     g.FillRectangle(fillBrush, backgroundRectangle);
                     int curLine = textArea.Document.GetFirstLogicalLine(textArea.Document.GetVisibleLine(textArea.TextView.FirstVisibleLine) + y);
-                    
+
                     if (curLine < textArea.Document.TotalNumberOfLines) {
                         g.DrawString((curLine + 1).ToString(),
                                      lineNumberPainterColor.GetFont(TextEditorProperties.FontContainer),

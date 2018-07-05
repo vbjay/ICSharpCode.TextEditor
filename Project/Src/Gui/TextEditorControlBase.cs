@@ -29,14 +29,14 @@ namespace ICSharpCode.TextEditor
         private string    currentFileName;
         private int       updateLevel;
         private IDocument document;
-        
+
         /// <summary>
         /// This hashtable contains all editor keys, where
         /// the key is the key combination and the value the
         /// action.
         /// </summary>
         protected Dictionary<Keys, IEditAction> editactions = new Dictionary<Keys, IEditAction>();
-        
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ITextEditorProperties TextEditorProperties {
@@ -48,7 +48,7 @@ namespace ICSharpCode.TextEditor
         }
 
         private Encoding encoding;
-        
+
         /// <value>
         /// Current file's character encoding
         /// </value>
@@ -62,7 +62,7 @@ namespace ICSharpCode.TextEditor
             }
             set => encoding = value;
         }
-        
+
         /// <value>
         /// The current file name
         /// </value>
@@ -77,7 +77,7 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         /// <value>
         /// The current document
         /// </value>
@@ -101,7 +101,7 @@ namespace ICSharpCode.TextEditor
         {
             OnTextChanged(e);
         }
-        
+
         [EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(System.Drawing.Design.UITypeEditor))]
@@ -109,7 +109,7 @@ namespace ICSharpCode.TextEditor
             get => Document.TextContent;
             set => Document.TextContent = value;
         }
-        
+
         [EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
         public new event EventHandler TextChanged
         {
@@ -122,7 +122,7 @@ namespace ICSharpCode.TextEditor
             string[] descr = font.Split(new char[]{',', '='});
             return new Font(descr[1], Single.Parse(descr[3]));
         }
-        
+
         /// <value>
         /// If set to true the contents can't be altered.
         /// </value>
@@ -131,7 +131,7 @@ namespace ICSharpCode.TextEditor
             get => Document.ReadOnly;
             set => Document.ReadOnly = value;
         }
-        
+
         /// <value>
         /// true, if the textarea is updating it's status, while
         /// it updates it status no redraw operation occurs.
@@ -159,7 +159,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// Specifies the quality of text rendering (whether to use hinting and/or anti-aliasing).
         /// </value>
@@ -173,7 +173,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true tabs are shown in the textarea
         /// </value>
@@ -187,7 +187,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true EOL markers are shown in the textarea
         /// </value>
@@ -201,7 +201,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true the horizontal ruler is shown in the textarea
         /// </value>
@@ -215,7 +215,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true the vertical ruler is shown in the textarea
         /// </value>
@@ -229,7 +229,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// The row in which the vertical ruler is displayed
         /// </value>
@@ -243,7 +243,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true line numbers are shown in the textarea
         /// </value>
@@ -257,7 +257,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true invalid lines are marked in the textarea
         /// </value>
@@ -271,7 +271,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// If true folding is enabled in the textarea
         /// </value>
@@ -285,7 +285,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         [Category("Appearance")]
         [DefaultValue(true)]
         [Description("If true matching brackets are highlighted")]
@@ -296,7 +296,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         [Category("Appearance")]
         [DefaultValue(false)]
         [Description("If true the icon bar is displayed")]
@@ -307,7 +307,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// The width in spaces of a tab character
         /// </value>
@@ -321,7 +321,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// The line viewer style
         /// </value>
@@ -349,7 +349,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// if true spaces are converted to tabs
         /// </value>
@@ -363,7 +363,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// if true spaces are converted to tabs
         /// </value>
@@ -377,7 +377,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// if true spaces are converted to tabs
         /// </value>
@@ -404,7 +404,7 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         /// <value>
         /// The base font of the text area. No bold or italic fonts
         /// can be used because bold/italic is reserved for highlighting
@@ -420,18 +420,18 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         #endregion
         public abstract TextAreaControl ActiveTextAreaControl {
             get;
         }
-        
+
         protected TextEditorControlBase()
         {
             GenerateDefaultActions();
             HighlightingManager.Manager.ReloadSyntaxHighlighting += new EventHandler(OnReloadHighlighting);
         }
-        
+
         protected virtual void OnReloadHighlighting(object sender, EventArgs e)
         {
             if (Document.HighlightingStrategy != null) {
@@ -443,12 +443,12 @@ namespace ICSharpCode.TextEditor
                 OptionsChanged();
             }
         }
-        
+
         public bool IsEditAction(Keys keyData)
         {
             return editactions.ContainsKey(keyData);
         }
-        
+
         internal IEditAction GetEditAction(Keys keyData)
         {
             if (!IsEditAction(keyData)) {
@@ -473,7 +473,7 @@ namespace ICSharpCode.TextEditor
             editactions[Keys.Down] = new CaretDown();
             editactions[Keys.Down | Keys.Shift] = new ShiftCaretDown();
             editactions[Keys.Down | Keys.Control] = new ScrollLineDown();
-            
+
             editactions[Keys.Insert] = new ToggleEditMode();
             editactions[Keys.Insert | Keys.Control] = new Copy();
             editactions[Keys.Insert | Keys.Shift] = new Paste();
@@ -491,35 +491,35 @@ namespace ICSharpCode.TextEditor
             editactions[Keys.PageUp | Keys.Shift] = new ShiftMovePageUp();
             editactions[Keys.PageDown] = new MovePageDown();
             editactions[Keys.PageDown | Keys.Shift] = new ShiftMovePageDown();
-            
+
             editactions[Keys.Return] = new Return();
             editactions[Keys.Tab] = new Tab();
             editactions[Keys.Tab | Keys.Shift] = new ShiftTab();
             editactions[Keys.Back] = new Backspace();
             editactions[Keys.Back | Keys.Shift] = new Backspace();
-            
+
             editactions[Keys.X | Keys.Control] = new Cut();
             editactions[Keys.C | Keys.Control] = new Copy();
             editactions[Keys.V | Keys.Control] = new Paste();
-            
+
             editactions[Keys.A | Keys.Control] = new SelectWholeDocument();
             editactions[Keys.Escape] = new ClearAllSelections();
-            
+
             editactions[Keys.Divide | Keys.Control] = new ToggleComment();
             editactions[Keys.OemQuestion | Keys.Control] = new ToggleComment();
-            
+
             editactions[Keys.Back | Keys.Alt]  = new Actions.Undo();
             editactions[Keys.Z | Keys.Control] = new Actions.Undo();
             editactions[Keys.Y | Keys.Control] = new Redo();
-            
+
             editactions[Keys.Delete | Keys.Control] = new DeleteWord();
             editactions[Keys.Back | Keys.Control]   = new WordBackspace();
             editactions[Keys.D | Keys.Control]      = new DeleteLine();
             editactions[Keys.D | Keys.Shift | Keys.Control]      = new DeleteToLineEnd();
-            
+
             editactions[Keys.B | Keys.Control]      = new GotoMatchingBrace();
         }
-        
+
         /// <remarks>
         /// Call this method before a long update operation this
         /// 'locks' the text area so that no screen update occurs.
@@ -528,7 +528,7 @@ namespace ICSharpCode.TextEditor
         {
             ++updateLevel;
         }
-        
+
         /// <remarks>
         /// Call this method to 'unlock' the text area. After this call
         /// screen update can occur. But no automatical refresh occurs you
@@ -539,12 +539,12 @@ namespace ICSharpCode.TextEditor
             Debug.Assert(updateLevel > 0);
             updateLevel = Math.Max(0, updateLevel - 1);
         }
-        
+
         public void LoadFile(string fileName)
         {
             LoadFile(fileName, true, true);
         }
-        
+
         /// <remarks>
         /// Loads a file given by fileName
         /// </remarks>
@@ -557,7 +557,7 @@ namespace ICSharpCode.TextEditor
                 LoadFile(fileName, fs, autoLoadHighlighting, autodetectEncoding);
             }
         }
-        
+
         /// <remarks>
         /// Loads a file from the specified stream.
         /// </remarks>
@@ -570,7 +570,7 @@ namespace ICSharpCode.TextEditor
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
-            
+
             BeginUpdate();
             document.TextContent = String.Empty;
             document.UndoStack.ClearAll();
@@ -582,7 +582,7 @@ namespace ICSharpCode.TextEditor
                     MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            
+
             if (autodetectEncoding) {
                 Encoding encoding = Encoding;
                 Document.TextContent = Util.FileReader.ReadFileContent(stream, ref encoding);
@@ -592,15 +592,15 @@ namespace ICSharpCode.TextEditor
                     Document.TextContent = reader.ReadToEnd();
                 }
             }
-            
+
             FileName = fileName;
             Document.UpdateQueue.Clear();
             EndUpdate();
-            
+
             OptionsChanged();
             Refresh();
         }
-        
+
         /// <summary>
         /// Gets if the document can be saved with the current encoding without losing data.
         /// </summary>
@@ -612,7 +612,7 @@ namespace ICSharpCode.TextEditor
             string text = document.TextContent;
             return encoding.GetString(encoding.GetBytes(text)) == text;
         }
-        
+
         /// <remarks>
         /// Saves the text editor content into the file.
         /// </remarks>
@@ -623,7 +623,7 @@ namespace ICSharpCode.TextEditor
             }
             FileName = fileName;
         }
-        
+
         /// <remarks>
         /// Saves the text editor content into the specified stream.
         /// Does not close the stream.
@@ -631,7 +631,7 @@ namespace ICSharpCode.TextEditor
         public void SaveFile(Stream stream)
         {
             StreamWriter streamWriter = new StreamWriter(stream, Encoding ?? Encoding.UTF8);
-            
+
             // save line per line to apply the LineTerminator to all lines
             // (otherwise we might save files with mixed-up line endings)
             foreach (LineSegment line in Document.LineSegmentCollection) {
@@ -646,11 +646,11 @@ namespace ICSharpCode.TextEditor
             }
             streamWriter.Flush();
         }
-        
+
         public abstract void OptionsChanged();
-        
+
         // Localization ISSUES
-        
+
         // used in insight window
         public virtual string GetRangeDescription(int selectedItem, int itemCount)
         {
@@ -659,7 +659,7 @@ namespace ICSharpCode.TextEditor
             sb.Append(itemCount.ToString());
             return sb.ToString();
         }
-        
+
         /// <remarks>
         /// Overwritten refresh method that does nothing if the control is in
         /// an update cycle.
@@ -671,7 +671,7 @@ namespace ICSharpCode.TextEditor
             }
             base.Refresh();
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
@@ -681,14 +681,14 @@ namespace ICSharpCode.TextEditor
             }
             base.Dispose(disposing);
         }
-        
+
         protected virtual void OnFileNameChanged(EventArgs e)
         {
             if (FileNameChanged != null) {
                 FileNameChanged(this, e);
             }
         }
-        
+
         public event EventHandler FileNameChanged;
     }
 }

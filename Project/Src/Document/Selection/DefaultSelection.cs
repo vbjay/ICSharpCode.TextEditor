@@ -19,7 +19,7 @@ namespace ICSharpCode.TextEditor.Document
         private readonly IDocument document;
         private TextLocation     startPosition;
         private TextLocation     endPosition;
-        
+
         public TextLocation StartPosition {
             get => startPosition;
             set {
@@ -27,7 +27,7 @@ namespace ICSharpCode.TextEditor.Document
                 startPosition = value;
             }
         }
-        
+
         public TextLocation EndPosition {
             get => endPosition;
             set {
@@ -35,7 +35,7 @@ namespace ICSharpCode.TextEditor.Document
                 endPosition = value;
             }
         }
-        
+
         public int Offset => document.PositionToOffset(startPosition);
 
         public int EndOffset => document.PositionToOffset(endPosition);
@@ -67,7 +67,7 @@ namespace ICSharpCode.TextEditor.Document
                 return null;
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="DefaultSelection"/>
         /// </summary>
@@ -80,7 +80,7 @@ namespace ICSharpCode.TextEditor.Document
             this.startPosition = startPosition;
             this.endPosition   = endPosition;
         }
-        
+
         /// <summary>
         /// Converts a <see cref="DefaultSelection"/> instance to string (for debug purposes)
         /// </summary>
@@ -96,7 +96,7 @@ namespace ICSharpCode.TextEditor.Document
                 startPosition.Y == position.Y && startPosition.X <= position.X && (startPosition.Y != endPosition.Y || position.X <= endPosition.X) ||
                 endPosition.Y == position.Y && startPosition.Y != endPosition.Y && position.X <= endPosition.X;
         }
-        
+
         public bool ContainsOffset(int offset)
         {
             return Offset <= offset && offset <= EndOffset;

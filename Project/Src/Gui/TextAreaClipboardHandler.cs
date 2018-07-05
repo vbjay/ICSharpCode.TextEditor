@@ -19,13 +19,13 @@ namespace ICSharpCode.TextEditor
     public class TextAreaClipboardHandler
     {
         private readonly TextArea textArea;
-        
+
         public bool EnableCut => textArea.EnableCutOrPaste;
 
         public bool EnableCopy => true;
 
         public delegate bool ClipboardContainsTextDelegate();
-        
+
         /// <summary>
         /// Is called when CachedClipboardContainsText should be updated.
         /// If this property is null (the default value), the text editor uses
@@ -37,7 +37,7 @@ namespace ICSharpCode.TextEditor
         /// never become available if it is owned by a process that is paused by the debugger.
         /// </remarks>
         public static ClipboardContainsTextDelegate GetClipboardContainsText;
-        
+
         public bool EnablePaste {
             get {
                 if (!textArea.EnableCutOrPaste)
@@ -54,7 +54,7 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         public bool EnableDelete => textArea.SelectionManager.HasSomethingSelected && !textArea.SelectionManager.SelectionIsReadonly;
 
         public bool EnableSelectAll => true;
@@ -87,14 +87,14 @@ namespace ICSharpCode.TextEditor
                     dataObject.SetData(DataFormats.Rtf, RtfWriter.GenerateRtf(textArea));
                 }
                 OnCopyText(new CopyTextEventArgs(stringToCopy));
-                
+
                 SafeSetClipboard(dataObject);
                 return true;
             } else {
                 return false;
             }
         }
-        
+
         // Code duplication: TextAreaClipboardHandler.cs also has SafeSetClipboard
         [ThreadStatic] private static int SafeSetClipboardDataVersion;
 
@@ -125,7 +125,7 @@ namespace ICSharpCode.TextEditor
         {
             return CopyTextToClipboard(stringToCopy, false);
         }
-        
+
         public void Cut(object sender, EventArgs e)
         {
             if (textArea.SelectionManager.HasSomethingSelected) {
@@ -156,7 +156,7 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         public void Copy(object sender, EventArgs e)
         {
             if (!CopyTextToClipboard(textArea.SelectionManager.SelectedText) && textArea.Document.TextEditorProperties.CutCopyWholeLine) {
@@ -167,7 +167,7 @@ namespace ICSharpCode.TextEditor
                 CopyTextToClipboard(caretLineText, true);
             }
         }
-        
+
         public void Paste(object sender, EventArgs e)
         {
             if (!textArea.EnableCutOrPaste) {
@@ -212,27 +212,27 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         public void Delete(object sender, EventArgs e)
         {
             new Actions.Delete().Execute(textArea);
         }
-        
+
         public void SelectAll(object sender, EventArgs e)
         {
             new Actions.SelectWholeDocument().Execute(textArea);
         }
-        
+
         protected virtual void OnCopyText(CopyTextEventArgs e)
         {
             if (CopyText != null) {
                 CopyText(this, e);
             }
         }
-        
+
         public event CopyTextEventHandler CopyText;
     }
-    
+
     public delegate void CopyTextEventHandler(object sender, CopyTextEventArgs e);
     public class CopyTextEventArgs : EventArgs
     {

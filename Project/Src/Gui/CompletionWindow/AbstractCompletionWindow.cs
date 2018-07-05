@@ -20,14 +20,14 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         protected Size              drawingSize;
         private readonly Rectangle workingScreen;
         private readonly Form parentForm;
-        
+
         protected AbstractCompletionWindow(Form parentForm, TextEditorControl control)
         {
             workingScreen = Screen.GetWorkingArea(parentForm);
 //            SetStyle(ControlStyles.Selectable, false);
             this.parentForm = parentForm;
             this.control  = control;
-            
+
             SetLocation();
             StartPosition   = FormStartPosition.Manual;
             FormBorderStyle = FormBorderStyle.None;
@@ -35,23 +35,23 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             MinimumSize     = new Size(1, 1);
             Size            = new Size(1, 1);
         }
-        
+
         protected virtual void SetLocation()
         {
             TextArea textArea = control.ActiveTextAreaControl.TextArea;
             TextLocation caretPos  = textArea.Caret.Position;
-            
+
             int xpos = textArea.TextView.GetDrawingXPos(caretPos.Y, caretPos.X);
             int rulerHeight = textArea.TextEditorProperties.ShowHorizontalRuler ? textArea.TextView.FontHeight : 0;
             Point pos = new Point(textArea.TextView.DrawingPosition.X + xpos,
                                   textArea.TextView.DrawingPosition.Y + (textArea.Document.GetVisibleLine(caretPos.Y)) * textArea.TextView.FontHeight 
                                   - textArea.TextView.TextArea.VirtualTop.Y + textArea.TextView.FontHeight + rulerHeight);
-            
+
             Point location = control.ActiveTextAreaControl.PointToScreen(pos);
-            
+
             // set bounds
             Rectangle bounds = new Rectangle(location, drawingSize);
-            
+
             if (!workingScreen.Contains(bounds)) {
                 if (bounds.Right > workingScreen.Right) {
                     bounds.X = workingScreen.Right - bounds.Width;
@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             }
             Bounds = bounds;
         }
-        
+
         protected override CreateParams CreateParams {
             get {
                 CreateParams p = base.CreateParams;
@@ -81,7 +81,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         }
 
         private static int shadowStatus;
-        
+
         /// <summary>
         /// Adds a shadow to the create params if it is supported by the operating system.
         /// </summary>
@@ -101,7 +101,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 createParams.ClassStyle |= 0x00020000; // set CS_DROPSHADOW
             }
         }
-        
+
         protected override bool ShowWithoutActivation => true;
 
         protected void ShowCompletionWindow()
@@ -109,20 +109,20 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             Owner = parentForm;
             Enabled = true;
             Show();
-            
+
             control.Focus();
-            
+
             if (parentForm != null) {
                 parentForm.LocationChanged += new EventHandler(ParentFormLocationChanged);
             }
-            
+
             control.ActiveTextAreaControl.VScrollBar.ValueChanged     += new EventHandler(ParentFormLocationChanged);
             control.ActiveTextAreaControl.HScrollBar.ValueChanged     += new EventHandler(ParentFormLocationChanged);
             control.ActiveTextAreaControl.TextArea.DoProcessDialogKey += new DialogKeyProcessor(ProcessTextAreaKey);
             control.ActiveTextAreaControl.Caret.PositionChanged       += new EventHandler(CaretOffsetChanged);
             control.ActiveTextAreaControl.TextArea.LostFocus          += new EventHandler(TextEditorLostFocus);
             control.Resize += new EventHandler(ParentFormLocationChanged);
-            
+
             foreach (Control c in Controls) {
                 c.MouseMove += ControlMouseMove;
             }
@@ -132,12 +132,12 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         {
             SetLocation();
         }
-        
+
         public virtual bool ProcessKeyEvent(char ch)
         {
             return false;
         }
-        
+
         protected virtual bool ProcessTextAreaKey(Keys keyData)
         {
             if (!Visible) {
@@ -150,49 +150,49 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             }
             return false;
         }
-        
+
         protected virtual void CaretOffsetChanged(object sender, EventArgs e)
         {
         }
-        
+
         protected void TextEditorLostFocus(object sender, EventArgs e)
         {
             if (!control.ActiveTextAreaControl.TextArea.Focused && !ContainsFocus) {
                 Close();
             }
         }
-        
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            
+
             // take out the inserted methods
             parentForm.LocationChanged -= new EventHandler(ParentFormLocationChanged);
-            
+
             foreach (Control c in Controls) {
                 c.MouseMove -= ControlMouseMove;
             }
-            
+
             if (control.ActiveTextAreaControl.VScrollBar != null) {
                 control.ActiveTextAreaControl.VScrollBar.ValueChanged -= new EventHandler(ParentFormLocationChanged);
             }
             if (control.ActiveTextAreaControl.HScrollBar != null) {
                 control.ActiveTextAreaControl.HScrollBar.ValueChanged -= new EventHandler(ParentFormLocationChanged);
             }
-            
+
             control.ActiveTextAreaControl.TextArea.LostFocus          -= new EventHandler(TextEditorLostFocus);
             control.ActiveTextAreaControl.Caret.PositionChanged       -= new EventHandler(CaretOffsetChanged);
             control.ActiveTextAreaControl.TextArea.DoProcessDialogKey -= new DialogKeyProcessor(ProcessTextAreaKey);
             control.Resize -= new EventHandler(ParentFormLocationChanged);
             Dispose();
         }
-        
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
             ControlMouseMove(this, e);
         }
-        
+
         /// <summary>
         /// Invoked when the mouse moves over this form or any child control.
         /// Shows the mouse cursor on the text area if it has been hidden.

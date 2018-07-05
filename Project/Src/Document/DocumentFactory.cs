@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Document
             doc.BookmarkManager     = new BookmarkManager(doc, doc.LineManager);
             return doc;
         }
-        
+
         /// <summary>
         /// Creates a new document and loads the given file
         /// </summary>
@@ -43,7 +43,7 @@ namespace ICSharpCode.TextEditor.Document
             doc.TextBufferStrategy = textBuffer;
             return doc;
         }
-        
+
         /// <summary>
         /// Creates a new document and loads the given file
         /// </summary>

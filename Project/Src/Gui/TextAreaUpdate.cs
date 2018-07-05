@@ -21,7 +21,7 @@ namespace ICSharpCode.TextEditor
         PositionToEnd,
         LinesBetween
     }
-    
+
     /// <summary>
     /// This class is used to request an update of the textarea
     /// </summary>
@@ -38,7 +38,7 @@ namespace ICSharpCode.TextEditor
         {
             this.TextAreaUpdateType = type;
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="TextAreaUpdate"/>
         /// </summary>
@@ -47,7 +47,7 @@ namespace ICSharpCode.TextEditor
             this.TextAreaUpdateType     = type;
             this.Position = position;
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="TextAreaUpdate"/>
         /// </summary>
@@ -56,7 +56,7 @@ namespace ICSharpCode.TextEditor
             this.TextAreaUpdateType     = type;
             Position = new TextLocation(startLine, endLine);
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="TextAreaUpdate"/>
         /// </summary>
@@ -65,7 +65,7 @@ namespace ICSharpCode.TextEditor
             this.TextAreaUpdateType     = type;
             Position = new TextLocation(0, singleLine);
         }
-        
+
         public override string ToString()
         {
             return String.Format("[TextAreaUpdate: Type={0}, Position={1}]", TextAreaUpdateType, Position);

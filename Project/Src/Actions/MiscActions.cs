@@ -20,11 +20,11 @@ namespace ICSharpCode.TextEditor.Actions
         {
             return GetIndentationString(document, null);
         }
-        
+
         public static string GetIndentationString(IDocument document, TextArea textArea)
         {
             StringBuilder indent = new StringBuilder();
-            
+
             if (document.TextEditorProperties.ConvertTabsToSpaces) {
                 int tabIndent = document.TextEditorProperties.IndentationSize;
                 if (textArea != null) {
@@ -47,12 +47,12 @@ namespace ICSharpCode.TextEditor.Actions
                 if (i == y2 && i == selection.EndPosition.Y && selection.EndPosition.X  == 0) {
                     continue;
                 }
-                
+
                 // this bit is optional - but useful if you are using block tabbing to sort out
                 // a source file with a mixture of tabs and spaces
 //                string newLine = document.GetText(line.Offset,line.Length);
 //                document.Replace(line.Offset,line.Length,newLine);
-                
+
                 document.Insert(line.Offset, indentationString);
             }
         }
@@ -105,7 +105,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.UndoStack.EndUndoGroup();
         }
     }
-    
+
     public class ShiftTab : AbstractEditAction
     {
         private void RemoveTabs(IDocument document, ISelection selection, int y1, int y2)
@@ -170,7 +170,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
             document.UndoStack.EndUndoGroup();
         }
-        
+
         /// <remarks>
         /// Executes this edit action
         /// </remarks>
@@ -186,7 +186,7 @@ namespace ICSharpCode.TextEditor.Actions
                     textArea.Document.UpdateQueue.Clear();
                     textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.LinesBetween, startLine, endLine));
                     textArea.EndUpdate();
-                    
+
                 }
                 textArea.AutoClearSelection = false;
             } else {
@@ -207,7 +207,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class ToggleComment : AbstractEditAction
     {
         /// <remarks>
@@ -219,7 +219,7 @@ namespace ICSharpCode.TextEditor.Actions
             if (textArea.Document.ReadOnly) {
                 return;
             }
-            
+
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("LineComment")) {
                 new ToggleLineComment().Execute(textArea);
             } else if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin") &&
@@ -228,7 +228,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class ToggleLineComment : AbstractEditAction
     {
         private int firstLine;
@@ -238,14 +238,14 @@ namespace ICSharpCode.TextEditor.Actions
         {
             firstLine = y1;
             lastLine  = y2;
-            
+
             for (int i = y2; i >= y1; --i) {
                 LineSegment line = document.GetLineSegment(i);
                 if (selection != null && i == y2 && line.Offset == selection.Offset + selection.Length) {
                     --lastLine;
                     continue;
                 }
-                
+
                 string lineText = document.GetText(line.Offset, line.Length);
                 if (lineText.Trim().StartsWith(comment)) {
                     document.Remove(line.Offset + lineText.IndexOf(comment), comment.Length);
@@ -257,14 +257,14 @@ namespace ICSharpCode.TextEditor.Actions
         {
             firstLine = y1;
             lastLine  = y2;
-            
+
             for (int i = y2; i >= y1; --i) {
                 LineSegment line = document.GetLineSegment(i);
                 if (selection != null && i == y2 && line.Offset == selection.Offset + selection.Length) {
                     --lastLine;
                     continue;
                 }
-                
+
                 string lineText = document.GetText(line.Offset, line.Length);
                 document.Insert(line.Offset, comment);
             }
@@ -285,7 +285,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
             return false;
         }
-        
+
         /// <remarks>
         /// Executes this edit action
         /// </remarks>
@@ -295,16 +295,16 @@ namespace ICSharpCode.TextEditor.Actions
             if (textArea.Document.ReadOnly) {
                 return;
             }
-            
+
             string comment = null;
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("LineComment")) {
                 comment = textArea.Document.HighlightingStrategy.Properties["LineComment"].ToString();
             }
-            
+
             if (comment == null || comment.Length == 0) {
                 return;
             }
-            
+
             textArea.Document.UndoStack.StartUndoGroup();
             if (textArea.SelectionManager.HasSomethingSelected) {
                 bool shouldComment = true;
@@ -314,7 +314,7 @@ namespace ICSharpCode.TextEditor.Actions
                         break;
                     }
                 }
-                
+
                 foreach (ISelection selection in textArea.SelectionManager.SelectionCollection) {
                     textArea.BeginUpdate();
                     if (shouldComment) {
@@ -343,7 +343,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.UndoStack.EndUndoGroup();
         }
     }
-    
+
     public class ToggleBlockComment : AbstractEditAction
     {
         /// <remarks>
@@ -355,24 +355,24 @@ namespace ICSharpCode.TextEditor.Actions
             if (textArea.Document.ReadOnly) {
                 return;
             }
-            
+
             string commentStart = null;
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin")) {
                 commentStart = textArea.Document.HighlightingStrategy.Properties["BlockCommentBegin"].ToString();
             }
-            
+
             string commentEnd = null;
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentEnd")) {
                 commentEnd = textArea.Document.HighlightingStrategy.Properties["BlockCommentEnd"].ToString();
             }
-            
+
             if (commentStart == null || commentStart.Length == 0 || commentEnd == null || commentEnd.Length == 0) {
                 return;
             }
-            
+
             int selectionStartOffset;
             int selectionEndOffset;
-            
+
             if (textArea.SelectionManager.HasSomethingSelected) {
                 selectionStartOffset = textArea.SelectionManager.SelectionCollection[0].Offset;
                 selectionEndOffset = textArea.SelectionManager.SelectionCollection[textArea.SelectionManager.SelectionCollection.Count - 1].EndOffset;
@@ -380,9 +380,9 @@ namespace ICSharpCode.TextEditor.Actions
                 selectionStartOffset = textArea.Caret.Offset;
                 selectionEndOffset = selectionStartOffset;
             }
-            
+
             BlockCommentRegion commentRegion = FindSelectedCommentRegion(textArea.Document, commentStart, commentEnd, selectionStartOffset, selectionEndOffset);
-            
+
             textArea.Document.UndoStack.StartUndoGroup();
             if (commentRegion != null) {
                 RemoveComment(textArea.Document, commentRegion);
@@ -390,42 +390,42 @@ namespace ICSharpCode.TextEditor.Actions
                 SetCommentAt(textArea.Document, selectionStartOffset, selectionEndOffset, commentStart, commentEnd);
             }
             textArea.Document.UndoStack.EndUndoGroup();
-            
+
             textArea.Document.CommitUpdate();
             textArea.AutoClearSelection = false;
         }
-        
+
         public static BlockCommentRegion FindSelectedCommentRegion(IDocument document, string commentStart, string commentEnd, int selectionStartOffset, int selectionEndOffset)
         {
             if (document.TextLength == 0) {
                 return null;
             }
-            
+
             // Find start of comment in selected text.
-            
+
             int commentEndOffset = -1;
             string selectedText = document.GetText(selectionStartOffset, selectionEndOffset - selectionStartOffset);
-            
+
             int commentStartOffset = selectedText.IndexOf(commentStart);
             if (commentStartOffset >= 0) {
                 commentStartOffset += selectionStartOffset;
             }
 
             // Find end of comment in selected text.
-            
+
             if (commentStartOffset >= 0) {
                 commentEndOffset = selectedText.IndexOf(commentEnd, commentStartOffset + commentStart.Length - selectionStartOffset);
             } else {
                 commentEndOffset = selectedText.IndexOf(commentEnd);
             }
-            
+
             if (commentEndOffset >= 0) {
                 commentEndOffset += selectionStartOffset;
             }
-            
+
             // Find start of comment before or partially inside the
             // selected text.
-            
+
             int commentEndBeforeStartOffset = -1;
             if (commentStartOffset == -1) {
                 int offset = selectionEndOffset + commentStart.Length - 1;
@@ -442,10 +442,10 @@ namespace ICSharpCode.TextEditor.Actions
                     }
                 }
             }
-            
+
             // Find end of comment after or partially after the
             // selected text.
-            
+
             if (commentEndOffset == -1) {
                 int offset = selectionStartOffset + 1 - commentEnd.Length;
                 if (offset < 0) {
@@ -457,14 +457,13 @@ namespace ICSharpCode.TextEditor.Actions
                     commentEndOffset += offset;
                 }
             }
-            
+
             if (commentStartOffset != -1 && commentEndOffset != -1) {
                 return new BlockCommentRegion(commentStart, commentEnd, commentStartOffset, commentEndOffset);
             }
-            
+
             return null;
         }
-
 
         private void SetCommentAt(IDocument document, int offsetStart, int offsetEnd, string commentStart, string commentEnd)
         {
@@ -478,7 +477,7 @@ namespace ICSharpCode.TextEditor.Actions
             document.Remove(commentRegion.StartOffset, commentRegion.CommentStart.Length);
         }
     }
-    
+
     public class BlockCommentRegion
     {
         /// <summary>
@@ -491,7 +490,7 @@ namespace ICSharpCode.TextEditor.Actions
             this.StartOffset = startOffset;
             this.EndOffset = endOffset;
         }
-        
+
         public string CommentStart { get; } = String.Empty;
 
         public string CommentEnd { get; } = String.Empty;
@@ -511,7 +510,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
             return hashCode;
         }
-        
+
         public override bool Equals(object obj)
         {
             BlockCommentRegion other = obj as BlockCommentRegion;
@@ -519,7 +518,7 @@ namespace ICSharpCode.TextEditor.Actions
             return CommentStart == other.CommentStart && CommentEnd == other.CommentEnd && StartOffset == other.StartOffset && EndOffset == other.EndOffset;
         }
     }
-    
+
     public class Backspace : AbstractEditAction
     {
         /// <remarks>
@@ -535,7 +534,7 @@ namespace ICSharpCode.TextEditor.Actions
                     textArea.BeginUpdate();
                     int curLineNr     = textArea.Document.GetLineNumberForOffset(textArea.Caret.Offset);
                     int curLineOffset = textArea.Document.GetLineSegment(curLineNr).Offset;
-                    
+
                     if (curLineOffset == textArea.Caret.Offset) {
                         LineSegment line = textArea.Document.GetLineSegment(curLineNr - 1);
                         bool lastLine = curLineNr == textArea.Document.TotalNumberOfLines;
@@ -548,7 +547,7 @@ namespace ICSharpCode.TextEditor.Actions
                         int caretOffset = textArea.Caret.Offset - 1;
                         textArea.Caret.Position = textArea.Document.OffsetToPosition(caretOffset);
                         textArea.Document.Remove(caretOffset, 1);
-                        
+
                         textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, new TextLocation(textArea.Caret.Offset - textArea.Document.GetLineSegment(curLineNr).Offset, curLineNr)));
                     }
                     textArea.EndUpdate();
@@ -556,7 +555,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class Delete : AbstractEditAction
     {
         internal static void DeleteSelection(TextArea textArea)
@@ -570,7 +569,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.ScrollToCaret();
             textArea.EndUpdate();
         }
-        
+
         /// <remarks>
         /// Executes this edit action
         /// </remarks>
@@ -582,16 +581,16 @@ namespace ICSharpCode.TextEditor.Actions
             } else {
                 if (textArea.IsReadOnly(textArea.Caret.Offset))
                     return;
-                
+
                 if (textArea.Caret.Offset < textArea.Document.TextLength) {
                     textArea.BeginUpdate();
                     int curLineNr   = textArea.Document.GetLineNumberForOffset(textArea.Caret.Offset);
                     LineSegment curLine = textArea.Document.GetLineSegment(curLineNr);
-                    
+
                     if (curLine.Offset + curLine.Length == textArea.Caret.Offset) {
                         if (curLineNr + 1 < textArea.Document.TotalNumberOfLines) {
                             LineSegment nextLine = textArea.Document.GetLineSegment(curLineNr + 1);
-                            
+
                             textArea.Document.Remove(textArea.Caret.Offset, nextLine.Offset - textArea.Caret.Offset);
                             textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToEnd, new TextLocation(0, curLineNr)));
                         }
@@ -605,7 +604,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class MovePageDown : AbstractEditAction
     {
         /// <remarks>
@@ -616,14 +615,14 @@ namespace ICSharpCode.TextEditor.Actions
         {
             int curLineNr           = textArea.Caret.Line;
             int requestedLineNumber = Math.Min(textArea.Document.GetNextVisibleLineAbove(curLineNr, textArea.TextView.VisibleLineCount), textArea.Document.TotalNumberOfLines - 1);
-            
+
             if (curLineNr != requestedLineNumber) {
                 textArea.Caret.Position = new TextLocation(0, requestedLineNumber);
                 textArea.SetCaretToDesiredColumn();
             }
         }
     }
-    
+
     public class MovePageUp : AbstractEditAction
     {
         /// <remarks>
@@ -634,7 +633,7 @@ namespace ICSharpCode.TextEditor.Actions
         {
             int curLineNr           = textArea.Caret.Line;
             int requestedLineNumber = Math.Max(textArea.Document.GetNextVisibleLineBelow(curLineNr, textArea.TextView.VisibleLineCount), 0);
-            
+
             if (curLineNr != requestedLineNumber) {
                 textArea.Caret.Position = new TextLocation(0, requestedLineNumber);
                 textArea.SetCaretToDesiredColumn();
@@ -657,13 +656,13 @@ namespace ICSharpCode.TextEditor.Actions
             try {
                 if (textArea.HandleKeyPress('\n'))
                     return;
-                
+
                 textArea.InsertString(Environment.NewLine);
-                
+
                 int curLineNr = textArea.Caret.Line;
                 textArea.Document.FormattingStrategy.FormatLine(textArea, curLineNr, textArea.Caret.Offset, '\n');
                 textArea.SetDesiredColumn();
-                
+
                 textArea.Document.UpdateQueue.Clear();
                 textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToEnd, new TextLocation(0, curLineNr - 1)));
             } finally {
@@ -672,7 +671,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class ToggleEditMode : AbstractEditAction
     {
         /// <remarks>
@@ -694,7 +693,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class Undo : AbstractEditAction
     {
         /// <remarks>
@@ -706,7 +705,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.MotherTextEditorControl.Undo();
         }
     }
-    
+
     public class Redo : AbstractEditAction
     {
         /// <remarks>
@@ -718,7 +717,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.MotherTextEditorControl.Redo();
         }
     }
-    
+
     /// <summary>
     /// handles the ctrl-backspace key
     /// functionality attempts to roughly mimic MS Developer studio
@@ -776,7 +775,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.CommitUpdate();
         }
     }
-    
+
     /// <summary>
     /// handles the ctrl-delete key
     /// functionality attempts to mimic MS Developer studio
@@ -819,7 +818,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.CommitUpdate();
         }
     }
-    
+
     public class DeleteLine : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -836,14 +835,14 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.CommitUpdate();
         }
     }
-    
+
     public class DeleteToLineEnd : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
         {
             int lineNr = textArea.Caret.Line;
             LineSegment line = textArea.Document.GetLineSegment(lineNr);
-            
+
             int numRemove = (line.Offset + line.Length) - textArea.Caret.Offset;
             if (numRemove > 0 && !textArea.IsReadOnly(textArea.Caret.Offset, numRemove)) {
                 textArea.Document.Remove(textArea.Caret.Offset, numRemove);
@@ -852,7 +851,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class GotoMatchingBrace : AbstractEditAction
     {
         public override void Execute(TextArea textArea)

@@ -24,24 +24,24 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         int DefaultIndex {
             get;
         }
-        
+
         /// <summary>
         /// Processes a keypress. Returns the action to be run with the key.
         /// </summary>
         CompletionDataProviderKeyResult ProcessKey(char key);
-        
+
         /// <summary>
         /// Executes the insertion. The provider should set the caret position and then
         /// call data.InsertAction.
         /// </summary>
         bool InsertAction(ICompletionData data, TextArea textArea, int insertionOffset, char key);
-        
+
         /// <summary>
         /// Generates the completion data. This method is called by the text editor control.
         /// </summary>
         ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped);
     }
-    
+
     public enum CompletionDataProviderKeyResult
     {
         /// <summary>

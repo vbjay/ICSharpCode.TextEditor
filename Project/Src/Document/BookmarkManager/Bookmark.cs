@@ -19,7 +19,7 @@ namespace ICSharpCode.TextEditor.Document
         private IDocument document;
         private TextLocation location;
         private bool isEnabled = true;
-        
+
         public IDocument Document {
             get => document;
             set {
@@ -50,7 +50,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             document.BookmarkManager.RemoveMark(this);
         }
-        
+
         /// <summary>
         /// Gets the TextAnchor used for this bookmark.
         /// Is null if the bookmark is not connected to a document.
@@ -69,16 +69,16 @@ namespace ICSharpCode.TextEditor.Document
                 CreateAnchor();
             }
         }
-        
+
         public event EventHandler DocumentChanged;
-        
+
         protected virtual void OnDocumentChanged(EventArgs e)
         {
             if (DocumentChanged != null) {
                 DocumentChanged(this, e);
             }
         }
-        
+
         public bool IsEnabled {
             get => isEnabled;
             set {
@@ -92,16 +92,16 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         public event EventHandler IsEnabledChanged;
-        
+
         protected virtual void OnIsEnabledChanged(EventArgs e)
         {
             if (IsEnabledChanged != null) {
                 IsEnabledChanged(this, e);
             }
         }
-        
+
         public int LineNumber {
             get {
                 if (Anchor != null)
@@ -110,7 +110,7 @@ namespace ICSharpCode.TextEditor.Document
                     return location.Line;
             }
         }
-        
+
         public int ColumnNumber {
             get {
                 if (Anchor != null)
@@ -119,7 +119,7 @@ namespace ICSharpCode.TextEditor.Document
                     return location.Column;
             }
         }
-        
+
         /// <summary>
         /// Gets if the bookmark can be toggled off using the 'set/unset bookmark' command.
         /// </summary>
@@ -128,14 +128,14 @@ namespace ICSharpCode.TextEditor.Document
         public Bookmark(IDocument document, TextLocation location) : this(document, location, true)
         {
         }
-        
+
         public Bookmark(IDocument document, TextLocation location, bool isEnabled)
         {
             this.document = document;
             this.isEnabled = isEnabled;
             Location = location;
         }
-        
+
         public virtual bool Click(SWF.Control parent, SWF.MouseEventArgs e)
         {
             if (e.Button == SWF.MouseButtons.Left && CanToggle) {
@@ -144,7 +144,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return false;
         }
-        
+
         public virtual void Draw(IconBarMargin margin, Graphics g, Point p)
         {
             margin.DrawBookmark(g, p.Y, isEnabled);

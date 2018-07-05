@@ -22,13 +22,13 @@ namespace ICSharpCode.TextEditor.Document
         /// No line viewer will be displayed
         /// </summary>
         None,
-        
+
         /// <summary>
         /// The row in which the caret is will be marked
         /// </summary>
         FullRow
     }
-    
+
     /// <summary>
     /// Describes the indent style
     /// </summary>
@@ -37,40 +37,40 @@ namespace ICSharpCode.TextEditor.Document
         /// No indentation occurs
         /// </summary>
         None,
-        
+
         /// <summary>
         /// The indentation from the line above will be
         /// taken to indent the curent line
         /// </summary>
         Auto,
-        
+
         /// <summary>
         /// Inteligent, context sensitive indentation will occur
         /// </summary>
         Smart
     }
-    
+
     /// <summary>
     /// Describes the bracket highlighting style
     /// </summary>
     public enum BracketHighlightingStyle {
-        
+
         /// <summary>
         /// Brackets won't be highlighted
         /// </summary>
         None,
-        
+
         /// <summary>
         /// Brackets will be highlighted if the caret is on the bracket
         /// </summary>
         OnBracket,
-        
+
         /// <summary>
         /// Brackets will be highlighted if the caret is after the bracket
         /// </summary>
         AfterBracket
     }
-    
+
     /// <summary>
     /// Describes the selection mode of the text area
     /// </summary>
@@ -79,14 +79,14 @@ namespace ICSharpCode.TextEditor.Document
         /// The 'normal' selection mode.
         /// </summary>
         Normal,
-        
+
         /// <summary>
         /// Selections will be added to the current selection or new
         /// ones will be created (multi-select mode)
         /// </summary>
         Additive
     }
-    
+
     /// <summary>
     /// The default <see cref="IDocument"/> implementation.
     /// </summary>
@@ -106,7 +106,7 @@ namespace ICSharpCode.TextEditor.Document
             add => LineManager.LineDeleted += value;
             remove => LineManager.LineDeleted -= value;
         }
-        
+
         public MarkerStrategy MarkerStrategy { get; set; }
 
         public ITextEditorProperties TextEditorProperties { get; set; } = new DefaultTextEditorProperties();
@@ -127,11 +127,10 @@ namespace ICSharpCode.TextEditor.Document
             get => LineManager.HighlightingStrategy;
             set => LineManager.HighlightingStrategy = value;
         }
-        
+
         public int TextLength => TextBufferStrategy.Length;
 
         public BookmarkManager BookmarkManager { get; set; }
-
 
         public string TextContent {
             get => GetText(0, TextBufferStrategy.Length);
@@ -142,27 +141,27 @@ namespace ICSharpCode.TextEditor.Document
                 TextBufferStrategy.SetContent(value);
                 LineManager.SetContent(value);
                 UndoStack.ClearAll();
-                
+
                 OnDocumentChanged(new DocumentEventArgs(this, 0, 0, value));
                 OnTextContentChanged(EventArgs.Empty);
             }
         }
-        
+
         public void Insert(int offset, string text)
         {
             if (ReadOnly) {
                 return;
             }
             OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, -1, text));
-            
+
             TextBufferStrategy.Insert(offset, text);
             LineManager.Insert(offset, text);
-            
+
             UndoStack.Push(new UndoableInsert(this, offset, text));
-            
+
             OnDocumentChanged(new DocumentEventArgs(this, offset, -1, text));
         }
-        
+
         public void Remove(int offset, int length)
         {
             if (ReadOnly) {
@@ -170,13 +169,13 @@ namespace ICSharpCode.TextEditor.Document
             }
             OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, length));
             UndoStack.Push(new UndoableDelete(this, offset, GetText(offset, length)));
-            
+
             TextBufferStrategy.Remove(offset, length);
             LineManager.Remove(offset, length);
-            
+
             OnDocumentChanged(new DocumentEventArgs(this, offset, length));
         }
-        
+
         public void Replace(int offset, int length, string text)
         {
             if (ReadOnly) {
@@ -184,18 +183,18 @@ namespace ICSharpCode.TextEditor.Document
             }
             OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, length, text));
             UndoStack.Push(new UndoableReplace(this, offset, GetText(offset, length), text));
-            
+
             TextBufferStrategy.Replace(offset, length, text);
             LineManager.Replace(offset, length, text);
-            
+
             OnDocumentChanged(new DocumentEventArgs(this, offset, length, text));
         }
-        
+
         public char GetCharAt(int offset)
         {
             return TextBufferStrategy.GetCharAt(offset);
         }
-        
+
         public string GetText(int offset, int length)
         {
             #if DEBUG
@@ -207,39 +206,39 @@ namespace ICSharpCode.TextEditor.Document
         {
             return GetText(segment.Offset, segment.Length);
         }
-        
+
         public int TotalNumberOfLines => LineManager.TotalNumberOfLines;
 
         public int GetLineNumberForOffset(int offset)
         {
             return LineManager.GetLineNumberForOffset(offset);
         }
-        
+
         public LineSegment GetLineSegmentForOffset(int offset)
         {
             return LineManager.GetLineSegmentForOffset(offset);
         }
-        
+
         public LineSegment GetLineSegment(int line)
         {
             return LineManager.GetLineSegment(line);
         }
-        
+
         public int GetFirstLogicalLine(int lineNumber)
         {
             return LineManager.GetFirstLogicalLine(lineNumber);
         }
-        
+
         public int GetLastLogicalLine(int lineNumber)
         {
             return LineManager.GetLastLogicalLine(lineNumber);
         }
-        
+
         public int GetVisibleLine(int lineNumber)
         {
             return LineManager.GetVisibleLine(lineNumber);
         }
-        
+
 //        public int GetVisibleColumn(int logicalLine, int logicalColumn)
 //        {
 //            return lineTrackingStrategy.GetVisibleColumn(logicalLine, logicalColumn);
@@ -249,19 +248,19 @@ namespace ICSharpCode.TextEditor.Document
         {
             return LineManager.GetNextVisibleLineAbove(lineNumber, lineCount);
         }
-        
+
         public int GetNextVisibleLineBelow(int lineNumber, int lineCount)
         {
             return LineManager.GetNextVisibleLineBelow(lineNumber, lineCount);
         }
-        
+
         public TextLocation OffsetToPosition(int offset)
         {
             int lineNr = GetLineNumberForOffset(offset);
             LineSegment line = GetLineSegment(lineNr);
             return new TextLocation(offset - line.Offset, lineNr);
         }
-        
+
         public int PositionToOffset(TextLocation p)
         {
             if (p.Y >= TotalNumberOfLines) {
@@ -270,7 +269,7 @@ namespace ICSharpCode.TextEditor.Document
             LineSegment line = GetLineSegment(p.Y);
             return Math.Min(TextLength, line.Offset + Math.Min(line.Length, p.X));
         }
-        
+
         public void UpdateSegmentListOnDocumentChange<T>(List<T> list, DocumentEventArgs e) where T : ISegment
         {
             int removedCharacters = e.Length > 0 ? e.Length : 0;
@@ -279,7 +278,7 @@ namespace ICSharpCode.TextEditor.Document
                 ISegment s = list[i];
                 int segmentStart = s.Offset;
                 int segmentEnd = s.Offset + s.Length;
-                
+
                 if (e.Offset <= segmentStart) {
                     segmentStart -= removedCharacters;
                     if (segmentStart < e.Offset)
@@ -290,22 +289,22 @@ namespace ICSharpCode.TextEditor.Document
                     if (segmentEnd < e.Offset)
                         segmentEnd = e.Offset;
                 }
-                
+
                 Debug.Assert(segmentStart <= segmentEnd);
-                
+
                 if (segmentStart == segmentEnd) {
                     list.RemoveAt(i);
                     --i;
                     continue;
                 }
-                
+
                 if (e.Offset <= segmentStart)
                     segmentStart += insertedCharacters;
                 if (e.Offset < segmentEnd)
                     segmentEnd += insertedCharacters;
-                
+
                 Debug.Assert(segmentStart < segmentEnd);
-                
+
                 s.Offset = segmentStart;
                 s.Length = segmentEnd - segmentStart;
             }
@@ -324,10 +323,10 @@ namespace ICSharpCode.TextEditor.Document
                 DocumentChanged(this, e);
             }
         }
-        
+
         public event DocumentEventHandler DocumentAboutToBeChanged;
         public event DocumentEventHandler DocumentChanged;
-        
+
         // UPDATE STUFF
 
         public List<TextAreaUpdate> UpdateQueue { get; } = new List<TextAreaUpdate>();
@@ -344,7 +343,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             UpdateQueue.Add(update);
         }
-        
+
         public void CommitUpdate()
         {
             if (UpdateCommited != null) {
@@ -358,10 +357,10 @@ namespace ICSharpCode.TextEditor.Document
                 TextContentChanged(this, e);
             }
         }
-        
+
         public event EventHandler UpdateCommited;
         public event EventHandler TextContentChanged;
-        
+
         [Conditional("DEBUG")]
         internal static void ValidatePosition(IDocument document, TextLocation position)
         {

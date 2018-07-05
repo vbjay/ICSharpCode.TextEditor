@@ -33,7 +33,7 @@ namespace ICSharpCode.TextEditor.Document
             LinesMoved    = linesMoved;
         }
     }
-    
+
     public class LineEventArgs : EventArgs
     {
         public IDocument Document { get; }
@@ -45,13 +45,13 @@ namespace ICSharpCode.TextEditor.Document
             this.Document = document;
             this.LineSegment = lineSegment;
         }
-        
+
         public override string ToString()
         {
             return string.Format("[LineEventArgs Document={0} LineSegment={1}]", Document, LineSegment);
         }
     }
-    
+
     public class LineLengthChangeEventArgs : LineEventArgs
     {
         public int LengthDelta { get; }
@@ -61,7 +61,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             LengthDelta = moved;
         }
-        
+
         public override string ToString()
         {
             return string.Format("[LineLengthEventArgs Document={0} LineSegment={1} LengthDelta={2}]", Document, LineSegment, LengthDelta);

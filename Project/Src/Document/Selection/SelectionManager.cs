@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor.Document
     public class SelectionManager : IDisposable
     {
         private TextLocation selectionStart;
-        
+
         internal TextLocation SelectionStart {
             get => selectionStart;
             set {
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Document
         internal SelectFrom selectFrom = new SelectFrom();
 
         internal List<ISelection> selectionCollection = new List<ISelection>();
-        
+
         /// <value>
         /// A collection containing all selections.
         /// </value>
@@ -54,7 +54,7 @@ namespace ICSharpCode.TextEditor.Document
                 return false;
             }
         }
-        
+
         internal static bool SelectionIsReadOnly(IDocument document, ISelection sel)
         {
             if (document.TextEditorProperties.SupportReadOnlySegments)
@@ -62,30 +62,30 @@ namespace ICSharpCode.TextEditor.Document
             else
                 return false;
         }
-        
+
         /// <value>
         /// The text that is currently selected.
         /// </value>
         public string SelectedText {
             get {
                 StringBuilder builder = new StringBuilder();
-                
+
 //                PriorityQueue queue = new PriorityQueue();
-                
+
                 foreach (ISelection s in selectionCollection) {
                     builder.Append(s.SelectedText);
 //                    queue.Insert(-s.Offset, s);
                 }
-                
+
 //                while (queue.Count > 0) {
 //                    ISelection s = ((ISelection)queue.Remove());
 //                    builder.Append(s.SelectedText);
 //                }
-                
+
                 return builder.ToString();
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="SelectionManager"/>
         /// </summary>
@@ -125,7 +125,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         /// <remarks>
         /// Clears the selection and sets a new selection
         /// using the given <see cref="ISelection"/> object.
@@ -148,17 +148,17 @@ namespace ICSharpCode.TextEditor.Document
                 ClearSelection();
             }
         }
-        
+
         public void SetSelection(TextLocation startPosition, TextLocation endPosition)
         {
             SetSelection(new DefaultSelection(document, startPosition, endPosition));
         }
-        
+
         public bool GreaterEqPos(TextLocation p1, TextLocation p2)
         {
             return p1.Y > p2.Y || p1.Y == p2.Y && p1.X >= p2.X;
         }
-        
+
         public void ExtendSelection(TextLocation oldPosition, TextLocation newPosition)
         {
             // where oldposition is where the cursor was,
@@ -278,7 +278,7 @@ namespace ICSharpCode.TextEditor.Document
             ClearWithoutUpdate();
             document.CommitUpdate();
         }
-        
+
         /// <remarks>
         /// Removes the selected text from the buffer and clears
         /// the selection.
@@ -325,14 +325,13 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
-
         private bool SelectionsOverlap(ISelection s1, ISelection s2)
         {
             return (s1.Offset <= s2.Offset && s2.Offset <= s1.Offset + s1.Length)                         ||
                 (s1.Offset <= s2.Offset + s2.Length && s2.Offset + s2.Length <= s1.Offset + s1.Length) ||
                 (s1.Offset >= s2.Offset && s1.Offset + s1.Length <= s2.Offset + s2.Length);
         }
-        
+
         /// <remarks>
         /// Returns true if the given offset points to a section which is
         /// selected.
@@ -358,7 +357,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return null;
         }
-        
+
         /// <remarks>
         /// Used internally, do not call.
         /// </remarks>
@@ -372,7 +371,7 @@ namespace ICSharpCode.TextEditor.Document
 //                }
 //            }
         }
-        
+
         /// <remarks>
         /// Used internally, do not call.
         /// </remarks>
@@ -386,7 +385,7 @@ namespace ICSharpCode.TextEditor.Document
 //                }
 //            }
         }
-        
+
         /// <remarks>
         /// Used internally, do not call.
         /// </remarks>
@@ -400,7 +399,7 @@ namespace ICSharpCode.TextEditor.Document
 //                }
 //            }
         }
-        
+
         public ColumnRange GetSelectionAtLine(int lineNumber)
         {
             foreach (ISelection selection in selectionCollection) {
@@ -409,23 +408,23 @@ namespace ICSharpCode.TextEditor.Document
                 if (startLine < lineNumber && lineNumber < endLine) {
                     return ColumnRange.WholeColumn;
                 }
-                
+
                 if (startLine == lineNumber) {
                     LineSegment line = document.GetLineSegment(startLine);
                     int startColumn = selection.StartPosition.X;
                     int endColumn   = endLine == lineNumber ? selection.EndPosition.X : line.Length + 1;
                     return new ColumnRange(startColumn, endColumn);
                 }
-                
+
                 if (endLine == lineNumber) {
                     int endColumn   = selection.EndPosition.X;
                     return new ColumnRange(0, endColumn);
                 }
             }
-            
+
             return ColumnRange.NoColumn;
         }
-        
+
         public void FireSelectionChanged()
         {
             OnSelectionChanged(EventArgs.Empty);
@@ -436,7 +435,7 @@ namespace ICSharpCode.TextEditor.Document
                 SelectionChanged(this, e);
             }
         }
-        
+
         public event EventHandler SelectionChanged;
     }
 

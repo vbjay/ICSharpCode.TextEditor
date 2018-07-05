@@ -27,7 +27,7 @@ namespace ICSharpCode.TextEditor
         private HRuler     hRuler;
 
         private bool       disposed;
-        
+
         public TextArea TextArea { get; }
 
         public SelectionManager SelectionManager => TextArea.SelectionManager;
@@ -42,7 +42,7 @@ namespace ICSharpCode.TextEditor
                 return null;
             }
         }
-        
+
         public ITextEditorProperties TextEditorProperties {
             get {
                 if (motherTextEditorControl != null)
@@ -50,7 +50,7 @@ namespace ICSharpCode.TextEditor
                 return null;
             }
         }
-        
+
         public VScrollBar VScrollBar { get; private set; } = new VScrollBar();
 
         public HScrollBar HScrollBar { get; private set; } = new HScrollBar();
@@ -60,22 +60,22 @@ namespace ICSharpCode.TextEditor
         public TextAreaControl(TextEditorControl motherTextEditorControl)
         {
             this.motherTextEditorControl = motherTextEditorControl;
-            
+
             TextArea                = new TextArea(motherTextEditorControl, this);
             Controls.Add(TextArea);
-            
+
             VScrollBar.ValueChanged += new EventHandler(VScrollBarValueChanged);
             Controls.Add(VScrollBar);
-            
+
             HScrollBar.ValueChanged += new EventHandler(HScrollBarValueChanged);
             Controls.Add(HScrollBar);
             ResizeRedraw = true;
-            
+
             Document.TextContentChanged += DocumentTextContentChanged;
             Document.DocumentChanged += AdjustScrollBarsOnDocumentChange;
             Document.UpdateCommited  += DocumentUpdateCommitted;
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
@@ -109,7 +109,7 @@ namespace ICSharpCode.TextEditor
             // of time, which can break client code that expects that the caret position is always valid
             Caret.ValidateCaretPos();
         }
-        
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -133,7 +133,7 @@ namespace ICSharpCode.TextEditor
         {
             if (motherTextEditorControl.IsInUpdate == false) {
                 Caret.ValidateCaretPos();
-                
+
                 // AdjustScrollBarsOnCommittedUpdate
                 if (!scrollToPosOnNextUpdate.IsEmpty) {
                     ScrollTo(scrollToPosOnNextUpdate.Y, scrollToPosOnNextUpdate.X);
@@ -158,7 +158,7 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         public void UpdateLayout()
         {
             if (TextArea == null)
@@ -310,7 +310,7 @@ namespace ICSharpCode.TextEditor
         public void OptionsChanged()
         {
             TextArea.OptionsChanged();
-            
+
             if (TextArea.TextEditorProperties.ShowHorizontalRuler) {
                 if (hRuler == null) {
                     hRuler = new HRuler(TextArea);
@@ -327,7 +327,7 @@ namespace ICSharpCode.TextEditor
                     UpdateLayout();
                 }
             }
-            
+
             UpdateLayout();
         }
 
@@ -345,7 +345,7 @@ namespace ICSharpCode.TextEditor
         }
 
         private readonly Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
-        
+
         public void HandleMouseWheel(MouseEventArgs e)
         {
             int scrollDistance = mouseWheelHandler.GetScrollAmount(e);
@@ -366,7 +366,7 @@ namespace ICSharpCode.TextEditor
                 VScrollBar.Value = Math.Max(VScrollBar.Minimum, Math.Min(VScrollBar.Maximum - VScrollBar.LargeChange + 1, newValue));
             }
         }
-        
+
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
@@ -374,12 +374,12 @@ namespace ICSharpCode.TextEditor
                 HandleMouseWheel(e);
             }
         }
-        
+
         public void ScrollToCaret()
         {
             ScrollTo(TextArea.Caret.Line, TextArea.Caret.Column);
         }
-        
+
         public void ScrollTo(int line, int column)
         {
             if (motherTextEditorControl.IsInUpdate) {
@@ -388,14 +388,14 @@ namespace ICSharpCode.TextEditor
             } else {
                 scrollToPosOnNextUpdate = Point.Empty;
             }
-            
+
             ScrollTo(line);
-            
+
             int curCharMin  = (int)(HScrollBar.Value - HScrollBar.Minimum);
             int curCharMax  = curCharMin + TextArea.TextView.VisibleColumnCount;
-            
+
             int pos = TextArea.TextView.GetVisualColumn(line, column);
-            
+
             if (TextArea.TextView.VisibleColumnCount < 0) {
                 HScrollBar.Value = 0;
             } else {
@@ -410,7 +410,7 @@ namespace ICSharpCode.TextEditor
         }
 
         private readonly int scrollMarginHeight  = 3;
-        
+
         /// <summary>
         /// Ensure that <paramref name="line"/> is visible.
         /// </summary>
@@ -422,7 +422,7 @@ namespace ICSharpCode.TextEditor
             if (TextArea.TextView.LineHeightRemainder > 0) {
                 curLineMin ++;
             }
-            
+
             if (line - scrollMarginHeight + 3 < curLineMin) {
                 VScrollBar.Value =  Math.Max(0, Math.Min(VScrollBar.Maximum, (line - scrollMarginHeight + 3) * TextArea.TextView.FontHeight)) ;
                 VScrollBarValueChanged(this, EventArgs.Empty);
@@ -439,7 +439,7 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         /// <summary>
         /// Scroll so that the specified line is centered.
         /// </summary>
@@ -454,7 +454,7 @@ namespace ICSharpCode.TextEditor
             line = Document.GetVisibleLine(line);
             // subtract half the visible line count
             line -= TextArea.TextView.VisibleLineCount / 2;
-            
+
             int curLineMin = TextArea.TextView.FirstPhysicalLine;
             if (TextArea.TextView.LineHeightRemainder > 0) {
                 curLineMin ++;
@@ -465,14 +465,14 @@ namespace ICSharpCode.TextEditor
                 VScrollBarValueChanged(this, EventArgs.Empty);
             }
         }
-        
+
         public void JumpTo(int line)
         {
             line = Math.Max(0, Math.Min(line, Document.TotalNumberOfLines - 1));
             string text = Document.GetText(Document.GetLineSegment(line));
             JumpTo(line, text.Length - text.TrimStart().Length);
         }
-        
+
         public void JumpTo(int line, int column)
         {
             TextArea.Focus();
@@ -481,9 +481,9 @@ namespace ICSharpCode.TextEditor
             TextArea.SetDesiredColumn();
             ScrollToCaret();
         }
-        
+
         public event MouseEventHandler ShowContextMenu;
-        
+
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == 0x007B) { // handle WM_CONTEXTMENU
@@ -502,7 +502,7 @@ namespace ICSharpCode.TextEditor
             }
             base.WndProc(ref m);
         }
-        
+
         protected override void OnEnter(EventArgs e)
         {
             // SD2-1072 - Make sure the caret line is valid if anyone

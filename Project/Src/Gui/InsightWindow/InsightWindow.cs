@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
-        
+
         public void ShowInsightWindow()
         {
             if (!Visible) {
@@ -33,7 +33,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
                 Refresh();
             }
         }
-        
+
         #region Event handling routines
         protected override bool ProcessTextAreaKey(Keys keyData)
         {
@@ -56,7 +56,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
             }
             return base.ProcessTextAreaKey(keyData);
         }
-        
+
         protected override void CaretOffsetChanged(object sender, EventArgs e)
         {
             // move the window under the caret (don't change the x position)
@@ -64,22 +64,22 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
             int y = (int)((1 + caretPos.Y) * control.ActiveTextAreaControl.TextArea.TextView.FontHeight)
                 - control.ActiveTextAreaControl.TextArea.VirtualTop.Y - 1
                 + control.ActiveTextAreaControl.TextArea.TextView.DrawingPosition.Y;
-            
+
             int xpos = control.ActiveTextAreaControl.TextArea.TextView.GetDrawingXPos(caretPos.Y, caretPos.X);
             int ypos = (control.ActiveTextAreaControl.Document.GetVisibleLine(caretPos.Y) + 1) * control.ActiveTextAreaControl.TextArea.TextView.FontHeight
                 - control.ActiveTextAreaControl.TextArea.VirtualTop.Y;
             int rulerHeight = control.TextEditorProperties.ShowHorizontalRuler ? control.ActiveTextAreaControl.TextArea.TextView.FontHeight : 0;
-            
+
             Point p = control.ActiveTextAreaControl.PointToScreen(new Point(xpos, ypos + rulerHeight));
             if (p.Y != Location.Y) {
                 Location = p;
             }
-            
+
             while (DataProvider != null && DataProvider.CaretOffsetChanged()) {
                 CloseCurrentDataProvider();
             }
         }
-        
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -93,11 +93,11 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
                 Refresh();
             }
         }
-        
+
         #endregion
 
         private readonly MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
-        
+
         public void HandleMouseWheel(MouseEventArgs e)
         {
             if (DataProvider != null && DataProvider.InsightDataCount > 0) {
@@ -112,7 +112,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
                 Refresh();
             }
         }
-        
+
         #region Insight Window Drawing routines
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -125,7 +125,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
                 }
                 description = DataProvider.GetInsightData(CurrentData);
             }
-            
+
             drawingSize = TipPainterTools.GetDrawingSizeHelpTipFromCombinedDescription(this,
                                                                                        pe.Graphics,
                                                                                        Font,
@@ -137,13 +137,13 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
                 TipPainterTools.DrawHelpTipFromCombinedDescription(this, pe.Graphics, Font, methodCountMessage, description);
             }
         }
-        
+
         protected override void OnPaintBackground(PaintEventArgs pe)
         {
             pe.Graphics.FillRectangle(SystemBrushes.Info, pe.ClipRectangle);
         }
         #endregion
-        
+
         #region InsightDataProvider handling
 
         private readonly Stack<InsightDataProviderStackElement> insightDataProviderStack = new Stack<InsightDataProviderStackElement>();
@@ -161,7 +161,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
                 return insightDataProviderStack.Peek().dataProvider;
             }
         }
-        
+
         public void AddInsightDataProvider(IInsightDataProvider provider, string fileName)
         {
             provider.SetupDataProvider(fileName, control.ActiveTextAreaControl.TextArea);
@@ -184,7 +184,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
         {
             public int                  currentData;
             public readonly IInsightDataProvider dataProvider;
-            
+
             public InsightDataProviderStackElement(IInsightDataProvider dataProvider)
             {
                 currentData  = Math.Max(dataProvider.DefaultIndex, 0);

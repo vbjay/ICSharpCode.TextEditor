@@ -15,11 +15,11 @@ namespace ICSharpCode.TextEditor.Document
         Before,
         After
     }
-    
+
     public class DefaultTextEditorProperties : ITextEditorProperties
     {
         private static Font DefaultFont;
-        
+
         public DefaultTextEditorProperties()
         {
             if (DefaultFont == null) {
@@ -86,7 +86,7 @@ namespace ICSharpCode.TextEditor.Document
             get => FontContainer.DefaultFont;
             set => FontContainer.DefaultFont = value;
         }
-        
+
         public FontContainer FontContainer { get; }
 
         public BracketMatchingStyle  BracketMatchingStyle { get; set; } = BracketMatchingStyle.After;

@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Actions
             bool        jumpedIntoFolding = false;
             do {
                 curLine = textArea.Document.GetLineSegment(newPos.Y);
-                
+
                 if (TextUtilities.IsEmptyLine(textArea.Document, newPos.Y)) {
                     if (newPos.X != 0) {
                         newPos.X = 0;
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Actions
                 } else {
                     int firstCharOffset = TextUtilities.GetFirstNonWSChar(textArea.Document, curLine.Offset);
                     int firstCharColumn = firstCharOffset - curLine.Offset;
-                    
+
                     if (newPos.X == firstCharColumn) {
                         newPos.X = 0;
                     } else {
@@ -48,16 +48,16 @@ namespace ICSharpCode.TextEditor.Actions
                         break;
                     }
                 }
-                
+
             } while (jumpedIntoFolding);
-            
+
             if (newPos != textArea.Caret.Position) {
                 textArea.Caret.Position = newPos;
                 textArea.SetDesiredColumn();
             }
         }
     }
-    
+
     public class End : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -68,7 +68,7 @@ namespace ICSharpCode.TextEditor.Actions
             do {
                 curLine  = textArea.Document.GetLineSegment(newPos.Y);
                 newPos.X = curLine.Length;
-                
+
                 List<FoldMarker> foldings = textArea.Document.FoldingManager.GetFoldingsFromPosition(newPos.Y, newPos.X);
                 jumpedIntoFolding = false;
                 foreach (FoldMarker foldMarker in foldings) {
@@ -79,15 +79,14 @@ namespace ICSharpCode.TextEditor.Actions
                     }
                 }
             } while (jumpedIntoFolding);
-            
+
             if (newPos != textArea.Caret.Position) {
                 textArea.Caret.Position = newPos;
                 textArea.SetDesiredColumn();
             }
         }
     }
-    
-    
+
     public class MoveToStart : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -98,8 +97,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
-    
+
     public class MoveToEnd : AbstractEditAction
     {
         public override void Execute(TextArea textArea)

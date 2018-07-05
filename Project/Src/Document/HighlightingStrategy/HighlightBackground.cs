@@ -30,14 +30,14 @@ namespace ICSharpCode.TextEditor.Document
                 BackgroundImage = new Bitmap(el.Attributes["image"].InnerText);
             }
         }
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="HighlightBackground"/>
         /// </summary>
         public HighlightBackground(Color color, Color backgroundcolor, bool bold, bool italic) : base(color, backgroundcolor, bold, italic)
         {
         }
-        
+
         public HighlightBackground(string systemColor, string systemBackgroundColor, bool bold, bool italic) : base(systemColor, systemBackgroundColor, bold, italic)
         {
         }

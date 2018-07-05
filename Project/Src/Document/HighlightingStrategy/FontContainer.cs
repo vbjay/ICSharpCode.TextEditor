@@ -39,7 +39,7 @@ namespace ICSharpCode.TextEditor.Document
         public Font BoldItalicFont { get; private set; }
 
         private static float twipsPerPixelY;
-        
+
         public static float TwipsPerPixelY {
             get {
                 if (twipsPerPixelY == 0) {
@@ -52,7 +52,7 @@ namespace ICSharpCode.TextEditor.Document
                 return twipsPerPixelY;
             }
         }
-        
+
         /// <value>
         /// The base font
         /// </value>
@@ -61,7 +61,7 @@ namespace ICSharpCode.TextEditor.Document
             set {
                 // 1440 twips is one inch
                 float pixelSize = (float)Math.Round(value.SizeInPoints * 20 / TwipsPerPixelY);
-                
+
                 defaultFont    = value;
                 RegularFont    = new Font(value.FontFamily, pixelSize * TwipsPerPixelY / 20f, FontStyle.Regular);
                 BoldFont       = new Font(RegularFont, FontStyle.Bold);
@@ -69,13 +69,13 @@ namespace ICSharpCode.TextEditor.Document
                 BoldItalicFont = new Font(RegularFont, FontStyle.Bold | FontStyle.Italic);
             }
         }
-        
+
         public static Font ParseFont(string font)
         {
             string[] descr = font.Split(new char[]{',', '='});
             return new Font(descr[1], Single.Parse(descr[3]));
         }
-        
+
         public FontContainer(Font defaultFont)
         {
             DefaultFont = defaultFont;

@@ -21,7 +21,7 @@ namespace ICSharpCode.TextEditor.Document
         string Name {
             get;
         }
-        
+
         /// <value>
         /// The file extenstions on which this highlighting strategy gets
         /// used
@@ -29,36 +29,36 @@ namespace ICSharpCode.TextEditor.Document
         string[] Extensions {
             get;
         }
-        
+
         Dictionary<string, string> Properties {
             get;
         }
-        
+
         // returns special color. (BackGround Color, Cursor Color and so on)
-        
+
         /// <remarks>
         /// Gets the color of an Environment element.
         /// </remarks>
         HighlightColor GetColorFor(string name);
-        
+
         /// <remarks>
         /// Used internally, do not call
         /// </remarks>
         void MarkTokens(IDocument document, List<LineSegment> lines);
-        
+
         /// <remarks>
         /// Used internally, do not call
         /// </remarks>
         void MarkTokens(IDocument document);
     }
-    
+
     public interface IHighlightingStrategyUsingRuleSets : IHighlightingStrategy
     {
         /// <remarks>
         /// Used internally, do not call
         /// </remarks>
         HighlightRuleSet GetRuleSet(Span span);
-        
+
         /// <remarks>
         /// Used internally, do not call
         /// </remarks>

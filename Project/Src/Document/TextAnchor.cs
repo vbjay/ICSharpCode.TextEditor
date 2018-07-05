@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Document
         /// </summary>
         AfterInsertion
     }
-    
+
     /// <summary>
     /// An anchor that can be put into a document and moves around when the document is changed.
     /// </summary>
@@ -35,7 +35,7 @@ namespace ICSharpCode.TextEditor.Document
 
         private LineSegment lineSegment;
         private int columnNumber;
-        
+
         public LineSegment Line {
             get {
                 if (lineSegment == null) throw AnchorDeletedError();
@@ -43,7 +43,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             internal set => lineSegment = value;
         }
-        
+
         public bool IsDeleted => lineSegment == null;
 
         public int LineNumber => Line.LineNumber;
@@ -55,7 +55,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             internal set => columnNumber = value;
         }
-        
+
         public TextLocation Location => new TextLocation(ColumnNumber, LineNumber);
 
         public int Offset => Line.Offset + columnNumber;
@@ -64,9 +64,9 @@ namespace ICSharpCode.TextEditor.Document
         /// Controls how the anchor moves.
         /// </summary>
         public AnchorMovementType MovementType { get; set; }
-        
+
         public event EventHandler Deleted;
-        
+
         internal void Delete(ref DeferredEventList deferredEventList)
         {
             // we cannot fire an event here because this method is called while the LineManager adjusts the
@@ -74,19 +74,19 @@ namespace ICSharpCode.TextEditor.Document
             lineSegment = null;
             deferredEventList.AddDeletedAnchor(this);
         }
-        
+
         internal void RaiseDeleted()
         {
             if (Deleted != null)
                 Deleted(this, EventArgs.Empty);
         }
-        
+
         internal TextAnchor(LineSegment lineSegment, int columnNumber)
         {
             this.lineSegment = lineSegment;
             this.columnNumber = columnNumber;
         }
-        
+
         public override string ToString()
         {
             if (IsDeleted)

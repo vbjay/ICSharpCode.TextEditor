@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor.Tests
     {
         private FoldingManager manager;
         private List<FoldMarker> list;
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor.Tests
             doc.FoldingManager.UpdateFoldings(new List<FoldMarker>(list));
             manager = doc.FoldingManager;
         }
-        
+
         [Test]
         public void GetFoldingsContainsLineNumber()
         {
@@ -61,13 +61,13 @@ namespace ICSharpCode.TextEditor.Tests
             AssertList(manager.GetFoldingsContainsLineNumber(15), 6);
             AssertList(manager.GetFoldingsContainsLineNumber(16));
         }
-        
+
         [Test]
         public void GetTopLevelFoldedFoldings()
         {
             AssertList(manager.GetTopLevelFoldedFoldings(), 0, 3);
         }
-        
+
         [Test]
         public void GetFoldingsWithStart()
         {
@@ -86,7 +86,7 @@ namespace ICSharpCode.TextEditor.Tests
             AssertList(manager.GetFoldedFoldingsWithStartAfterColumn(10, 3));
             AssertList(manager.GetFoldedFoldingsWithStartAfterColumn(10, 4));
         }
-        
+
         [Test]
         public void GetFromPositionOverlapping()
         {
@@ -118,7 +118,7 @@ namespace ICSharpCode.TextEditor.Tests
                 Assert.Contains(list[m], l);
             }
         }
-        
+
         [Test]
         public void GetFromPositionTest()
         {

@@ -24,13 +24,13 @@ namespace ICSharpCode.TextEditor
         private SizeF spaceSize;
         private readonly Font monospacedFont;
         private readonly Font boldMonospacedFont;
-        
+
         private class SimpleTextWord {
             internal readonly TextWordType Type;
             internal string       Word;
             internal bool         Bold;
             internal readonly Color        Color;
-            
+
             public SimpleTextWord(TextWordType Type, string Word, bool Bold, Color Color)
             {
                 this.Type = Type;
@@ -38,11 +38,11 @@ namespace ICSharpCode.TextEditor
                 this.Bold = Bold;
                 this.Color = Color;
             }
-            
+
             internal readonly static SimpleTextWord Space = new SimpleTextWord(TextWordType.Space, " ", false, Color.Black);
             internal readonly static SimpleTextWord Tab = new SimpleTextWord(TextWordType.Tab, "\t", false, Color.Black);
         }
-        
+
         public DrawableLine(IDocument document, LineSegment line, Font monospacedFont, Font boldMonospacedFont)
         {
             this.monospacedFont = monospacedFont;
@@ -61,7 +61,7 @@ namespace ICSharpCode.TextEditor
                 words.Add(new SimpleTextWord(TextWordType.Word, document.GetText(line), false, Color.Black));
             }
         }
-        
+
         public int LineLength {
             get {
                 int length = 0;
@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor
                 return length;
             }
         }
-        
+
         public void SetBold(int startIndex, int endIndex, bool bold)
         {
             if (startIndex < 0)
@@ -94,30 +94,30 @@ namespace ICSharpCode.TextEditor
                     int inRegionLength = endIndex - pos;
                     SimpleTextWord newWord = new SimpleTextWord(word.Type, word.Word.Substring(inRegionLength), word.Bold, word.Color);
                     words.Insert(i + 1, newWord);
-                    
+
                     word.Bold = bold;
                     word.Word = word.Word.Substring(0, inRegionLength);
                 } else if (startIndex < wordEnd) {
                     // end of word is in region (or middle of word is in region)
                     int notInRegionLength = startIndex - pos;
-                    
+
                     SimpleTextWord newWord = new SimpleTextWord(word.Type, word.Word.Substring(notInRegionLength), word.Bold, word.Color);
                     // newWord.Bold will be set in the next iteration
                     words.Insert(i + 1, newWord);
-                    
+
                     word.Word = word.Word.Substring(0, notInRegionLength);
                 }
                 pos = wordEnd;
             }
         }
-        
+
         public static float DrawDocumentWord(Graphics g, string word, PointF position, Font font, Color foreColor)
         {
             if (word == null || word.Length == 0) {
                 return 0f;
             }
             SizeF wordSize = g.MeasureString(word, font, 32768, sf);
-            
+
             g.DrawString(word,
                          font,
                          BrushRegistry.GetBrush(foreColor),
@@ -125,7 +125,7 @@ namespace ICSharpCode.TextEditor
                          sf);
             return wordSize.Width;
         }
-        
+
         public SizeF GetSpaceSize(Graphics g)
         {
             if (spaceSize.IsEmpty) {
@@ -133,7 +133,7 @@ namespace ICSharpCode.TextEditor
             }
             return spaceSize;
         }
-        
+
         public void DrawLine(Graphics g, ref float xPos, float xOffset, float yPos, Color c)
         {
             SizeF spaceSize = GetSpaceSize(g);
@@ -158,12 +158,12 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         public void DrawLine(Graphics g, ref float xPos, float xOffset, float yPos)
         {
             DrawLine(g, ref xPos, xOffset, yPos, Color.Empty);
         }
-        
+
         public float MeasureWidth(Graphics g, float xPos)
         {
             SizeF spaceSize = GetSpaceSize(g);

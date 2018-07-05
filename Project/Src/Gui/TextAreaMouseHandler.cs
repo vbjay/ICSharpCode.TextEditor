@@ -32,17 +32,17 @@ namespace ICSharpCode.TextEditor
 
         private bool gotmousedown;
         private bool dodragdrop;
-        
+
         public TextAreaMouseHandler(TextArea ttextArea)
         {
             textArea = ttextArea;
         }
-        
+
         public void Attach()
         {
             textArea.Click       += new EventHandler(TextAreaClick);
             textArea.MouseMove   += new MouseEventHandler(TextAreaMouseMove);
-            
+
             textArea.MouseDown   += new MouseEventHandler(OnMouseDown);
             textArea.DoubleClick += new EventHandler(OnDoubleClick);
             textArea.MouseLeave  += new EventHandler(OnMouseLeave);
@@ -60,7 +60,7 @@ namespace ICSharpCode.TextEditor
                                                                             mousepos.Y - textArea.TextView.DrawingPosition.Y);
             if (marker != null && marker.IsFolded) {
                 StringBuilder sb = new StringBuilder(marker.InnerText);
-                
+
                 // max 10 lines
                 int endLines = 0;
                 for (int i = 0; i < sb.Length; ++i) {
@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor
                             sb.Append(Environment.NewLine);
                             sb.Append("...");
                             break;
-                            
+
                         }
                     }
                 }
@@ -79,7 +79,7 @@ namespace ICSharpCode.TextEditor
                 e.ShowToolTip(sb.ToString());
                 return;
             }
-            
+
             List<TextMarker> markers = textArea.Document.MarkerStrategy.GetMarkers(e.LogicalPosition);
             foreach (TextMarker tm in markers) {
                 if (tm.ToolTip != null) {
@@ -124,7 +124,7 @@ namespace ICSharpCode.TextEditor
         {
             Point mousepos;
             mousepos = textArea.mousepos;
-            
+
             if (dodragdrop)
             {
                 return;
@@ -141,7 +141,6 @@ namespace ICSharpCode.TextEditor
                 textArea.SetDesiredColumn();
             }
         }
-
 
         private void TextAreaMouseMove(object sender, MouseEventArgs e)
         {
@@ -163,10 +162,10 @@ namespace ICSharpCode.TextEditor
                 dodragdrop = false;
                 return;
             }
-            
+
             doubleclick = false;
             textArea.mousepos = new Point(e.X, e.Y);
-            
+
             if (clickedOnSelectedText) {
                 if (Math.Abs(mousedownpos.X - e.X) >= SystemInformation.DragSize.Width / 2 ||
                     Math.Abs(mousedownpos.Y - e.Y) >= SystemInformation.DragSize.Height / 2)
@@ -185,10 +184,10 @@ namespace ICSharpCode.TextEditor
                         }
                     }
                 }
-                
+
                 return;
             }
-            
+
             if (e.Button == MouseButtons.Left) {
                 if (gotmousedown && textArea.SelectionManager.selectFrom.where == WhereFrom.TArea)
                 {
@@ -252,7 +251,7 @@ namespace ICSharpCode.TextEditor
         {
             Point mousepos;
             mousepos = textArea.mousepos;
-            
+
             textArea.SelectionManager.ClearSelection();
             if (textArea.TextView.DrawingPosition.Contains(mousepos.X, mousepos.Y))
             {
@@ -277,7 +276,7 @@ namespace ICSharpCode.TextEditor
                             minSelection = textArea.Document.OffsetToPosition(FindWordStart(textArea.Document, textArea.Caret.Offset));
                             maxSelection = textArea.Document.OffsetToPosition(FindWordEnd(textArea.Document, textArea.Caret.Offset));
                             break;
-                            
+
                     }
                     textArea.Caret.Position = maxSelection;
                     textArea.SelectionManager.ExtendSelection(minSelection, maxSelection);
@@ -285,7 +284,7 @@ namespace ICSharpCode.TextEditor
 
                 if (textArea.SelectionManager.selectionCollection.Count > 0) {
                     ISelection selection = textArea.SelectionManager.selectionCollection[0];
-                    
+
                     selection.StartPosition = minSelection;
                     selection.EndPosition = maxSelection;
                     textArea.SelectionManager.SelectionStart = minSelection;
@@ -316,17 +315,17 @@ namespace ICSharpCode.TextEditor
             {
                 return;
             }
-            
+
             if (doubleclick) {
                 doubleclick = false;
                 return;
             }
-            
+
             if (textArea.TextView.DrawingPosition.Contains(mousepos.X, mousepos.Y)) {
                 gotmousedown = true;
                 textArea.SelectionManager.selectFrom.where = WhereFrom.TArea;
                 button = e.Button;
-                
+
                 // double-click
                 if (button == MouseButtons.Left && e.Clicks == 2) {
                     int deltaX   = Math.Abs(lastmousedownpos.X - e.X);
@@ -351,9 +350,9 @@ namespace ICSharpCode.TextEditor
                 }
                 minSelection = TextLocation.Empty;
                 maxSelection = TextLocation.Empty;
-                
+
                 lastmousedownpos = mousedownpos = new Point(e.X, e.Y);
-                
+
                 if (button == MouseButtons.Left) {
                     FoldMarker marker = textArea.TextView.GetFoldMarkerFromPosition(mousepos.X - textArea.TextView.DrawingPosition.X,
                                                                                     mousepos.Y - textArea.TextView.DrawingPosition.Y);
@@ -361,7 +360,7 @@ namespace ICSharpCode.TextEditor
                         if (textArea.SelectionManager.HasSomethingSelected) {
                             clickedOnSelectedText = true;
                         }
-                        
+
                         TextLocation startLocation = new TextLocation(marker.StartColumn, marker.StartLine);
                         TextLocation endLocation = new TextLocation(marker.EndColumn, marker.EndLine);
                         textArea.SelectionManager.SetSelection(new DefaultSelection(textArea.TextView.Document, startLocation, endLocation));
@@ -376,9 +375,9 @@ namespace ICSharpCode.TextEditor
                     } else {
                         TextLocation realmousepos = textArea.TextView.GetLogicalPosition(mousepos.X - textArea.TextView.DrawingPosition.X, mousepos.Y - textArea.TextView.DrawingPosition.Y);
                         clickedOnSelectedText = false;
-                        
+
                         int offset = textArea.Document.PositionToOffset(realmousepos);
-                        
+
                         if (textArea.SelectionManager.HasSomethingSelected &&
                             textArea.SelectionManager.IsSelected(offset)) {
                             clickedOnSelectedText = true;
@@ -419,7 +418,7 @@ namespace ICSharpCode.TextEditor
         {
             LineSegment line = document.GetLineSegmentForOffset(offset);
             int         endPos = line.Offset + line.Length;
-            
+
             while (offset < endPos && document.GetCharAt(offset) != ch) {
                 ++offset;
             }
@@ -434,7 +433,7 @@ namespace ICSharpCode.TextEditor
         private int FindWordStart(IDocument document, int offset)
         {
             LineSegment line = document.GetLineSegmentForOffset(offset);
-            
+
             if (offset > 0 && Char.IsWhiteSpace(document.GetCharAt(offset - 1)) && Char.IsWhiteSpace(document.GetCharAt(offset))) {
                 while (offset > line.Offset && Char.IsWhiteSpace(document.GetCharAt(offset - 1))) {
                     --offset;
@@ -458,7 +457,7 @@ namespace ICSharpCode.TextEditor
                 return offset;
             int         endPos = line.Offset + line.Length;
             offset = Math.Min(offset, endPos - 1);
-            
+
             if (IsSelectableChar(document.GetCharAt(offset)))  {
                 while (offset < endPos && IsSelectableChar(document.GetCharAt(offset))) {
                     ++offset;
@@ -472,7 +471,7 @@ namespace ICSharpCode.TextEditor
             } else {
                 return Math.Max(0, offset + 1);
             }
-            
+
             return offset;
         }
 
@@ -484,10 +483,10 @@ namespace ICSharpCode.TextEditor
             if (dodragdrop) {
                 return;
             }
-            
+
             textArea.SelectionManager.selectFrom.where = WhereFrom.TArea;
             doubleclick = true;
-            
+
         }
     }
 }

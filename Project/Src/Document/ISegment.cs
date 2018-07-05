@@ -21,7 +21,7 @@ namespace ICSharpCode.TextEditor.Document
             get;
             set;
         }
-        
+
         /// <value>
         /// The length of the span
         /// </value>
@@ -64,5 +64,5 @@ namespace ICSharpCode.TextEditor.Document
             return x.Length.CompareTo(y.Length);
         }
     }
-    
+
 }

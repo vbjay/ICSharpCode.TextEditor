@@ -67,7 +67,7 @@ namespace ICSharpCode.TextEditor.Document
                 column = offset - document.GetLineSegment(line).Offset;
             }
         }
-        
+
         public FoldType FoldType { get; set; } = FoldType.Unspecified;
 
         public int StartLine {
@@ -78,7 +78,7 @@ namespace ICSharpCode.TextEditor.Document
                 return startLine;
             }
         }
-        
+
         public int StartColumn {
             get {
                 if (startLine < 0) {
@@ -87,7 +87,7 @@ namespace ICSharpCode.TextEditor.Document
                 return startColumn;
             }
         }
-        
+
         public int EndLine {
             get {
                 if (endLine < 0) {
@@ -96,7 +96,7 @@ namespace ICSharpCode.TextEditor.Document
                 return endLine;
             }
         }
-        
+
         public int EndColumn {
             get {
                 if (endLine < 0) {
@@ -105,7 +105,7 @@ namespace ICSharpCode.TextEditor.Document
                 return endColumn;
             }
         }
-        
+
         public bool IsFolded { get; set; }
 
         public string FoldText { get; } = "...";
@@ -120,41 +120,41 @@ namespace ICSharpCode.TextEditor.Document
             this.FoldText = foldText;
             this.IsFolded = isFolded;
         }
-        
+
         public FoldMarker(IDocument document, int startLine, int startColumn, int endLine, int endColumn) : this(document, startLine, startColumn, endLine, endColumn, FoldType.Unspecified)
         {
         }
-        
+
         public FoldMarker(IDocument document, int startLine, int startColumn, int endLine, int endColumn, FoldType foldType)  : this(document, startLine, startColumn, endLine, endColumn, foldType, "...")
         {
         }
-        
+
         public FoldMarker(IDocument document, int startLine, int startColumn, int endLine, int endColumn, FoldType foldType, string foldText) : this(document, startLine, startColumn, endLine, endColumn, foldType, foldText, false)
         {
         }
-        
+
         public FoldMarker(IDocument document, int startLine, int startColumn, int endLine, int endColumn, FoldType foldType, string foldText, bool isFolded)
         {
             this.document = document;
-            
+
             startLine = Math.Min(document.TotalNumberOfLines - 1, Math.Max(startLine, 0));
             ISegment startLineSegment = document.GetLineSegment(startLine);
-            
+
             endLine = Math.Min(document.TotalNumberOfLines - 1, Math.Max(endLine, 0));
             ISegment endLineSegment   = document.GetLineSegment(endLine);
-            
+
             // Prevent the region from completely disappearing
             if (string.IsNullOrEmpty(foldText)) {
                 foldText = "...";
             }
-            
+
             FoldType = foldType;
             this.FoldText = foldText;
             offset = startLineSegment.Offset + Math.Min(startColumn, startLineSegment.Length);
             length = (endLineSegment.Offset + Math.Min(endColumn, endLineSegment.Length)) - offset;
             this.IsFolded = isFolded;
         }
-        
+
         public int CompareTo(object o)
         {
             if (!(o is FoldMarker)) {
@@ -164,7 +164,7 @@ namespace ICSharpCode.TextEditor.Document
             if (offset != f.offset) {
                 return offset.CompareTo(f.offset);
             }
-            
+
             return length.CompareTo(f.length);
         }
     }

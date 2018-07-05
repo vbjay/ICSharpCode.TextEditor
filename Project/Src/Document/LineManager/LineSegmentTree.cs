@@ -33,14 +33,14 @@ namespace ICSharpCode.TextEditor.Document
             internal LineSegment lineSegment;
             internal int count;
             internal int totalLength;
-            
+
             public RBNode(LineSegment lineSegment)
             {
                 this.lineSegment = lineSegment;
                 count = 1;
                 totalLength = lineSegment.TotalLength;
             }
-            
+
             public override string ToString()
             {
                 return "[RBNode count=" + count + " totalLength="+totalLength
@@ -57,12 +57,12 @@ namespace ICSharpCode.TextEditor.Document
             {
                 throw new NotImplementedException();
             }
-            
+
             public bool Equals(RBNode a, RBNode b)
             {
                 throw new NotImplementedException();
             }
-            
+
             public void UpdateAfterChildrenChange(RedBlackTreeNode<RBNode> node)
             {
                 int count = 1;
@@ -81,13 +81,13 @@ namespace ICSharpCode.TextEditor.Document
                     if (node.parent != null) UpdateAfterChildrenChange(node.parent);
                 }
             }
-            
+
             public void UpdateAfterRotateLeft(RedBlackTreeNode<RBNode> node)
             {
                 UpdateAfterChildrenChange(node);
                 UpdateAfterChildrenChange(node.parent);
             }
-            
+
             public void UpdateAfterRotateRight(RedBlackTreeNode<RBNode> node)
             {
                 UpdateAfterChildrenChange(node);
@@ -169,12 +169,12 @@ namespace ICSharpCode.TextEditor.Document
             }
             return offset;
         }
-        
+
         public LineSegment GetByOffset(int offset)
         {
             return GetNodeByOffset(offset).val.lineSegment;
         }
-        
+
         /// <summary>
         /// Gets the total length of all line segments. Runs in O(1).
         /// </summary>
@@ -186,7 +186,7 @@ namespace ICSharpCode.TextEditor.Document
                     return tree.root.val.totalLength;
             }
         }
-        
+
         /// <summary>
         /// Updates the length of a line segment. Runs in O(lg n).
         /// </summary>
@@ -201,7 +201,7 @@ namespace ICSharpCode.TextEditor.Document
             CheckProperties();
             #endif
         }
-        
+
         public void RemoveSegment(LineSegment segment)
         {
             tree.RemoveAt(segment.treeEntry.it);
@@ -209,13 +209,13 @@ namespace ICSharpCode.TextEditor.Document
             CheckProperties();
             #endif
         }
-        
+
         public LineSegment InsertSegmentAfter(LineSegment segment, int length)
         {
             LineSegment newSegment = new LineSegment();
             newSegment.TotalLength = length;
             newSegment.DelimiterLength = segment.DelimiterLength;
-            
+
             newSegment.treeEntry = InsertAfter(segment.treeEntry.it.node, newSegment);
             return newSegment;
         }
@@ -233,7 +233,7 @@ namespace ICSharpCode.TextEditor.Document
             #endif
             return new Enumerator(new RedBlackTreeIterator<RBNode>(newNode));
         }
-        
+
         /// <summary>
         /// Gets the number of items in the collections. Runs in O(1).
         /// </summary>
@@ -246,7 +246,7 @@ namespace ICSharpCode.TextEditor.Document
             get => GetNode(index).val.lineSegment;
             set => throw new NotSupportedException();
         }
-        
+
         bool ICollection<LineSegment>.IsReadOnly => true;
 
         /// <summary>
@@ -261,12 +261,12 @@ namespace ICSharpCode.TextEditor.Document
                 return -1;
             return index;
         }
-        
+
         void IList<LineSegment>.RemoveAt(int index)
         {
             throw new NotSupportedException();
         }
-        
+
         #if DEBUG
         [Conditional("DATACONSISTENCYTEST")]
         private void CheckProperties()
@@ -296,18 +296,18 @@ namespace ICSharpCode.TextEditor.Document
             Debug.Assert(node.val.count == count);
             Debug.Assert(node.val.totalLength == totalLength);
         }
-        
+
         public string GetTreeAsString()
         {
             return tree.GetTreeAsString();
         }
         #endif
-        
+
         public LineSegmentTree()
         {
             Clear();
         }
-        
+
         /// <summary>
         /// Clears the list. Runs in O(1).
         /// </summary>
@@ -323,7 +323,7 @@ namespace ICSharpCode.TextEditor.Document
             CheckProperties();
             #endif
         }
-        
+
         /// <summary>
         /// Tests whether an item is in the list. Runs in O(n).
         /// </summary>
@@ -331,7 +331,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             return IndexOf(item) >= 0;
         }
-        
+
         /// <summary>
         /// Copies all elements from the list to the array.
         /// </summary>
@@ -341,32 +341,32 @@ namespace ICSharpCode.TextEditor.Document
             foreach (LineSegment val in this)
                 array[arrayIndex++] = val;
         }
-        
+
         IEnumerator<LineSegment> IEnumerable<LineSegment>.GetEnumerator()
         {
             return GetEnumerator();
         }
-        
+
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-        
+
         public Enumerator GetEnumerator()
         {
             return new Enumerator(tree.GetEnumerator());
         }
-        
+
         public Enumerator GetEnumeratorForIndex(int index)
         {
             return new Enumerator(new RedBlackTreeIterator<RBNode>(GetNode(index)));
         }
-        
+
         public Enumerator GetEnumeratorForOffset(int offset)
         {
             return new Enumerator(new RedBlackTreeIterator<RBNode>(GetNodeByOffset(offset)));
         }
-        
+
         public struct Enumerator : IEnumerator<LineSegment>
         {
             /// <summary>
@@ -374,14 +374,14 @@ namespace ICSharpCode.TextEditor.Document
             /// will always return false, accessing Current will throw an exception.
             /// </summary>
             public static readonly Enumerator Invalid = default(Enumerator);
-            
+
             internal RedBlackTreeIterator<RBNode> it;
-            
+
             internal Enumerator(RedBlackTreeIterator<RBNode> it)
             {
                 this.it = it;
             }
-            
+
             /// <summary>
             /// Gets the current value. Runs in O(1).
             /// </summary>
@@ -399,7 +399,7 @@ namespace ICSharpCode.TextEditor.Document
                     return GetIndexFromNode(it.node);
                 }
             }
-            
+
             /// <summary>
             /// Gets the offset of the current value. Runs in O(lg n).
             /// </summary>
@@ -410,13 +410,13 @@ namespace ICSharpCode.TextEditor.Document
                     return GetOffsetFromNode(it.node);
                 }
             }
-            
+
             object System.Collections.IEnumerator.Current => it.Current.lineSegment;
 
             public void Dispose()
             {
             }
-            
+
             /// <summary>
             /// Moves to the next index. Runs in O(lg n), but for k calls, the combined time is only O(k+lg n).
             /// </summary>
@@ -424,7 +424,7 @@ namespace ICSharpCode.TextEditor.Document
             {
                 return it.MoveNext();
             }
-            
+
             /// <summary>
             /// Moves to the previous index. Runs in O(lg n), but for k calls, the combined time is only O(k+lg n).
             /// </summary>
@@ -432,23 +432,23 @@ namespace ICSharpCode.TextEditor.Document
             {
                 return it.MoveBack();
             }
-            
+
             void System.Collections.IEnumerator.Reset()
             {
                 throw new NotSupportedException();
             }
         }
-        
+
         void IList<LineSegment>.Insert(int index, LineSegment item)
         {
             throw new NotSupportedException();
         }
-        
+
         void ICollection<LineSegment>.Add(LineSegment item)
         {
             throw new NotSupportedException();
         }
-        
+
         bool ICollection<LineSegment>.Remove(LineSegment item)
         {
             throw new NotSupportedException();

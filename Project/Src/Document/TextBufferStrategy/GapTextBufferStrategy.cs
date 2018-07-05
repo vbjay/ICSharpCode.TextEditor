@@ -31,7 +31,7 @@ namespace ICSharpCode.TextEditor.Document
 
         private const int minGapLength = 128;
         private const int maxGapLength = 2048;
-        
+
         public int Length => buffer.Length - gapLength;
 
         public void SetContent(string text)
@@ -43,26 +43,26 @@ namespace ICSharpCode.TextEditor.Document
             buffer = text.ToCharArray();
             gapBeginOffset = gapEndOffset = gapLength = 0;
         }
-        
+
         public char GetCharAt(int offset)
         {
             #if DEBUG
             CheckThread();
             #endif
-            
+
             if (offset < 0 || offset >= Length) {
                 throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset < " + Length.ToString());
             }
-            
+
             return offset < gapBeginOffset ? buffer[offset] : buffer[offset + gapLength];
         }
-        
+
         public string GetText(int offset, int length)
         {
             #if DEBUG
             CheckThread();
             #endif
-            
+
             if (offset < 0 || offset > Length) {
                 throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length.ToString());
             }
@@ -82,53 +82,53 @@ namespace ICSharpCode.TextEditor.Document
         private string GetTextInternal(int offset, int length)
         {
             int end = offset + length;
-            
+
             if (end < gapBeginOffset) {
                 return new string(buffer, offset, length);
             }
-            
+
             if (offset > gapBeginOffset) {
                 return new string(buffer, offset + gapLength, length);
             }
-            
+
             int block1Size = gapBeginOffset - offset;
             int block2Size = end - gapBeginOffset;
-            
+
             StringBuilder buf = new StringBuilder(block1Size + block2Size);
             buf.Append(buffer, offset,       block1Size);
             buf.Append(buffer, gapEndOffset, block2Size);
             return buf.ToString();
         }
-        
+
         public void Insert(int offset, string text)
         {
             Replace(offset, 0, text);
         }
-        
+
         public void Remove(int offset, int length)
         {
             Replace(offset, length, String.Empty);
         }
-        
+
         public void Replace(int offset, int length, string text)
         {
             if (text == null) {
                 text = String.Empty;
             }
-            
+
             #if DEBUG
             CheckThread();
             #endif
-            
+
             if (offset < 0 || offset > Length) {
                 throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length.ToString());
             }
             if (length < 0 || offset + length > Length) {
                 throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset+length <= " + Length.ToString());
             }
-            
+
             cachedContent = null;
-            
+
             // Math.Max is used so that if we need to resize the array
             // the new array has enough space for all old chars
             PlaceGap(offset, text.Length - length);
@@ -159,11 +159,11 @@ namespace ICSharpCode.TextEditor.Document
         private void MakeNewBuffer(int newGapOffset, int newGapLength)
         {
             if (newGapLength < minGapLength) newGapLength = minGapLength;
-            
+
             char[] newBuffer = new char[Length + newGapLength];
             if (newGapOffset < gapBeginOffset) {
                 // gap is moving backwards
-                
+
                 // first part:
                 Array.Copy(buffer, 0, newBuffer, 0, newGapOffset);
                 // moving middle part:
@@ -180,7 +180,7 @@ namespace ICSharpCode.TextEditor.Document
                 int lastPartLength = newBuffer.Length - (newGapOffset + newGapLength);
                 Array.Copy(buffer, buffer.Length - lastPartLength, newBuffer, newGapOffset + newGapLength, lastPartLength);
             }
-            
+
             gapBeginOffset = newGapOffset;
             gapEndOffset = newGapOffset + newGapLength;
             gapLength = newGapLength;

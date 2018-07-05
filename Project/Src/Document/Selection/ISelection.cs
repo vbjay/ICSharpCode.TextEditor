@@ -18,31 +18,31 @@ namespace ICSharpCode.TextEditor.Document
             get;
             set;
         }
-        
+
         TextLocation EndPosition {
             get;
             set;
         }
-        
+
         int Offset {
             get;
         }
-        
+
         int EndOffset {
             get;
         }
-        
+
         int Length {
             get;
         }
-        
+
         /// <value>
         /// Returns true, if the selection is rectangular
         /// </value>
         bool IsRectangularSelection {
             get;
         }
-        
+
         /// <value>
         /// Returns true, if the selection is empty
         /// </value>
@@ -56,9 +56,9 @@ namespace ICSharpCode.TextEditor.Document
         string SelectedText {
             get;
         }
-        
+
         bool ContainsOffset(int offset);
-        
+
         bool ContainsPosition(TextLocation position);
     }
 }

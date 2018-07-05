@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor.Document
         /// This function formats a specific line after <code>ch</code> is pressed.
         /// </summary>
         void FormatLine(TextArea textArea, int line, int caretOffset, char charTyped);
-        
+
         /// <summary>
         /// This function sets the indentation level in a specific line
         /// </summary>
@@ -28,12 +28,12 @@ namespace ICSharpCode.TextEditor.Document
         /// The target caret position (length of new indentation).
         /// </returns>
         int IndentLine(TextArea textArea, int line);
-        
+
         /// <summary>
         /// This function sets the indentlevel in a range of lines.
         /// </summary>
         void IndentLines(TextArea textArea, int begin, int end);
-        
+
         /// <summary>
         /// Finds the offset of the opening bracket in the block defined by offset skipping
         /// brackets in strings and comments.
@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor.Document
         /// <param name="closingBracket">The character for the closing bracket.</param>
         /// <returns>Returns the offset of the opening bracket or -1 if no matching bracket was found.</returns>
         int SearchBracketBackward(IDocument document, int offset, char openBracket, char closingBracket);
-        
+
         /// <summary>
         /// Finds the offset of the closing bracket in the block defined by offset skipping
         /// brackets in strings and comments.

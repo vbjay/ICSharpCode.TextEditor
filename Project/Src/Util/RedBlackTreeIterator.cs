@@ -14,12 +14,12 @@ namespace ICSharpCode.TextEditor.Util
     internal struct RedBlackTreeIterator<T> : IEnumerator<T>
     {
         internal RedBlackTreeNode<T> node;
-        
+
         internal RedBlackTreeIterator(RedBlackTreeNode<T> node)
         {
             this.node = node;
         }
-        
+
         public bool IsValid => node != null;
 
         public T Current {
@@ -30,18 +30,18 @@ namespace ICSharpCode.TextEditor.Util
                     throw new InvalidOperationException();
             }
         }
-        
+
         object System.Collections.IEnumerator.Current => Current;
 
         void IDisposable.Dispose()
         {
         }
-        
+
         void System.Collections.IEnumerator.Reset()
         {
             throw new NotSupportedException();
         }
-        
+
         public bool MoveNext()
         {
             if (node == null)
@@ -58,7 +58,7 @@ namespace ICSharpCode.TextEditor.Util
             }
             return node != null;
         }
-        
+
         public bool MoveBack()
         {
             if (node == null)

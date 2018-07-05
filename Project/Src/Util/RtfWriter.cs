@@ -19,20 +19,19 @@ namespace ICSharpCode.TextEditor.Util
         private static Dictionary<string, int> colors;
         private static int           colorNum;
         private static StringBuilder colorString;
-        
+
         public static string GenerateRtf(TextArea textArea)
         {
             colors = new Dictionary<string, int>();
             colorNum = 0;
             colorString = new StringBuilder();
-            
-            
+
             StringBuilder rtf = new StringBuilder();
-            
+
             rtf.Append(@"{\rtf1\ansi\ansicpg1252\deff0\deflang1031");
             BuildFontTable(textArea.Document, rtf);
             rtf.Append('\n');
-            
+
             string fileContent = BuildFileContent(textArea);
             BuildColorTable(textArea.Document, rtf);
             rtf.Append('\n');
@@ -64,7 +63,7 @@ namespace ICSharpCode.TextEditor.Util
             bool  oldItalic = false;
             bool  oldBold   = false;
             bool  escapeSequence = false;
-            
+
             foreach (ISelection selection in textArea.SelectionManager.SelectionCollection) {
                 int selectionOffset    = textArea.Document.PositionToOffset(selection.StartPosition);
                 int selectionEndOffset = textArea.Document.PositionToOffset(selection.EndPosition);
@@ -74,7 +73,7 @@ namespace ICSharpCode.TextEditor.Util
                     if (line.Words == null) {
                         continue;
                     }
-                    
+
                     foreach (TextWord word in line.Words) {
                         switch (word.Type) {
                             case TextWordType.Space:
@@ -83,7 +82,7 @@ namespace ICSharpCode.TextEditor.Util
                                 }
                                 ++offset;
                                 break;
-                            
+
                             case TextWordType.Tab:
                                 if (selection.ContainsOffset(offset)) {
                                     rtf.Append(@"\tab");
@@ -91,13 +90,13 @@ namespace ICSharpCode.TextEditor.Util
                                 ++offset;
                                 escapeSequence = true;
                                 break;
-                            
+
                             case TextWordType.Word:
                                 Color c = word.Color;
-                                
+
                                 if (offset + word.Word.Length > selectionOffset && offset < selectionEndOffset) {
                                     string colorstr = c.R + ", " + c.G + ", " + c.B;
-                                    
+
                                     if (!colors.ContainsKey(colorstr)) {
                                         colors[colorstr] = ++colorNum;
                                         colorString.Append(@"\red" + c.R + @"\green" + c.G + @"\blue" + c.B + ";");
@@ -107,7 +106,7 @@ namespace ICSharpCode.TextEditor.Util
                                         curColor = c;
                                         escapeSequence = true;
                                     }
-                                    
+
                                     if (oldItalic != word.Italic) {
                                         if (word.Italic) {
                                             rtf.Append(@"\i");
@@ -117,7 +116,7 @@ namespace ICSharpCode.TextEditor.Util
                                         oldItalic = word.Italic;
                                         escapeSequence = true;
                                     }
-                                    
+
                                     if (oldBold != word.Bold) {
                                         if (word.Bold) {
                                             rtf.Append(@"\b");
@@ -127,7 +126,7 @@ namespace ICSharpCode.TextEditor.Util
                                         oldBold = word.Bold;
                                         escapeSequence = true;
                                     }
-                                    
+
                                     if (firstLine) {
                                         rtf.Append(@"\f0\fs" + (textArea.TextEditorProperties.Font.Size * 2));
                                         firstLine = false;
@@ -144,7 +143,7 @@ namespace ICSharpCode.TextEditor.Util
                                     } else {
                                         printWord = word.Word;
                                     }
-                                    
+
                                     AppendText(rtf, printWord);
                                 }
                                 offset += word.Length;
@@ -157,7 +156,7 @@ namespace ICSharpCode.TextEditor.Util
                     rtf.Append('\n');
                 }
             }
-            
+
             return rtf.ToString();
         }
 

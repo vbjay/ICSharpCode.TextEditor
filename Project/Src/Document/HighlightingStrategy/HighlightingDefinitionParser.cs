@@ -44,10 +44,10 @@ namespace ICSharpCode.TextEditor.Document
 
                 XmlDocument doc = new XmlDocument();
                 doc.Load(validatingReader);
-                
+
                 if (highlighter == null)
                     highlighter = new DefaultHighlightingStrategy(doc.DocumentElement.Attributes["name"].InnerText);
-                
+
                 if (doc.DocumentElement.HasAttribute("extends")) {
                     KeyValuePair<SyntaxMode, ISyntaxModeFileProvider> entry = HighlightingManager.Manager.FindHighlighterEntry(doc.DocumentElement.GetAttribute("extends"));
                     if (entry.Key == null) {
@@ -60,7 +60,7 @@ namespace ICSharpCode.TextEditor.Document
                 if (doc.DocumentElement.HasAttribute("extensions")) {
                     highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(new char[] { ';', '|' });
                 }
-                
+
                 XmlElement environment = doc.DocumentElement["Environment"];
                 if (environment != null) {
                     foreach (XmlNode node in environment.ChildNodes) {
@@ -74,25 +74,25 @@ namespace ICSharpCode.TextEditor.Document
                         }
                     }
                 }
-                
+
                 // parse properties
                 if (doc.DocumentElement["Properties"]!= null) {
                     foreach (XmlElement propertyElement in doc.DocumentElement["Properties"].ChildNodes) {
                         highlighter.Properties[propertyElement.Attributes["name"].InnerText] =  propertyElement.Attributes["value"].InnerText;
                     }
                 }
-                
+
                 if (doc.DocumentElement["Digits"]!= null) {
                     highlighter.DigitColor = new HighlightColor(doc.DocumentElement["Digits"]);
                 }
-                
+
                 XmlNodeList nodes = doc.DocumentElement.GetElementsByTagName("RuleSet");
                 foreach (XmlElement element in nodes) {
                     highlighter.AddRuleSet(new HighlightRuleSet(element));
                 }
-                
+
                 xmlReader.Close();
-                
+
                 if (errors != null) {
                     StringBuilder msg = new StringBuilder();
                     foreach (ValidationEventArgs args in errors) {

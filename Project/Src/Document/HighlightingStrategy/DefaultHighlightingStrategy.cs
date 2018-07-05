@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor.Document
         private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
 
         private HighlightRuleSet defaultRuleSet;
-        
+
         public HighlightColor DigitColor { get; set; }
 
         public IEnumerable<KeyValuePair<string, HighlightColor>> EnvironmentColors => environmentColors;
@@ -36,18 +36,18 @@ namespace ICSharpCode.TextEditor.Document
             environmentColors = source.environmentColors;
             DefaultTextColor = source.DefaultTextColor;
         }
-        
+
         public DefaultHighlightingStrategy() : this("Default")
         {
         }
-        
+
         public DefaultHighlightingStrategy(string name)
         {
             this.Name = name;
-            
+
             DigitColor       = new HighlightColor(SystemColors.WindowText, false, false);
             DefaultTextColor = new HighlightColor(SystemColors.WindowText, false, false);
-            
+
             // set small 'default color environment'
             environmentColors["Default"]          = new HighlightBackground("WindowText", "Window", false, false);
             environmentColors["Selection"]        = new HighlightColor("HighlightText", "Highlight", false, false);
@@ -56,16 +56,16 @@ namespace ICSharpCode.TextEditor.Document
             environmentColors["CaretMarker"]      = new HighlightColor(Color.Yellow, false, false);
             environmentColors["CaretLine"] = new HighlightBackground("ControlLight", "Window", false, false);
             environmentColors["LineNumbers"] = new HighlightBackground("ControlDark", "Window", false, false);
-            
+
             environmentColors["FoldLine"]         = new HighlightColor("ControlDark", false, false);
             environmentColors["FoldMarker"]       = new HighlightColor("WindowText", "Window", false, false);
             environmentColors["SelectedFoldLine"] = new HighlightColor("WindowText", false, false);
             environmentColors["EOLMarkers"]       = new HighlightColor("ControlLight", "Window", false, false);
             environmentColors["SpaceMarkers"]     = new HighlightColor("ControlLight", "Window", false, false);
             environmentColors["TabMarkers"]       = new HighlightColor("ControlLight", "Window", false, false);
-            
+
         }
-        
+
         public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
 
         public string Name { get; private set; }
@@ -83,7 +83,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return null;
         }
-        
+
         public void AddRuleSet(HighlightRuleSet aRuleSet)
         {
             HighlightRuleSet existing = FindHighlightRuleSet(aRuleSet.Name);
@@ -93,7 +93,7 @@ namespace ICSharpCode.TextEditor.Document
                 Rules.Add(aRuleSet);
             }
         }
-        
+
         public void ResolveReferences()
         {
             // Resolve references from Span definitions to RuleSets
@@ -108,7 +108,7 @@ namespace ICSharpCode.TextEditor.Document
                 if (ruleSet.Name == null) {
                     defaultRuleSet = ruleSet;
                 }
-                
+
                 foreach (Span aSpan in ruleSet.Spans) {
                     if (aSpan.Rule != null) {
                         bool found = false;
@@ -128,7 +128,7 @@ namespace ICSharpCode.TextEditor.Document
                     }
                 }
             }
-            
+
             if (defaultRuleSet == null) {
                 throw new HighlightingDefinitionInvalidException("No default RuleSet is defined for mode definition " + Name);
             }
@@ -140,7 +140,7 @@ namespace ICSharpCode.TextEditor.Document
                 ruleSet.Highlighter = this;
                 if (ruleSet.Reference != null) {
                     IHighlightingStrategy highlighter = HighlightingManager.Manager.FindHighlighter (ruleSet.Reference);
-                    
+
                     if (highlighter == null)
                         throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + Name + " mode definition could not be found");
                     if (highlighter is IHighlightingStrategyUsingRuleSets)
@@ -150,7 +150,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
 //        internal void SetDefaultColor(HighlightBackground color)
 //        {
 //            return (HighlightColor)environmentColors[name];
@@ -174,7 +174,7 @@ namespace ICSharpCode.TextEditor.Document
             else
                 return DefaultTextColor;
         }
-        
+
         public HighlightColor GetColor(IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)
         {
             return GetColor(defaultRuleSet, document, currentSegment, currentOffset, currentLength);
@@ -191,7 +191,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return null;
         }
-        
+
         public HighlightRuleSet GetRuleSet(Span aSpan)
         {
             if (aSpan == null) {
@@ -213,7 +213,7 @@ namespace ICSharpCode.TextEditor.Document
         // Line state variable
         protected LineSegment currentLine;
         protected int currentLineNumber;
-        
+
         // Span stack state variable
         protected SpanStack currentSpanStack;
 
@@ -222,17 +222,17 @@ namespace ICSharpCode.TextEditor.Document
             if (Rules.Count == 0) {
                 return;
             }
-            
+
             int lineNumber = 0;
-            
+
             while (lineNumber < document.TotalNumberOfLines) {
                 LineSegment previousLine = (lineNumber > 0 ? document.GetLineSegment(lineNumber - 1) : null);
                 if (lineNumber >= document.LineSegmentCollection.Count) { // may be, if the last line ends with a delimiter
                     break;                                                // then the last line is not in the collection :)
                 }
-                
+
                 currentSpanStack = ((previousLine != null && previousLine.HighlightSpanStack != null) ? previousLine.HighlightSpanStack.Clone() : null);
-                
+
                 if (currentSpanStack != null) {
                     while (!currentSpanStack.IsEmpty && currentSpanStack.Peek().StopEOL)
                     {
@@ -240,13 +240,13 @@ namespace ICSharpCode.TextEditor.Document
                     }
                     if (currentSpanStack.IsEmpty) currentSpanStack = null;
                 }
-                
+
                 currentLine = (LineSegment)document.LineSegmentCollection[lineNumber];
-                
+
                 if (currentLine.Length == -1) { // happens when buffer is empty !
                     return;
                 }
-                
+
                 currentLineNumber = lineNumber;
                 List<TextWord> words = ParseLine(document);
                 // Alex: clear old words
@@ -255,7 +255,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
                 currentLine.Words = words;
                 currentLine.HighlightSpanStack = (currentSpanStack==null || currentSpanStack.IsEmpty) ? null : currentSpanStack;
-                
+
                 ++lineNumber;
             }
             document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
@@ -268,7 +268,7 @@ namespace ICSharpCode.TextEditor.Document
             currentLineNumber = lineNumber;
             bool processNextLine = false;
             LineSegment previousLine = (lineNumber > 0 ? document.GetLineSegment(lineNumber - 1) : null);
-            
+
             currentSpanStack = ((previousLine != null && previousLine.HighlightSpanStack != null) ? previousLine.HighlightSpanStack.Clone() : null);
             if (currentSpanStack != null) {
                 while (!currentSpanStack.IsEmpty && currentSpanStack.Peek().StopEOL) {
@@ -278,19 +278,19 @@ namespace ICSharpCode.TextEditor.Document
                     currentSpanStack = null;
                 }
             }
-            
+
             currentLine = (LineSegment)document.LineSegmentCollection[lineNumber];
-            
+
             if (currentLine.Length == -1) { // happens when buffer is empty !
                 return false;
             }
-            
+
             List<TextWord> words = ParseLine(document);
-            
+
             if (currentSpanStack != null && currentSpanStack.IsEmpty) {
                 currentSpanStack = null;
             }
-            
+
             // Check if the span state has changed, if so we must re-render the next line
             // This check may seem utterly complicated but I didn't want to introduce any function calls
             // or allocations here for perf reasons.
@@ -353,31 +353,31 @@ namespace ICSharpCode.TextEditor.Document
             } else {
                 processNextLine = false;
             }
-            
+
             //// Alex: remove old words
             if (currentLine.Words!=null) currentLine.Words.Clear();
             currentLine.Words = words;
             currentLine.HighlightSpanStack = (currentSpanStack != null && !currentSpanStack.IsEmpty) ? currentSpanStack : null;
-            
+
             return processNextLine;
         }
-        
+
         public virtual void MarkTokens(IDocument document, List<LineSegment> inputLines)
         {
             if (Rules.Count == 0) {
                 return;
             }
-            
+
             Dictionary<LineSegment, bool> processedLines = new Dictionary<LineSegment, bool>();
-            
+
             bool spanChanged = false;
             int documentLineSegmentCount = document.LineSegmentCollection.Count;
-            
+
             foreach (LineSegment lineToProcess in inputLines) {
                 if (!processedLines.ContainsKey(lineToProcess)) {
                     int lineNumber = lineToProcess.LineNumber;
                     bool processNextLine = true;
-                    
+
                     if (lineNumber != -1) {
                         while (processNextLine && lineNumber < documentLineSegmentCount) {
                             processNextLine = MarkTokensInLine(document, lineNumber, ref spanChanged);
@@ -387,7 +387,7 @@ namespace ICSharpCode.TextEditor.Document
                     }
                 }
             }
-            
+
             if (spanChanged || inputLines.Count > 20) {
                 // if the span was changed (more than inputLines lines had to be reevaluated)
                 // or if there are many lines in inputLines, it's faster to update the whole
@@ -400,17 +400,17 @@ namespace ICSharpCode.TextEditor.Document
                 foreach (LineSegment lineToProcess in inputLines) {
                     document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, lineToProcess.LineNumber));
                 }
-                
+
             }
             document.CommitUpdate();
             currentLine = null;
         }
-        
+
         // Span state variables
         protected bool inSpan;
         protected Span activeSpan;
         protected HighlightRuleSet activeRuleSet;
-        
+
         // Line scanning state variables
         protected int currentOffset;
         protected int currentLength;
@@ -426,14 +426,14 @@ namespace ICSharpCode.TextEditor.Document
         {
             List<TextWord> words = new List<TextWord>();
             HighlightColor markNext = null;
-            
+
             currentOffset = 0;
             currentLength = 0;
             UpdateSpanStateVariables();
-            
+
             int currentLineLength = currentLine.Length;
             int currentLineOffset = currentLine.Offset;
-            
+
             for (int i = 0; i < currentLineLength; ++i)
             {
                 char ch = document.GetCharAt(currentLineOffset + i);
@@ -502,12 +502,12 @@ namespace ICSharpCode.TextEditor.Document
                         continue;
                     }
                 }
-                            
+
                 // highlight digits
                 if (!inSpan && (Char.IsDigit(ch) || (ch == '.' && i + 1 < currentLineLength && Char.IsDigit(document.GetCharAt(currentLineOffset + i + 1)))) && currentLength == 0) {
                     bool ishex = false;
                     bool isfloatingpoint = false;
-                                
+
                     if (ch == '0' && i + 1 < currentLineLength && Char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'X') { // hex digits
                         const string hex = "0123456789ABCDEF";
                         ++currentLength;
@@ -534,7 +534,7 @@ namespace ICSharpCode.TextEditor.Document
                             ++currentLength;
                         }
                     }
-                                
+
                     if (i + 1 < currentLineLength && Char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'E') {
                         isfloatingpoint = true;
                         ++i;
@@ -548,7 +548,7 @@ namespace ICSharpCode.TextEditor.Document
                             ++currentLength;
                         }
                     }
-                                
+
                     if (i + 1 < currentLine.Length) {
                         char nextch = Char.ToUpper(document.GetCharAt(currentLineOffset + i + 1));
                         if (nextch == 'F' || nextch == 'M' || nextch == 'D') {
@@ -557,7 +557,7 @@ namespace ICSharpCode.TextEditor.Document
                             ++currentLength;
                         }
                     }
-                                
+
                     if (!isfloatingpoint) {
                         bool isunsigned = false;
                         if (i + 1 < currentLineLength && Char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'U') {
@@ -574,7 +574,7 @@ namespace ICSharpCode.TextEditor.Document
                             }
                         }
                     }
-                                
+
                     words.Add(new TextWord(document, currentLine, currentOffset, currentLength, DigitColor, false));
                     currentOffset += currentLength;
                     currentLength = 0;
@@ -639,7 +639,7 @@ namespace ICSharpCode.TextEditor.Document
                         continue;
                     }
                 }
-                            
+
                 // check if the char is a delimiter
                 if (activeRuleSet != null && (int)ch < 256 && activeRuleSet.Delimiters[(int)ch]) {
                     PushCurWord(document, ref markNext, words);
@@ -652,23 +652,23 @@ namespace ICSharpCode.TextEditor.Document
 
                 ++currentLength;
             }
-            
+
             PushCurWord(document, ref markNext, words);
-            
+
             OnParsedLine(document, currentLine, words);
-            
+
             return words;
         }
-        
+
         protected virtual void OnParsedLine(IDocument document, LineSegment currentLine, List<TextWord> words)
         {
         }
-        
+
         protected virtual bool OverrideSpan(string spanBegin, IDocument document, List<TextWord> words, Span span, ref int lineOffset)
         {
             return false;
         }
-        
+
         /// <summary>
         /// pushes the curWord string on the word list, with the
         /// correct color.
@@ -696,7 +696,7 @@ namespace ICSharpCode.TextEditor.Document
                         pInd--;
                     }
                 }
-                
+
                 if (inSpan) {
                     HighlightColor c = null;
                     bool hasDefaultColor = true;
@@ -706,7 +706,7 @@ namespace ICSharpCode.TextEditor.Document
                         c = GetColor(activeRuleSet, document, currentLine, currentOffset, currentLength);
                         hasDefaultColor = false;
                     }
-                    
+
                     if (c == null) {
                         c = activeSpan.Color;
                         if (c.Color == Color.Transparent) {
@@ -723,7 +723,7 @@ namespace ICSharpCode.TextEditor.Document
                         words.Add(new TextWord(document, currentLine, currentOffset, currentLength, c, false));
                     }
                 }
-                
+
                 if (activeRuleSet != null) {
                     NextMarker nextMarker = (NextMarker)activeRuleSet.NextMarkers[document, currentLine, currentOffset, currentLength];
                     if (nextMarker != null) {
@@ -740,7 +740,7 @@ namespace ICSharpCode.TextEditor.Document
                 currentLength = 0;
             }
         }
-        
+
         #region Matching
         /// <summary>
         /// get the string, which matches the regular expression expr,
@@ -750,11 +750,11 @@ namespace ICSharpCode.TextEditor.Document
         {
             int j = 0;
             StringBuilder regexpr = new StringBuilder();
-            
+
             for (int i = 0; i < expr.Length; ++i, ++j) {
                 if (index + j >= lineSegment.Length)
                     break;
-                
+
                 switch (expr[i]) {
                     case '@': // "special" meaning
                         ++i;
@@ -783,7 +783,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return regexpr.ToString();
         }
-        
+
         /// <summary>
         /// returns true, if the get the string s2 at index matches the expression expr
         /// </summary>

@@ -29,12 +29,12 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         private int endOffset;
         private DeclarationViewWindow declarationViewWindow;
         private readonly Rectangle workingScreen;
-        
+
         public static CodeCompletionWindow ShowCompletionWindow(Form parent, TextEditorControl control, string fileName, ICompletionDataProvider completionDataProvider, char firstChar)
         {
             return ShowCompletionWindow(parent, control, fileName, completionDataProvider, firstChar, true, true);
         }
-        
+
         public static CodeCompletionWindow ShowCompletionWindow(Form parent, TextEditorControl control, string fileName, ICompletionDataProvider completionDataProvider, char firstChar, bool showDeclarationWindow, bool fixedListViewWidth)
         {
             ICompletionData[] completionData = completionDataProvider.GenerateCompletionData(fileName, control.ActiveTextAreaControl.TextArea, firstChar);
@@ -62,7 +62,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 startOffset -= completionDataProvider.PreSelection.Length + 1;
                 endOffset--;
             }
-            
+
             codeCompletionListView = new CodeCompletionListView(completionData);
             codeCompletionListView.ImageList = completionDataProvider.ImageList;
             codeCompletionListView.Dock = DockStyle.Fill;
@@ -70,7 +70,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             codeCompletionListView.DoubleClick += new EventHandler(CodeCompletionListViewDoubleClick);
             codeCompletionListView.Click  += new EventHandler(CodeCompletionListViewClick);
             Controls.Add(codeCompletionListView);
-            
+
             if (completionData.Length > MaxListLength) {
                 vScrollBar.Dock = DockStyle.Right;
                 vScrollBar.Minimum = 0;
@@ -80,10 +80,10 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 codeCompletionListView.FirstItemChanged += new EventHandler(CodeCompletionListViewFirstItemChanged);
                 Controls.Add(vScrollBar);
             }
-            
+
             drawingSize = GetListViewSize();
             SetLocation();
-            
+
             if (declarationViewWindow == null) {
                 declarationViewWindow = new DeclarationViewWindow(parentForm);
             }
@@ -92,15 +92,15 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             declarationViewWindow.MouseMove += ControlMouseMove;
             control.Focus();
             CodeCompletionListViewSelectedItemChanged(this, EventArgs.Empty);
-            
+
             if (completionDataProvider.DefaultIndex >= 0) {
                 codeCompletionListView.SelectIndex(completionDataProvider.DefaultIndex);
             }
-            
+
             if (completionDataProvider.PreSelection != null) {
                 CaretOffsetChanged(this, EventArgs.Empty);
             }
-            
+
             vScrollBar.ValueChanged += VScrollBarValueChanged;
             document.DocumentAboutToBeChanged += DocumentAboutToBeChanged;
         }
@@ -153,7 +153,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 declarationViewWindow.Refresh();
             }
         }
-        
+
         protected override void SetLocation()
         {
             base.SetLocation();
@@ -163,7 +163,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         }
 
         private readonly Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
-        
+
         public void HandleMouseWheel(MouseEventArgs e)
         {
             int scrollDistance = mouseWheelHandler.GetScrollAmount(e);
@@ -185,7 +185,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 declarationViewWindow.Description = null;
             }
         }
-        
+
         public override bool ProcessKeyEvent(char ch)
         {
             switch (dataProvider.ProcessKey(ch)) {
@@ -217,14 +217,14 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 }
             }
         }
-        
+
         /// <summary>
         /// When this flag is set, code completion closes if the caret moves to the
         /// beginning of the allowed range. This is useful in Ctrl+Space and "complete when typing",
         /// but not in dot-completion.
         /// </summary>
         public bool CloseWhenCaretAtBeginning { get; set; }
-        
+
         protected override void CaretOffsetChanged(object sender, EventArgs e)
         {
             int offset = control.ActiveTextAreaControl.Caret.Offset;
@@ -239,13 +239,13 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 codeCompletionListView.SelectItemWithStart(control.Document.GetText(startOffset, offset - startOffset));
             }
         }
-        
+
         protected override bool ProcessTextAreaKey(Keys keyData)
         {
             if (!Visible) {
                 return false;
             }
-            
+
             switch (keyData) {
                 case Keys.Home:
                     codeCompletionListView.SelectIndex(0);
@@ -284,7 +284,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         {
             control.ActiveTextAreaControl.TextArea.Focus();
         }
-        
+
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
@@ -308,7 +308,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             bool result = false;
             if (data != null) {
                 control.BeginUpdate();
-                
+
                 try {
                     if (endOffset - startOffset > 0) {
                         control.Document.Remove(startOffset, endOffset - startOffset);
@@ -332,7 +332,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             }
             return new Size(width, height);
         }
-        
+
         /// <summary>
         /// Gets the list view width large enough to handle the longest completion data
         /// text string.
@@ -353,7 +353,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                     }
                 }
             }
-            
+
             float totalItemsHeight = codeCompletionListView.ItemHeight * completionData.Length;
             if (totalItemsHeight > height) {
                 width += ScrollbarWidth; // Compensate for scroll bar.

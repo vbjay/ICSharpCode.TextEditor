@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor.Document
         Underlined,
         WaveLine
     }
-    
+
     /// <summary>
     /// Marks a part of a document.
     /// </summary>
@@ -42,7 +42,7 @@ namespace ICSharpCode.TextEditor.Document
             set => length = value;
         }
         #endregion
-        
+
         public override string ToString()
         {
             return String.Format("[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
@@ -63,7 +63,7 @@ namespace ICSharpCode.TextEditor.Document
         /// Marks the text segment as read-only.
         /// </summary>
         public bool IsReadOnly { get; set; }
-        
+
         public string ToolTip { get; set; } = null;
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace ICSharpCode.TextEditor.Document
         public TextMarker(int offset, int length, TextMarkerType textMarkerType) : this(offset, length, textMarkerType, Color.Red)
         {
         }
-        
+
         public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color)
         {
             if (length < 1) length = 1;
@@ -83,7 +83,7 @@ namespace ICSharpCode.TextEditor.Document
             this.TextMarkerType  = textMarkerType;
             this.Color           = color;
         }
-        
+
         public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
         {
             if (length < 1) length = 1;

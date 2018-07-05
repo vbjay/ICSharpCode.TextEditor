@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor.Document
         ICollection<SyntaxMode> SyntaxModes {
             get;
         }
-        
+
         XmlTextReader GetSyntaxModeFile(SyntaxMode syntaxMode);
         void UpdateSyntaxModeList();
     }

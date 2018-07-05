@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Document
     {
         private readonly string    directory;
         private List<SyntaxMode> syntaxModes;
-        
+
         public ICollection<SyntaxMode> SyntaxModes => syntaxModes;
 
         public FileSyntaxModeProvider(string directory)
@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor.Document
             this.directory = directory;
             UpdateSyntaxModeList();
         }
-        
+
         public void UpdateSyntaxModeList()
         {
             string syntaxModeFile = Path.Combine(directory, "SyntaxModes.xml");
@@ -37,7 +37,7 @@ namespace ICSharpCode.TextEditor.Document
                 syntaxModes = ScanDirectory(directory);
             }
         }
-        
+
         public XmlTextReader GetSyntaxModeFile(SyntaxMode syntaxMode)
         {
             string syntaxModeFile = Path.Combine(directory, syntaxMode.FileName);
@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor.Document
                     }
                 bailout:
                     reader.Close();
-                    
+
                 }
             }
             return modes;

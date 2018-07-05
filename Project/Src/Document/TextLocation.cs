@@ -19,7 +19,7 @@ namespace ICSharpCode.TextEditor
         /// Represents no text location (-1, -1).
         /// </summary>
         public static readonly TextLocation Empty = new TextLocation(-1, -1);
-        
+
         public TextLocation(int column, int line)
         {
             X = column;
@@ -34,45 +34,45 @@ namespace ICSharpCode.TextEditor
             get => Y;
             set => Y = value;
         }
-        
+
         public int Column {
             get => X;
             set => X = value;
         }
-        
+
         public bool IsEmpty => X <= 0 && Y <= 0;
 
         public override string ToString()
         {
             return string.Format("(Line {1}, Col {0})", X, Y);
         }
-        
+
         public override int GetHashCode()
         {
             return unchecked (87 * X.GetHashCode() ^ Y.GetHashCode());
         }
-        
+
         public override bool Equals(object obj)
         {
             if (!(obj is TextLocation)) return false;
             return (TextLocation)obj == this;
         }
-        
+
         public bool Equals(TextLocation other)
         {
             return this == other;
         }
-        
+
         public static bool operator ==(TextLocation a, TextLocation b)
         {
             return a.X == b.X && a.Y == b.Y;
         }
-        
+
         public static bool operator !=(TextLocation a, TextLocation b)
         {
             return a.X != b.X || a.Y != b.Y;
         }
-        
+
         public static bool operator <(TextLocation a, TextLocation b)
         {
             if (a.Y < b.Y)
@@ -82,7 +82,7 @@ namespace ICSharpCode.TextEditor
             else
                 return false;
         }
-        
+
         public static bool operator >(TextLocation a, TextLocation b)
         {
             if (a.Y > b.Y)
@@ -92,17 +92,17 @@ namespace ICSharpCode.TextEditor
             else
                 return false;
         }
-        
+
         public static bool operator <=(TextLocation a, TextLocation b)
         {
             return !(a > b);
         }
-        
+
         public static bool operator >=(TextLocation a, TextLocation b)
         {
             return !(a < b);
         }
-        
+
         public int CompareTo(TextLocation other)
         {
             if (this == other)

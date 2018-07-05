@@ -36,7 +36,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.FoldingManager.NotifyFoldingsChanged(EventArgs.Empty);
         }
     }
-    
+
     public class ToggleAllFoldings : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -54,7 +54,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.FoldingManager.NotifyFoldingsChanged(EventArgs.Empty);
         }
     }
-    
+
     public class ShowDefinitionsOnly : AbstractEditAction
     {
         public override void Execute(TextArea textArea)

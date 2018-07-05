@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor.Document
     {
         Bookmark CreateBookmark(IDocument document, TextLocation location);
     }
-    
+
     /// <summary>
     /// This class handles the bookmarks for a buffer
     /// </summary>
@@ -27,7 +27,7 @@ namespace ICSharpCode.TextEditor.Document
         #else
         List<Bookmark> bookmark = new List<Bookmark>();
         #endif
-        
+
         /// <value>
         /// Contains all bookmarks
         /// </value>
@@ -42,12 +42,12 @@ namespace ICSharpCode.TextEditor.Document
         {
             this.Document = document;
         }
-        
+
         /// <summary>
         /// Gets/Sets the bookmark factory used to create bookmarks for "ToggleMarkAt".
         /// </summary>
         public IBookmarkFactory Factory { get; set;}
-        
+
         /// <summary>
         /// Sets the mark at the line <code>location.Line</code> if it is not set, if the
         /// line is already marked the mark is cleared.
@@ -60,35 +60,35 @@ namespace ICSharpCode.TextEditor.Document
             } else {
                 newMark = new Bookmark(Document, location);
             }
-            
+
             Type newMarkType = newMark.GetType();
-            
+
             for (int i = 0; i < bookmark.Count; ++i) {
                 Bookmark mark = bookmark[i];
-                
+
                 if (mark.LineNumber == location.Line && mark.CanToggle && mark.GetType() == newMarkType) {
                     bookmark.RemoveAt(i);
                     OnRemoved(new BookmarkEventArgs(mark));
                     return;
                 }
             }
-            
+
             bookmark.Add(newMark);
             OnAdded(new BookmarkEventArgs(newMark));
         }
-        
+
         public void AddMark(Bookmark mark)
         {
             bookmark.Add(mark);
             OnAdded(new BookmarkEventArgs(mark));
         }
-        
+
         public void RemoveMark(Bookmark mark)
         {
             bookmark.Remove(mark);
             OnRemoved(new BookmarkEventArgs(mark));
         }
-        
+
         public void RemoveMarks(Predicate<Bookmark> predicate)
         {
             for (int i = 0; i < bookmark.Count; ++i) {
@@ -99,7 +99,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         /// <returns>
         /// true, if a mark at mark exists, otherwise false
         /// </returns>
@@ -112,7 +112,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return false;
         }
-        
+
         /// <remarks>
         /// Clears all bookmark
         /// </remarks>
@@ -123,7 +123,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             bookmark.Clear();
         }
-        
+
         /// <value>
         /// The lowest mark, if no marks exists it returns -1
         /// </value>
@@ -140,7 +140,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return first;
         }
-        
+
         /// <value>
         /// The highest mark, if no marks exists it returns -1
         /// </value>
@@ -166,7 +166,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             return GetNextMark(curLineNr, AcceptAnyMarkPredicate);
         }
-        
+
         /// <remarks>
         /// returns first mark higher than <code>lineNr</code>
         /// </remarks>
@@ -178,7 +178,7 @@ namespace ICSharpCode.TextEditor.Document
             if (bookmark.Count == 0) {
                 return null;
             }
-            
+
             Bookmark next = GetFirstMark(predicate);
             foreach (Bookmark mark in bookmark) {
                 if (predicate(mark) && mark.IsEnabled && mark.LineNumber > curLineNr) {
@@ -189,7 +189,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return next;
         }
-        
+
         public Bookmark GetPrevMark(int curLineNr)
         {
             return GetPrevMark(curLineNr, AcceptAnyMarkPredicate);
@@ -205,9 +205,9 @@ namespace ICSharpCode.TextEditor.Document
             if (bookmark.Count == 0) {
                 return null;
             }
-            
+
             Bookmark prev = GetLastMark(predicate);
-            
+
             foreach (Bookmark mark in bookmark) {
                 if (predicate(mark) && mark.IsEnabled && mark.LineNumber < curLineNr) {
                     if (mark.LineNumber > prev.LineNumber || prev.LineNumber >= curLineNr) {
@@ -217,21 +217,21 @@ namespace ICSharpCode.TextEditor.Document
             }
             return prev;
         }
-        
+
         protected virtual void OnRemoved(BookmarkEventArgs e)
         {
             if (Removed != null) {
                 Removed(this, e);
             }
         }
-        
+
         protected virtual void OnAdded(BookmarkEventArgs e)
         {
             if (Added != null) {
                 Added(this, e);
             }
         }
-        
+
         public event BookmarkEventHandler Removed;
         public event BookmarkEventHandler Added;
     }

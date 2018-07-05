@@ -19,7 +19,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.ClipboardHandler.Cut(null, null);
         }
     }
-    
+
     public class Copy : AbstractEditAction
     {
         public override void Execute(TextArea textArea)

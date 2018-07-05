@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Document
 
         private readonly IDocument document;
         private IHighlightingStrategy highlightingStrategy;
-        
+
         public IList<LineSegment> LineSegmentCollection => lineCollection;
 
         public int TotalNumberOfLines => lineCollection.Count;
@@ -33,38 +33,38 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         public LineManager(IDocument document, IHighlightingStrategy highlightingStrategy)
         {
             this.document = document;
             this.highlightingStrategy = highlightingStrategy;
         }
-        
+
         public int GetLineNumberForOffset(int offset)
         {
             return GetLineSegmentForOffset(offset).LineNumber;
         }
-        
+
         public LineSegment GetLineSegmentForOffset(int offset)
         {
             return lineCollection.GetByOffset(offset);
         }
-        
+
         public LineSegment GetLineSegment(int lineNr)
         {
             return lineCollection[lineNr];
         }
-        
+
         public void Insert(int offset, string text)
         {
             Replace(offset, 0, text);
         }
-        
+
         public void Remove(int offset, int length)
         {
             Replace(offset, length, String.Empty);
         }
-        
+
         public void Replace(int offset, int length, string text)
         {
             Debug.WriteLine("Replace offset="+offset+" length="+length+" text.Length="+text.Length);
@@ -85,7 +85,7 @@ namespace ICSharpCode.TextEditor.Document
             // Only fire events after RemoveInternal+InsertInternal finished completely:
             // Otherwise we would expose inconsistent state to the event handlers.
             RunHighlighter(lineStart, 1 + Math.Max(0, TotalNumberOfLines - numberOfLinesAfterRemoving));
-            
+
             if (deferredEventList.removedLines != null) {
                 foreach (LineSegment ls in deferredEventList.removedLines)
                     OnLineDeleted(new LineEventArgs(document, ls));
@@ -114,8 +114,7 @@ namespace ICSharpCode.TextEditor.Document
             int charactersRemovedInStartLine = startSegmentOffset + startSegment.TotalLength - offset;
             Debug.Assert(charactersRemovedInStartLine > 0);
             startSegment.RemovedLinePart(ref deferredEventList, offset - startSegmentOffset, charactersRemovedInStartLine);
-            
-            
+
             LineSegment endSegment = lineCollection.GetByOffset(offset + length);
             if (endSegment == startSegment) {
                 // special case: we are removing a part of the last line up to the
@@ -161,10 +160,10 @@ namespace ICSharpCode.TextEditor.Document
                 lineCollection.SetSegmentLength(segment, lineBreakOffset - segmentOffset);
                 LineSegment newSegment = lineCollection.InsertSegmentAfter(segment, lengthAfterInsertionPos);
                 segment.DelimiterLength = ds.Length;
-                
+
                 segment = newSegment;
                 lastDelimiterEnd = ds.Offset + ds.Length;
-                
+
                 ds = NextDelimiter(text, lastDelimiterEnd);
             }
             firstLine.SplitTo(segment);
@@ -196,7 +195,7 @@ namespace ICSharpCode.TextEditor.Document
                 highlightingStrategy.MarkTokens(document, markLines);
             }
         }
-        
+
         public void SetContent(string text)
         {
             lineCollection.Clear();
@@ -204,13 +203,13 @@ namespace ICSharpCode.TextEditor.Document
                 Replace(0, 0, text);
             }
         }
-        
+
         public int GetVisibleLine(int logicalLineNumber)
         {
             if (!document.TextEditorProperties.EnableFolding) {
                 return logicalLineNumber;
             }
-            
+
             int visibleLine = 0;
             int foldEnd = 0;
             List<FoldMarker> foldings = document.FoldingManager.GetTopLevelFoldedFoldings();
@@ -230,7 +229,7 @@ namespace ICSharpCode.TextEditor.Document
             visibleLine += logicalLineNumber - foldEnd;
             return visibleLine;
         }
-        
+
         public int GetFirstLogicalLine(int visibleLineNumber)
         {
             if (!document.TextEditorProperties.EnableFolding) {
@@ -253,7 +252,7 @@ namespace ICSharpCode.TextEditor.Document
             foldings = null;
             return foldEnd + visibleLineNumber - v;
         }
-        
+
         public int GetLastLogicalLine(int visibleLineNumber)
         {
             if (!document.TextEditorProperties.EnableFolding) {
@@ -261,7 +260,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return GetFirstLogicalLine(visibleLineNumber + 1) - 1;
         }
-        
+
         // TODO : speedup the next/prev visible line search
         // HOW? : save the foldings in a sorted list and lookup the
         //        line numbers in this list
@@ -280,7 +279,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return Math.Min(TotalNumberOfLines - 1, curLineNumber);
         }
-        
+
         public int GetNextVisibleLineBelow(int lineNumber, int lineCount)
         {
             int curLineNumber = lineNumber;
@@ -296,7 +295,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return Math.Max(0, curLineNumber);
         }
-        
+
         // use always the same DelimiterSegment object for the NextDelimiter
         private readonly DelimiterSegment delimiterSegment = new DelimiterSegment();
 
@@ -345,7 +344,7 @@ namespace ICSharpCode.TextEditor.Document
                 LineDeleted(this, e);
             }
         }
-        
+
         public event EventHandler<LineLengthChangeEventArgs> LineLengthChanged;
         public event EventHandler<LineCountChangeEventArgs> LineCountChanged;
         public event EventHandler<LineEventArgs> LineDeleted;

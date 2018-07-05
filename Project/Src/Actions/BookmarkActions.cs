@@ -17,19 +17,19 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Document.BookmarkManager.ToggleMarkAt(textArea.Caret.Position);
             textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, textArea.Caret.Line));
             textArea.Document.CommitUpdate();
-            
+
         }
     }
-    
+
     public class GotoPrevBookmark : AbstractEditAction
     {
         private readonly Predicate<Bookmark> predicate;
-        
+
         public GotoPrevBookmark(Predicate<Bookmark> predicate)
         {
             this.predicate = predicate;
         }
-        
+
         public override void Execute(TextArea textArea)
         {
             Bookmark mark = textArea.Document.BookmarkManager.GetPrevMark(textArea.Caret.Line, predicate);
@@ -40,16 +40,16 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class GotoNextBookmark : AbstractEditAction
     {
         private readonly Predicate<Bookmark> predicate;
-        
+
         public GotoNextBookmark(Predicate<Bookmark> predicate)
         {
             this.predicate = predicate;
         }
-        
+
         public override void Execute(TextArea textArea)
         {
             Bookmark mark = textArea.Document.BookmarkManager.GetNextMark(textArea.Caret.Line, predicate);
@@ -60,16 +60,16 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class ClearAllBookmarks : AbstractEditAction
     {
         private readonly Predicate<Bookmark> predicate;
-        
+
         public ClearAllBookmarks(Predicate<Bookmark> predicate)
         {
             this.predicate = predicate;
         }
-        
+
         public override void Execute(TextArea textArea)
         {
             textArea.Document.BookmarkManager.RemoveMarks(predicate);

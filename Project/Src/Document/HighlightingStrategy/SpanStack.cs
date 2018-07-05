@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             public readonly StackNode Previous;
             public readonly Span Data;
-            
+
             public StackNode(StackNode previous, Span data)
             {
                 Previous = previous;
@@ -29,24 +29,24 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         private StackNode top;
-        
+
         public Span Pop()
         {
             Span s = top.Data;
             top = top.Previous;
             return s;
         }
-        
+
         public Span Peek()
         {
             return top.Data;
         }
-        
+
         public void Push(Span s)
         {
             top = new StackNode(top, s);
         }
-        
+
         public bool IsEmpty => top == null;
 
         public SpanStack Clone()
@@ -59,7 +59,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             return Clone();
         }
-        
+
         public Enumerator GetEnumerator()
         {
             return new Enumerator(new StackNode(top, null));
@@ -72,16 +72,16 @@ namespace ICSharpCode.TextEditor.Document
         {
             return GetEnumerator();
         }
-        
+
         public struct Enumerator : IEnumerator<Span>
         {
             private StackNode c;
-            
+
             internal Enumerator(StackNode node)
             {
                 c = node;
             }
-            
+
             public Span Current => c.Data;
 
             object System.Collections.IEnumerator.Current => c.Data;
@@ -90,13 +90,13 @@ namespace ICSharpCode.TextEditor.Document
             {
                 c = null;
             }
-            
+
             public bool MoveNext()
             {
                 c = c.Previous;
                 return c != null;
             }
-            
+
             public void Reset()
             {
                 throw new NotSupportedException();

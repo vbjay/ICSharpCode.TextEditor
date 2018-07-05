@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
         /// <param name="fileName">The name of the edited file</param>
         /// <param name="textArea">The text area in which the file is being edited</param>
         void SetupDataProvider(string fileName, TextArea textArea);
-        
+
         /// <summary>
         /// Notifies the insight provider that the caret offset has changed.
         /// </summary>
@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
         /// caret was moved outside the region where insight is displayed for).
         /// Return false to keep the window open.</returns>
         bool CaretOffsetChanged();
-        
+
         /// <summary>
         /// Gets the text to display in the insight window.
         /// </summary>
@@ -34,7 +34,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
         /// <returns>The text to display, e.g. a multi-line string where
         /// the first line is the method definition, followed by a description.</returns>
         string GetInsightData(int number);
-        
+
         /// <summary>
         /// Gets the number of available insight entries, e.g. the number of available
         /// overloads to call.
@@ -42,7 +42,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
         int InsightDataCount {
             get;
         }
-        
+
         /// <summary>
         /// Gets the index of the entry to initially select.
         /// </summary>

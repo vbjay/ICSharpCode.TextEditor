@@ -31,7 +31,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 }
             }
         }
-        
+
         public ICompletionData SelectedCompletionData {
             get {
                 if (selectedItem < 0) {
@@ -40,7 +40,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 return completionData[selectedItem];
             }
         }
-        
+
         public int ItemHeight => Math.Max(ImageList.ImageSize.Height, (int)(Font.Height * 1.25));
 
         public int MaxVisibleItem => Height / ItemHeight;
@@ -49,13 +49,13 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         {
             Array.Sort(completionData, DefaultCompletionData.Compare);
             this.completionData = completionData;
-            
+
 //            this.KeyDown += new System.Windows.Forms.KeyEventHandler(OnKey);
 //            SetStyle(ControlStyles.Selectable, false);
 //            SetStyle(ControlStyles.UserPaint, true);
 //            SetStyle(ControlStyles.DoubleBuffer, false);
         }
-        
+
         public void Close()
         {
             if (completionData != null) {
@@ -63,12 +63,12 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             }
             base.Dispose();
         }
-        
+
         public void SelectIndex(int index)
         {
             int oldSelectedItem = selectedItem;
             int oldFirstItem    = firstItem;
-            
+
             index = Math.Max(0, index);
             selectedItem = Math.Max(0, Math.Min(completionData.Length - 1, index));
             if (selectedItem < firstItem) {
@@ -88,7 +88,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 OnSelectedItemChanged(EventArgs.Empty);
             }
         }
-        
+
         public void CenterViewOn(int index)
         {
             int oldFirstItem = FirstItem;
@@ -103,7 +103,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 Invalidate();
             }
         }
-        
+
         public void ClearSelection()
         {
             if (selectedItem < 0)
@@ -114,27 +114,27 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             Update();
             OnSelectedItemChanged(EventArgs.Empty);
         }
-        
+
         public void PageDown()
         {
             SelectIndex(selectedItem + MaxVisibleItem);
         }
-        
+
         public void PageUp()
         {
             SelectIndex(selectedItem - MaxVisibleItem);
         }
-        
+
         public void SelectNextItem()
         {
             SelectIndex(selectedItem + 1);
         }
-        
+
         public void SelectPrevItem()
         {
             SelectIndex(selectedItem - 1);
         }
-        
+
         public void SelectItemWithStart(string startText)
         {
             if (startText == null || startText.Length == 0) return;
@@ -193,14 +193,14 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 }
             }
         }
-        
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             float yPos       = 1;
             float itemHeight = ItemHeight;
             // Maintain aspect ratio
             int imageWidth = (int)(itemHeight * ImageList.ImageSize.Width / ImageList.ImageSize.Height);
-            
+
             int curItem = firstItem;
             Graphics g  = pe.Graphics;
             while (curItem < completionData.Length && yPos < Height) {
@@ -212,14 +212,14 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                     } else {
                         g.FillRectangle(SystemBrushes.Window, drawingBackground);
                     }
-                    
+
                     // draw Icon
                     int   xPos   = 0;
                     if (ImageList != null && completionData[curItem].ImageIndex < ImageList.Images.Count) {
                         g.DrawImage(ImageList.Images[completionData[curItem].ImageIndex], new RectangleF(1, yPos, imageWidth, itemHeight));
                         xPos = imageWidth;
                     }
-                    
+
                     // draw text
                     if (curItem == selectedItem) {
                         g.DrawString(completionData[curItem].Text, Font, SystemBrushes.HighlightText, xPos, yPos);
@@ -227,19 +227,19 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                         g.DrawString(completionData[curItem].Text, Font, SystemBrushes.WindowText, xPos, yPos);
                     }
                 }
-                
+
                 yPos += itemHeight;
                 ++curItem;
             }
             g.DrawRectangle(SystemPens.Control, new Rectangle(0, 0, Width - 1, Height - 1));
         }
-        
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             float yPos       = 1;
             int curItem = firstItem;
             float itemHeight = ItemHeight;
-            
+
             while (curItem < completionData.Length && yPos < Height) {
                 RectangleF drawingBackground = new RectangleF(1, yPos, Width - 2, itemHeight);
                 if (drawingBackground.Contains(e.X, e.Y)) {
@@ -250,25 +250,25 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 ++curItem;
             }
         }
-        
+
         protected override void OnPaintBackground(PaintEventArgs pe)
         {
         }
-        
+
         protected virtual void OnSelectedItemChanged(EventArgs e)
         {
             if (SelectedItemChanged != null) {
                 SelectedItemChanged(this, e);
             }
         }
-        
+
         protected virtual void OnFirstItemChanged(EventArgs e)
         {
             if (FirstItemChanged != null) {
                 FirstItemChanged(this, e);
             }
         }
-        
+
         public event EventHandler SelectedItemChanged;
         public event EventHandler FirstItemChanged;
     }

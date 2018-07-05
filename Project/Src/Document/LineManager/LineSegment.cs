@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return null;
         }
-        
+
         public bool IsDeleted => !treeEntry.IsValid;
 
         public int LineNumber => treeEntry.CurrentIndex;
@@ -45,7 +45,7 @@ namespace ICSharpCode.TextEditor.Document
             get => Length;
             set => throw new NotSupportedException();
         }
-        
+
         public int TotalLength { get; internal set; }
 
         public int DelimiterLength { get; internal set; }
@@ -66,7 +66,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return new HighlightColor(Color.Black, false, false);
         }
-        
+
         public SpanStack HighlightSpanStack { get; set; }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace ICSharpCode.TextEditor.Document
             else
                 return "[LineSegment: LineNumber=" + LineNumber + ", Offset = "+ Offset +", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
         }
-        
+
         #region Anchor management
 
         private Util.WeakCollection<TextAnchor> anchors;
-        
+
         public TextAnchor CreateAnchor(int column)
         {
             if (column < 0 || column > Length)
@@ -96,13 +96,13 @@ namespace ICSharpCode.TextEditor.Document
         private void AddAnchor(TextAnchor anchor)
         {
             Debug.Assert(anchor.Line == this);
-            
+
             if (anchors == null)
                 anchors = new Util.WeakCollection<TextAnchor>();
-            
+
             anchors.Add(anchor);
         }
-        
+
         /// <summary>
         /// Is called when the LineSegment is deleted.
         /// </summary>
@@ -117,7 +117,7 @@ namespace ICSharpCode.TextEditor.Document
                 anchors = null;
             }
         }
-        
+
         /// <summary>
         /// Is called when a part of the line is removed.
         /// </summary>
@@ -126,7 +126,7 @@ namespace ICSharpCode.TextEditor.Document
             if (length == 0)
                 return;
             Debug.Assert(length > 0);
-            
+
             //Console.WriteLine("RemovedLinePart " + startColumn + ", " + length);
             if (anchors != null) {
                 List<TextAnchor> deletedAnchors = null;
@@ -149,7 +149,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         /// <summary>
         /// Is called when a part of the line is inserted.
         /// </summary>
@@ -158,7 +158,7 @@ namespace ICSharpCode.TextEditor.Document
             if (length == 0)
                 return;
             Debug.Assert(length > 0);
-            
+
             //Console.WriteLine("InsertedLinePart " + startColumn + ", " + length);
             if (anchors != null) {
                 foreach (TextAnchor a in anchors) {
@@ -171,7 +171,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
         }
-        
+
         /// <summary>
         /// Is called after another line's content is appended to this line because the newline in between
         /// was deleted.
@@ -182,7 +182,7 @@ namespace ICSharpCode.TextEditor.Document
         internal void MergedWith(LineSegment deletedLine, int firstLineLength)
         {
             //Console.WriteLine("MergedWith");
-            
+
             if (deletedLine.anchors != null) {
                 foreach (TextAnchor a in deletedLine.anchors) {
                     a.Line = this;
@@ -192,14 +192,14 @@ namespace ICSharpCode.TextEditor.Document
                 deletedLine.anchors = null;
             }
         }
-        
+
         /// <summary>
         /// Is called after a newline was inserted into this line, splitting it into this and followingLine.
         /// </summary>
         internal void SplitTo(LineSegment followingLine)
         {
             //Console.WriteLine("SplitTo");
-            
+
             if (anchors != null) {
                 List<TextAnchor> movedAnchors = null;
                 foreach (TextAnchor a in anchors) {
@@ -210,7 +210,7 @@ namespace ICSharpCode.TextEditor.Document
                         a.Line = followingLine;
                         followingLine.AddAnchor(a);
                         a.ColumnNumber -= Length;
-                        
+
                         if (movedAnchors == null)
                             movedAnchors = new List<TextAnchor>();
                         movedAnchors.Add(a);

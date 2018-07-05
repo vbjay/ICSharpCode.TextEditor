@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ICSharpCode.TextEditor.Document
 {
-    
+
     public sealed class TextUtilities
     {
         /// <remarks>
@@ -46,13 +46,13 @@ namespace ICSharpCode.TextEditor.Document
                     break;
                 }
             }
-            
+
             if(i < line.Length) {
                 sb.Append(line.Substring(i-consecutiveSpaces));
             }
             return sb.ToString();
         }
-        
+
         public static bool IsLetterDigitOrUnderscore(char c)
         {
             if(!Char.IsLetterOrDigit(c)) {
@@ -60,13 +60,13 @@ namespace ICSharpCode.TextEditor.Document
             }
             return true;
         }
-        
+
         public enum CharacterType {
             LetterDigitOrUnderscore,
             WhiteSpace,
             Other
         }
-        
+
         /// <remarks>
         /// This method returns the expression before a specified offset.
         /// That method is used in code completion to determine the expression given
@@ -118,7 +118,7 @@ namespace ICSharpCode.TextEditor.Document
                         if (!IsLetterDigitOrUnderscore(document.GetCharAt(start))) {
                             goto done;
                         }
-                        
+
                         while (start > 0 && IsLetterDigitOrUnderscore(document.GetCharAt(start - 1))) {
                             --start;
                         }
@@ -132,7 +132,7 @@ namespace ICSharpCode.TextEditor.Document
                             case "case":
                                 goto done;
                         }
-                        
+
                         if (word.Length > 0 && !IsLetterDigitOrUnderscore(word[0])) {
                             goto done;
                         }
@@ -148,7 +148,7 @@ namespace ICSharpCode.TextEditor.Document
             //// modifications in this area too - to get full comment line and remove it afterwards
             if (offset < 0)
                 return string.Empty;
-            
+
             string resText=document.GetText(offset, textArea.Caret.Offset - offset ).Trim();
             int pos=resText.LastIndexOf('\n');
             if (pos>=0) {
@@ -158,8 +158,7 @@ namespace ICSharpCode.TextEditor.Document
             string expression = document.GetText(offset, textArea.Caret.Offset - offset ).Trim();
             return expression;
         }
-        
-        
+
         public static CharacterType GetCharacterType(char c)
         {
             if(IsLetterDigitOrUnderscore(c))
@@ -168,7 +167,7 @@ namespace ICSharpCode.TextEditor.Document
                 return CharacterType.WhiteSpace;
             return CharacterType.Other;
         }
-        
+
         public static int GetFirstNonWSChar(IDocument document, int offset)
         {
             while (offset < document.TextLength && Char.IsWhiteSpace(document.GetCharAt(offset))) {
@@ -176,7 +175,7 @@ namespace ICSharpCode.TextEditor.Document
             }
             return offset;
         }
-        
+
         public static int FindWordEnd(IDocument document, int offset)
         {
             LineSegment line   = document.GetLineSegmentForOffset(offset);
@@ -184,10 +183,10 @@ namespace ICSharpCode.TextEditor.Document
             while (offset < endPos && IsLetterDigitOrUnderscore(document.GetCharAt(offset))) {
                 ++offset;
             }
-            
+
             return offset;
         }
-        
+
         public static int FindWordStart(IDocument document, int offset)
         {
             LineSegment line = document.GetLineSegmentForOffset(offset);
@@ -195,10 +194,10 @@ namespace ICSharpCode.TextEditor.Document
             while (offset > lineOffset && IsLetterDigitOrUnderscore(document.GetCharAt(offset - 1))) {
                 --offset;
             }
-            
+
             return offset;
         }
-        
+
         // go forward to the start of the next word
         // if the cursor is at the start or in the middle of a word we move to the end of the word
         // and then past any whitespace that follows it
@@ -214,7 +213,7 @@ namespace ICSharpCode.TextEditor.Document
             while (offset < endPos && GetCharacterType(document.GetCharAt(offset)) == t) {
                 ++offset;
             }
-            
+
             // now we're at the end of the word, lets find the start of the next one by skipping whitespace
             while (offset < endPos && GetCharacterType(document.GetCharAt(offset)) == CharacterType.WhiteSpace) {
                 ++offset;
@@ -222,7 +221,7 @@ namespace ICSharpCode.TextEditor.Document
 
             return offset;
         }
-        
+
         // go back to the start of the word we are on
         // if we are already at the start of a word or if we are in whitespace, then go back
         // to the start of the previous word
@@ -235,7 +234,7 @@ namespace ICSharpCode.TextEditor.Document
                 while (offset > line.Offset && GetCharacterType(document.GetCharAt(offset - 1)) == t) {
                     --offset;
                 }
-                
+
                 // if we were in whitespace, and now we're at the end of a word or operator, go back to the beginning of it
                 if(t == CharacterType.WhiteSpace && offset > line.Offset) {
                     t = GetCharacterType(document.GetCharAt(offset - 1));
@@ -244,26 +243,26 @@ namespace ICSharpCode.TextEditor.Document
                     }
                 }
             }
-            
+
             return offset;
         }
-        
+
         public static string GetLineAsString(IDocument document, int lineNumber)
         {
             LineSegment line = document.GetLineSegment(lineNumber);
             return document.GetText(line.Offset, line.Length);
         }
-        
+
         public static int SearchBracketBackward(IDocument document, int offset, char openBracket, char closingBracket)
         {
             return document.FormattingStrategy.SearchBracketBackward(document, offset, openBracket, closingBracket);
         }
-        
+
         public static int SearchBracketForward(IDocument document, int offset, char openBracket, char closingBracket)
         {
             return document.FormattingStrategy.SearchBracketForward(document, offset, openBracket, closingBracket);
         }
-        
+
         /// <remarks>
         /// Returns true, if the line lineNumber is empty or filled with whitespaces.
         /// </remarks>
@@ -290,7 +289,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             return IsLetterDigitOrUnderscore(ch) || ch == '.';
         }
-        
+
         public static string GetWordAt(IDocument document, int offset)
         {
             if (offset < 0 || offset >= document.TextLength - 1 || !IsWordPart(document.GetCharAt(offset))) {
@@ -301,11 +300,11 @@ namespace ICSharpCode.TextEditor.Document
             while (startOffset > 0 && IsWordPart(document.GetCharAt(startOffset - 1))) {
                 --startOffset;
             }
-            
+
             while (endOffset < document.TextLength - 1 && IsWordPart(document.GetCharAt(endOffset + 1))) {
                 ++endOffset;
             }
-            
+
             Debug.Assert(endOffset >= startOffset);
             return document.GetText(startOffset, endOffset - startOffset + 1);
         }

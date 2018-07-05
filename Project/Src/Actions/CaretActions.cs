@@ -26,7 +26,7 @@ namespace ICSharpCode.TextEditor.Actions
                     break; // the first folding found is the folding with the smallest Startposition
                 }
             }
-            
+
             if (justBeforeCaret != null) {
                 position.Y = justBeforeCaret.StartLine;
                 position.X = justBeforeCaret.StartColumn;
@@ -38,12 +38,12 @@ namespace ICSharpCode.TextEditor.Actions
                     position = new TextLocation(lineAbove.Length, position.Y - 1);
                 }
             }
-            
+
             textArea.Caret.Position = position;
             textArea.SetDesiredColumn();
         }
     }
-    
+
     public class CaretRight : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -73,7 +73,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.SetDesiredColumn();
         }
     }
-    
+
     public class CaretUp : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -92,7 +92,7 @@ namespace ICSharpCode.TextEditor.Actions
 //            }
         }
     }
-    
+
     public class CaretDown : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
@@ -113,7 +113,7 @@ namespace ICSharpCode.TextEditor.Actions
 //            }
         }
     }
-    
+
     public class WordRight : CaretRight
     {
         public override void Execute(TextArea textArea)
@@ -127,7 +127,7 @@ namespace ICSharpCode.TextEditor.Actions
                 int nextWordStart = TextUtilities.FindNextWordStart(textArea.Document, textArea.Caret.Offset);
                 newPos = textArea.Document.OffsetToPosition(nextWordStart);
             }
-            
+
             // handle fold markers
             List<FoldMarker> foldings = textArea.Document.FoldingManager.GetFoldingsFromPosition(newPos.Y, newPos.X);
             foreach (FoldMarker marker in foldings) {
@@ -140,12 +140,12 @@ namespace ICSharpCode.TextEditor.Actions
                     break;
                 }
             }
-            
+
             textArea.Caret.Position = newPos;
             textArea.SetDesiredColumn();
         }
     }
-    
+
     public class WordLeft : CaretLeft
     {
         public override void Execute(TextArea textArea)
@@ -155,11 +155,11 @@ namespace ICSharpCode.TextEditor.Actions
                 base.Execute(textArea);
             } else {
                 LineSegment line   = textArea.Document.GetLineSegment(textArea.Caret.Position.Y);
-                
+
                 int prevWordStart = TextUtilities.FindPrevWordStart(textArea.Document, textArea.Caret.Offset);
-                
+
                 TextLocation newPos = textArea.Document.OffsetToPosition(prevWordStart);
-                
+
                 // handle fold markers
                 List<FoldMarker> foldings = textArea.Document.FoldingManager.GetFoldingsFromPosition(newPos.Y, newPos.X);
                 foreach (FoldMarker marker in foldings) {
@@ -175,22 +175,21 @@ namespace ICSharpCode.TextEditor.Actions
                 textArea.Caret.Position = newPos;
                 textArea.SetDesiredColumn();
             }
-            
-            
+
         }
     }
-    
+
     public class ScrollLineUp : AbstractEditAction
     {
         public override void Execute(TextArea textArea)
         {
             textArea.AutoClearSelection = false;
-            
+
             textArea.MotherTextAreaControl.VScrollBar.Value = Math.Max(textArea.MotherTextAreaControl.VScrollBar.Minimum,
                                                                        textArea.VirtualTop.Y - textArea.TextView.FontHeight);
         }
     }
-    
+
     public class ScrollLineDown : AbstractEditAction
     {
         public override void Execute(TextArea textArea)

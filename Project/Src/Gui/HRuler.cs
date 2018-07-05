@@ -17,12 +17,12 @@ namespace ICSharpCode.TextEditor
     public class HRuler : Control
     {
         private readonly TextArea textArea;
-        
+
         public HRuler(TextArea textArea)
         {
             this.textArea = textArea;
         }
-        
+
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor
                 if (num % 5 == 0) {
                     offset = (Height * 4) / 5;
                 }
-                
+
                 if (num % 10 == 0) {
                     offset = 1;
                 }
@@ -41,7 +41,7 @@ namespace ICSharpCode.TextEditor
                            (int)x, offset, (int)x, Height - offset);
             }
         }
-        
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             e.Graphics.FillRectangle(Brushes.White,

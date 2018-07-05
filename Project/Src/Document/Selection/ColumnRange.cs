@@ -22,28 +22,28 @@ namespace ICSharpCode.TextEditor.Document
         {
             this.StartColumn = startColumn;
             this.EndColumn = endColumn;
-            
+
         }
-        
+
         public override int GetHashCode()
         {
             return StartColumn + (EndColumn << 16);
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj is ColumnRange) {
                 return ((ColumnRange)obj).StartColumn == StartColumn &&
                        ((ColumnRange)obj).EndColumn == EndColumn;
-                
+
             }
             return false;
         }
-        
+
         public override string ToString()
         {
             return String.Format("[ColumnRange: StartColumn={0}, EndColumn={1}]", StartColumn, EndColumn);
         }
-        
+
     }
 }

@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Undo
         /// Undo the last operation
         /// </summary>
         void Undo();
-        
+
         /// <summary>
         /// Redo the last operation
         /// </summary>

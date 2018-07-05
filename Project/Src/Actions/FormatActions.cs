@@ -15,7 +15,7 @@ namespace ICSharpCode.TextEditor.Actions
     {
         protected TextArea textArea;
         abstract protected void Convert(IDocument document, int startLine, int endLine);
-        
+
         public override void Execute(TextArea textArea)
         {
             if (textArea.SelectionManager.SelectionIsReadonly) {
@@ -37,12 +37,12 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Refresh();
         }
     }
-    
+
     public abstract class AbstractSelectionFormatAction : AbstractEditAction
     {
         protected TextArea textArea;
         abstract protected void Convert(IDocument document, int offset, int length);
-        
+
         public override void Execute(TextArea textArea)
         {
             if (textArea.SelectionManager.SelectionIsReadonly) {
@@ -62,7 +62,7 @@ namespace ICSharpCode.TextEditor.Actions
             textArea.Refresh();
         }
     }
-    
+
     public class RemoveLeadingWS : AbstractLineFormatAction
     {
         protected override void Convert(IDocument document, int y1, int y2)
@@ -79,7 +79,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class RemoveTrailingWS : AbstractLineFormatAction
     {
         protected override void Convert(IDocument document, int y1, int y2)
@@ -96,8 +96,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
-    
+
     public class ToUpperCase : AbstractSelectionFormatAction
     {
         protected override void Convert(IDocument document, int startOffset, int length)
@@ -106,7 +105,7 @@ namespace ICSharpCode.TextEditor.Actions
             document.Replace(startOffset, length, what);
         }
     }
-    
+
     public class ToLowerCase : AbstractSelectionFormatAction
     {
         protected override void Convert(IDocument document, int startOffset, int length)
@@ -115,27 +114,27 @@ namespace ICSharpCode.TextEditor.Actions
             document.Replace(startOffset, length, what);
         }
     }
-    
+
     public class InvertCaseAction : AbstractSelectionFormatAction
     {
         protected override void Convert(IDocument document, int startOffset, int length)
         {
             StringBuilder what = new StringBuilder(document.GetText(startOffset, length));
-            
+
             for (int i = 0; i < what.Length; ++i) {
                 what[i] = Char.IsUpper(what[i]) ? Char.ToLower(what[i]) : Char.ToUpper(what[i]);
             }
-            
+
             document.Replace(startOffset, length, what.ToString());
         }
     }
-    
+
     public class CapitalizeAction : AbstractSelectionFormatAction
     {
         protected override void Convert(IDocument document, int startOffset, int length)
         {
             StringBuilder what = new StringBuilder(document.GetText(startOffset, length));
-            
+
             for (int i = 0; i < what.Length; ++i) {
                 if (!Char.IsLetter(what[i]) && i < what.Length - 1) {
                     what[i + 1] = Char.ToUpper(what[i + 1]);
@@ -143,9 +142,9 @@ namespace ICSharpCode.TextEditor.Actions
             }
             document.Replace(startOffset, length, what.ToString());
         }
-        
+
     }
-    
+
     public class ConvertTabsToSpaces : AbstractSelectionFormatAction
     {
         protected override void Convert(IDocument document, int startOffset, int length)
@@ -155,7 +154,7 @@ namespace ICSharpCode.TextEditor.Actions
             document.Replace(startOffset, length, what.Replace("\t", spaces));
         }
     }
-    
+
     public class ConvertSpacesToTabs : AbstractSelectionFormatAction
     {
         protected override void Convert(IDocument document, int startOffset, int length)
@@ -165,14 +164,14 @@ namespace ICSharpCode.TextEditor.Actions
             document.Replace(startOffset, length, what.Replace(spaces, "\t"));
         }
     }
-    
+
     public class ConvertLeadingTabsToSpaces : AbstractLineFormatAction
     {
         protected override void Convert(IDocument document, int y1, int y2)
         {
             for (int i = y2; i >= y1; --i) {
                 LineSegment line = document.GetLineSegment(i);
-                
+
                 if(line.Length > 0) {
                     // count how many whitespace characters there are at the start
                     int whiteSpace = 0;
@@ -188,7 +187,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
     }
-    
+
     public class ConvertLeadingSpacesToTabs : AbstractLineFormatAction
     {
         protected override void Convert(IDocument document, int y1, int y2)

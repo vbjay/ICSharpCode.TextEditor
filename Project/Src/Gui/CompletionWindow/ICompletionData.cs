@@ -14,16 +14,16 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         int ImageIndex {
             get;
         }
-        
+
         string Text {
             get;
             set;
         }
-        
+
         string Description {
             get;
         }
-        
+
         /// <summary>
         /// Gets a priority value for the completion data item.
         /// When selecting items by their start characters, the item with the highest
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         double Priority {
             get;
         }
-        
+
         /// <summary>
         /// Insert the element represented by the completion data into the text
         /// editor.
@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         /// <paramref name="ch"/>; false when the character was not processed.</returns>
         bool InsertAction(TextArea textArea, char ch);
     }
-    
+
     public class DefaultCompletionData : ICompletionData
     {
         public int ImageIndex { get; }
@@ -60,20 +60,20 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             textArea.InsertString(Text);
             return false;
         }
-        
+
         public DefaultCompletionData(string text, int imageIndex)
         {
             this.Text        = text;
             this.ImageIndex  = imageIndex;
         }
-        
+
         public DefaultCompletionData(string text, string description, int imageIndex)
         {
             this.Text        = text;
             this.Description = description;
             this.ImageIndex  = imageIndex;
         }
-        
+
         public static int Compare(ICompletionData a, ICompletionData b)
         {
             if (a == null)

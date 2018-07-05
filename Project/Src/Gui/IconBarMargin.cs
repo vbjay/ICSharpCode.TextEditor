@@ -23,16 +23,15 @@ namespace ICSharpCode.TextEditor
         private const int iconBarWidth = 18;
 
         private static readonly Size iconBarSize = new Size(iconBarWidth, -1);
-        
+
         public override Size Size => iconBarSize;
 
         public override bool IsVisible => textArea.TextEditorProperties.IsIconBarVisible;
 
-
         public IconBarMargin(TextArea textArea) : base(textArea)
         {
         }
-        
+
         public override void Paint(Graphics g, Rectangle rect)
         {
             if (rect.Width <= 0 || rect.Height <= 0) {
@@ -41,7 +40,7 @@ namespace ICSharpCode.TextEditor
             // paint background
             g.FillRectangle(SystemBrushes.Control, new Rectangle(drawingPosition.X, rect.Top, drawingPosition.Width - 1, rect.Height));
             g.DrawLine(SystemPens.ControlDark, drawingPosition.Right - 1, rect.Top, drawingPosition.Right - 1, rect.Bottom);
-            
+
             // paint icons
             foreach (Bookmark mark in textArea.Document.BookmarkManager.Marks) {
                 int lineNumber = textArea.Document.GetVisibleLine(mark.LineNumber);
@@ -57,18 +56,18 @@ namespace ICSharpCode.TextEditor
             }
             base.Paint(g, rect);
         }
-        
+
         public override void HandleMouseDown(Point mousePos, MouseButtons mouseButtons)
         {
             int clickedVisibleLine = (mousePos.Y + textArea.VirtualTop.Y) / textArea.TextView.FontHeight;
             int lineNumber = textArea.Document.GetFirstLogicalLine(clickedVisibleLine);
-            
+
             if ((mouseButtons & MouseButtons.Right) == MouseButtons.Right) {
                 if (textArea.Caret.Line != lineNumber) {
                     textArea.Caret.Line = lineNumber;
                 }
             }
-            
+
             IList<Bookmark> marks = textArea.Document.BookmarkManager.Marks;
             List<Bookmark> marksInLine = new List<Bookmark>();
             int oldCount = marks.Count;
@@ -88,7 +87,7 @@ namespace ICSharpCode.TextEditor
             }
             base.HandleMouseDown(mousePos, mouseButtons);
         }
-        
+
         #region Drawing functions
         public void DrawBreakpoint(Graphics g, int y, bool isEnabled, bool isHealthy)
         {
@@ -97,8 +96,7 @@ namespace ICSharpCode.TextEditor
                                            y + (textArea.TextView.FontHeight - diameter) / 2,
                                            diameter,
                                            diameter);
-            
-            
+
             using (GraphicsPath path = new GraphicsPath()) {
                 path.AddEllipse(rect);
                 using (PathGradientBrush pthGrBrush = new PathGradientBrush(path)) {
@@ -106,7 +104,7 @@ namespace ICSharpCode.TextEditor
                     pthGrBrush.CenterColor = Color.MistyRose;
                     Color[] colors = {isHealthy ? Color.Firebrick : Color.Olive};
                     pthGrBrush.SurroundColors = colors;
-                    
+
                     if (isEnabled) {
                         g.FillEllipse(pthGrBrush, rect);
                     } else {
@@ -118,12 +116,12 @@ namespace ICSharpCode.TextEditor
                 }
             }
         }
-        
+
         public void DrawBookmark(Graphics g, int y, bool isEnabled)
         {
             int delta = textArea.TextView.FontHeight / 8;
             Rectangle rect = new Rectangle(1, y + delta, drawingPosition.Width - 4, textArea.TextView.FontHeight - delta * 2);
-            
+
             if (isEnabled) {
                 using (Brush brush = new LinearGradientBrush(new Point(rect.Left, rect.Top),
                                                              new Point(rect.Right, rect.Bottom),
@@ -154,7 +152,7 @@ namespace ICSharpCode.TextEditor
                                                          Color.Yellow)) {
                 FillArrow(g, brush, rect);
             }
-            
+
             using (Brush brush = new LinearGradientBrush(new Point(rect.Left, rect.Top),
                                                          new Point(rect.Right, rect.Bottom),
                                                          Color.Yellow,
@@ -187,16 +185,16 @@ namespace ICSharpCode.TextEditor
             int radius = r.Width / 2;
             gp.AddLine(r.X + radius, r.Y, r.Right - radius, r.Y);
             gp.AddArc(r.Right - radius, r.Y, radius, radius, 270, 90);
-            
+
             gp.AddLine(r.Right, r.Y + radius, r.Right, r.Bottom - radius);
             gp.AddArc(r.Right - radius, r.Bottom - radius, radius, radius, 0, 90);
-            
+
             gp.AddLine(r.Right - radius, r.Bottom, r.X + radius, r.Bottom);
             gp.AddArc(r.X, r.Bottom - radius, radius, radius, 90, 90);
-            
+
             gp.AddLine(r.X, r.Bottom - radius, r.X, r.Y + radius);
             gp.AddArc(r.X, r.Y, radius, radius, 180, 90);
-            
+
             gp.CloseFigure();
             return gp;
         }

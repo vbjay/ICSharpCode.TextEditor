@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor.Undo
 //        int      oldCaretPos;
         private readonly int      offset;
         private readonly string   text;
-        
+
         /// <summary>
         /// Creates a new instance of <see cref="UndoableDelete"/>
         /// </summary>    
@@ -32,14 +32,14 @@ namespace ICSharpCode.TextEditor.Undo
             if (offset < 0 || offset > document.TextLength) {
                 throw new ArgumentOutOfRangeException("offset");
             }
-            
+
             Debug.Assert(text != null, "text can't be null");
 //            oldCaretPos   = document.Caret.Offset;
             this.document = document;
             this.offset   = offset;
             this.text     = text;
         }
-        
+
         /// <remarks>
         /// Undo last operation
         /// </remarks>
@@ -53,7 +53,7 @@ namespace ICSharpCode.TextEditor.Undo
 //            document.Caret.Offset = Math.Min(document.TextLength, Math.Max(0, oldCaretPos));
             document.UndoStack.AcceptChanges = true;
         }
-        
+
         /// <remarks>
         /// Redo last undone operation
         /// </remarks>

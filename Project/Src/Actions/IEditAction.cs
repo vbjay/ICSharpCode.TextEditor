@@ -23,13 +23,13 @@ namespace ICSharpCode.TextEditor.Actions
             get;
             set;
         }
-        
+
         /// <remarks>
         /// When the key which is defined per XML is pressed, this method will be launched.
         /// </remarks>
         void Execute(TextArea textArea);
     }
-    
+
     /// <summary>
     /// To define a new key for the textarea, you must write a class which
     /// implements this interface.
