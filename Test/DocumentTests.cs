@@ -132,16 +132,16 @@ namespace ICSharpCode.TextEditor.Tests
 //        public void TestDocumentBug3Test()
 //        {
 //            IDocument document = new DocumentFactory().CreateDocument();
-//            
+//
 //            string testText = "123\r\n";
-//            
+//
 //            for (int i = 0; i < 5; ++i) {
 //                document.Insert(document.TextLength, testText);
 //            }
-//            
+//
 //            document.Caret.Offset = testText.Length * 2 + 1;
 //            document.Remove(testText.Length * 2, 2);
-//            
+//
 //            Assert.AreEqual(testText.Length * 2, document.Caret.Offset);
 //        }
 
@@ -149,30 +149,30 @@ namespace ICSharpCode.TextEditor.Tests
 //        public void TestDocumentBug4Test()
 //        {
 //            IDocument document = new DocumentFactory().CreateDocument();
-//            
+//
 //            string testText = "123\r\n";
-//            
+//
 //            for (int i = 0; i < 5; ++i) {
 //                document.Insert(document.TextLength, testText);
 //            }
-//            
+//
 //            document.Caret.Offset = testText.Length * 2 + 1;
 //            document.Replace(testText.Length * 2, 2, "");
-//            
+//
 //            Assert.AreEqual(testText.Length * 2, document.Caret.Offset);
 //        }
-//        
+//
 //        [Test]
 //        public void TestDocumentBug5Test()
 //        {
 //            IDocument document = new DocumentFactory().CreateDocument();
-//            
+//
 //            for (int i = 3; i <= 5; ++i) {
 //                document.TextContent  = "abcdefgh";
 //                document.Caret.Offset = i;
-//                
+//
 //                document.Replace(2, 3, "Hello");
-//                
+//
 //                Assert.AreEqual(i, document.Caret.Offset);
 //            }
 //        }

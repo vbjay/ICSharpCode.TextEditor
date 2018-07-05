@@ -49,7 +49,7 @@ namespace ICSharpCode.TextEditor.Document
                                 }
                                 break;
                             case "Mode":
-                                syntaxModes.Add(new SyntaxMode(reader.GetAttribute("file"), 
+                                syntaxModes.Add(new SyntaxMode(reader.GetAttribute("file"),
                                                                reader.GetAttribute("name"),
                                                                reader.GetAttribute("extensions")));
                                 break;
@@ -62,7 +62,7 @@ namespace ICSharpCode.TextEditor.Document
             reader.Close();
             return syntaxModes;
         }
-        public override string ToString() 
+        public override string ToString()
         {
             return String.Format("[SyntaxMode: FileName={0}, Name={1}, Extensions=({2})]", FileName, Name, String.Join(",", Extensions));
         }

@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor.Document
     /// its parent nodes - an O(lg n) operation.
     /// However this means getting the line number or offset from a LineSegment is not a constant time
     /// operation, but takes O(lg n).
-    /// 
+    ///
     /// NOTE: The tree is never empty, Clear() causes it to contain an empty segment.
     /// </summary>
     internal sealed class LineSegmentTree : IList<LineSegment>

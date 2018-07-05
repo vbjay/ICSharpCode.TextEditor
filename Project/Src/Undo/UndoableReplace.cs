@@ -24,7 +24,7 @@ namespace ICSharpCode.TextEditor.Undo
 
         /// <summary>
         /// Creates a new instance of <see cref="UndoableReplace"/>
-        /// </summary>    
+        /// </summary>
         public UndoableReplace(IDocument document, int offset, string origText, string text)
         {
             if (document == null) {

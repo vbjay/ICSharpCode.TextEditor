@@ -5,7 +5,7 @@
 //     <version>$Revision$</version>
 // </file>
 
-namespace ICSharpCode.TextEditor.Actions 
+namespace ICSharpCode.TextEditor.Actions
 {
     public class Cut : AbstractEditAction
     {

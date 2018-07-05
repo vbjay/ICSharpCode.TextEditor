@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor.Undo
 
         /// <summary>
         /// Creates a new instance of <see cref="UndoableDelete"/>
-        /// </summary>    
+        /// </summary>
         public UndoableDelete(IDocument document, int offset, string text)
         {
             if (document == null) {

@@ -14,13 +14,13 @@ namespace ICSharpCode.TextEditor.Util
     /// A collection that does not allows its elements to be garbage-collected (unless there are other
     /// references to the elements). Elements will disappear from the collection when they are
     /// garbage-collected.
-    /// 
+    ///
     /// The WeakCollection is not thread-safe, not even for read-only access!
     /// No methods may be called on the WeakCollection while it is enumerated, not even a Contains or
     /// creating a second enumerator.
     /// The WeakCollection does not preserve any order among its contents; the ordering may be different each
     /// time the collection is enumerated.
-    /// 
+    ///
     /// Since items may disappear at any time when they are garbage collected, this class
     /// cannot provide a useful implementation for Count and thus cannot implement the ICollection interface.
     /// </summary>

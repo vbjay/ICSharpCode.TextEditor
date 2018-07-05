@@ -39,14 +39,14 @@ namespace ICSharpCode.TextEditor.Document
             {
                 if (y == null)
                 {
-                    // If x is null and y is null, they're 
-                    // equal.  
+                    // If x is null and y is null, they're
+                    // equal.
                     return 0;
                 }
                 else
                 {
-                    // If x is null and y is not null, y 
-                    // is greater.  
+                    // If x is null and y is not null, y
+                    // is greater.
                     return -1;
                 }
             }

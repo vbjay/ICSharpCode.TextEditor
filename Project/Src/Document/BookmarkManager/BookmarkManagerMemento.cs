@@ -12,7 +12,7 @@ using System.Xml;
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// This class is used for storing the state of a bookmark manager 
+    /// This class is used for storing the state of a bookmark manager
     /// </summary>
     public class BookmarkManagerMemento
     {

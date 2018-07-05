@@ -95,7 +95,7 @@ namespace ICSharpCode.TextEditor.Tests
 
             BlockCommentRegion commentRegion = ToggleBlockComment.FindSelectedCommentRegion(document, commentStart, commentEnd, selectionStartOffset, selectionEndOffset);
             Assert.AreEqual(expectedCommentRegion, commentRegion);
-        }        
+        }
 
         [Test]
         public void CaretInsideCommentButNoSelectedText()
@@ -119,7 +119,7 @@ namespace ICSharpCode.TextEditor.Tests
 
             BlockCommentRegion commentRegion = ToggleBlockComment.FindSelectedCommentRegion(document, commentStart, commentEnd, selectionStartOffset, selectionEndOffset);
             Assert.AreEqual(expectedCommentRegion, commentRegion);
-        }    
+        }
 
         [Test]
         public void CursorJustOutsideCommentStart()

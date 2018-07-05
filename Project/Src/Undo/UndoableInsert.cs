@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor.Undo
 
         /// <summary>
         /// Creates a new instance of <see cref="UndoableInsert"/>
-        /// </summary>    
+        /// </summary>
         public UndoableInsert(IDocument document, int offset, string text)
         {
             if (document == null) {

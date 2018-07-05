@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Document
             Stack<string> textStack = new Stack<string>();
             //int level = 0;
             //foreach (LineSegment segment in document.LineSegmentCollection) {
-            //    
+            //
             //}
             return l;
         }

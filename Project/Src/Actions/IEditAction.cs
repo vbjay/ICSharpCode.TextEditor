@@ -44,5 +44,5 @@ namespace ICSharpCode.TextEditor.Actions
         /// When the key which is defined per XML is pressed, this method will be launched.
         /// </remarks>
         public abstract void Execute(TextArea textArea);
-    }        
+    }
 }

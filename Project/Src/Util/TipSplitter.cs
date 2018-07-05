@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor.Util
 
             isHorizontal = horizontal;
             offsets = new float[sections.Length];
-            tipSections = (TipSection[])sections.Clone();    
+            tipSections = (TipSection[])sections.Clone();
         }
 
         public override void Draw(PointF location)

@@ -8,7 +8,7 @@
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// Interface to describe a sequence of characters that can be edited.     
+    /// Interface to describe a sequence of characters that can be edited.
     /// </summary>
     public interface ITextBufferStrategy
     {

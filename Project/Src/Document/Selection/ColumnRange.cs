@@ -9,7 +9,7 @@ using System;
 
 namespace ICSharpCode.TextEditor.Document
 {
-    public class ColumnRange 
+    public class ColumnRange
     {
         public static readonly ColumnRange NoColumn    = new ColumnRange(-2, -2);
         public static readonly ColumnRange WholeColumn = new ColumnRange(-1, -1);

@@ -175,7 +175,7 @@ namespace ICSharpCode.TextEditor.Document
         /// Is called after another line's content is appended to this line because the newline in between
         /// was deleted.
         /// The DefaultLineManager will call Deleted() on the deletedLine after the MergedWith call.
-        /// 
+        ///
         /// firstLineLength: the length of the line before the merge.
         /// </summary>
         internal void MergedWith(LineSegment deletedLine, int firstLineLength)
