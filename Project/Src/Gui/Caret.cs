@@ -193,7 +193,6 @@ namespace ICSharpCode.TextEditor
 
         public void RecreateCaret()
         {
-            Log("RecreateCaret");
             DisposeCaret();
             if (!hidden)
                 CreateCaret();
@@ -211,7 +210,6 @@ namespace ICSharpCode.TextEditor
 
         private void GotFocus(object sender, EventArgs e)
         {
-            Log("GotFocus, IsInUpdate=" + textArea.MotherTextEditorControl.IsInUpdate);
             hidden = false;
             if (!textArea.MotherTextEditorControl.IsInUpdate)
             {
@@ -222,7 +220,6 @@ namespace ICSharpCode.TextEditor
 
         private void LostFocus(object sender, EventArgs e)
         {
-            Log("LostFocus");
             hidden = true;
             DisposeCaret();
         }
@@ -250,8 +247,6 @@ namespace ICSharpCode.TextEditor
 
         public void UpdateCaretPosition()
         {
-            Log("UpdateCaretPosition");
-
             if (textArea.TextEditorProperties.CaretLine)
             {
                 textArea.Invalidate();
@@ -318,12 +313,6 @@ namespace ICSharpCode.TextEditor
             ime.SetIMEWindowLocation(pos.X, pos.Y);
 
             currentPos = pos;
-        }
-
-        [Conditional("DEBUG")]
-        private static void Log(string text)
-        {
-            //Console.WriteLine(text);
         }
 
         private void FirePositionChangedAfterUpdateEnd(object sender, EventArgs e)
