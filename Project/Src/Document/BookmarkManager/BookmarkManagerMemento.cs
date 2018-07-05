@@ -49,7 +49,7 @@ namespace ICSharpCode.TextEditor.Document
         public BookmarkManagerMemento(XmlElement element)
         {
             foreach (XmlElement el in element.ChildNodes) {
-                Bookmarks.Add(Int32.Parse(el.Attributes["line"].InnerText));
+                Bookmarks.Add(int.Parse(el.Attributes["line"].InnerText));
             }
         }
 

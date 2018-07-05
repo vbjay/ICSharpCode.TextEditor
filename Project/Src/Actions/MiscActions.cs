@@ -27,9 +27,9 @@ namespace ICSharpCode.TextEditor.Actions
                 int tabIndent = document.TextEditorProperties.IndentationSize;
                 if (textArea != null) {
                     int column = textArea.TextView.GetVisualColumn(textArea.Caret.Line, textArea.Caret.Column);
-                    indent.Append(new String(' ', tabIndent - column % tabIndent));
+                    indent.Append(new string(' ', tabIndent - column % tabIndent));
                 } else {
-                    indent.Append(new String(' ', tabIndent));
+                    indent.Append(new string(' ', tabIndent));
                 }
             } else {
                 indent.Append('\t');
@@ -489,9 +489,9 @@ namespace ICSharpCode.TextEditor.Actions
             EndOffset = endOffset;
         }
 
-        public string CommentStart { get; } = String.Empty;
+        public string CommentStart { get; } = string.Empty;
 
-        public string CommentEnd { get; } = String.Empty;
+        public string CommentEnd { get; } = string.Empty;
 
         public int StartOffset { get; } = -1;
 

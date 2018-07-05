@@ -70,7 +70,7 @@ namespace ICSharpCode.TextEditor.Actions
             for (int i = y1; i < y2; ++i) {
                 LineSegment line = document.GetLineSegment(i);
                 int removeNumber = 0;
-                for (int x = line.Offset; x < line.Offset + line.Length && Char.IsWhiteSpace(document.GetCharAt(x)); ++x) {
+                for (int x = line.Offset; x < line.Offset + line.Length && char.IsWhiteSpace(document.GetCharAt(x)); ++x) {
                     ++removeNumber;
                 }
                 if (removeNumber > 0) {
@@ -87,7 +87,7 @@ namespace ICSharpCode.TextEditor.Actions
             for (int i = y2 - 1; i >= y1; --i) {
                 LineSegment line = document.GetLineSegment(i);
                 int removeNumber = 0;
-                for (int x = line.Offset + line.Length - 1; x >= line.Offset && Char.IsWhiteSpace(document.GetCharAt(x)); --x) {
+                for (int x = line.Offset + line.Length - 1; x >= line.Offset && char.IsWhiteSpace(document.GetCharAt(x)); --x) {
                     ++removeNumber;
                 }
                 if (removeNumber > 0) {
@@ -122,7 +122,7 @@ namespace ICSharpCode.TextEditor.Actions
             StringBuilder what = new StringBuilder(document.GetText(startOffset, length));
 
             for (int i = 0; i < what.Length; ++i) {
-                what[i] = Char.IsUpper(what[i]) ? Char.ToLower(what[i]) : Char.ToUpper(what[i]);
+                what[i] = char.IsUpper(what[i]) ? char.ToLower(what[i]) : char.ToUpper(what[i]);
             }
 
             document.Replace(startOffset, length, what.ToString());
@@ -136,8 +136,8 @@ namespace ICSharpCode.TextEditor.Actions
             StringBuilder what = new StringBuilder(document.GetText(startOffset, length));
 
             for (int i = 0; i < what.Length; ++i) {
-                if (!Char.IsLetter(what[i]) && i < what.Length - 1) {
-                    what[i + 1] = Char.ToUpper(what[i + 1]);
+                if (!char.IsLetter(what[i]) && i < what.Length - 1) {
+                    what[i + 1] = char.ToUpper(what[i + 1]);
                 }
             }
             document.Replace(startOffset, length, what.ToString());
@@ -175,7 +175,7 @@ namespace ICSharpCode.TextEditor.Actions
                 if(line.Length > 0) {
                     // count how many whitespace characters there are at the start
                     int whiteSpace = 0;
-                    for(whiteSpace = 0; whiteSpace < line.Length && Char.IsWhiteSpace(document.GetCharAt(line.Offset + whiteSpace)); whiteSpace++) {
+                    for(whiteSpace = 0; whiteSpace < line.Length && char.IsWhiteSpace(document.GetCharAt(line.Offset + whiteSpace)); whiteSpace++) {
                         // deliberately empty
                     }
                     if(whiteSpace > 0) {

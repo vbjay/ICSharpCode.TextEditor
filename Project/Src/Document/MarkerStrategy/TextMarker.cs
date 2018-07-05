@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public override string ToString()
         {
-            return String.Format("[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
+            return string.Format("[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
                                  offset,
                                  length,
                                  TextMarkerType);

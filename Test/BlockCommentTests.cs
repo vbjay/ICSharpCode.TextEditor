@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor.Tests
         [Test]
         public void NoTextSelected()
         {
-            document.TextContent = String.Empty;
+            document.TextContent = string.Empty;
             int selectionStartOffset = 0;
             int selectionEndOffset = 0;
 

@@ -24,7 +24,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
     public class DeclarationViewWindow : Form, IDeclarationViewWindow
     {
-        private string description = String.Empty;
+        private string description = string.Empty;
 
         public string Description {
             get => description;

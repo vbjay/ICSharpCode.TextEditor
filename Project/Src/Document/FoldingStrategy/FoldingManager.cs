@@ -283,10 +283,10 @@ namespace ICSharpCode.TextEditor.Document
             try {
                 string[] lines = str.Split('\n');
                 for (int i = 0; i < lines.Length && lines[i].Length > 0; i += 4) {
-                    int    offset = Int32.Parse(lines[i]);
-                    int    length = Int32.Parse(lines[i + 1]);
+                    int    offset = int.Parse(lines[i]);
+                    int    length = int.Parse(lines[i + 1]);
                     string text   = lines[i + 2];
-                    bool isFolded = Boolean.Parse(lines[i + 3]);
+                    bool isFolded = bool.Parse(lines[i + 3]);
                     bool found    = false;
                     foreach (FoldMarker marker in foldMarker) {
                         if (marker.Offset == offset && marker.Length == length) {

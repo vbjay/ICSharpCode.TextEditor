@@ -46,7 +46,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public override string ToString()
         {
-            return String.Format("[FoldMarker: Offset = {0}, Length = {1}]",
+            return string.Format("[FoldMarker: Offset = {0}, Length = {1}]",
                                  offset,
                                  length);
         }

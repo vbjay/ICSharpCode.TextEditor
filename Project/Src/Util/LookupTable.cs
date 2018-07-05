@@ -51,7 +51,7 @@ namespace ICSharpCode.TextEditor.Util
                     }
                 } else {
                     for (int i = 0; i < length; ++i) {
-                        int index = Char.ToUpper(document.GetCharAt(wordOffset + i)) % 256;
+                        int index = char.ToUpper(document.GetCharAt(wordOffset + i)) % 256;
 
                         next = next[index];
 

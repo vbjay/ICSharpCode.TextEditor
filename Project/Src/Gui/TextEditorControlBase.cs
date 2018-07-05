@@ -121,7 +121,7 @@ namespace ICSharpCode.TextEditor
         private static Font ParseFont(string font)
         {
             string[] descr = font.Split(',', '=');
-            return new Font(descr[1], Single.Parse(descr[3]));
+            return new Font(descr[1], float.Parse(descr[3]));
         }
 
         /// <value>
@@ -573,7 +573,7 @@ namespace ICSharpCode.TextEditor
                 throw new ArgumentNullException("stream");
 
             BeginUpdate();
-            document.TextContent = String.Empty;
+            document.TextContent = string.Empty;
             document.UndoStack.ClearAll();
             document.BookmarkManager.Clear();
             if (autoLoadHighlighting) {

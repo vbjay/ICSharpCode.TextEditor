@@ -38,7 +38,7 @@ namespace ICSharpCode.TextEditor.Util
             }
 
             for (int i = 0; i < length; ++i) {
-                if (Char.ToUpper(document.GetCharAt(offset + i)) != Char.ToUpper(word[i])) {
+                if (char.ToUpper(document.GetCharAt(offset + i)) != char.ToUpper(word[i])) {
                     return false;
                 }
             }
@@ -70,7 +70,7 @@ namespace ICSharpCode.TextEditor.Util
             }
 
             for (int i = 0; i < length; ++i) {
-                if (Char.ToUpper(document.GetCharAt(offset + i)) != Char.ToUpper(word[i])) {
+                if (char.ToUpper(document.GetCharAt(offset + i)) != char.ToUpper(word[i])) {
                     return false;
                 }
             }

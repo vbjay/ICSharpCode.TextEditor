@@ -64,7 +64,7 @@ namespace ICSharpCode.TextEditor.Document
         }
         public override string ToString()
         {
-            return String.Format("[SyntaxMode: FileName={0}, Name={1}, Extensions=({2})]", FileName, Name, String.Join(",", Extensions));
+            return string.Format("[SyntaxMode: FileName={0}, Name={1}, Extensions=({2})]", FileName, Name, string.Join(",", Extensions));
         }
     }
 }

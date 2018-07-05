@@ -67,7 +67,7 @@ namespace ICSharpCode.TextEditor
 
         public override string ToString()
         {
-            return String.Format("[TextAreaUpdate: Type={0}, Position={1}]", TextAreaUpdateType, Position);
+            return string.Format("[TextAreaUpdate: Type={0}, Position={1}]", TextAreaUpdateType, Position);
         }
     }
 }
