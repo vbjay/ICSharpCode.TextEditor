@@ -53,7 +53,7 @@ namespace ICSharpCode.TextEditor.Tests
         [Test]
         public void TestDocumentGenerationTest()
         {
-            var document = new DocumentFactory().CreateDocument();
+            new DocumentFactory().CreateDocument();
         }
 
         [Test]

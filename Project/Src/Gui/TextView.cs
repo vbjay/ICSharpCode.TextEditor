@@ -117,7 +117,7 @@ namespace ICSharpCode.TextEditor
 
                 if (rect.IntersectsWith(lineRectangle))
                 {
-                    var fvl = textArea.Document.GetVisibleLine(FirstVisibleLine);
+//                    var fvl = textArea.Document.GetVisibleLine(FirstVisibleLine);
                     var currentLine = textArea.Document.GetFirstLogicalLine(textArea.Document.GetVisibleLine(FirstVisibleLine) + y);
                     PaintDocumentLine(g, currentLine, lineRectangle);
                 }
@@ -976,7 +976,7 @@ namespace ICSharpCode.TextEditor
             }
 
             var column = 0;
-            var tabIndent = Document.TextEditorProperties.TabIndent;
+//            var tabIndent = Document.TextEditorProperties.TabIndent;
             float drawingPos;
             var g = textArea.CreateGraphics();
             // if no folding is interesting

@@ -91,7 +91,7 @@ namespace ICSharpCode.TextEditor.Util
                 for (var i = 0; i < keyword.Length; ++i)
                 {
                     var index = keyword[i]%256; // index of curchar
-                    var d = keyword[i] == '\\';
+//                    var d = keyword[i] == '\\';
 
                     next = next[index]; // get node to this index
 

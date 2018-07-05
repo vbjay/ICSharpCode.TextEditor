@@ -82,7 +82,7 @@ namespace ICSharpCode.TextEditor
 
         protected void OnDragDrop(object sender, DragEventArgs e)
         {
-            var p = textArea.PointToClient(new Point(e.X, e.Y));
+//            var p = textArea.PointToClient(new Point(e.X, e.Y));
 
             if (e.Data.GetDataPresent(typeof(string)))
             {

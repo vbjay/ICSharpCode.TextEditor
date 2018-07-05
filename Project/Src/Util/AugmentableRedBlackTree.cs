@@ -91,7 +91,7 @@ namespace ICSharpCode.TextEditor.Util
             CheckNodeProperties(root, parentNode: null, RED, blackCount: 0, ref blackCount);
 
             var nodeCount = 0;
-            foreach (var val in this)
+            foreach (var _ in this)
                 nodeCount++;
             Debug.Assert(Count == nodeCount);
         }

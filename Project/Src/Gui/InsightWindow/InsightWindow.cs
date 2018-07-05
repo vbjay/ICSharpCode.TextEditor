@@ -85,9 +85,9 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
         {
             // move the window under the caret (don't change the x position)
             var caretPos = control.ActiveTextAreaControl.Caret.Position;
-            var y = (1 + caretPos.Y)*control.ActiveTextAreaControl.TextArea.TextView.FontHeight
-                    - control.ActiveTextAreaControl.TextArea.VirtualTop.Y - 1
-                    + control.ActiveTextAreaControl.TextArea.TextView.DrawingPosition.Y;
+//            var y = (1 + caretPos.Y)*control.ActiveTextAreaControl.TextArea.TextView.FontHeight
+//                    - control.ActiveTextAreaControl.TextArea.VirtualTop.Y - 1
+//                    + control.ActiveTextAreaControl.TextArea.TextView.DrawingPosition.Y;
 
             var xpos = control.ActiveTextAreaControl.TextArea.TextView.GetDrawingXPos(caretPos.Y, caretPos.X);
             var ypos = (control.ActiveTextAreaControl.Document.GetVisibleLine(caretPos.Y) + 1)*control.ActiveTextAreaControl.TextArea.TextView.FontHeight

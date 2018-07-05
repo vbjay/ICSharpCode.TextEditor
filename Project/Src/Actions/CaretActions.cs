@@ -178,7 +178,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
             else
             {
-                var line = textArea.Document.GetLineSegment(textArea.Caret.Position.Y);
+                //var line = textArea.Document.GetLineSegment(textArea.Caret.Position.Y);
 
                 var prevWordStart = TextUtilities.FindPrevWordStart(textArea.Document, textArea.Caret.Offset);
 

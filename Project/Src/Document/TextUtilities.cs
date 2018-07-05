@@ -201,7 +201,7 @@ namespace ICSharpCode.TextEditor.Document
         // next word
         public static int FindNextWordStart(IDocument document, int offset)
         {
-            var originalOffset = offset;
+//            var originalOffset = offset;
             var line = document.GetLineSegmentForOffset(offset);
             var endPos = line.Offset + line.Length;
             // lets go to the end of the word, whitespace or operator
@@ -221,7 +221,7 @@ namespace ICSharpCode.TextEditor.Document
         // to the start of the previous word
         public static int FindPrevWordStart(IDocument document, int offset)
         {
-            var originalOffset = offset;
+//            var originalOffset = offset;
             if (offset > 0)
             {
                 var line = document.GetLineSegmentForOffset(offset);

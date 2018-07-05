@@ -206,7 +206,7 @@ namespace ICSharpCode.TextEditor
             var realmousepos = textArea.TextView.GetLogicalPosition(
                 Math.Max(val1: 0, mousepos.X - textArea.TextView.DrawingPosition.X),
                 mousepos.Y - textArea.TextView.DrawingPosition.Y);
-            var y = realmousepos.Y;
+//            var y = realmousepos.Y;
             realmousepos = textArea.Caret.ValidatePosition(realmousepos);
             var oldPos = textArea.Caret.Position;
             if (oldPos == realmousepos && textArea.SelectionManager.selectFrom.where != WhereFrom.Gutter)
@@ -229,7 +229,7 @@ namespace ICSharpCode.TextEditor
             if (!minSelection.IsEmpty && textArea.SelectionManager.SelectionCollection.Count > 0 && textArea.SelectionManager.selectFrom.where == WhereFrom.TArea)
             {
                 // Extend selection when selection was started with double-click
-                var selection = textArea.SelectionManager.SelectionCollection[index: 0];
+//                var selection = textArea.SelectionManager.SelectionCollection[index: 0];
                 var min = textArea.SelectionManager.GreaterEqPos(minSelection, maxSelection) ? maxSelection : minSelection;
                 var max = textArea.SelectionManager.GreaterEqPos(minSelection, maxSelection) ? minSelection : maxSelection;
                 if (textArea.SelectionManager.GreaterEqPos(max, realmousepos) && textArea.SelectionManager.GreaterEqPos(realmousepos, min))

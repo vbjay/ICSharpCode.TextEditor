@@ -137,11 +137,11 @@ namespace ICSharpCode.TextEditor.Util
                 var borderRectangle = new Rectangle
                     (Point.Empty, tipSize - new Size(width: 1, height: 1));
 
-                var displayRectangle = new RectangleF
-                (
-                    HorizontalBorder, VerticalBorder,
-                    tipSizeF.Width - HorizontalBorder*2,
-                    tipSizeF.Height - VerticalBorder*2);
+//                var displayRectangle = new RectangleF
+//                (
+//                    HorizontalBorder, VerticalBorder,
+//                    tipSizeF.Width - HorizontalBorder*2,
+//                    tipSizeF.Height - VerticalBorder*2);
 
                 // DrawRectangle draws from Left to Left + Width. A bug? :-/
                 graphics.DrawRectangle(
@@ -189,11 +189,11 @@ namespace ICSharpCode.TextEditor.Util
                 var borderRectangle = new Rectangle
                     (Point.Empty, control.Size - new Size(width: 1, height: 1));
 
-                var displayRectangle = new RectangleF
-                (
-                    HorizontalBorder, VerticalBorder,
-                    tipSizeF.Width - HorizontalBorder*2,
-                    tipSizeF.Height - VerticalBorder*2);
+//                var displayRectangle = new RectangleF
+//                (
+//                    HorizontalBorder, VerticalBorder,
+//                    tipSizeF.Width - HorizontalBorder*2,
+//                    tipSizeF.Height - VerticalBorder*2);
 
                 // DrawRectangle draws from Left to Left + Width. A bug? :-/
                 graphics.DrawRectangle(
