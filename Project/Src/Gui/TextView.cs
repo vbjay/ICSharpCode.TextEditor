@@ -710,8 +710,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public TextLocation GetLogicalPosition(Point mousePosition)
         {
-            FoldMarker dummy;
-            return GetLogicalColumn(GetLogicalLine(mousePosition.Y), mousePosition.X, out dummy);
+            return GetLogicalColumn(GetLogicalLine(mousePosition.Y), mousePosition.X, out var dummy);
         }
 
         /// <summary>
@@ -719,8 +718,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public TextLocation GetLogicalPosition(int visualPosX, int visualPosY)
         {
-            FoldMarker dummy;
-            return GetLogicalColumn(GetLogicalLine(visualPosY), visualPosX, out dummy);
+            return GetLogicalColumn(GetLogicalLine(visualPosY), visualPosX, out var dummy);
         }
 
         /// <summary>
@@ -728,8 +726,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public FoldMarker GetFoldMarkerFromPosition(int visualPosX, int visualPosY)
         {
-            FoldMarker foldMarker;
-            GetLogicalColumn(GetLogicalLine(visualPosY), visualPosX, out foldMarker);
+            GetLogicalColumn(GetLogicalLine(visualPosY), visualPosX, out var foldMarker);
             return foldMarker;
         }
 

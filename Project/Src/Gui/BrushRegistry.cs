@@ -26,8 +26,7 @@ namespace ICSharpCode.TextEditor
         {
             lock (brushes)
             {
-                Brush brush;
-                if (!brushes.TryGetValue(color, out brush))
+                if (!brushes.TryGetValue(color, out var brush))
                 {
                     brush = new SolidBrush(color);
                     brushes.Add(color, brush);
@@ -41,8 +40,7 @@ namespace ICSharpCode.TextEditor
         {
             lock (pens)
             {
-                Pen pen;
-                if (!pens.TryGetValue(color, out pen))
+                if (!pens.TryGetValue(color, out var pen))
                 {
                     pen = new Pen(color);
                     pens.Add(color, pen);
