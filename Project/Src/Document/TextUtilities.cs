@@ -33,7 +33,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             var sb = new StringBuilder(line.Length);
             var consecutiveSpaces = 0;
-            var i = 0;
+            int i;
             for (i = 0; i < line.Length; i++)
                 if (line[i] == ' ')
                 {

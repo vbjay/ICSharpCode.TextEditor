@@ -163,7 +163,7 @@ namespace ICSharpCode.TextEditor.Actions
                 if (line.Length > 0)
                 {
                     // count how many whitespace characters there are at the start
-                    var whiteSpace = 0;
+                    int whiteSpace;
                     for (whiteSpace = 0; whiteSpace < line.Length && char.IsWhiteSpace(document.GetCharAt(line.Offset + whiteSpace)); whiteSpace++)
                     {
                         // deliberately empty

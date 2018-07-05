@@ -15,7 +15,7 @@ namespace ICSharpCode.TextEditor.Actions
         {
             LineSegment curLine;
             var newPos = textArea.Caret.Position;
-            var jumpedIntoFolding = false;
+            bool jumpedIntoFolding;
             do
             {
                 curLine = textArea.Document.GetLineSegment(newPos.Y);
@@ -63,7 +63,7 @@ namespace ICSharpCode.TextEditor.Actions
         {
             LineSegment curLine;
             var newPos = textArea.Caret.Position;
-            var jumpedIntoFolding = false;
+            bool jumpedIntoFolding;
             do
             {
                 curLine = textArea.Document.GetLineSegment(newPos.Y);

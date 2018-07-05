@@ -975,8 +975,6 @@ namespace ICSharpCode.TextEditor
                     i /= 2;
             }
 
-            var lastFolding = 0;
-            var firstFolding = 0;
             var column = 0;
             var tabIndent = Document.TextEditorProperties.TabIndent;
             float drawingPos;
@@ -996,7 +994,7 @@ namespace ICSharpCode.TextEditor
                 --i;
             }
 
-            lastFolding = i;
+            var lastFolding = i;
 
             // search backwards until a new visible line is reached
             for (; i >= 0; --i)
@@ -1006,7 +1004,7 @@ namespace ICSharpCode.TextEditor
                     break;
             }
 
-            firstFolding = i + 1;
+            var firstFolding = i + 1;
 
             if (lastFolding < firstFolding)
             {

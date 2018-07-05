@@ -142,7 +142,7 @@ namespace ICSharpCode.TextEditor.Actions
                         }
                         else if (document.GetCharAt(line.Offset) == ' ')
                         {
-                            var leadingSpaces = 1;
+                            int leadingSpaces;
                             var tabIndent = document.TextEditorProperties.IndentationSize;
                             for (leadingSpaces = 1; leadingSpaces < line.Length && document.GetCharAt(line.Offset + leadingSpaces) == ' '; leadingSpaces++)
                             {
@@ -402,7 +402,7 @@ namespace ICSharpCode.TextEditor.Actions
 
             // Find start of comment in selected text.
 
-            var commentEndOffset = -1;
+            int commentEndOffset;
             var selectedText = document.GetText(selectionStartOffset, selectionEndOffset - selectionStartOffset);
 
             var commentStartOffset = selectedText.IndexOf(commentStart);
@@ -422,7 +422,6 @@ namespace ICSharpCode.TextEditor.Actions
             // Find start of comment before or partially inside the
             // selected text.
 
-            var commentEndBeforeStartOffset = -1;
             if (commentStartOffset == -1)
             {
                 var offset = selectionEndOffset + commentStart.Length - 1;
@@ -433,7 +432,7 @@ namespace ICSharpCode.TextEditor.Actions
                 if (commentStartOffset >= 0)
                 {
                     // Find end of comment before comment start.
-                    commentEndBeforeStartOffset = text.IndexOf(commentEnd, commentStartOffset, selectionStartOffset - commentStartOffset);
+                    var commentEndBeforeStartOffset = text.IndexOf(commentEnd, commentStartOffset, selectionStartOffset - commentStartOffset);
                     if (commentEndBeforeStartOffset > commentStartOffset)
                         commentStartOffset = -1;
                 }

@@ -332,7 +332,6 @@ namespace ICSharpCode.TextEditor.Document
             {
                 if (currentLine.HighlightSpanStack == null)
                 {
-                    processNextLine = false;
                     foreach (var sp in currentSpanStack)
                         if (!sp.StopEOL)
                         {
@@ -343,7 +342,6 @@ namespace ICSharpCode.TextEditor.Document
                 }
                 else if (currentSpanStack == null)
                 {
-                    processNextLine = false;
                     foreach (var sp in currentLine.HighlightSpanStack)
                         if (!sp.StopEOL)
                         {
@@ -396,14 +394,9 @@ namespace ICSharpCode.TextEditor.Document
                         else
                         {
                             done = true;
-                            processNextLine = false;
                         }
                     }
                 }
-            }
-            else
-            {
-                processNextLine = false;
             }
 
             //// Alex: remove old words
@@ -698,13 +691,12 @@ namespace ICSharpCode.TextEditor.Document
             {
                 if (words.Count > 0 && activeRuleSet != null)
                 {
-                    TextWord prevWord = null;
                     var pInd = words.Count - 1;
                     while (pInd >= 0)
                     {
                         if (!words[pInd].IsWhiteSpace)
                         {
-                            prevWord = words[pInd];
+                            var prevWord = words[pInd];
                             if (prevWord.HasDefaultColor)
                             {
                                 var marker = (PrevMarker)activeRuleSet.PrevMarkers[document, currentLine, currentOffset, currentLength];
@@ -721,7 +713,7 @@ namespace ICSharpCode.TextEditor.Document
 
                 if (inSpan)
                 {
-                    HighlightColor c = null;
+                    HighlightColor c;
                     var hasDefaultColor = true;
                     if (activeSpan.Rule == null)
                     {

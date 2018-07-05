@@ -261,7 +261,6 @@ namespace ICSharpCode.TextEditor.Document
 
             // help GC
             foldings.Clear();
-            foldings = null;
             return foldEnd + visibleLineNumber - v;
         }
 

@@ -35,7 +35,7 @@ namespace ICSharpCode.TextEditor.Util
         public static Size GetTipSize(Control control, Graphics graphics, TipSection tipData)
         {
             var tipSize = Size.Empty;
-            var tipSizeF = SizeF.Empty;
+            SizeF tipSizeF;
 
             RectangleF workingArea = GetWorkingArea(control);
 
@@ -69,7 +69,6 @@ namespace ICSharpCode.TextEditor.Util
         public static Size GetLeftHandSideTipSize(Control control, Graphics graphics, TipSection tipData, Point p)
         {
             var tipSize = Size.Empty;
-            var tipSizeF = SizeF.Empty;
 
             RectangleF workingArea = GetWorkingArea(control);
 
@@ -85,7 +84,7 @@ namespace ICSharpCode.TextEditor.Util
                     TextRenderingHint.AntiAliasGridFit;
 
                 tipData.SetMaximumSize(maxLayoutSize);
-                tipSizeF = tipData.GetRequiredSize();
+                var tipSizeF = tipData.GetRequiredSize();
                 tipData.SetAllocatedSize(tipSizeF);
 
                 tipSizeF += new SizeF(
