@@ -83,13 +83,9 @@ namespace ICSharpCode.TextEditor.Document
 	    public bool AutoInsertCurlyBracket { get; set; } = true;
 
 	    public Font Font {
-			get {
-				return FontContainer.DefaultFont;
-			}
-			set {
-				FontContainer.DefaultFont = value;
-			}
-		}
+			get => FontContainer.DefaultFont;
+	        set => FontContainer.DefaultFont = value;
+	    }
 		
 		public FontContainer FontContainer { get; }
 

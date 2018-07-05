@@ -39,38 +39,22 @@ namespace ICSharpCode.TextEditor.Undo
 		/// <summary>
 		/// Gets if there are actions on the undo stack.
 		/// </summary>
-		public bool CanUndo {
-			get {
-				return undostack.Count > 0;
-			}
-		}
-		
-		/// <summary>
+		public bool CanUndo => undostack.Count > 0;
+
+	    /// <summary>
 		/// Gets if there are actions on the redo stack.
 		/// </summary>
-		public bool CanRedo {
-			get {
-				return redostack.Count > 0;
-			}
-		}
-		
-		/// <summary>
+		public bool CanRedo => redostack.Count > 0;
+
+	    /// <summary>
 		/// Gets the number of actions on the undo stack.
 		/// </summary>
-		public int UndoItemCount {
-			get {
-				return undostack.Count;
-			}
-		}
-		
-		/// <summary>
+		public int UndoItemCount => undostack.Count;
+
+	    /// <summary>
 		/// Gets the number of actions on the redo stack.
 		/// </summary>
-		public int RedoItemCount {
-			get {
-				return redostack.Count;
-			}
-		}
+		public int RedoItemCount => redostack.Count;
 
 	    private int undoGroupDepth;
 	    private int actionCountInUndoGroup;

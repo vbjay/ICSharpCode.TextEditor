@@ -24,20 +24,12 @@ namespace ICSharpCode.TextEditor
 
 	    private static readonly Size iconBarSize = new Size(iconBarWidth, -1);
 		
-		public override Size Size {
-			get {
-				return iconBarSize;
-			}
-		}
-		
-		public override bool IsVisible {
-			get {
-				return textArea.TextEditorProperties.IsIconBarVisible;
-			}
-		}
-		
-		
-		public IconBarMargin(TextArea textArea) : base(textArea)
+		public override Size Size => iconBarSize;
+
+	    public override bool IsVisible => textArea.TextEditorProperties.IsIconBarVisible;
+
+
+	    public IconBarMargin(TextArea textArea) : base(textArea)
 		{
 		}
 		

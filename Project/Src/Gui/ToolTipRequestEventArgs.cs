@@ -23,13 +23,9 @@ namespace ICSharpCode.TextEditor
 	    /// <summary>
 		/// Gets if some client handling the event has already shown a tool tip.
 		/// </summary>
-		public bool ToolTipShown {
-			get {
-				return toolTipText != null;
-			}
-		}
-		
-		internal string toolTipText;
+		public bool ToolTipShown => toolTipText != null;
+
+	    internal string toolTipText;
 		
 		public void ShowToolTip(string text)
 		{

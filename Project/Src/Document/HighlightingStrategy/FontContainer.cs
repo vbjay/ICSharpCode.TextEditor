@@ -57,10 +57,8 @@ namespace ICSharpCode.TextEditor.Document
 		/// The base font
 		/// </value>
 		public Font DefaultFont {
-			get {
-				return defaultFont;
-			}
-			set {
+			get => defaultFont;
+		    set {
 				// 1440 twips is one inch
 				float pixelSize = (float)Math.Round(value.SizeInPoints * 20 / TwipsPerPixelY);
 				

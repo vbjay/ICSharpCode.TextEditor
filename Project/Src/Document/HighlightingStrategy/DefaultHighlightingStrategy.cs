@@ -21,13 +21,9 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public HighlightColor DigitColor { get; set; }
 
-	    public IEnumerable<KeyValuePair<string, HighlightColor>> EnvironmentColors {
-			get {
-				return environmentColors;
-			}
-		}
-		
-		protected void ImportSettingsFrom(DefaultHighlightingStrategy source)
+	    public IEnumerable<KeyValuePair<string, HighlightColor>> EnvironmentColors => environmentColors;
+
+	    protected void ImportSettingsFrom(DefaultHighlightingStrategy source)
 		{
 			if (source == null)
 				throw new ArgumentNullException("source");

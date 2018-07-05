@@ -45,16 +45,9 @@ namespace ICSharpCode.TextEditor.Document
 				return null;
 			}
 			
-			public override TextWordType Type {
-				get {
-					return TextWordType.Space;
-				}
-			}
-			public override bool IsWhiteSpace {
-				get {
-					return true;
-				}
-			}
+			public override TextWordType Type => TextWordType.Space;
+
+		    public override bool IsWhiteSpace => true;
 		}
 		
 		public sealed class TabTextWord : TextWord
@@ -74,16 +67,9 @@ namespace ICSharpCode.TextEditor.Document
 				return null;
 			}
 			
-			public override TextWordType Type {
-				get {
-					return TextWordType.Tab;
-				}
-			}
-			public override bool IsWhiteSpace {
-				get {
-					return true;
-				}
-			}
+			public override TextWordType Type => TextWordType.Tab;
+
+		    public override bool IsWhiteSpace => true;
 		}
 
 	    public static TextWord Space { get; } = new SpaceTextWord();
@@ -115,13 +101,9 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public bool HasDefaultColor { get; }
 
-	    public virtual TextWordType Type {
-			get {
-				return TextWordType.Word;
-			}
-		}
-		
-		public string Word {
+	    public virtual TextWordType Type => TextWordType.Word;
+
+	    public string Word {
 			get {
 				if (document == null) {
 					return String.Empty;
@@ -163,22 +145,16 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		public HighlightColor SyntaxColor {
-			get {
-				return color;
-			}
-			set {
+			get => color;
+		    set {
 				Debug.Assert(value != null);
 				color = value;
 			}
 		}
 		
-		public virtual bool IsWhiteSpace {
-			get {
-				return false;
-			}
-		}
-		
-		protected TextWord()
+		public virtual bool IsWhiteSpace => false;
+
+	    protected TextWord()
 		{
 		}
 		

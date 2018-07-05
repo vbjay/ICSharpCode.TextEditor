@@ -56,20 +56,16 @@ namespace ICSharpCode.TextEditor
 		/// The current caret mode.
 		/// </value>
 		public CaretMode CaretMode {
-			get {
-				return caretMode;
-			}
-			set {
+			get => caretMode;
+	        set {
 				caretMode = value;
 				OnCaretModeChanged(EventArgs.Empty);
 			}
 		}
 		
 		public int Line {
-			get {
-				return line;
-			}
-			set {
+			get => line;
+		    set {
 				line = value;
 				ValidateCaretPos();
 				UpdateCaretPosition();
@@ -78,10 +74,8 @@ namespace ICSharpCode.TextEditor
 		}
 		
 		public int Column {
-			get {
-				return column;
-			}
-			set {
+			get => column;
+		    set {
 				column = value;
 				ValidateCaretPos();
 				UpdateCaretPosition();
@@ -90,10 +84,8 @@ namespace ICSharpCode.TextEditor
 		}
 		
 		public TextLocation Position {
-			get {
-				return new TextLocation(column, line);
-			}
-			set {
+			get => new TextLocation(column, line);
+		    set {
 				line   = value.Y;
 				column = value.X;
 				ValidateCaretPos();
@@ -102,13 +94,9 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
-		public int Offset {
-			get {
-				return textArea.Document.PositionToOffset(Position);
-			}
-		}
-		
-		public Caret(TextArea textArea)
+		public int Offset => textArea.Document.PositionToOffset(Position);
+
+	    public Caret(TextArea textArea)
 		{
 			this.textArea = textArea;
 			textArea.GotFocus  += new EventHandler(GotFocus);

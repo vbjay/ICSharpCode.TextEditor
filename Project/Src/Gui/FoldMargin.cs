@@ -21,20 +21,12 @@ namespace ICSharpCode.TextEditor
 	{
 	    private int selectedFoldLine = -1;
 		
-		public override Size Size {
-			get {
-				return new Size((int)(textArea.TextView.FontHeight),
-				                -1);
-			}
-		}
-		
-		public override bool IsVisible {
-			get {
-				return textArea.TextEditorProperties.EnableFolding;
-			}
-		}
-		
-		public FoldMargin(TextArea textArea) : base(textArea)
+		public override Size Size => new Size((int)(textArea.TextView.FontHeight),
+		    -1);
+
+	    public override bool IsVisible => textArea.TextEditorProperties.EnableFolding;
+
+	    public FoldMargin(TextArea textArea) : base(textArea)
 		{
 		}
 		

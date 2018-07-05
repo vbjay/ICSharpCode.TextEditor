@@ -21,21 +21,13 @@ namespace ICSharpCode.TextEditor.Document
 		
 		#region ICSharpCode.TextEditor.Document.ISegment interface implementation
 		public virtual int Offset {
-			get {
-				return offset;
-			}
-			set {
-				offset = value;
-			}
+			get => offset;
+		    set => offset = value;
 		}
 		
 		public virtual int Length {
-			get {
-				return length;
-			}
-			set {
-				length = value;
-			}
+			get => length;
+		    set => length = value;
 		}
 		
 		#endregion

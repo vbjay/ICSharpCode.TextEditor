@@ -47,13 +47,9 @@ namespace ICSharpCode.TextEditor.Document
 			top = new StackNode(top, s);
 		}
 		
-		public bool IsEmpty {
-			get {
-				return top == null;
-			}
-		}
-		
-		public SpanStack Clone()
+		public bool IsEmpty => top == null;
+
+	    public SpanStack Clone()
 		{
 			SpanStack n = new SpanStack();
 			n.top = top;
@@ -86,19 +82,11 @@ namespace ICSharpCode.TextEditor.Document
 				c = node;
 			}
 			
-			public Span Current {
-				get {
-					return c.Data;
-				}
-			}
-			
-			object System.Collections.IEnumerator.Current {
-				get {
-					return c.Data;
-				}
-			}
-			
-			public void Dispose()
+			public Span Current => c.Data;
+
+		    object System.Collections.IEnumerator.Current => c.Data;
+
+		    public void Dispose()
 			{
 				c = null;
 			}

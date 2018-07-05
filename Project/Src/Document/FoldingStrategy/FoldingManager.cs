@@ -18,13 +18,9 @@ namespace ICSharpCode.TextEditor.Document
 	    private List<FoldMarker>    foldMarkerByEnd = new List<FoldMarker>();
 	    private readonly IDocument document;
 		
-		public IList<FoldMarker> FoldMarker {
-			get {
-				return foldMarker.AsReadOnly();
-			}
-		}
-		
-		public IFoldingStrategy FoldingStrategy { get; set; } = null;
+		public IList<FoldMarker> FoldMarker => foldMarker.AsReadOnly();
+
+	    public IFoldingStrategy FoldingStrategy { get; set; } = null;
 
 	    internal FoldingManager(IDocument document, LineManager lineTracker)
 		{

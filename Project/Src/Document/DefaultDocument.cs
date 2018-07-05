@@ -95,16 +95,16 @@ namespace ICSharpCode.TextEditor.Document
 	    public LineManager LineManager { get; set; }
 
 	    public event EventHandler<LineLengthChangeEventArgs> LineLengthChanged {
-			add { LineManager.LineLengthChanged += value; }
-			remove { LineManager.LineLengthChanged -= value; }
-		}
+			add => LineManager.LineLengthChanged += value;
+	        remove => LineManager.LineLengthChanged -= value;
+	    }
 		public event EventHandler<LineCountChangeEventArgs> LineCountChanged {
-			add { LineManager.LineCountChanged += value; }
-			remove { LineManager.LineCountChanged -= value; }
+			add => LineManager.LineCountChanged += value;
+		    remove => LineManager.LineCountChanged -= value;
 		}
 		public event EventHandler<LineEventArgs> LineDeleted {
-			add { LineManager.LineDeleted += value; }
-			remove { LineManager.LineDeleted -= value; }
+			add => LineManager.LineDeleted += value;
+		    remove => LineManager.LineDeleted -= value;
 		}
 		
 		public MarkerStrategy MarkerStrategy { get; set; }
@@ -113,13 +113,9 @@ namespace ICSharpCode.TextEditor.Document
 
 	    public UndoStack UndoStack { get; } = new UndoStack();
 
-	    public IList<LineSegment> LineSegmentCollection {
-			get {
-				return LineManager.LineSegmentCollection;
-			}
-		}
-		
-		public bool ReadOnly { get; set; } = false;
+	    public IList<LineSegment> LineSegmentCollection => LineManager.LineSegmentCollection;
+
+	    public bool ReadOnly { get; set; } = false;
 
 	    public ITextBufferStrategy TextBufferStrategy { get; set; }
 
@@ -128,28 +124,18 @@ namespace ICSharpCode.TextEditor.Document
 	    public FoldingManager FoldingManager { get; set; }
 
 	    public IHighlightingStrategy HighlightingStrategy {
-			get {
-				return LineManager.HighlightingStrategy;
-			}
-			set {
-				LineManager.HighlightingStrategy = value;
-			}
-		}
+			get => LineManager.HighlightingStrategy;
+	        set => LineManager.HighlightingStrategy = value;
+	    }
 		
-		public int TextLength {
-			get {
-				return TextBufferStrategy.Length;
-			}
-		}
-		
-		public BookmarkManager BookmarkManager { get; set; }
+		public int TextLength => TextBufferStrategy.Length;
+
+	    public BookmarkManager BookmarkManager { get; set; }
 
 
 	    public string TextContent {
-			get {
-				return GetText(0, TextBufferStrategy.Length);
-			}
-			set {
+			get => GetText(0, TextBufferStrategy.Length);
+	        set {
 				Debug.Assert(TextBufferStrategy != null);
 				Debug.Assert(LineManager != null);
 				OnDocumentAboutToBeChanged(new DocumentEventArgs(this, 0, 0, value));
@@ -222,13 +208,9 @@ namespace ICSharpCode.TextEditor.Document
 			return GetText(segment.Offset, segment.Length);
 		}
 		
-		public int TotalNumberOfLines {
-			get {
-				return LineManager.TotalNumberOfLines;
-			}
-		}
-		
-		public int GetLineNumberForOffset(int offset)
+		public int TotalNumberOfLines => LineManager.TotalNumberOfLines;
+
+	    public int GetLineNumberForOffset(int offset)
 		{
 			return LineManager.GetLineNumberForOffset(offset);
 		}

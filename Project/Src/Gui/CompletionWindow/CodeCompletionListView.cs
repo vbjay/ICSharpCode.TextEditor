@@ -23,10 +23,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	    public ImageList ImageList { get; set; }
 
 	    public int FirstItem {
-			get {
-				return firstItem;
-			}
-			set {
+			get => firstItem;
+	        set {
 				if (firstItem != value) {
 					firstItem = value;
 					OnFirstItemChanged(EventArgs.Empty);
@@ -43,19 +41,11 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			}
 		}
 		
-		public int ItemHeight {
-			get {
-				return Math.Max(ImageList.ImageSize.Height, (int)(Font.Height * 1.25));
-			}
-		}
-		
-		public int MaxVisibleItem {
-			get {
-				return Height / ItemHeight;
-			}
-		}
-		
-		public CodeCompletionListView(ICompletionData[] completionData)
+		public int ItemHeight => Math.Max(ImageList.ImageSize.Height, (int)(Font.Height * 1.25));
+
+	    public int MaxVisibleItem => Height / ItemHeight;
+
+	    public CodeCompletionListView(ICompletionData[] completionData)
 		{
 			Array.Sort(completionData, DefaultCompletionData.Compare);
 			this.completionData = completionData;

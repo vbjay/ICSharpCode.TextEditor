@@ -103,13 +103,9 @@ namespace ICSharpCode.TextEditor.Document
 			return highlightingStrategy;
 		}
 		
-		public DefaultHighlightingStrategy DefaultHighlighting {
-			get {
-				return (DefaultHighlightingStrategy)HighlightingDefinitions["Default"];
-			}
-		}
-		
-		internal KeyValuePair<SyntaxMode, ISyntaxModeFileProvider> FindHighlighterEntry(string name)
+		public DefaultHighlightingStrategy DefaultHighlighting => (DefaultHighlightingStrategy)HighlightingDefinitions["Default"];
+
+	    internal KeyValuePair<SyntaxMode, ISyntaxModeFileProvider> FindHighlighterEntry(string name)
 		{
 			foreach (ISyntaxModeFileProvider provider in syntaxModeFileProviders) {
 				foreach (SyntaxMode mode in provider.SyntaxModes) {

@@ -30,19 +30,11 @@ namespace ICSharpCode.TextEditor
 		
 		public TextArea TextArea { get; }
 
-	    public SelectionManager SelectionManager {
-			get {
-				return TextArea.SelectionManager;
-			}
-		}
-		
-		public Caret Caret {
-			get {
-				return TextArea.Caret;
-			}
-		}
-		
-		[Browsable(false)]
+	    public SelectionManager SelectionManager => TextArea.SelectionManager;
+
+	    public Caret Caret => TextArea.Caret;
+
+	    [Browsable(false)]
 		public IDocument Document {
 			get {
 				if (motherTextEditorControl != null)

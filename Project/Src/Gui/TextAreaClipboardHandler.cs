@@ -20,19 +20,11 @@ namespace ICSharpCode.TextEditor
 	{
 	    private readonly TextArea textArea;
 		
-		public bool EnableCut {
-			get {
-				return textArea.EnableCutOrPaste; //textArea.SelectionManager.HasSomethingSelected;
-			}
-		}
-		
-		public bool EnableCopy {
-			get {
-				return true; //textArea.SelectionManager.HasSomethingSelected;
-			}
-		}
-		
-		public delegate bool ClipboardContainsTextDelegate();
+		public bool EnableCut => textArea.EnableCutOrPaste;
+
+	    public bool EnableCopy => true;
+
+	    public delegate bool ClipboardContainsTextDelegate();
 		
 		/// <summary>
 		/// Is called when CachedClipboardContainsText should be updated.
@@ -63,19 +55,11 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
-		public bool EnableDelete {
-			get {
-				return textArea.SelectionManager.HasSomethingSelected && !textArea.SelectionManager.SelectionIsReadonly;
-			}
-		}
-		
-		public bool EnableSelectAll {
-			get {
-				return true;
-			}
-		}
-		
-		public TextAreaClipboardHandler(TextArea textArea)
+		public bool EnableDelete => textArea.SelectionManager.HasSomethingSelected && !textArea.SelectionManager.SelectionIsReadonly;
+
+	    public bool EnableSelectAll => true;
+
+	    public TextAreaClipboardHandler(TextArea textArea)
 		{
 			this.textArea = textArea;
 			textArea.SelectionManager.SelectionChanged += new EventHandler(DocumentSelectionChanged);

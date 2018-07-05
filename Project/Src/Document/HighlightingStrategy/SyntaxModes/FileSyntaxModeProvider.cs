@@ -18,13 +18,9 @@ namespace ICSharpCode.TextEditor.Document
 	    private readonly string    directory;
 	    private List<SyntaxMode> syntaxModes;
 		
-		public ICollection<SyntaxMode> SyntaxModes {
-			get {
-				return syntaxModes;
-			}
-		}
-		
-		public FileSyntaxModeProvider(string directory)
+		public ICollection<SyntaxMode> SyntaxModes => syntaxModes;
+
+	    public FileSyntaxModeProvider(string directory)
 		{
 			this.directory = directory;
 			UpdateSyntaxModeList();

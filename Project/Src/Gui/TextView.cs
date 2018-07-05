@@ -32,22 +32,14 @@ namespace ICSharpCode.TextEditor
 		
 		public Highlight Highlight { get; set; }
 
-	    public int FirstPhysicalLine {
-			get {
-				return textArea.VirtualTop.Y / FontHeight;
-			}
-		}
-		public int LineHeightRemainder {
-			get {
-				return textArea.VirtualTop.Y % FontHeight;
-			}
-		}
-		/// <summary>Gets the first visible <b>logical</b> line.</summary>
+	    public int FirstPhysicalLine => textArea.VirtualTop.Y / FontHeight;
+
+	    public int LineHeightRemainder => textArea.VirtualTop.Y % FontHeight;
+
+	    /// <summary>Gets the first visible <b>logical</b> line.</summary>
 		public int FirstVisibleLine {
-			get {
-				return textArea.Document.GetFirstLogicalLine(textArea.VirtualTop.Y / FontHeight);
-			}
-			set {
+			get => textArea.Document.GetFirstLogicalLine(textArea.VirtualTop.Y / FontHeight);
+	        set {
 				if (FirstVisibleLine != value) {
 					textArea.VirtualTop = new Point(textArea.VirtualTop.X, textArea.Document.GetVisibleLine(value) * FontHeight);
 					
@@ -55,27 +47,15 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
-		public int VisibleLineDrawingRemainder {
-			get {
-				return textArea.VirtualTop.Y % FontHeight;
-			}
-		}
-		
-		public int FontHeight { get; private set; }
+		public int VisibleLineDrawingRemainder => textArea.VirtualTop.Y % FontHeight;
 
-	    public int VisibleLineCount {
-			get {
-				return 1 + DrawingPosition.Height / FontHeight;
-			}
-		}
-		
-		public int VisibleColumnCount {
-			get {
-				return (int)(DrawingPosition.Width / WideSpaceWidth) - 1;
-			}
-		}
-		
-		public TextView(TextArea textArea) : base(textArea)
+	    public int FontHeight { get; private set; }
+
+	    public int VisibleLineCount => 1 + DrawingPosition.Height / FontHeight;
+
+	    public int VisibleColumnCount => (int)(DrawingPosition.Width / WideSpaceWidth) - 1;
+
+	    public TextView(TextArea textArea) : base(textArea)
 		{
 			Cursor = Cursors.IBeam;
 			OptionsChanged();

@@ -17,13 +17,9 @@ namespace ICSharpCode.TextEditor.Document
 	{
 	    private readonly List<SyntaxMode> syntaxModes;
 		
-		public ICollection<SyntaxMode> SyntaxModes {
-			get {
-				return syntaxModes;
-			}
-		}
-		
-		public ResourceSyntaxModeProvider()
+		public ICollection<SyntaxMode> SyntaxModes => syntaxModes;
+
+	    public ResourceSyntaxModeProvider()
 		{
 			Assembly assembly = typeof(SyntaxMode).Assembly;
 			Stream syntaxModeStream = assembly.GetManifestResourceStream("ICSharpCode.TextEditor.Resources.SyntaxModes.xml");

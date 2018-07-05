@@ -20,13 +20,9 @@ namespace ICSharpCode.TextEditor.Document
 	{
 	    private string storedText = "";
 		
-		public int Length {
-			get {
-				return storedText.Length;
-			}
-		}
-		
-		public void Insert(int offset, string text)
+		public int Length => storedText.Length;
+
+	    public void Insert(int offset, string text)
 		{
 			if (text != null) {
 				storedText = storedText.Insert(offset, text);

@@ -27,47 +27,23 @@ namespace ICSharpCode.TextEditor
 		protected TextArea textArea;
 		
 		public Rectangle DrawingPosition {
-			get {
-				return drawingPosition;
-			}
-			set {
-				drawingPosition = value;
-			}
+			get => drawingPosition;
+		    set => drawingPosition = value;
 		}
 		
-		public TextArea TextArea {
-			get {
-				return textArea;
-			}
-		}
-		
-		public IDocument Document {
-			get {
-				return textArea.Document;
-			}
-		}
-		
-		public ITextEditorProperties TextEditorProperties {
-			get {
-				return textArea.Document.TextEditorProperties;
-			}
-		}
-		
-		public virtual Cursor Cursor { get; set; } = Cursors.Default;
+		public TextArea TextArea => textArea;
 
-	    public virtual Size Size {
-			get {
-				return new Size(-1, -1);
-			}
-		}
-		
-		public virtual bool IsVisible {
-			get {
-				return true;
-			}
-		}
-		
-		protected AbstractMargin(TextArea textArea)
+	    public IDocument Document => textArea.Document;
+
+	    public ITextEditorProperties TextEditorProperties => textArea.Document.TextEditorProperties;
+
+	    public virtual Cursor Cursor { get; set; } = Cursors.Default;
+
+	    public virtual Size Size => new Size(-1, -1);
+
+	    public virtual bool IsVisible => true;
+
+	    protected AbstractMargin(TextArea textArea)
 		{
 			this.textArea = textArea;
 		}

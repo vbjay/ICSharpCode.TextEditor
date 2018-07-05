@@ -39,13 +39,9 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 		
-		public HighlightColor EndColor {
-			get {
-				return endColor!=null ? endColor : Color;
-			}
-		}
-		
-		public char[] Begin { get; }
+		public HighlightColor EndColor => endColor!=null ? endColor : Color;
+
+	    public char[] Begin { get; }
 
 	    public char[] End { get; }
 

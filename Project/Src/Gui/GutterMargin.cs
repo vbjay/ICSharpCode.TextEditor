@@ -37,27 +37,15 @@ namespace ICSharpCode.TextEditor
 			numberStringFormat.Dispose();
 		}
 		
-		public override Cursor Cursor {
-			get {
-				return RightLeftCursor;
-			}
-		}
-		
-		public override Size Size {
-			get {
-				return new Size((int)(textArea.TextView.WideSpaceWidth
-				                      * Math.Max(3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1)),
-				                -1);
-			}
-		}
-		
-		public override bool IsVisible {
-			get {
-				return textArea.TextEditorProperties.ShowLineNumbers;
-			}
-		}
-		
-		public GutterMargin(TextArea textArea) : base(textArea)
+		public override Cursor Cursor => RightLeftCursor;
+
+	    public override Size Size => new Size((int)(textArea.TextView.WideSpaceWidth
+	                                                * Math.Max(3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1)),
+	        -1);
+
+	    public override bool IsVisible => textArea.TextEditorProperties.ShowLineNumbers;
+
+	    public GutterMargin(TextArea textArea) : base(textArea)
 		{
 			numberStringFormat.LineAlignment = StringAlignment.Far;
 			numberStringFormat.FormatFlags   = StringFormatFlags.MeasureTrailingSpaces | StringFormatFlags.FitBlackBox |

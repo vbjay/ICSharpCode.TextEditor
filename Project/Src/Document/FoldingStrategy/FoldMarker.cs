@@ -26,7 +26,7 @@ namespace ICSharpCode.TextEditor.Document
         #region ICSharpCode.TextEditor.Document.ISegment interface implementation
         public int Offset
         {
-            get { return offset; }
+            get => offset;
             set
             {
                 offset = value;
@@ -35,7 +35,7 @@ namespace ICSharpCode.TextEditor.Document
         }
         public int Length
         {
-            get { return length; }
+            get => length;
             set
             {
                 length = value;
@@ -110,13 +110,9 @@ namespace ICSharpCode.TextEditor.Document
 
         public string FoldText { get; } = "...";
 
-        public string InnerText {
-			get {
-				return document.GetText(offset, length);
-			}
-		}
-		
-		public FoldMarker(IDocument document, int offset, int length, string foldText, bool isFolded)
+        public string InnerText => document.GetText(offset, length);
+
+        public FoldMarker(IDocument document, int offset, int length, string foldText, bool isFolded)
 		{
 			this.document = document;
 			this.offset   = offset;

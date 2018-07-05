@@ -43,13 +43,9 @@ namespace ICSharpCode.TextEditor
 
 	    private TextAreaControl activeTextAreaControl;
 		
-		public override TextAreaControl ActiveTextAreaControl {
-			get {
-				return activeTextAreaControl;
-			}
-		}
-		
-		protected void SetActiveTextAreaControl(TextAreaControl value)
+		public override TextAreaControl ActiveTextAreaControl => activeTextAreaControl;
+
+	    protected void SetActiveTextAreaControl(TextAreaControl value)
 		{
 			if (activeTextAreaControl != value) {
 				activeTextAreaControl = value;
@@ -130,20 +126,12 @@ namespace ICSharpCode.TextEditor
 		}
 		
 		[Browsable(false)]
-		public bool EnableUndo {
-			get {
-				return Document.UndoStack.CanUndo;
-			}
-		}
-		
-		[Browsable(false)]
-		public bool EnableRedo {
-			get {
-				return Document.UndoStack.CanRedo;
-			}
-		}
+		public bool EnableUndo => Document.UndoStack.CanUndo;
 
-		public void Undo()
+	    [Browsable(false)]
+		public bool EnableRedo => Document.UndoStack.CanRedo;
+
+	    public void Undo()
 		{
 			if (Document.ReadOnly) {
 				return;

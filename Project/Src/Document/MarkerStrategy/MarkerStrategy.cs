@@ -20,13 +20,9 @@ namespace ICSharpCode.TextEditor.Document
 
 	    public IDocument Document { get; }
 
-	    public IEnumerable<TextMarker> TextMarker {
-			get {
-				return textMarker.AsReadOnly();
-			}
-		}
-		
-		public void AddMarker(TextMarker item)
+	    public IEnumerable<TextMarker> TextMarker => textMarker.AsReadOnly();
+
+	    public void AddMarker(TextMarker item)
 		{
 			markersTable.Clear();
 			textMarker.Add(item);

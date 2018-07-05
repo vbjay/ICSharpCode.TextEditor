@@ -237,27 +237,19 @@ namespace ICSharpCode.TextEditor.Document
 		/// <summary>
 		/// Gets the number of items in the collections. Runs in O(1).
 		/// </summary>
-		public int Count {
-			get { return tree.Count; }
-		}
-		
-		/// <summary>
+		public int Count => tree.Count;
+
+	    /// <summary>
 		/// Gets or sets an item by index. Runs in O(lg n).
 		/// </summary>
 		public LineSegment this[int index] {
-			get {
-				return GetNode(index).val.lineSegment;
-			}
-			set {
-				throw new NotSupportedException();
-			}
-		}
+			get => GetNode(index).val.lineSegment;
+	        set => throw new NotSupportedException();
+	    }
 		
-		bool ICollection<LineSegment>.IsReadOnly {
-			get { return true; }
-		}
-		
-		/// <summary>
+		bool ICollection<LineSegment>.IsReadOnly => true;
+
+	    /// <summary>
 		/// Gets the index of an item. Runs in O(lg n).
 		/// </summary>
 		public int IndexOf(LineSegment item)
@@ -393,19 +385,11 @@ namespace ICSharpCode.TextEditor.Document
 			/// <summary>
 			/// Gets the current value. Runs in O(1).
 			/// </summary>
-			public LineSegment Current {
-				get {
-					return it.Current.lineSegment;
-				}
-			}
-			
-			public bool IsValid {
-				get {
-					return it.IsValid;
-				}
-			}
-			
-			/// <summary>
+			public LineSegment Current => it.Current.lineSegment;
+
+		    public bool IsValid => it.IsValid;
+
+		    /// <summary>
 			/// Gets the index of the current value. Runs in O(lg n).
 			/// </summary>
 			public int CurrentIndex {
@@ -427,13 +411,9 @@ namespace ICSharpCode.TextEditor.Document
 				}
 			}
 			
-			object System.Collections.IEnumerator.Current {
-				get {
-					return it.Current.lineSegment;
-				}
-			}
-			
-			public void Dispose()
+			object System.Collections.IEnumerator.Current => it.Current.lineSegment;
+
+		    public void Dispose()
 			{
 			}
 			

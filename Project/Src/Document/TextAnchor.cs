@@ -41,46 +41,26 @@ namespace ICSharpCode.TextEditor.Document
 				if (lineSegment == null) throw AnchorDeletedError();
 				return lineSegment;
 			}
-			internal set {
-				lineSegment = value;
-			}
+			internal set => lineSegment = value;
 		}
 		
-		public bool IsDeleted {
-			get {
-				return lineSegment == null;
-			}
-		}
-		
-		public int LineNumber {
-			get {
-				return Line.LineNumber;
-			}
-		}
-		
-		public int ColumnNumber {
+		public bool IsDeleted => lineSegment == null;
+
+	    public int LineNumber => Line.LineNumber;
+
+	    public int ColumnNumber {
 			get {
 				if (lineSegment == null) throw AnchorDeletedError();
 				return columnNumber;
 			}
-			internal set {
-				columnNumber = value;
-			}
-		}
+			internal set => columnNumber = value;
+	    }
 		
-		public TextLocation Location {
-			get {
-				return new TextLocation(ColumnNumber, LineNumber);
-			}
-		}
-		
-		public int Offset {
-			get {
-				return Line.Offset + columnNumber;
-			}
-		}
-		
-		/// <summary>
+		public TextLocation Location => new TextLocation(ColumnNumber, LineNumber);
+
+	    public int Offset => Line.Offset + columnNumber;
+
+	    /// <summary>
 		/// Controls how the anchor moves.
 		/// </summary>
 		public AnchorMovementType MovementType { get; set; }

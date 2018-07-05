@@ -18,23 +18,13 @@ namespace ICSharpCode.TextEditor.Document
 	    private readonly IDocument document;
 	    private IHighlightingStrategy highlightingStrategy;
 		
-		public IList<LineSegment> LineSegmentCollection {
-			get {
-				return lineCollection;
-			}
-		}
-		
-		public int TotalNumberOfLines {
-			get {
-				return lineCollection.Count;
-			}
-		}
-		
-		public IHighlightingStrategy HighlightingStrategy {
-			get {
-				return highlightingStrategy;
-			}
-			set {
+		public IList<LineSegment> LineSegmentCollection => lineCollection;
+
+	    public int TotalNumberOfLines => lineCollection.Count;
+
+	    public IHighlightingStrategy HighlightingStrategy {
+			get => highlightingStrategy;
+	        set {
 				if (highlightingStrategy != value) {
 					highlightingStrategy = value;
 					if (highlightingStrategy != null) {

@@ -102,13 +102,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			}
 		}
 		
-		protected override bool ShowWithoutActivation {
-			get {
-				return true;
-			}
-		}
-		
-		protected void ShowCompletionWindow()
+		protected override bool ShowWithoutActivation => true;
+
+	    protected void ShowCompletionWindow()
 		{
 			Owner = parentForm;
 			Enabled = true;

@@ -32,13 +32,9 @@ namespace ICSharpCode.TextEditor.Document
 	    private const int minGapLength = 128;
 	    private const int maxGapLength = 2048;
 		
-		public int Length {
-			get {
-				return buffer.Length - gapLength;
-			}
-		}
-		
-		public void SetContent(string text)
+		public int Length => buffer.Length - gapLength;
+
+	    public void SetContent(string text)
 		{
 			if (text == null) {
 				text = String.Empty;

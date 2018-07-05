@@ -571,11 +571,9 @@ namespace ICSharpCode.TextEditor.Util
 			return GetEnumerator();
 		}
 		
-		bool ICollection<T>.IsReadOnly {
-			get { return false; }
-		}
-		
-		public void CopyTo(T[] array, int arrayIndex)
+		bool ICollection<T>.IsReadOnly => false;
+
+	    public void CopyTo(T[] array, int arrayIndex)
 		{
 			if (array == null) throw new ArgumentNullException("array");
 			foreach (T val in this) {

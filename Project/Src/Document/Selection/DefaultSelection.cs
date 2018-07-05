@@ -21,53 +21,33 @@ namespace ICSharpCode.TextEditor.Document
 	    private TextLocation     endPosition;
 		
 		public TextLocation StartPosition {
-			get {
-				return startPosition;
-			}
-			set {
+			get => startPosition;
+		    set {
 				DefaultDocument.ValidatePosition(document, value);
 				startPosition = value;
 			}
 		}
 		
 		public TextLocation EndPosition {
-			get {
-				return endPosition;
-			}
-			set {
+			get => endPosition;
+		    set {
 				DefaultDocument.ValidatePosition(document, value);
 				endPosition = value;
 			}
 		}
 		
-		public int Offset {
-			get {
-				return document.PositionToOffset(startPosition);
-			}
-		}
-		
-		public int EndOffset {
-			get {
-				return document.PositionToOffset(endPosition);
-			}
-		}
-		
-		public int Length {
-			get {
-				return EndOffset - Offset;
-			}
-		}
-		
-		/// <value>
+		public int Offset => document.PositionToOffset(startPosition);
+
+	    public int EndOffset => document.PositionToOffset(endPosition);
+
+	    public int Length => EndOffset - Offset;
+
+	    /// <value>
 		/// Returns true, if the selection is empty
 		/// </value>
-		public bool IsEmpty {
-			get {
-				return startPosition == endPosition;
-			}
-		}
-		
-		/// <value>
+		public bool IsEmpty => startPosition == endPosition;
+
+	    /// <value>
 		/// Returns true, if the selection is rectangular
 		/// </value>
 		// TODO : make this unused property used.

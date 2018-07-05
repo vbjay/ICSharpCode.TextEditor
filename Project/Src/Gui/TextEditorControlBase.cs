@@ -40,10 +40,8 @@ namespace ICSharpCode.TextEditor
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ITextEditorProperties TextEditorProperties {
-			get {
-				return document.TextEditorProperties;
-			}
-			set {
+			get => document.TextEditorProperties;
+		    set {
 				document.TextEditorProperties = value;
 				OptionsChanged();
 			}
@@ -62,9 +60,7 @@ namespace ICSharpCode.TextEditor
 					return TextEditorProperties.Encoding;
 				return encoding;
 			}
-			set {
-				encoding = value;
-			}
+			set => encoding = value;
 		}
 		
 		/// <value>
@@ -73,10 +69,8 @@ namespace ICSharpCode.TextEditor
 		[Browsable(false)]
 		[ReadOnly(true)]
 		public string FileName {
-			get {
-				return currentFileName;
-			}
-			set {
+			get => currentFileName;
+		    set {
 				if (currentFileName != value) {
 					currentFileName = value;
 					OnFileNameChanged(EventArgs.Empty);
@@ -90,10 +84,8 @@ namespace ICSharpCode.TextEditor
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public IDocument Document {
-			get {
-				return document;
-			}
-			set {
+			get => document;
+		    set {
 				if (value == null)
 					throw new ArgumentNullException("value");
 				if (document != null) {
@@ -114,19 +106,15 @@ namespace ICSharpCode.TextEditor
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		[Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(System.Drawing.Design.UITypeEditor))]
 		public override string Text {
-			get {
-				return Document.TextContent;
-			}
-			set {
-				Document.TextContent = value;
-			}
+			get => Document.TextContent;
+		    set => Document.TextContent = value;
 		}
 		
 		[EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
 		public new event EventHandler TextChanged
 		{
-			add { base.TextChanged += value; }
-			remove { base.TextChanged -= value; }
+			add => base.TextChanged += value;
+		    remove => base.TextChanged -= value;
 		}
 
 	    private static Font ParseFont(string font)
@@ -140,12 +128,8 @@ namespace ICSharpCode.TextEditor
 		/// </value>
 		[Browsable(false)]
 		public bool IsReadOnly {
-			get {
-				return Document.ReadOnly;
-			}
-			set {
-				Document.ReadOnly = value;
-			}
+			get => Document.ReadOnly;
+		    set => Document.ReadOnly = value;
 		}
 		
 		/// <value>
@@ -153,23 +137,15 @@ namespace ICSharpCode.TextEditor
 		/// it updates it status no redraw operation occurs.
 		/// </value>
 		[Browsable(false)]
-		public bool IsInUpdate {
-			get {
-				return updateLevel > 0;
-			}
-		}
-		
-		/// <value>
+		public bool IsInUpdate => updateLevel > 0;
+
+	    /// <value>
 		/// supposedly this is the way to do it according to .NET docs,
 		/// as opposed to setting the size in the constructor
 		/// </value>
-		protected override Size DefaultSize {
-			get {
-				return new Size(100, 100);
-			}
-		}
-		
-		#region Document Properties
+		protected override Size DefaultSize => new Size(100, 100);
+
+	    #region Document Properties
 		/// <value>
 		/// If true spaces are shown in the textarea
 		/// </value>
@@ -177,10 +153,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("If true spaces are shown in the textarea")]
 		public bool ShowSpaces {
-			get {
-				return document.TextEditorProperties.ShowSpaces;
-			}
-			set {
+			get => document.TextEditorProperties.ShowSpaces;
+		    set {
 				document.TextEditorProperties.ShowSpaces = value;
 				OptionsChanged();
 			}
@@ -193,10 +167,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(TextRenderingHint.SystemDefault)]
 		[Description("Specifies the quality of text rendering (whether to use hinting and/or anti-aliasing).")]
 		public TextRenderingHint TextRenderingHint {
-			get {
-				return document.TextEditorProperties.TextRenderingHint;
-			}
-			set {
+			get => document.TextEditorProperties.TextRenderingHint;
+		    set {
 				document.TextEditorProperties.TextRenderingHint = value;
 				OptionsChanged();
 			}
@@ -209,10 +181,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("If true tabs are shown in the textarea")]
 		public bool ShowTabs {
-			get {
-				return document.TextEditorProperties.ShowTabs;
-			}
-			set {
+			get => document.TextEditorProperties.ShowTabs;
+		    set {
 				document.TextEditorProperties.ShowTabs = value;
 				OptionsChanged();
 			}
@@ -225,10 +195,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("If true EOL markers are shown in the textarea")]
 		public bool ShowEOLMarkers {
-			get {
-				return document.TextEditorProperties.ShowEOLMarker;
-			}
-			set {
+			get => document.TextEditorProperties.ShowEOLMarker;
+		    set {
 				document.TextEditorProperties.ShowEOLMarker = value;
 				OptionsChanged();
 			}
@@ -241,10 +209,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("If true the horizontal ruler is shown in the textarea")]
 		public bool ShowHRuler {
-			get {
-				return document.TextEditorProperties.ShowHorizontalRuler;
-			}
-			set {
+			get => document.TextEditorProperties.ShowHorizontalRuler;
+		    set {
 				document.TextEditorProperties.ShowHorizontalRuler = value;
 				OptionsChanged();
 			}
@@ -257,10 +223,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(true)]
 		[Description("If true the vertical ruler is shown in the textarea")]
 		public bool ShowVRuler {
-			get {
-				return document.TextEditorProperties.ShowVerticalRuler;
-			}
-			set {
+			get => document.TextEditorProperties.ShowVerticalRuler;
+		    set {
 				document.TextEditorProperties.ShowVerticalRuler = value;
 				OptionsChanged();
 			}
@@ -273,10 +237,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(80)]
 		[Description("The row in which the vertical ruler is displayed")]
 		public int VRulerRow {
-			get {
-				return document.TextEditorProperties.VerticalRulerRow;
-			}
-			set {
+			get => document.TextEditorProperties.VerticalRulerRow;
+		    set {
 				document.TextEditorProperties.VerticalRulerRow = value;
 				OptionsChanged();
 			}
@@ -289,10 +251,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(true)]
 		[Description("If true line numbers are shown in the textarea")]
 		public bool ShowLineNumbers {
-			get {
-				return document.TextEditorProperties.ShowLineNumbers;
-			}
-			set {
+			get => document.TextEditorProperties.ShowLineNumbers;
+		    set {
 				document.TextEditorProperties.ShowLineNumbers = value;
 				OptionsChanged();
 			}
@@ -305,10 +265,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("If true invalid lines are marked in the textarea")]
 		public bool ShowInvalidLines {
-			get {
-				return document.TextEditorProperties.ShowInvalidLines;
-			}
-			set {
+			get => document.TextEditorProperties.ShowInvalidLines;
+		    set {
 				document.TextEditorProperties.ShowInvalidLines = value;
 				OptionsChanged();
 			}
@@ -321,10 +279,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(true)]
 		[Description("If true folding is enabled in the textarea")]
 		public bool EnableFolding {
-			get {
-				return document.TextEditorProperties.EnableFolding;
-			}
-			set {
+			get => document.TextEditorProperties.EnableFolding;
+		    set {
 				document.TextEditorProperties.EnableFolding = value;
 				OptionsChanged();
 			}
@@ -334,10 +290,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(true)]
 		[Description("If true matching brackets are highlighted")]
 		public bool ShowMatchingBracket {
-			get {
-				return document.TextEditorProperties.ShowMatchingBracket;
-			}
-			set {
+			get => document.TextEditorProperties.ShowMatchingBracket;
+		    set {
 				document.TextEditorProperties.ShowMatchingBracket = value;
 				OptionsChanged();
 			}
@@ -347,10 +301,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("If true the icon bar is displayed")]
 		public bool IsIconBarVisible {
-			get {
-				return document.TextEditorProperties.IsIconBarVisible;
-			}
-			set {
+			get => document.TextEditorProperties.IsIconBarVisible;
+		    set {
 				document.TextEditorProperties.IsIconBarVisible = value;
 				OptionsChanged();
 			}
@@ -363,10 +315,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(4)]
 		[Description("The width in spaces of a tab character")]
 		public int TabIndent {
-			get {
-				return document.TextEditorProperties.TabIndent;
-			}
-			set {
+			get => document.TextEditorProperties.TabIndent;
+		    set {
 				document.TextEditorProperties.TabIndent = value;
 				OptionsChanged();
 			}
@@ -379,10 +329,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(LineViewerStyle.None)]
 		[Description("The line viewer style")]
 		public LineViewerStyle LineViewerStyle {
-			get {
-				return document.TextEditorProperties.LineViewerStyle;
-			}
-			set {
+			get => document.TextEditorProperties.LineViewerStyle;
+		    set {
 				document.TextEditorProperties.LineViewerStyle = value;
 				OptionsChanged();
 			}
@@ -395,10 +343,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(IndentStyle.Smart)]
 		[Description("The indent style")]
 		public IndentStyle IndentStyle {
-			get {
-				return document.TextEditorProperties.IndentStyle;
-			}
-			set {
+			get => document.TextEditorProperties.IndentStyle;
+		    set {
 				document.TextEditorProperties.IndentStyle = value;
 				OptionsChanged();
 			}
@@ -411,10 +357,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("Converts tabs to spaces while typing")]
 		public bool ConvertTabsToSpaces {
-			get {
-				return document.TextEditorProperties.ConvertTabsToSpaces;
-			}
-			set {
+			get => document.TextEditorProperties.ConvertTabsToSpaces;
+		    set {
 				document.TextEditorProperties.ConvertTabsToSpaces = value;
 				OptionsChanged();
 			}
@@ -427,10 +371,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("Hide the mouse cursor while typing")]
 		public bool HideMouseCursor {
-			get {
-				return document.TextEditorProperties.HideMouseCursor;
-			}
-			set {
+			get => document.TextEditorProperties.HideMouseCursor;
+		    set {
 				document.TextEditorProperties.HideMouseCursor = value;
 				OptionsChanged();
 			}
@@ -443,10 +385,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(false)]
 		[Description("Allows the caret to be placed beyond the end of line")]
 		public bool AllowCaretBeyondEOL {
-			get {
-				return document.TextEditorProperties.AllowCaretBeyondEOL;
-			}
-			set {
+			get => document.TextEditorProperties.AllowCaretBeyondEOL;
+		    set {
 				document.TextEditorProperties.AllowCaretBeyondEOL = value;
 				OptionsChanged();
 			}
@@ -458,10 +398,8 @@ namespace ICSharpCode.TextEditor
 		[DefaultValue(BracketMatchingStyle.After)]
 		[Description("Specifies if the bracket matching should match the bracket before or after the caret.")]
 		public BracketMatchingStyle BracketMatchingStyle {
-			get {
-				return document.TextEditorProperties.BracketMatchingStyle;
-			}
-			set {
+			get => document.TextEditorProperties.BracketMatchingStyle;
+		    set {
 				document.TextEditorProperties.BracketMatchingStyle = value;
 				OptionsChanged();
 			}
@@ -476,10 +414,8 @@ namespace ICSharpCode.TextEditor
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		[Description("The base font of the text area. No bold or italic fonts can be used because bold/italic is reserved for highlighting purposes.")]
 		public override Font Font {
-			get {
-				return document.TextEditorProperties.Font;
-			}
-			set {
+			get => document.TextEditorProperties.Font;
+		    set {
 				document.TextEditorProperties.Font = value;
 				OptionsChanged();
 			}

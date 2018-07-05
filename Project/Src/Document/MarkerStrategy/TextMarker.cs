@@ -32,26 +32,14 @@ namespace ICSharpCode.TextEditor.Document
         #region ICSharpCode.TextEditor.Document.ISegment interface implementation
         public int Offset
         {
-            get
-            {
-                return offset;
-            }
-            set
-            {
-                offset = value;
-            }
+            get => offset;
+            set => offset = value;
         }
 
         public int Length
         {
-            get
-            {
-                return length;
-            }
-            set
-            {
-                length = value;
-            }
+            get => length;
+            set => length = value;
         }
         #endregion
         
@@ -81,13 +69,9 @@ namespace ICSharpCode.TextEditor.Document
         /// <summary>
 		/// Gets the last offset that is inside the marker region.
 		/// </summary>
-		public int EndOffset {
-			get {
-                return offset + length - 1;
-			}
-		}
-		
-		public TextMarker(int offset, int length, TextMarkerType textMarkerType) : this(offset, length, textMarkerType, Color.Red)
+		public int EndOffset => offset + length - 1;
+
+        public TextMarker(int offset, int length, TextMarkerType textMarkerType) : this(offset, length, textMarkerType, Color.Red)
 		{
 		}
 		

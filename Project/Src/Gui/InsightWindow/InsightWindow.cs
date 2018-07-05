@@ -149,13 +149,9 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 	    private readonly Stack<InsightDataProviderStackElement> insightDataProviderStack = new Stack<InsightDataProviderStackElement>();
 
 	    private int CurrentData {
-			get {
-				return insightDataProviderStack.Peek().currentData;
-			}
-			set {
-				insightDataProviderStack.Peek().currentData = value;
-			}
-		}
+			get => insightDataProviderStack.Peek().currentData;
+	        set => insightDataProviderStack.Peek().currentData = value;
+	    }
 
 	    private IInsightDataProvider DataProvider {
 			get {

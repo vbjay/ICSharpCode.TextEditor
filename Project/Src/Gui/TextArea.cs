@@ -48,13 +48,9 @@ namespace ICSharpCode.TextEditor
 	    private bool disposed;
 		
 		[Browsable(false)]
-		public IList<AbstractMargin> LeftMargins {
-			get {
-				return leftMargins.AsReadOnly();
-			}
-		}
-		
-		public void InsertLeftMargin(int index, AbstractMargin margin)
+		public IList<AbstractMargin> LeftMargins => leftMargins.AsReadOnly();
+
+	    public void InsertLeftMargin(int index, AbstractMargin margin)
 		{
 			leftMargins.Insert(index, margin);
 			Refresh();
@@ -76,22 +72,13 @@ namespace ICSharpCode.TextEditor
 
 	    public IconBarMargin IconBarMargin { get; }
 
-	    public Encoding Encoding {
-			get {
-				return MotherTextEditorControl.Encoding;
-			}
-		}
-		public int MaxVScrollValue {
-			get {
-				return (Document.GetVisibleLine(Document.TotalNumberOfLines - 1) + 1 + TextView.VisibleLineCount * 2 / 3) * TextView.FontHeight;
-			}
-		}
-		
-		public Point VirtualTop {
-			get {
-				return virtualTop;
-			}
-			set {
+	    public Encoding Encoding => MotherTextEditorControl.Encoding;
+
+	    public int MaxVScrollValue => (Document.GetVisibleLine(Document.TotalNumberOfLines - 1) + 1 + TextView.VisibleLineCount * 2 / 3) * TextView.FontHeight;
+
+	    public Point VirtualTop {
+			get => virtualTop;
+	        set {
 				Point newVirtualTop = new Point(value.X, Math.Min(MaxVScrollValue, Math.Max(0, value.Y)));
 				if (virtualTop != newVirtualTop) {
 					virtualTop = newVirtualTop;
@@ -105,22 +92,14 @@ namespace ICSharpCode.TextEditor
 		public bool AutoClearSelection { get; set; }
 
 	    [Browsable(false)]
-		public IDocument Document {
-			get {
-				return MotherTextEditorControl.Document;
-			}
-		}
-		
-		public TextAreaClipboardHandler ClipboardHandler { get; }
+		public IDocument Document => MotherTextEditorControl.Document;
+
+	    public TextAreaClipboardHandler ClipboardHandler { get; }
 
 
-	    public ITextEditorProperties TextEditorProperties {
-			get {
-				return MotherTextEditorControl.TextEditorProperties;
-			}
-		}
-		
-		public TextArea(TextEditorControl motherTextEditorControl, TextAreaControl motherTextAreaControl)
+	    public ITextEditorProperties TextEditorProperties => MotherTextEditorControl.TextEditorProperties;
+
+	    public TextArea(TextEditorControl motherTextEditorControl, TextAreaControl motherTextAreaControl)
 		{
 			this.MotherTextAreaControl      = motherTextAreaControl;
 			this.MotherTextEditorControl    = motherTextEditorControl;
@@ -859,12 +838,9 @@ namespace ICSharpCode.TextEditor
 			UpdateLines(line, line);
 		}
 
-	    private int FirstPhysicalLine {
-			get {
-				return VirtualTop.Y / TextView.FontHeight;
-			}
-		}
-		internal void UpdateLines(int xPos, int lineBegin, int lineEnd)
+	    private int FirstPhysicalLine => VirtualTop.Y / TextView.FontHeight;
+
+	    internal void UpdateLines(int xPos, int lineBegin, int lineEnd)
 		{
 //			if (lineEnd < FirstPhysicalLine || lineBegin > FirstPhysicalLine + textView.VisibleLineCount) {
 //				return;

@@ -29,29 +29,21 @@ namespace ICSharpCode.TextEditor.Document
 			return null;
 		}
 		
-		public bool IsDeleted {
-			get { return !treeEntry.IsValid; }
-		}
-		
-		public int LineNumber {
-			get { return treeEntry.CurrentIndex; }
-		}
-		
-		public int Offset {
-			get { return treeEntry.CurrentOffset; }
-		}
-		
-		public int Length {
-			get	{ return TotalLength - DelimiterLength; }
-		}
-		
-		int ISegment.Offset {
-			get { return Offset; }
-			set { throw new NotSupportedException(); }
-		}
+		public bool IsDeleted => !treeEntry.IsValid;
+
+	    public int LineNumber => treeEntry.CurrentIndex;
+
+	    public int Offset => treeEntry.CurrentOffset;
+
+	    public int Length => TotalLength - DelimiterLength;
+
+	    int ISegment.Offset {
+			get => Offset;
+	        set => throw new NotSupportedException();
+	    }
 		int ISegment.Length {
-			get { return Length; }
-			set { throw new NotSupportedException(); }
+			get => Length;
+		    set => throw new NotSupportedException();
 		}
 		
 		public int TotalLength { get; internal set; }

@@ -21,10 +21,8 @@ namespace ICSharpCode.TextEditor.Document
 	    private bool isEnabled = true;
 		
 		public IDocument Document {
-			get {
-				return document;
-			}
-			set {
+			get => document;
+		    set {
 				if (document != value) {
 					if (Anchor != null) {
 						location = Anchor.Location;
@@ -82,10 +80,8 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		public bool IsEnabled {
-			get {
-				return isEnabled;
-			}
-			set {
+			get => isEnabled;
+		    set {
 				if (isEnabled != value) {
 					isEnabled = value;
 					if (document != null) {
@@ -127,13 +123,9 @@ namespace ICSharpCode.TextEditor.Document
 		/// <summary>
 		/// Gets if the bookmark can be toggled off using the 'set/unset bookmark' command.
 		/// </summary>
-		public virtual bool CanToggle {
-			get {
-				return true;
-			}
-		}
-		
-		public Bookmark(IDocument document, TextLocation location) : this(document, location, true)
+		public virtual bool CanToggle => true;
+
+	    public Bookmark(IDocument document, TextLocation location) : this(document, location, true)
 		{
 		}
 		

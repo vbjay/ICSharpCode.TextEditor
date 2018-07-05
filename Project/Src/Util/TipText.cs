@@ -152,29 +152,21 @@ namespace ICSharpCode.TextEditor.Util
 		}
 		
 		public Color Color {
-			get {
-				return tipColor;
-			}
-			set {
-				tipColor = value;
-			}
+			get => tipColor;
+		    set => tipColor = value;
 		}
 		
 		public StringAlignment HorizontalAlignment {
-			get {
-				return horzAlign;
-			}
-			set {
+			get => horzAlign;
+		    set {
 				horzAlign = value;
 				tipFormat = null;
 			}
 		}
 		
 		public StringAlignment VerticalAlignment {
-			get {
-				return vertAlign;
-			}
-			set {
+			get => vertAlign;
+		    set {
 				vertAlign = value;
 				tipFormat = null;
 			}

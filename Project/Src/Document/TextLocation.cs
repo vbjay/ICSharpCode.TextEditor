@@ -31,22 +31,18 @@ namespace ICSharpCode.TextEditor
 	    public int Y { get; set; }
 
 	    public int Line {
-			get { return Y; }
-			set { Y = value; }
-		}
+			get => Y;
+	        set => Y = value;
+	    }
 		
 		public int Column {
-			get { return X; }
-			set { X = value; }
+			get => X;
+		    set => X = value;
 		}
 		
-		public bool IsEmpty {
-			get {
-				return X <= 0 && Y <= 0;
-			}
-		}
-		
-		public override string ToString()
+		public bool IsEmpty => X <= 0 && Y <= 0;
+
+	    public override string ToString()
 		{
 			return string.Format("(Line {1}, Col {0})", X, Y);
 		}

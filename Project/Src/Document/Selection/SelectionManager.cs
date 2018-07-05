@@ -20,8 +20,8 @@ namespace ICSharpCode.TextEditor.Document
 	    private TextLocation selectionStart;
 		
 		internal TextLocation SelectionStart {
-			get { return selectionStart; }
-			set {
+			get => selectionStart;
+		    set {
 				DefaultDocument.ValidatePosition(document, value);
 				selectionStart = value;
 			}
@@ -36,22 +36,14 @@ namespace ICSharpCode.TextEditor.Document
 		/// <value>
 		/// A collection containing all selections.
 		/// </value>
-		public List<ISelection> SelectionCollection {
-			get {
-				return selectionCollection;
-			}
-		}
-		
-		/// <value>
+		public List<ISelection> SelectionCollection => selectionCollection;
+
+	    /// <value>
 		/// true if the <see cref="SelectionCollection"/> is not empty, false otherwise.
 		/// </value>
-		public bool HasSomethingSelected {
-			get {
-				return selectionCollection.Count > 0;
-			}
-		}
-		
-		public bool SelectionIsReadonly {
+		public bool HasSomethingSelected => selectionCollection.Count > 0;
+
+	    public bool SelectionIsReadonly {
 			get {
 				if (document.ReadOnly)
 					return true;

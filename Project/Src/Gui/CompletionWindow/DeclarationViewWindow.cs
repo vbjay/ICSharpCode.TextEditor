@@ -28,10 +28,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	    private string description = String.Empty;
 
 	    public string Description {
-			get {
-				return description;
-			}
-			set {
+			get => description;
+	        set {
 				description = value;
 				if (value == null && Visible) {
 					Visible = false;
@@ -75,13 +73,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			}
 		}
 		
-		protected override bool ShowWithoutActivation {
-			get {
-				return true;
-			}
-		}
-		
-		protected override void OnClick(EventArgs e)
+		protected override bool ShowWithoutActivation => true;
+
+	    protected override void OnClick(EventArgs e)
 		{
 			base.OnClick(e);
 			if (HideOnClick) Hide();

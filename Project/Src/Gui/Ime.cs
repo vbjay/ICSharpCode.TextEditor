@@ -35,10 +35,8 @@ namespace ICSharpCode.TextEditor
 		private Font font;
 		public Font Font
 		{
-			get {
-				return font;
-			}
-			set {
+			get => font;
+		    set {
 				if (!value.Equals(font)) {
 					font = value;
 					lf = null;

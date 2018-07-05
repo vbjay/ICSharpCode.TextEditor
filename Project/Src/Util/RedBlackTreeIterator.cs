@@ -20,11 +20,9 @@ namespace ICSharpCode.TextEditor.Util
 			this.node = node;
 		}
 		
-		public bool IsValid {
-			get { return node != null; }
-		}
-		
-		public T Current {
+		public bool IsValid => node != null;
+
+	    public T Current {
 			get {
 				if (node != null)
 					return node.val;
@@ -33,13 +31,9 @@ namespace ICSharpCode.TextEditor.Util
 			}
 		}
 		
-		object System.Collections.IEnumerator.Current {
-			get {
-				return Current;
-			}
-		}
-		
-		void IDisposable.Dispose()
+		object System.Collections.IEnumerator.Current => Current;
+
+	    void IDisposable.Dispose()
 		{
 		}
 		

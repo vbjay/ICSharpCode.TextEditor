@@ -31,13 +31,9 @@ namespace ICSharpCode.TextEditor.Document
 		/// <value>
 		/// Contains all bookmarks
 		/// </value>
-		public ReadOnlyCollection<Bookmark> Marks {
-			get {
-				return new ReadOnlyCollection<Bookmark>(bookmark);
-			}
-		}
-		
-		public IDocument Document { get; }
+		public ReadOnlyCollection<Bookmark> Marks => new ReadOnlyCollection<Bookmark>(bookmark);
+
+	    public IDocument Document { get; }
 
 	    /// <summary>
 		/// Creates a new instance of <see cref="BookmarkManager"/>
