@@ -543,7 +543,7 @@ namespace ICSharpCode.TextEditor
 			}
 			
 			if (adjustScrollBars) {
-				this.motherTextAreaControl.AdjustScrollBars();
+				this.motherTextAreaControl.UpdateLayout();
 			}
 			
 			// we cannot update the caret position here, it's not allowed to call the caret API inside WM_PAINT
@@ -555,7 +555,7 @@ namespace ICSharpCode.TextEditor
 		{
 			Caret.UpdateCaretPosition();
 			Invalidate();
-			this.motherTextAreaControl.AdjustScrollBars();
+			this.motherTextAreaControl.UpdateLayout();
 		}
 		
 		#region keyboard handling methods

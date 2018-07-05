@@ -6,8 +6,10 @@
 // </file>
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 using ICSharpCode.TextEditor.Document;
@@ -142,46 +144,17 @@ namespace ICSharpCode.TextEditor
 		protected override void OnResize(System.EventArgs e)
 		{
 			base.OnResize(e);
-			ResizeTextArea();
+		    UpdateLayout();
 		}
-		
-		public void ResizeTextArea()
-		{
-			int y = 0;
-			int h = 0;
-			if (hRuler != null) {
-				hRuler.Bounds = new Rectangle(0,
-				                              0,
-				                              Width - SystemInformation.HorizontalScrollBarArrowWidth,
-				                              textArea.TextView.FontHeight);
-				
-				y = hRuler.Bounds.Bottom;
-				h = hRuler.Bounds.Height;
-			}
-			
-			textArea.Bounds = new Rectangle(0, y,
-			                                Width - SystemInformation.HorizontalScrollBarArrowWidth,
-			                                Height - SystemInformation.VerticalScrollBarArrowHeight - h);
-			SetScrollBarBounds();
-		}
-		
-		public void SetScrollBarBounds()
-		{
-			vScrollBar.Bounds = new Rectangle(textArea.Bounds.Right, 0, SystemInformation.HorizontalScrollBarArrowWidth, Height - SystemInformation.VerticalScrollBarArrowHeight);
-			hScrollBar.Bounds = new Rectangle(0,
-			                                  textArea.Bounds.Bottom,
-			                                  Width - SystemInformation.HorizontalScrollBarArrowWidth,
-			                                  SystemInformation.VerticalScrollBarArrowHeight);
-		}
-		
-		bool adjustScrollBarsOnNextUpdate;
+
+	    bool adjustScrollBarsOnNextUpdate;
 		Point scrollToPosOnNextUpdate;
 		
 		void AdjustScrollBarsOnDocumentChange(object sender, DocumentEventArgs e)
 		{
 			if (motherTextEditorControl.IsInUpdate == false) {
 				AdjustScrollBarsClearCache();
-				AdjustScrollBars();
+				UpdateLayout();
 			} else {
 				adjustScrollBarsOnNextUpdate = true;
 			}
@@ -198,7 +171,7 @@ namespace ICSharpCode.TextEditor
 				}
 				if (adjustScrollBarsOnNextUpdate) {
 					AdjustScrollBarsClearCache();
-					AdjustScrollBars();
+					UpdateLayout();
 				}
 			}
 		}
@@ -217,48 +190,154 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
-		public void AdjustScrollBars()
+		public void UpdateLayout()
 		{
 			if (this.textArea == null)
 				return;
 
 			adjustScrollBarsOnNextUpdate = false;
-			vScrollBar.Minimum = 0;
-			// number of visible lines in document (folding!)
-			vScrollBar.Maximum = textArea.MaxVScrollValue;
-			int max = 0;
-			
-			int firstLine = textArea.TextView.FirstVisibleLine;
-			int lastLine = this.Document.GetFirstLogicalLine(textArea.TextView.FirstPhysicalLine + textArea.TextView.VisibleLineCount);
-			if (lastLine >= this.Document.TotalNumberOfLines)
-				lastLine = this.Document.TotalNumberOfLines - 1;
-			
-			if (lineLengthCache == null || lineLengthCache.Length <= lastLine) {
-				lineLengthCache = new int[lastLine + LineLengthCacheAdditionalSize];
-			}
-			
-			for (int lineNumber = firstLine; lineNumber <= lastLine; lineNumber++) {
-				LineSegment lineSegment = this.Document.GetLineSegment(lineNumber);
-				if (Document.FoldingManager.IsLineVisible(lineNumber)) {
-					if (lineLengthCache[lineNumber] > 0) {
-						max = Math.Max(max, lineLengthCache[lineNumber]);
-					} else {
-						int visualLength = textArea.TextView.GetVisualColumnFast(lineSegment, lineSegment.Length);
-						lineLengthCache[lineNumber] = Math.Max(1, visualLength);
-						max = Math.Max(max, visualLength);
-					}
-				}
-			}
-			hScrollBar.Minimum = 0;
-			hScrollBar.Maximum = (Math.Max(max + 20, textArea.TextView.VisibleColumnCount - 1));
-			
-			vScrollBar.LargeChange = Math.Max(0, textArea.TextView.DrawingPosition.Height);
-			vScrollBar.SmallChange = Math.Max(0, textArea.TextView.FontHeight);
-			
-			hScrollBar.LargeChange = Math.Max(0, textArea.TextView.VisibleColumnCount - 1);
-			hScrollBar.SmallChange = Math.Max(0, (int)textArea.TextView.SpaceWidth);
+
+		    var view = textArea.TextView;
+
+		    var currentVisibilites = GetScrollVisibilities(hScrollBar.Visible, vScrollBar.Visible);
+		    var visited = new HashSet<ScrollVisibilities>();
+
+		    // Start walking through any layout state transitions and see whether it ends up in a stable state.
+		    var fromVisibilities = currentVisibilites;
+		    while (true) {
+		        if (!visited.Add(fromVisibilities))
+                    // Returning to a visited state -- unstable, so make no change
+		            break;
+		        var bounds = Measure(fromVisibilities);
+		        var to = ComputeScrollBarVisibilities(bounds.textArea.Size);
+		        if (to.visibilities == fromVisibilities) {
+                    // Layout is stable -- apply it
+                    ApplyLayout(fromVisibilities, to.maxLength, bounds);
+		            break;
+		        }
+		        fromVisibilities = to.visibilities;
+		    }
+
+		    return;
+
+		    ScrollVisibilities GetScrollVisibilities(bool h, bool v) {
+		        return (h ? ScrollVisibilities.H : ScrollVisibilities.None)
+		               | (v ? ScrollVisibilities.V : ScrollVisibilities.None);
+		    }
+
+            (Rectangle hRule, Rectangle textControl, Rectangle textArea, Rectangle hScroll, Rectangle vScroll)
+		    Measure(ScrollVisibilities scrollVisibilities) {
+		        var v = scrollVisibilities.HasFlag(ScrollVisibilities.V);
+		        var h = scrollVisibilities.HasFlag(ScrollVisibilities.H);
+		        var vScrollSize = v ? SystemInformation.VerticalScrollBarArrowHeight : 0;
+		        var hScrollSize = h ? SystemInformation.HorizontalScrollBarArrowWidth : 0;
+		        var x0 = textArea.LeftMargins.Where(margin => margin.IsVisible).Sum(margin => margin.Size.Width);
+
+		        var hRuleBounds = hRuler != null
+		            ? new Rectangle(
+		                0,
+		                0,
+		                Width - vScrollSize,
+		                textArea.TextView.FontHeight)
+		            : default;
+
+		        var textControlBounds = new Rectangle(
+		            0,
+		            hRuleBounds.Bottom,
+		            Width - vScrollSize,
+		            Height - hRuleBounds.Bottom - hScrollSize);
+
+		        var textAreaBounds = new Rectangle(
+		            x0,
+		            hRuleBounds.Bottom,
+		            Width - x0 - vScrollSize,
+		            Height - hRuleBounds.Bottom - hScrollSize);
+
+		        var vScrollBounds = v
+		            ? new Rectangle(
+		                textAreaBounds.Right,
+		                0,
+		                SystemInformation.HorizontalScrollBarArrowWidth,
+		                Height - hScrollSize)
+		            : default;
+
+		        var hScrollBounds = h
+		            ? new Rectangle(
+		                0,
+		                textAreaBounds.Bottom,
+		                Width - vScrollSize,
+		                SystemInformation.VerticalScrollBarArrowHeight)
+		            : default;
+
+		        return (hRuleBounds, textControlBounds, textAreaBounds, hScrollBounds, vScrollBounds);
+		    }
+
+		    (ScrollVisibilities visibilities, int maxLength) ComputeScrollBarVisibilities(Size size) {
+		        var visibleLineCount = 1 + size.Height/view.FontHeight;
+		        var visibleColumnCount = size.Width/view.WideSpaceWidth - 1;
+
+		        var firstLine = view.FirstVisibleLine;
+
+		        int lastLine = Document.GetFirstLogicalLine(firstLine + visibleLineCount);
+		        if (lastLine >= Document.TotalNumberOfLines)
+		            lastLine = Document.TotalNumberOfLines - 1;
+
+		        if (lineLengthCache == null || lineLengthCache.Length <= lastLine)
+		            lineLengthCache = new int[lastLine + LineLengthCacheAdditionalSize];
+
+		        int maxLength = 0;
+		        for (int lineNumber = firstLine; lineNumber <= lastLine; lineNumber++) {
+		            LineSegment lineSegment = Document.GetLineSegment(lineNumber);
+		            if (Document.FoldingManager.IsLineVisible(lineNumber)) {
+		                if (lineLengthCache[lineNumber] > 0) {
+		                    maxLength = Math.Max(maxLength, lineLengthCache[lineNumber]);
+		                } else {
+		                    int visualLength = view.GetVisualColumnFast(lineSegment, lineSegment.Length);
+		                    lineLengthCache[lineNumber] = Math.Max(1, visualLength);
+		                    maxLength = Math.Max(maxLength, visualLength);
+		                }
+		            }
+		        }
+
+		        var vScrollBarVisible = vScrollBar.Value != 0 || textArea.Document.TotalNumberOfLines >= visibleLineCount;
+		        var hScrollBarVisible = hScrollBar.Value != 0 || maxLength > visibleColumnCount;
+
+                return (GetScrollVisibilities(hScrollBarVisible, vScrollBarVisible), maxLength);
+		    }
+
+		    void ApplyLayout(ScrollVisibilities scrollVisibilities, int maxColumn, (Rectangle hRule, Rectangle textControl, Rectangle textArea, Rectangle hScroll, Rectangle vScroll) bounds) {
+		        var visibleColumnCount = bounds.textArea.Width/view.WideSpaceWidth - 1;
+
+		        vScrollBar.Minimum = 0;
+		        // number of visible lines in document (folding!)
+		        vScrollBar.Maximum = textArea.MaxVScrollValue;
+		        vScrollBar.LargeChange = Math.Max(0, bounds.textArea.Height);
+		        vScrollBar.SmallChange = Math.Max(0, view.FontHeight);
+		        vScrollBar.Visible = scrollVisibilities.HasFlag(ScrollVisibilities.V);
+		        vScrollBar.Bounds = bounds.vScroll;
+
+		        hScrollBar.Minimum = 0;
+		        hScrollBar.Maximum = Math.Max(maxColumn, visibleColumnCount - 1);
+		        hScrollBar.LargeChange = Math.Max(0, visibleColumnCount - 1);
+		        hScrollBar.SmallChange = Math.Max(0, view.SpaceWidth);
+		        hScrollBar.Visible = scrollVisibilities.HasFlag(ScrollVisibilities.H);
+		        hScrollBar.Bounds = bounds.hScroll;
+
+		        if (hRuler != null)
+		            hRuler.Bounds = bounds.hRule;
+
+		        textArea.Bounds = bounds.textControl;
+		    }
 		}
-		
+
+        [Flags]
+	    private enum ScrollVisibilities
+	    {
+            None = 0,
+            H = 1,
+            V = 2
+	    }
+
 		public void OptionsChanged()
 		{
 			textArea.OptionsChanged();
@@ -267,7 +346,7 @@ namespace ICSharpCode.TextEditor
 				if (hRuler == null) {
 					hRuler = new HRuler(textArea);
 					Controls.Add(hRuler);
-					ResizeTextArea();
+				    UpdateLayout();
 				} else {
 					hRuler.Invalidate();
 				}
@@ -276,18 +355,18 @@ namespace ICSharpCode.TextEditor
 					Controls.Remove(hRuler);
 					hRuler.Dispose();
 					hRuler = null;
-					ResizeTextArea();
+				    UpdateLayout();
 				}
 			}
 			
-			AdjustScrollBars();
+			UpdateLayout();
 		}
 		
 		void VScrollBarValueChanged(object sender, EventArgs e)
 		{
 			textArea.VirtualTop = new Point(textArea.VirtualTop.X, vScrollBar.Value);
 			textArea.Invalidate();
-			AdjustScrollBars();
+			UpdateLayout();
 		}
 		
 		void HScrollBarValueChanged(object sender, EventArgs e)
