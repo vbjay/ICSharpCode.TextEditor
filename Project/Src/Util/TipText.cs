@@ -100,7 +100,7 @@ namespace ICSharpCode.TextEditor.Util
             tipFont = font;
             tipText = text;
             if (text != null && text.Length > short.MaxValue)
-                throw new ArgumentException("TipText: text too long (max. is " + short.MaxValue + " characters)", "text");
+                throw new ArgumentException("TipText: text too long (max. is " + short.MaxValue + " characters)", nameof(text));
 
             Color = SystemColors.InfoText;
             HorizontalAlignment = StringAlignment.Near;

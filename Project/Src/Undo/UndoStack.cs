@@ -128,7 +128,7 @@ namespace ICSharpCode.TextEditor.Undo
         public void Push(IUndoableOperation operation)
         {
             if (operation == null)
-                throw new ArgumentNullException("operation");
+                throw new ArgumentNullException(nameof(operation));
 
             if (AcceptChanges)
             {

@@ -41,7 +41,7 @@ namespace ICSharpCode.TextEditor.Document
 #endif
 
             if (offset < 0 || offset >= Length)
-                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset < " + Length);
+                throw new ArgumentOutOfRangeException(nameof(offset), offset, "0 <= offset < " + Length);
 
             return offset < gapBeginOffset ? buffer[offset] : buffer[offset + gapLength];
         }
@@ -53,9 +53,9 @@ namespace ICSharpCode.TextEditor.Document
 #endif
 
             if (offset < 0 || offset > Length)
-                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length);
+                throw new ArgumentOutOfRangeException(nameof(offset), offset, "0 <= offset <= " + Length);
             if (length < 0 || offset + length > Length)
-                throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset(" + offset + ")+length <= " + Length);
+                throw new ArgumentOutOfRangeException(nameof(length), length, "0 <= length, offset(" + offset + ")+length <= " + Length);
             if (offset == 0 && length == Length)
             {
                 if (cachedContent != null)
@@ -86,9 +86,9 @@ namespace ICSharpCode.TextEditor.Document
 #endif
 
             if (offset < 0 || offset > Length)
-                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length);
+                throw new ArgumentOutOfRangeException(nameof(offset), offset, "0 <= offset <= " + Length);
             if (length < 0 || offset + length > Length)
-                throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset+length <= " + Length);
+                throw new ArgumentOutOfRangeException(nameof(length), length, "0 <= length, offset+length <= " + Length);
 
             cachedContent = null;
 

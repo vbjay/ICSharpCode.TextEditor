@@ -150,7 +150,7 @@ namespace ICSharpCode.TextEditor.Document
         protected string GetIndentation(TextArea textArea, int lineNumber)
         {
             if (lineNumber < 0 || lineNumber > textArea.Document.TotalNumberOfLines)
-                throw new ArgumentOutOfRangeException("lineNumber");
+                throw new ArgumentOutOfRangeException(nameof(lineNumber));
 
             var lineText = TextUtilities.GetLineAsString(textArea.Document, lineNumber);
             var whitespaces = new StringBuilder();
@@ -187,11 +187,11 @@ namespace ICSharpCode.TextEditor.Document
         public static void SmartReplaceLine(IDocument document, LineSegment line, string newLineText)
         {
             if (document == null)
-                throw new ArgumentNullException("document");
+                throw new ArgumentNullException(nameof(document));
             if (line == null)
-                throw new ArgumentNullException("line");
+                throw new ArgumentNullException(nameof(line));
             if (newLineText == null)
-                throw new ArgumentNullException("newLineText");
+                throw new ArgumentNullException(nameof(newLineText));
             var newLineTextTrim = newLineText.Trim(whitespaceChars);
             var oldLineText = document.GetText(line);
             if (oldLineText == newLineText)

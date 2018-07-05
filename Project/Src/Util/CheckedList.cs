@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor.Util
         public CheckedList(IList<T> baseList)
         {
             if (baseList == null)
-                throw new ArgumentNullException("baseList");
+                throw new ArgumentNullException(nameof(baseList));
             this.baseList = baseList;
             threadID = Thread.CurrentThread.ManagedThreadId;
         }

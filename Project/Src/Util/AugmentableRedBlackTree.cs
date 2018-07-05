@@ -66,7 +66,7 @@ namespace ICSharpCode.TextEditor.Util
 
         public AugmentableRedBlackTree(Host host)
         {
-            if (host == null) throw new ArgumentNullException("host");
+            if (host == null) throw new ArgumentNullException(nameof(host));
             this.host = host;
         }
 
@@ -619,7 +619,7 @@ namespace ICSharpCode.TextEditor.Util
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
             foreach (var val in this)
                 array[arrayIndex++] = val;
         }

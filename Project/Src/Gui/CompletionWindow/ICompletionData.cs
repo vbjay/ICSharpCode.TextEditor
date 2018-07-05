@@ -72,9 +72,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         public static int Compare(ICompletionData a, ICompletionData b)
         {
             if (a == null)
-                throw new ArgumentNullException("a");
+                throw new ArgumentNullException(nameof(a));
             if (b == null)
-                throw new ArgumentNullException("b");
+                throw new ArgumentNullException(nameof(b));
             return string.Compare(a.Text, b.Text, StringComparison.InvariantCultureIgnoreCase);
         }
     }

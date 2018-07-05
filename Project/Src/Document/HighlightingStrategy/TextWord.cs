@@ -121,9 +121,9 @@ namespace ICSharpCode.TextEditor.Document
             if (word.Type != TextWordType.Word)
                 throw new ArgumentException("word.Type must be Word");
             if (pos <= 0)
-                throw new ArgumentOutOfRangeException("pos", pos, "pos must be > 0");
+                throw new ArgumentOutOfRangeException(nameof(pos), pos, "pos must be > 0");
             if (pos >= word.Length)
-                throw new ArgumentOutOfRangeException("pos", pos, "pos must be < word.Length");
+                throw new ArgumentOutOfRangeException(nameof(pos), pos, "pos must be < word.Length");
 #endif
             var after = new TextWord(word.document, word.line, word.Offset + pos, word.Length - pos, word.color, word.HasDefaultColor);
             word = new TextWord(word.document, word.line, word.Offset, pos, word.color, word.HasDefaultColor);

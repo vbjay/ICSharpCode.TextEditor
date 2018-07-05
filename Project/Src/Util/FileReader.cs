@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor.Util
         public static StreamReader OpenStream(Stream fs, Encoding defaultEncoding)
         {
             if (fs == null)
-                throw new ArgumentNullException("fs");
+                throw new ArgumentNullException(nameof(fs));
 
             if (fs.Length >= 2)
             {

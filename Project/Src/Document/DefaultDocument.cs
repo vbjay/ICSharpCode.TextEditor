@@ -204,7 +204,7 @@ namespace ICSharpCode.TextEditor.Document
         public string GetText(int offset, int length)
         {
 #if DEBUG
-            if (length < 0) throw new ArgumentOutOfRangeException("length", length, "length < 0");
+            if (length < 0) throw new ArgumentOutOfRangeException(nameof(length), length, "length < 0");
 #endif
             return TextBufferStrategy.GetText(offset, length);
         }

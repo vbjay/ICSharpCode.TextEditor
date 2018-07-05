@@ -103,7 +103,7 @@ namespace ICSharpCode.TextEditor
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 if (document != null)
                     document.DocumentChanged -= OnDocumentChanged;
                 document = value;
@@ -310,7 +310,7 @@ namespace ICSharpCode.TextEditor
         public void LoadFile(string fileName, Stream stream, bool autoLoadHighlighting, bool autodetectEncoding)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             BeginUpdate();
             document.TextContent = string.Empty;

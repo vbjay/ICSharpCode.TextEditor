@@ -190,7 +190,7 @@ namespace ICSharpCode.TextEditor.Document
         protected void ImportSettingsFrom(DefaultHighlightingStrategy source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             Properties = source.Properties;
             Extensions = source.Extensions;
             DigitColor = source.DigitColor;

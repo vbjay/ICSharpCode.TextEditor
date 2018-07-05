@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor.Util
         public void Add(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             CheckNoEnumerator();
             if (innerList.Count == innerList.Capacity || innerList.Count%32 == 31)
                 innerList.RemoveAll(delegate(WeakReference r) { return !r.IsAlive; });
@@ -93,7 +93,7 @@ namespace ICSharpCode.TextEditor.Util
         public bool Contains(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             CheckNoEnumerator();
             foreach (var element in this)
                 if (item.Equals(element))
@@ -109,7 +109,7 @@ namespace ICSharpCode.TextEditor.Util
         public bool Remove(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             CheckNoEnumerator();
             for (var i = 0; i < innerList.Count;)
             {

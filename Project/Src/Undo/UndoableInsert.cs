@@ -28,9 +28,9 @@ namespace ICSharpCode.TextEditor.Undo
         public UndoableInsert(IDocument document, int offset, string text)
         {
             if (document == null)
-                throw new ArgumentNullException("document");
+                throw new ArgumentNullException(nameof(document));
             if (offset < 0 || offset > document.TextLength)
-                throw new ArgumentOutOfRangeException("offset");
+                throw new ArgumentOutOfRangeException(nameof(offset));
 
             Debug.Assert(text != null, "text can't be null");
 //            oldCaretPos   = document.Caret.Offset;

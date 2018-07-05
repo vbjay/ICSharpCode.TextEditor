@@ -92,7 +92,7 @@ namespace ICSharpCode.TextEditor.Document
         public TextAnchor CreateAnchor(int column)
         {
             if (column < 0 || column > Length)
-                throw new ArgumentOutOfRangeException("column");
+                throw new ArgumentOutOfRangeException(nameof(column));
             var anchor = new TextAnchor(this, column);
             AddAnchor(anchor);
             return anchor;

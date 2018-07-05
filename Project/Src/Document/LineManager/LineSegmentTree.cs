@@ -111,7 +111,7 @@ namespace ICSharpCode.TextEditor.Document
         /// </summary>
         public void CopyTo(LineSegment[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException("array");
+            if (array == null) throw new ArgumentNullException(nameof(array));
             foreach (var val in this)
                 array[arrayIndex++] = val;
         }
@@ -144,7 +144,7 @@ namespace ICSharpCode.TextEditor.Document
         private RedBlackTreeNode<RBNode> GetNode(int index)
         {
             if (index < 0 || index >= tree.Count)
-                throw new ArgumentOutOfRangeException("index", index, "index should be between 0 and " + (tree.Count - 1));
+                throw new ArgumentOutOfRangeException(nameof(index), index, "index should be between 0 and " + (tree.Count - 1));
             var node = tree.root;
             while (true)
                 if (node.left != null && index < node.left.val.count)
@@ -183,7 +183,7 @@ namespace ICSharpCode.TextEditor.Document
         private RedBlackTreeNode<RBNode> GetNodeByOffset(int offset)
         {
             if (offset < 0 || offset > TotalLength)
-                throw new ArgumentOutOfRangeException("offset", offset, "offset should be between 0 and " + TotalLength);
+                throw new ArgumentOutOfRangeException(nameof(offset), offset, "offset should be between 0 and " + TotalLength);
             if (offset == TotalLength)
             {
                 if (tree.root == null)
@@ -237,7 +237,7 @@ namespace ICSharpCode.TextEditor.Document
         public void SetSegmentLength(LineSegment segment, int newTotalLength)
         {
             if (segment == null)
-                throw new ArgumentNullException("segment");
+                throw new ArgumentNullException(nameof(segment));
             var node = segment.treeEntry.it.node;
             segment.TotalLength = newTotalLength;
             default(MyHost).UpdateAfterChildrenChange(node);

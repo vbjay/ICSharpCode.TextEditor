@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor.Document
         public static DefaultHighlightingStrategy Parse(DefaultHighlightingStrategy highlighter, SyntaxMode syntaxMode, XmlReader xmlReader)
         {
             if (syntaxMode == null)
-                throw new ArgumentNullException("syntaxMode");
+                throw new ArgumentNullException(nameof(syntaxMode));
             if (xmlReader == null)
                 throw new ArgumentNullException("xmlTextReader");
             try
