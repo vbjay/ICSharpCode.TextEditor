@@ -24,10 +24,10 @@ namespace ICSharpCode.TextEditor
 	{
 		protected Panel textAreaPanel     = new Panel();
 	    private readonly TextAreaControl primaryTextArea;
-	    private Splitter        textAreaSplitter  = null;
-	    private TextAreaControl secondaryTextArea = null;
+	    private Splitter        textAreaSplitter;
+	    private TextAreaControl secondaryTextArea;
 
-	    private PrintDocument   printDocument = null;
+	    private PrintDocument   printDocument;
 		
 		[Browsable(false)]
 		public PrintDocument PrintDocument {
@@ -271,8 +271,8 @@ namespace ICSharpCode.TextEditor
 		
 		#region Printing routines
 
-	    private int          curLineNr = 0;
-	    private float        curTabIndent = 0;
+	    private int          curLineNr;
+	    private float        curTabIndent;
 	    private StringFormat printingStringFormat;
 
 	    private void BeginPrint(object sender, PrintEventArgs ev)

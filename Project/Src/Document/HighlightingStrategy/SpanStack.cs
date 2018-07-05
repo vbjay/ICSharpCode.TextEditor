@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 
-	    private StackNode top = null;
+	    private StackNode top;
 		
 		public Span Pop()
 		{

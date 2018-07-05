@@ -29,11 +29,11 @@ namespace ICSharpCode.TextEditor.Document
 
 	    public char EscapeCharacter { get; }
 
-	    public bool IgnoreCase { get; } = false;
+	    public bool IgnoreCase { get; }
 
-	    public string Name { get; set; } = null;
+	    public string Name { get; set; }
 
-	    public string Reference { get; } = null;
+	    public string Reference { get; }
 
 	    public HighlightRuleSet()
 		{

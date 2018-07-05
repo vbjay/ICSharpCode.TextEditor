@@ -26,8 +26,8 @@ namespace ICSharpCode.TextEditor
 	[ToolboxItem(false)]
 	public abstract class TextEditorControlBase : UserControl
 	{
-	    private string    currentFileName = null;
-	    private int       updateLevel     = 0;
+	    private string    currentFileName;
+	    private int       updateLevel;
 	    private IDocument document;
 		
 		/// <summary>

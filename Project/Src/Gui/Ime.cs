@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor
 			SetIMEWindowFont(font);
 		}
 
-		private Font font = null;
+		private Font font;
 		public Font Font
 		{
 			get {
@@ -70,16 +70,16 @@ namespace ICSharpCode.TextEditor
 		[ StructLayout(LayoutKind.Sequential) ]
 		private class COMPOSITIONFORM
 		{
-			public int dwStyle = 0;
-			public POINT ptCurrentPos = null;
-			public RECT rcArea = null;
+			public int dwStyle;
+			public POINT ptCurrentPos;
+			public RECT rcArea;
 		}
 
 		[ StructLayout(LayoutKind.Sequential) ]
 		private class POINT
 		{
-			public int x = 0;
-			public int y = 0;
+			public int x;
+			public int y;
 		}
 
 		[ StructLayout(LayoutKind.Sequential) ]
@@ -114,10 +114,10 @@ namespace ICSharpCode.TextEditor
 			public byte lfClipPrecision = 0;
 			public byte lfQuality = 0;
 			public byte lfPitchAndFamily = 0;
-			[ MarshalAs(UnmanagedType.ByValTStr, SizeConst=32) ] public string lfFaceName = null;
+			[ MarshalAs(UnmanagedType.ByValTStr, SizeConst=32) ] public string lfFaceName;
 		}
 		private const int IMC_SETCOMPOSITIONFONT = 0x000a;
-	    private LOGFONT lf = null;
+	    private LOGFONT lf;
 	    private static bool disableIME;
 		
 		private void SetIMEWindowFont(Font f)

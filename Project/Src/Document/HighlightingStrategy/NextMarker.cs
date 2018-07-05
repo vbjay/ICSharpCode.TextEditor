@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor.Document
 		/// If true the indication text will be marked with the same color
 		/// too
 		/// </value>
-		public bool MarkMarker { get; } = false;
+		public bool MarkMarker { get; }
 
 	    /// <summary>
 		/// Creates a new instance of <see cref="NextMarker"/>

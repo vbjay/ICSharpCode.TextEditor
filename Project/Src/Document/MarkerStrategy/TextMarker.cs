@@ -69,7 +69,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public Color ForeColor { get; }
 
-        public bool OverrideForeColor { get; } = false;
+        public bool OverrideForeColor { get; }
 
         /// <summary>
 		/// Marks the text segment as read-only.

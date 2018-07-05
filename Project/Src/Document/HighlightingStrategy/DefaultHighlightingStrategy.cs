@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Document
 	{
 	    private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
 
-	    private HighlightRuleSet defaultRuleSet = null;
+	    private HighlightRuleSet defaultRuleSet;
 		
 		public HighlightColor DigitColor { get; set; }
 

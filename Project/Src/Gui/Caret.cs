@@ -35,15 +35,15 @@ namespace ICSharpCode.TextEditor
 	
 	public class Caret : IDisposable
 	{
-	    private int       line          = 0;
-	    private int       column        = 0;
+	    private int       line;
+	    private int       column;
 	    private CaretMode caretMode;
 
-	    private static bool     caretCreated = false;
+	    private static bool     caretCreated;
 	    private bool     hidden       = true;
 	    private TextArea textArea;
 	    private Point    currentPos   = new Point(-1, -1);
-	    private Ime      ime          = null;
+	    private Ime      ime;
 	    private readonly CaretImplementation caretImplementation;
 		
 		/// <value>

@@ -21,8 +21,8 @@ namespace ICSharpCode.TextEditor
 	public class TextAreaMouseHandler
 	{
 	    private readonly TextArea  textArea;
-	    private bool      doubleclick = false;
-	    private bool      clickedOnSelectedText = false;
+	    private bool      doubleclick;
+	    private bool      clickedOnSelectedText;
 
 	    private MouseButtons button;
 
@@ -30,8 +30,8 @@ namespace ICSharpCode.TextEditor
 	    private Point mousedownpos       = nilPoint;
 	    private Point lastmousedownpos   = nilPoint;
 
-	    private bool gotmousedown = false;
-	    private bool dodragdrop = false;
+	    private bool gotmousedown;
+	    private bool dodragdrop;
 		
 		public TextAreaMouseHandler(TextArea ttextArea)
 		{

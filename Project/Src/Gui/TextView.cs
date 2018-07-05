@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor
 	{
 	    //Hashtable    charWitdh           = new Hashtable();
 		//StringFormat measureStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
-	    private int          physicalColumn = 0; // used for calculating physical column during paint
+	    private int          physicalColumn; // used for calculating physical column during paint
 		
 		public void Dispose()
 		{

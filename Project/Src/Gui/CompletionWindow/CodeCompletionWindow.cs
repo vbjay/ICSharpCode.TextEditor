@@ -27,7 +27,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
 	    private int startOffset;
 	    private int endOffset;
-	    private DeclarationViewWindow declarationViewWindow = null;
+	    private DeclarationViewWindow declarationViewWindow;
 	    private readonly Rectangle workingScreen;
 		
 		public static CodeCompletionWindow ShowCompletionWindow(Form parent, TextEditorControl control, string fileName, ICompletionDataProvider completionDataProvider, char firstChar)

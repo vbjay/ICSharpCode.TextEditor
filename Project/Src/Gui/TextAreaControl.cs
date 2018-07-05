@@ -24,7 +24,7 @@ namespace ICSharpCode.TextEditor
 	{
 	    private TextEditorControl motherTextEditorControl;
 
-	    private HRuler     hRuler     = null;
+	    private HRuler     hRuler;
 
 	    private bool       disposed;
 		

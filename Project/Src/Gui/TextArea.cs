@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor
 	[ToolboxItem(false)]
 	public class TextArea : Control
 	{
-	    private bool hiddenMouseCursor = false;
+	    private bool hiddenMouseCursor;
 		/// <summary>
 		/// The position where the mouse cursor was when it was hidden. Sometimes the text editor gets MouseMove
 		/// events when typing text even if the mouse is not moved.
@@ -102,7 +102,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
-		public bool AutoClearSelection { get; set; } = false;
+		public bool AutoClearSelection { get; set; }
 
 	    [Browsable(false)]
 		public IDocument Document {
@@ -418,7 +418,7 @@ namespace ICSharpCode.TextEditor
 			Cursor = Cursors.Default;
 		}
 
-	    private AbstractMargin updateMargin = null;
+	    private AbstractMargin updateMargin;
 		
 		public void Refresh(AbstractMargin margin)
 		{

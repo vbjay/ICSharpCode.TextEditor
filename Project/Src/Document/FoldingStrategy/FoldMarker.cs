@@ -51,7 +51,7 @@ namespace ICSharpCode.TextEditor.Document
                                  length);
         }
 
-        private readonly IDocument document = null;
+        private readonly IDocument document;
         private int startLine = -1, startColumn, endLine = -1, endColumn;
 
         private static void GetPointForOffset(IDocument document, int offset, out int line, out int column)
@@ -106,7 +106,7 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 		
-		public bool IsFolded { get; set; } = false;
+		public bool IsFolded { get; set; }
 
         public string FoldText { get; } = "...";
 

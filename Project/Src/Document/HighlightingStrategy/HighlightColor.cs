@@ -19,20 +19,20 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class HighlightColor
 	{
-	    public bool HasForeground { get; } = false;
+	    public bool HasForeground { get; }
 
-	    public bool HasBackground { get; } = false;
+	    public bool HasBackground { get; }
 
 
 	    /// <value>
 		/// If true the font will be displayed bold style
 		/// </value>
-		public bool Bold { get; } = false;
+		public bool Bold { get; }
 
 	    /// <value>
 		/// If true the font will be displayed italic style
 		/// </value>
-		public bool Italic { get; } = false;
+		public bool Italic { get; }
 
 	    /// <value>
 		/// The background color used
