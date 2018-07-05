@@ -27,9 +27,7 @@ namespace ICSharpCode.TextEditor.Document
             set {
                 if (highlightingStrategy != value) {
                     highlightingStrategy = value;
-                    if (highlightingStrategy != null) {
-                        highlightingStrategy.MarkTokens(document);
-                    }
+                    highlightingStrategy?.MarkTokens(document);
                 }
             }
         }
@@ -326,23 +324,17 @@ namespace ICSharpCode.TextEditor.Document
 
         private void OnLineCountChanged(LineCountChangeEventArgs e)
         {
-            if (LineCountChanged != null) {
-                LineCountChanged(this, e);
-            }
+            LineCountChanged?.Invoke(this, e);
         }
 
         private void OnLineLengthChanged(LineLengthChangeEventArgs e)
         {
-            if (LineLengthChanged != null) {
-                LineLengthChanged(this, e);
-            }
+            LineLengthChanged?.Invoke(this, e);
         }
 
         private void OnLineDeleted(LineEventArgs e)
         {
-            if (LineDeleted != null) {
-                LineDeleted(this, e);
-            }
+            LineDeleted?.Invoke(this, e);
         }
 
         public event EventHandler<LineLengthChangeEventArgs> LineLengthChanged;

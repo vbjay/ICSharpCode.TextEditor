@@ -288,9 +288,7 @@ namespace ICSharpCode.TextEditor
 
         protected virtual void OnToolTipRequest(ToolTipRequestEventArgs e)
         {
-            if (ToolTipRequest != null) {
-                ToolTipRequest(this, e);
-            }
+            ToolTipRequest?.Invoke(this, e);
         }
 
         private bool toolTipActive;
@@ -368,9 +366,7 @@ namespace ICSharpCode.TextEditor
                     Cursor = margin.Cursor;
                     margin.HandleMouseMove(new Point(e.X, e.Y), e.Button);
                     if (lastMouseInMargin != margin) {
-                        if (lastMouseInMargin != null) {
-                            lastMouseInMargin.HandleMouseLeave(EventArgs.Empty);
-                        }
+                        lastMouseInMargin?.HandleMouseLeave(EventArgs.Empty);
                         lastMouseInMargin = margin;
                     }
                     return;
@@ -782,9 +778,8 @@ namespace ICSharpCode.TextEditor
                         Caret.PositionChanged -= new EventHandler(SearchMatchingBracket);
                         Caret.Dispose();
                     }
-                    if (SelectionManager != null) {
-                        SelectionManager.Dispose();
-                    }
+
+                    SelectionManager?.Dispose();
                     Document.TextContentChanged -= new EventHandler(TextContentChanged);
                     Document.FoldingManager.FoldingsChanged -= new EventHandler(DocumentFoldingsChanged);
                     MotherTextAreaControl = null;

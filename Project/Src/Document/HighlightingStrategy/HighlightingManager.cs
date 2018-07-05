@@ -142,9 +142,7 @@ namespace ICSharpCode.TextEditor.Document
 
         protected virtual void OnReloadSyntaxHighlighting(EventArgs e)
         {
-            if (ReloadSyntaxHighlighting != null) {
-                ReloadSyntaxHighlighting(this, e);
-            }
+            ReloadSyntaxHighlighting?.Invoke(this, e);
         }
 
         public event EventHandler ReloadSyntaxHighlighting;

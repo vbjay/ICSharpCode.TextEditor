@@ -257,16 +257,12 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
         protected virtual void OnSelectedItemChanged(EventArgs e)
         {
-            if (SelectedItemChanged != null) {
-                SelectedItemChanged(this, e);
-            }
+            SelectedItemChanged?.Invoke(this, e);
         }
 
         protected virtual void OnFirstItemChanged(EventArgs e)
         {
-            if (FirstItemChanged != null) {
-                FirstItemChanged(this, e);
-            }
+            FirstItemChanged?.Invoke(this, e);
         }
 
         public event EventHandler SelectedItemChanged;

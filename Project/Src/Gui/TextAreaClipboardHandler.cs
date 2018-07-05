@@ -225,9 +225,7 @@ namespace ICSharpCode.TextEditor
 
         protected virtual void OnCopyText(CopyTextEventArgs e)
         {
-            if (CopyText != null) {
-                CopyText(this, e);
-            }
+            CopyText?.Invoke(this, e);
         }
 
         public event CopyTextEventHandler CopyText;

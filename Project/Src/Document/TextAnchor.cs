@@ -77,8 +77,7 @@ namespace ICSharpCode.TextEditor.Document
 
         internal void RaiseDeleted()
         {
-            if (Deleted != null)
-                Deleted(this, EventArgs.Empty);
+            Deleted?.Invoke(this, EventArgs.Empty);
         }
 
         internal TextAnchor(LineSegment lineSegment, int columnNumber)

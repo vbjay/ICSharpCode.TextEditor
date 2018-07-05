@@ -220,16 +220,12 @@ namespace ICSharpCode.TextEditor.Document
 
         protected virtual void OnRemoved(BookmarkEventArgs e)
         {
-            if (Removed != null) {
-                Removed(this, e);
-            }
+            Removed?.Invoke(this, e);
         }
 
         protected virtual void OnAdded(BookmarkEventArgs e)
         {
-            if (Added != null) {
-                Added(this, e);
-            }
+            Added?.Invoke(this, e);
         }
 
         public event BookmarkEventHandler Removed;

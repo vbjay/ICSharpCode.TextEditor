@@ -35,21 +35,9 @@ namespace ICSharpCode.TextEditor
         public Caret Caret => TextArea.Caret;
 
         [Browsable(false)]
-        public IDocument Document {
-            get {
-                if (motherTextEditorControl != null)
-                    return motherTextEditorControl.Document;
-                return null;
-            }
-        }
+        public IDocument Document => motherTextEditorControl?.Document;
 
-        public ITextEditorProperties TextEditorProperties {
-            get {
-                if (motherTextEditorControl != null)
-                    return motherTextEditorControl.TextEditorProperties;
-                return null;
-            }
-        }
+        public ITextEditorProperties TextEditorProperties => motherTextEditorControl?.TextEditorProperties;
 
         public VScrollBar VScrollBar { get; private set; } = new VScrollBar();
 

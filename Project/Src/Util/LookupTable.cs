@@ -132,11 +132,9 @@ namespace ICSharpCode.TextEditor.Util
             // Lazily initialize children array. Saves 200 KB of memory for the C# highlighting
             // because we don't have to store the array for leaf nodes.
             public Node this[int index] {
-                get { 
-                    if (children != null)
-                        return children[index];
-                    else
-                        return null;
+                get
+                {
+                    return children?[index];
                 }
                 set {
                     if (children == null)

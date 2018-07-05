@@ -250,9 +250,7 @@ namespace ICSharpCode.TextEditor.Document
                 currentLineNumber = lineNumber;
                 List<TextWord> words = ParseLine(document);
                 // Alex: clear old words
-                if (currentLine.Words != null) {
-                    currentLine.Words.Clear();
-                }
+                currentLine.Words?.Clear();
                 currentLine.Words = words;
                 currentLine.HighlightSpanStack = (currentSpanStack==null || currentSpanStack.IsEmpty) ? null : currentSpanStack;
 
@@ -355,7 +353,7 @@ namespace ICSharpCode.TextEditor.Document
             }
 
             //// Alex: remove old words
-            if (currentLine.Words!=null) currentLine.Words.Clear();
+            currentLine.Words?.Clear();
             currentLine.Words = words;
             currentLine.HighlightSpanStack = (currentSpanStack != null && !currentSpanStack.IsEmpty) ? currentSpanStack : null;
 

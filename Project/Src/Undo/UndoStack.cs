@@ -77,9 +77,7 @@ namespace ICSharpCode.TextEditor.Undo
             if (undoGroupDepth == 0 && actionCountInUndoGroup > 1) {
                 UndoQueue op = new UndoQueue(undostack, actionCountInUndoGroup);
                 undostack.Push(op);
-                if (OperationPushed != null) {
-                    OperationPushed(this, new OperationEventArgs(op));
-                }
+                OperationPushed?.Invoke(this, new OperationEventArgs(op));
             }
         }
 
@@ -165,18 +163,14 @@ namespace ICSharpCode.TextEditor.Undo
         /// </summary>
         protected void OnActionUndone()
         {
-            if (ActionUndone != null) {
-                ActionUndone(null, null);
-            }
+            ActionUndone?.Invoke(null, null);
         }
 
         /// <summary>
         /// </summary>
         protected void OnActionRedone()
         {
-            if (ActionRedone != null) {
-                ActionRedone(null, null);
-            }
+            ActionRedone?.Invoke(null, null);
         }
 
         private class UndoableSetCaretPosition : IUndoableOperation

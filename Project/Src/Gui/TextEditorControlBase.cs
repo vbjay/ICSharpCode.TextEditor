@@ -684,9 +684,7 @@ namespace ICSharpCode.TextEditor
 
         protected virtual void OnFileNameChanged(EventArgs e)
         {
-            if (FileNameChanged != null) {
-                FileNameChanged(this, e);
-            }
+            FileNameChanged?.Invoke(this, e);
         }
 
         public event EventHandler FileNameChanged;

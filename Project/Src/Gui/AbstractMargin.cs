@@ -50,28 +50,20 @@ namespace ICSharpCode.TextEditor
 
         public virtual void HandleMouseDown(Point mousepos, MouseButtons mouseButtons)
         {
-            if (MouseDown != null) {
-                MouseDown(this, mousepos, mouseButtons);
-            }
+            MouseDown?.Invoke(this, mousepos, mouseButtons);
         }
         public virtual void HandleMouseMove(Point mousepos, MouseButtons mouseButtons)
         {
-            if (MouseMove != null) {
-                MouseMove(this, mousepos, mouseButtons);
-            }
+            MouseMove?.Invoke(this, mousepos, mouseButtons);
         }
         public virtual void HandleMouseLeave(EventArgs e)
         {
-            if (MouseLeave != null) {
-                MouseLeave(this, e);
-            }
+            MouseLeave?.Invoke(this, e);
         }
 
         public virtual void Paint(Graphics g, Rectangle rect)
         {
-            if (Painted != null) {
-                Painted(this, g, rect);
-            }
+            Painted?.Invoke(this, g, rect);
         }
 
         public event MarginPaintEventHandler Painted;
