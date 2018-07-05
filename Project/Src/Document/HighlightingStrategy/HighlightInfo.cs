@@ -17,9 +17,9 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public HighlightInfo(Span curSpan, bool span, bool blockSpanOn)
 		{
-			this.CurSpan     = curSpan;
-			this.Span        = span;
-			this.BlockSpanOn = blockSpanOn;
+			CurSpan     = curSpan;
+			Span        = span;
+			BlockSpanOn = blockSpanOn;
 		}
 	}
 }

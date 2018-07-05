@@ -191,7 +191,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 			
 			public InsightDataProviderStackElement(IInsightDataProvider dataProvider)
 			{
-				this.currentData  = Math.Max(dataProvider.DefaultIndex, 0);
+				currentData  = Math.Max(dataProvider.DefaultIndex, 0);
 				this.dataProvider = dataProvider;
 			}
 		}

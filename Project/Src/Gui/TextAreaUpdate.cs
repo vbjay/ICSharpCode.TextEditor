@@ -65,7 +65,7 @@ namespace ICSharpCode.TextEditor
 		public TextAreaUpdate(TextAreaUpdateType type, int startLine, int endLine)
 		{
 			this.type     = type;
-			this.position = new TextLocation(startLine, endLine);
+			position = new TextLocation(startLine, endLine);
 		}
 		
 		/// <summary>
@@ -74,7 +74,7 @@ namespace ICSharpCode.TextEditor
 		public TextAreaUpdate(TextAreaUpdateType type, int singleLine)
 		{
 			this.type     = type;
-			this.position = new TextLocation(0, singleLine);
+			position = new TextLocation(0, singleLine);
 		}
 		
 		public override string ToString()

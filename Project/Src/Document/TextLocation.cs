@@ -56,7 +56,7 @@ namespace ICSharpCode.TextEditor
 		
 		public override string ToString()
 		{
-			return string.Format("(Line {1}, Col {0})", this.x, this.y);
+			return string.Format("(Line {1}, Col {0})", x, y);
 		}
 		
 		public override int GetHashCode()

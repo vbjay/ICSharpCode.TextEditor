@@ -169,10 +169,10 @@ namespace ICSharpCode.TextEditor.Document
 				foldText = "...";
 			}
 			
-			this.FoldType = foldType;
+			FoldType = foldType;
 			this.foldText = foldText;
-			this.offset = startLineSegment.Offset + Math.Min(startColumn, startLineSegment.Length);
-			this.length = (endLineSegment.Offset + Math.Min(endColumn, endLineSegment.Length)) - this.offset;
+			offset = startLineSegment.Offset + Math.Min(startColumn, startLineSegment.Length);
+			length = (endLineSegment.Offset + Math.Min(endColumn, endLineSegment.Length)) - offset;
 			this.isFolded = isFolded;
 		}
 		

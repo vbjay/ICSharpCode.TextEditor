@@ -72,7 +72,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			Owner           = parent;
 			ShowInTaskbar   = false;
 			Size            = new Size(0, 0);
-			base.CreateHandle();
+			CreateHandle();
 		}
 		
 		protected override CreateParams CreateParams {

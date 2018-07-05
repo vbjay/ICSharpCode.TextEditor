@@ -345,11 +345,11 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public int PositionToOffset(TextLocation p)
 		{
-			if (p.Y >= this.TotalNumberOfLines) {
+			if (p.Y >= TotalNumberOfLines) {
 				return 0;
 			}
 			LineSegment line = GetLineSegment(p.Y);
-			return Math.Min(this.TextLength, line.Offset + Math.Min(line.Length, p.X));
+			return Math.Min(TextLength, line.Offset + Math.Min(line.Length, p.X));
 		}
 		
 		public void UpdateSegmentListOnDocumentChange<T>(List<T> list, DocumentEventArgs e) where T : ISegment

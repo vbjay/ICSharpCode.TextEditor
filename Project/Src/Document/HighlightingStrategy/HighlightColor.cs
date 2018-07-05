@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor.Document
 	public class HighlightColor
 	{
 	    private Color  color;
-	    private Color  backgroundcolor = System.Drawing.Color.WhiteSmoke;
+	    private Color  backgroundcolor = Color.WhiteSmoke;
 
 	    private bool   bold   = false;
 	    private bool   italic = false;
@@ -90,7 +90,7 @@ namespace ICSharpCode.TextEditor.Document
 	    private Color ParseColorString(string colorName)
 		{
 			string[] cNames = colorName.Split('*');
-			PropertyInfo myPropInfo = typeof(System.Drawing.SystemColors).GetProperty(cNames[0], BindingFlags.Public |
+			PropertyInfo myPropInfo = typeof(SystemColors).GetProperty(cNames[0], BindingFlags.Public |
 			                                                                          BindingFlags.Instance |
 			                                                                          BindingFlags.Static);
 			Color c = (Color)myPropInfo.GetValue(null, null);
@@ -225,8 +225,8 @@ namespace ICSharpCode.TextEditor.Document
 			hasForeground = true;
 			hasBackground  = true;
 			
-			this.color = ParseColorString(systemColor);
-			this.backgroundcolor = ParseColorString(systemBackgroundColor);
+			color = ParseColorString(systemColor);
+			backgroundcolor = ParseColorString(systemBackgroundColor);
 			
 			this.bold         = bold;
 			this.italic       = italic;
@@ -239,7 +239,7 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			hasForeground = true;
 			
-			this.color = ParseColorString(systemColor);
+			color = ParseColorString(systemColor);
 			
 			this.bold         = bold;
 			this.italic       = italic;

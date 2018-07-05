@@ -45,8 +45,8 @@ namespace ICSharpCode.TextEditor.Document
 		public LineCountChangeEventArgs(IDocument document, int lineStart, int linesMoved)
 		{
 			this.document = document;
-			this.start    = lineStart;
-			this.moved    = linesMoved;
+			start    = lineStart;
+			moved    = linesMoved;
 		}
 	}
 	
@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public override string ToString()
 		{
-			return string.Format("[LineEventArgs Document={0} LineSegment={1}]", this.document, this.lineSegment);
+			return string.Format("[LineEventArgs Document={0} LineSegment={1}]", document, lineSegment);
 		}
 	}
 	
@@ -86,12 +86,12 @@ namespace ICSharpCode.TextEditor.Document
 		public LineLengthChangeEventArgs(IDocument document, LineSegment lineSegment, int moved)
 			: base(document, lineSegment)
 		{
-			this.lengthDelta = moved;
+			lengthDelta = moved;
 		}
 		
 		public override string ToString()
 		{
-			return string.Format("[LineLengthEventArgs Document={0} LineSegment={1} LengthDelta={2}]", this.Document, this.LineSegment, this.lengthDelta);
+			return string.Format("[LineLengthEventArgs Document={0} LineSegment={1} LengthDelta={2}]", Document, LineSegment, lengthDelta);
 		}
 	}
 }

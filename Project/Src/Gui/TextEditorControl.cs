@@ -34,8 +34,8 @@ namespace ICSharpCode.TextEditor
 			get {
 				if (printDocument == null) {
 					printDocument = new PrintDocument();
-					printDocument.BeginPrint += new PrintEventHandler(this.BeginPrint);
-					printDocument.PrintPage  += new PrintPageEventHandler(this.PrintPage);
+					printDocument.BeginPrint += new PrintEventHandler(BeginPrint);
+					printDocument.PrintPage  += new PrintPageEventHandler(PrintPage);
 				}
 				return printDocument;
 			}
@@ -153,9 +153,9 @@ namespace ICSharpCode.TextEditor
 				Document.UndoStack.Undo();
 				
 				Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-				this.primaryTextArea.TextArea.UpdateMatchingBracket();
+				primaryTextArea.TextArea.UpdateMatchingBracket();
 				if (secondaryTextArea != null) {
-					this.secondaryTextArea.TextArea.UpdateMatchingBracket();
+					secondaryTextArea.TextArea.UpdateMatchingBracket();
 				}
 				EndUpdate();
 			}
@@ -171,9 +171,9 @@ namespace ICSharpCode.TextEditor
 				Document.UndoStack.Redo();
 				
 				Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-				this.primaryTextArea.TextArea.UpdateMatchingBracket();
+				primaryTextArea.TextArea.UpdateMatchingBracket();
 				if (secondaryTextArea != null) {
-					this.secondaryTextArea.TextArea.UpdateMatchingBracket();
+					secondaryTextArea.TextArea.UpdateMatchingBracket();
 				}
 				EndUpdate();
 			}
@@ -188,8 +188,8 @@ namespace ICSharpCode.TextEditor
 		{
 			if (disposing) {
 				if (printDocument != null) {
-					printDocument.BeginPrint -= new PrintEventHandler(this.BeginPrint);
-					printDocument.PrintPage  -= new PrintPageEventHandler(this.PrintPage);
+					printDocument.BeginPrint -= new PrintEventHandler(BeginPrint);
+					printDocument.PrintPage  -= new PrintPageEventHandler(PrintPage);
 					printDocument = null;
 				}
 				Document.UndoStack.ClearAll();
@@ -229,34 +229,34 @@ namespace ICSharpCode.TextEditor
 			foreach (TextAreaUpdate update in Document.UpdateQueue) {
 				switch (update.TextAreaUpdateType) {
 					case TextAreaUpdateType.PositionToEnd:
-						this.primaryTextArea.TextArea.UpdateToEnd(update.Position.Y);
-						if (this.secondaryTextArea != null) {
-							this.secondaryTextArea.TextArea.UpdateToEnd(update.Position.Y);
+						primaryTextArea.TextArea.UpdateToEnd(update.Position.Y);
+						if (secondaryTextArea != null) {
+							secondaryTextArea.TextArea.UpdateToEnd(update.Position.Y);
 						}
 						break;
 					case TextAreaUpdateType.PositionToLineEnd:
 					case TextAreaUpdateType.SingleLine:
-						this.primaryTextArea.TextArea.UpdateLine(update.Position.Y);
-						if (this.secondaryTextArea != null) {
-							this.secondaryTextArea.TextArea.UpdateLine(update.Position.Y);
+						primaryTextArea.TextArea.UpdateLine(update.Position.Y);
+						if (secondaryTextArea != null) {
+							secondaryTextArea.TextArea.UpdateLine(update.Position.Y);
 						}
 						break;
 					case TextAreaUpdateType.SinglePosition:
-						this.primaryTextArea.TextArea.UpdateLine(update.Position.Y, update.Position.X, update.Position.X);
-						if (this.secondaryTextArea != null) {
-							this.secondaryTextArea.TextArea.UpdateLine(update.Position.Y, update.Position.X, update.Position.X);
+						primaryTextArea.TextArea.UpdateLine(update.Position.Y, update.Position.X, update.Position.X);
+						if (secondaryTextArea != null) {
+							secondaryTextArea.TextArea.UpdateLine(update.Position.Y, update.Position.X, update.Position.X);
 						}
 						break;
 					case TextAreaUpdateType.LinesBetween:
-						this.primaryTextArea.TextArea.UpdateLines(update.Position.X, update.Position.Y);
-						if (this.secondaryTextArea != null) {
-							this.secondaryTextArea.TextArea.UpdateLines(update.Position.X, update.Position.Y);
+						primaryTextArea.TextArea.UpdateLines(update.Position.X, update.Position.Y);
+						if (secondaryTextArea != null) {
+							secondaryTextArea.TextArea.UpdateLines(update.Position.X, update.Position.Y);
 						}
 						break;
 					case TextAreaUpdateType.WholeTextArea:
-						this.primaryTextArea.TextArea.Invalidate();
-						if (this.secondaryTextArea != null) {
-							this.secondaryTextArea.TextArea.Invalidate();
+						primaryTextArea.TextArea.Invalidate();
+						if (secondaryTextArea != null) {
+							secondaryTextArea.TextArea.Invalidate();
 						}
 						break;
 				}
@@ -278,7 +278,7 @@ namespace ICSharpCode.TextEditor
 	    private void BeginPrint(object sender, PrintEventArgs ev)
 		{
 			curLineNr = 0;
-			printingStringFormat = (StringFormat)System.Drawing.StringFormat.GenericTypographic.Clone();
+			printingStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
 			
 			// 100 should be enough for everyone ...err ?
 			float[] tabStops = new float[100];

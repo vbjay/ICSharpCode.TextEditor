@@ -92,14 +92,14 @@ namespace ICSharpCode.TextEditor
 		{
 			this.motherTextEditorControl = motherTextEditorControl;
 			
-			this.textArea                = new TextArea(motherTextEditorControl, this);
+			textArea                = new TextArea(motherTextEditorControl, this);
 			Controls.Add(textArea);
 			
 			vScrollBar.ValueChanged += new EventHandler(VScrollBarValueChanged);
-			Controls.Add(this.vScrollBar);
+			Controls.Add(vScrollBar);
 			
 			hScrollBar.ValueChanged += new EventHandler(HScrollBarValueChanged);
-			Controls.Add(this.hScrollBar);
+			Controls.Add(hScrollBar);
 			ResizeRedraw = true;
 			
 			Document.TextContentChanged += DocumentTextContentChanged;
@@ -141,7 +141,7 @@ namespace ICSharpCode.TextEditor
 			Caret.ValidateCaretPos();
 		}
 		
-		protected override void OnResize(System.EventArgs e)
+		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
 		    UpdateLayout();
@@ -182,7 +182,7 @@ namespace ICSharpCode.TextEditor
 	    private void AdjustScrollBarsClearCache()
 		{
 			if (lineLengthCache != null) {
-				if (lineLengthCache.Length < this.Document.TotalNumberOfLines + 2 * LineLengthCacheAdditionalSize) {
+				if (lineLengthCache.Length < Document.TotalNumberOfLines + 2 * LineLengthCacheAdditionalSize) {
 					lineLengthCache = null;
 				} else {
 					Array.Clear(lineLengthCache, 0, lineLengthCache.Length);
@@ -192,7 +192,7 @@ namespace ICSharpCode.TextEditor
 		
 		public void UpdateLayout()
 		{
-			if (this.textArea == null)
+			if (textArea == null)
 				return;
 
 			adjustScrollBarsOnNextUpdate = false;
@@ -382,7 +382,7 @@ namespace ICSharpCode.TextEditor
 			int scrollDistance = mouseWheelHandler.GetScrollAmount(e);
 			if (scrollDistance == 0)
 				return;
-			if ((Control.ModifierKeys & Keys.Control) != 0 && TextEditorProperties.MouseWheelTextZoom) {
+			if ((ModifierKeys & Keys.Control) != 0 && TextEditorProperties.MouseWheelTextZoom) {
 				if (scrollDistance > 0) {
 					motherTextEditorControl.Font = new Font(motherTextEditorControl.Font.Name,
 					                                        motherTextEditorControl.Font.Size + 1);
@@ -422,7 +422,7 @@ namespace ICSharpCode.TextEditor
 			
 			ScrollTo(line);
 			
-			int curCharMin  = (int)(this.hScrollBar.Value - this.hScrollBar.Minimum);
+			int curCharMin  = (int)(hScrollBar.Value - hScrollBar.Minimum);
 			int curCharMax  = curCharMin + textArea.TextView.VisibleColumnCount;
 			
 			int pos = textArea.TextView.GetVisualColumn(line, column);
@@ -455,16 +455,16 @@ namespace ICSharpCode.TextEditor
 			}
 			
 			if (line - scrollMarginHeight + 3 < curLineMin) {
-				this.vScrollBar.Value =  Math.Max(0, Math.Min(this.vScrollBar.Maximum, (line - scrollMarginHeight + 3) * textArea.TextView.FontHeight)) ;
+				vScrollBar.Value =  Math.Max(0, Math.Min(vScrollBar.Maximum, (line - scrollMarginHeight + 3) * textArea.TextView.FontHeight)) ;
 				VScrollBarValueChanged(this, EventArgs.Empty);
 			} else {
-				int curLineMax = curLineMin + this.textArea.TextView.VisibleLineCount;
+				int curLineMax = curLineMin + textArea.TextView.VisibleLineCount;
 				if (line + scrollMarginHeight - 1 > curLineMax) {
-					if (this.textArea.TextView.VisibleLineCount == 1) {
-						this.vScrollBar.Value =  Math.Max(0, Math.Min(this.vScrollBar.Maximum, (line - scrollMarginHeight - 1) * textArea.TextView.FontHeight)) ;
+					if (textArea.TextView.VisibleLineCount == 1) {
+						vScrollBar.Value =  Math.Max(0, Math.Min(vScrollBar.Maximum, (line - scrollMarginHeight - 1) * textArea.TextView.FontHeight)) ;
 					} else {
-						this.vScrollBar.Value = Math.Min(this.vScrollBar.Maximum,
-						                                 (line - this.textArea.TextView.VisibleLineCount + scrollMarginHeight - 1)* textArea.TextView.FontHeight) ;
+						vScrollBar.Value = Math.Min(vScrollBar.Maximum,
+						                                 (line - textArea.TextView.VisibleLineCount + scrollMarginHeight - 1)* textArea.TextView.FontHeight) ;
 					}
 					VScrollBarValueChanged(this, EventArgs.Empty);
 				}
@@ -492,7 +492,7 @@ namespace ICSharpCode.TextEditor
 			}
 			if (Math.Abs(curLineMin - line) > treshold) {
 				// scroll:
-				this.vScrollBar.Value =  Math.Max(0, Math.Min(this.vScrollBar.Maximum, (line - scrollMarginHeight + 3) * textArea.TextView.FontHeight)) ;
+				vScrollBar.Value =  Math.Max(0, Math.Min(vScrollBar.Maximum, (line - scrollMarginHeight + 3) * textArea.TextView.FontHeight)) ;
 				VScrollBarValueChanged(this, EventArgs.Empty);
 			}
 		}

@@ -14,7 +14,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	/// <summary>
 	/// Description of CodeCompletionListView.
 	/// </summary>
-	public class CodeCompletionListView : System.Windows.Forms.UserControl
+	public class CodeCompletionListView : UserControl
 	{
 	    private ICompletionData[] completionData;
 	    private int               firstItem    = 0;
@@ -109,15 +109,15 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 		
 		public void CenterViewOn(int index)
 		{
-			int oldFirstItem = this.FirstItem;
+			int oldFirstItem = FirstItem;
 			int firstItem = index - MaxVisibleItem / 2;
 			if (firstItem < 0)
-				this.FirstItem = 0;
+				FirstItem = 0;
 			else if (firstItem >= completionData.Length - MaxVisibleItem)
-				this.FirstItem = completionData.Length - MaxVisibleItem;
+				FirstItem = completionData.Length - MaxVisibleItem;
 			else
-				this.FirstItem = firstItem;
-			if (this.FirstItem != oldFirstItem) {
+				FirstItem = firstItem;
+			if (FirstItem != oldFirstItem) {
 				Invalidate();
 			}
 		}
@@ -252,7 +252,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			g.DrawRectangle(SystemPens.Control, new Rectangle(0, 0, Width - 1, Height - 1));
 		}
 		
-		protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			float yPos       = 1;
 			int curItem = firstItem;

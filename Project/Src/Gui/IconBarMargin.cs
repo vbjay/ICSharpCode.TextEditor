@@ -48,7 +48,7 @@ namespace ICSharpCode.TextEditor
 			}
 			// paint background
 			g.FillRectangle(SystemBrushes.Control, new Rectangle(drawingPosition.X, rect.Top, drawingPosition.Width - 1, rect.Height));
-			g.DrawLine(SystemPens.ControlDark, base.drawingPosition.Right - 1, rect.Top, base.drawingPosition.Right - 1, rect.Bottom);
+			g.DrawLine(SystemPens.ControlDark, drawingPosition.Right - 1, rect.Top, drawingPosition.Right - 1, rect.Bottom);
 			
 			// paint icons
 			foreach (Bookmark mark in textArea.Document.BookmarkManager.Marks) {
@@ -130,7 +130,7 @@ namespace ICSharpCode.TextEditor
 		public void DrawBookmark(Graphics g, int y, bool isEnabled)
 		{
 			int delta = textArea.TextView.FontHeight / 8;
-			Rectangle rect = new Rectangle(1, y + delta, base.drawingPosition.Width - 4, textArea.TextView.FontHeight - delta * 2);
+			Rectangle rect = new Rectangle(1, y + delta, drawingPosition.Width - 4, textArea.TextView.FontHeight - delta * 2);
 			
 			if (isEnabled) {
 				using (Brush brush = new LinearGradientBrush(new Point(rect.Left, rect.Top),
@@ -155,7 +155,7 @@ namespace ICSharpCode.TextEditor
 		public void DrawArrow(Graphics g, int y)
 		{
 			int delta = textArea.TextView.FontHeight / 8;
-			Rectangle rect = new Rectangle(1, y + delta, base.drawingPosition.Width - 4, textArea.TextView.FontHeight - delta * 2);
+			Rectangle rect = new Rectangle(1, y + delta, drawingPosition.Width - 4, textArea.TextView.FontHeight - delta * 2);
 			using (Brush brush = new LinearGradientBrush(new Point(rect.Left, rect.Top),
 			                                             new Point(rect.Right, rect.Bottom),
 			                                             Color.LightYellow,

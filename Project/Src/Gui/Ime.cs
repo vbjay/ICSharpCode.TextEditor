@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor
 			if (PROCESSOR_ARCHITEW6432 == "IA64" || PROCESSOR_ARCHITEW6432 == "AMD64" || Environment.OSVersion.Platform == PlatformID.Unix || Environment.Version >= new Version(4,0)) {
 				disableIME = true;
 			} else {
-				this.hIMEWnd = ImmGetDefaultIMEWnd(hWnd);
+				hIMEWnd = ImmGetDefaultIMEWnd(hWnd);
 			}
 			this.hWnd = hWnd;
 			this.font = font;
@@ -50,10 +50,10 @@ namespace ICSharpCode.TextEditor
 		public IntPtr HWnd
 		{
 			set {
-				if (this.hWnd != value) {
-					this.hWnd = value;
+				if (hWnd != value) {
+					hWnd = value;
 					if (!disableIME)
-						this.hIMEWnd = ImmGetDefaultIMEWnd(value);
+						hIMEWnd = ImmGetDefaultIMEWnd(value);
 					SetIMEWindowFont(font);
 				}
 			}

@@ -118,7 +118,7 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		public bool ContainsPosition(TextLocation position)
 		{
-			if (this.IsEmpty)
+			if (IsEmpty)
 				return false;
 			return startPosition.Y < position.Y && position.Y  < endPosition.Y ||
 				startPosition.Y == position.Y && startPosition.X <= position.X && (startPosition.Y != endPosition.Y || position.X <= endPosition.X) ||

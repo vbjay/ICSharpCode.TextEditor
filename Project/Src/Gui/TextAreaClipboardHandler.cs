@@ -231,12 +231,12 @@ namespace ICSharpCode.TextEditor
 		
 		public void Delete(object sender, EventArgs e)
 		{
-			new ICSharpCode.TextEditor.Actions.Delete().Execute(textArea);
+			new Actions.Delete().Execute(textArea);
 		}
 		
 		public void SelectAll(object sender, EventArgs e)
 		{
-			new ICSharpCode.TextEditor.Actions.SelectWholeDocument().Execute(textArea);
+			new Actions.SelectWholeDocument().Execute(textArea);
 		}
 		
 		protected virtual void OnCopyText(CopyTextEventArgs e)

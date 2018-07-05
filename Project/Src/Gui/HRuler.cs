@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor
 			this.textArea = textArea;
 		}
 		
-		protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
+		protected override void OnPaint(PaintEventArgs e)
 		{
 			Graphics g = e.Graphics;
 			int num = 0;
@@ -42,7 +42,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 		
-		protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
+		protected override void OnPaintBackground(PaintEventArgs e)
 		{
 			e.Graphics.FillRectangle(Brushes.White,
 			                         new Rectangle(0,

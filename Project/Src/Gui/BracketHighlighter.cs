@@ -18,8 +18,8 @@ namespace ICSharpCode.TextEditor
 		
 		public Highlight(TextLocation openBrace, TextLocation closeBrace)
 		{
-			this.OpenBrace = openBrace;
-			this.CloseBrace = closeBrace;
+			OpenBrace = openBrace;
+			CloseBrace = closeBrace;
 		}
 	}
 	

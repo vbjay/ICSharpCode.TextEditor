@@ -183,7 +183,7 @@ namespace ICSharpCode.TextEditor
 			caret            = new Caret(this);
 			selectionManager = new SelectionManager(Document, this);
 			
-			this.textAreaClipboardHandler = new TextAreaClipboardHandler(this);
+			textAreaClipboardHandler = new TextAreaClipboardHandler(this);
 			
 			ResizeRedraw = true;
 			
@@ -289,10 +289,10 @@ namespace ICSharpCode.TextEditor
 
 	    private AbstractMargin lastMouseInMargin;
 		
-		protected override void OnMouseLeave(System.EventArgs e)
+		protected override void OnMouseLeave(EventArgs e)
 		{
 			base.OnMouseLeave(e);
-			this.Cursor = Cursors.Default;
+			Cursor = Cursors.Default;
 			if (lastMouseInMargin != null) {
 				lastMouseInMargin.HandleMouseLeave(EventArgs.Empty);
 				lastMouseInMargin = null;
@@ -300,7 +300,7 @@ namespace ICSharpCode.TextEditor
 			CloseToolTip();
 		}
 		
-		protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e)
+		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			// this corrects weird problems when text is selected,
 			// then a menu item is selected, then the text is
@@ -341,20 +341,20 @@ namespace ICSharpCode.TextEditor
 	    private void SetToolTip(string text, int lineNumber)
 		{
 			if (toolTip == null || toolTip.IsDisposed)
-				toolTip = new DeclarationViewWindow(this.FindForm());
+				toolTip = new DeclarationViewWindow(FindForm());
 			if (oldToolTip == text)
 				return;
 			if (text == null) {
 				toolTip.Hide();
 			} else {
-				Point p = Control.MousePosition;
+				Point p = MousePosition;
 				Point cp = PointToClient(p);
 				if (lineNumber >= 0) {
-					lineNumber = this.Document.GetVisibleLine(lineNumber);
-					p.Y = (p.Y - cp.Y) + (lineNumber * this.TextView.FontHeight) - this.virtualTop.Y;
+					lineNumber = Document.GetVisibleLine(lineNumber);
+					p.Y = (p.Y - cp.Y) + (lineNumber * TextView.FontHeight) - virtualTop.Y;
 				}
 				p.Offset(3, 3);
-				toolTip.Owner = this.FindForm();
+				toolTip.Owner = FindForm();
 				toolTip.Location = p;
 				toolTip.Description = text;
 				toolTip.HideOnClick = true;
@@ -395,7 +395,7 @@ namespace ICSharpCode.TextEditor
 			base.OnMouseHover(e);
 			//Console.WriteLine("Hover raised at " + PointToClient(Control.MousePosition));
 			if (MouseButtons == MouseButtons.None) {
-				RequestToolTip(PointToClient(Control.MousePosition));
+				RequestToolTip(PointToClient(MousePosition));
 			} else {
 				CloseToolTip();
 			}
@@ -444,7 +444,7 @@ namespace ICSharpCode.TextEditor
 			}
 			foreach (AbstractMargin margin in leftMargins) {
 				if (margin.DrawingPosition.Contains(e.X, e.Y)) {
-					this.Cursor = margin.Cursor;
+					Cursor = margin.Cursor;
 					margin.HandleMouseMove(new Point(e.X, e.Y), e.Button);
 					if (lastMouseInMargin != margin) {
 						if (lastMouseInMargin != null) {
@@ -463,14 +463,14 @@ namespace ICSharpCode.TextEditor
 				TextLocation realmousepos = TextView.GetLogicalPosition(e.X - TextView.DrawingPosition.X, e.Y - TextView.DrawingPosition.Y);
 				if(SelectionManager.IsSelected(Document.PositionToOffset(realmousepos)) && MouseButtons == MouseButtons.None) {
 					// mouse is hovering over a selection, so show default mouse
-					this.Cursor = Cursors.Default;
+					Cursor = Cursors.Default;
 				} else {
 					// mouse is hovering over text area, not a selection, so show the textView cursor
-					this.Cursor = textView.Cursor;
+					Cursor = textView.Cursor;
 				}
 				return;
 			}
-			this.Cursor = Cursors.Default;
+			Cursor = Cursors.Default;
 		}
 
 	    private AbstractMargin updateMargin = null;
@@ -483,11 +483,11 @@ namespace ICSharpCode.TextEditor
 			updateMargin = null;
 		}
 		
-		protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs pevent)
+		protected override void OnPaintBackground(PaintEventArgs pevent)
 		{
 		}
 		
-		protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
+		protected override void OnPaint(PaintEventArgs e)
 		{
 			int currentXPos = 0;
 			int currentYPos = 0;
@@ -496,9 +496,9 @@ namespace ICSharpCode.TextEditor
 			Rectangle clipRectangle = e.ClipRectangle;
 			
 			bool isFullRepaint = clipRectangle.X == 0 && clipRectangle.Y == 0
-				&& clipRectangle.Width == this.Width && clipRectangle.Height == this.Height;
+				&& clipRectangle.Width == Width && clipRectangle.Height == Height;
 			
-			g.TextRenderingHint = this.TextEditorProperties.TextRenderingHint;
+			g.TextRenderingHint = TextEditorProperties.TextRenderingHint;
 			
 			if (updateMargin != null) {
 				updateMargin.Paint(g, updateMargin.DrawingPosition);
@@ -545,7 +545,7 @@ namespace ICSharpCode.TextEditor
 			}
 			
 			if (adjustScrollBars) {
-				this.motherTextAreaControl.UpdateLayout();
+				motherTextAreaControl.UpdateLayout();
 			}
 			
 			// we cannot update the caret position here, it's not allowed to call the caret API inside WM_PAINT
@@ -558,7 +558,7 @@ namespace ICSharpCode.TextEditor
 		{
 			Caret.UpdateCaretPosition();
 			Invalidate();
-			this.motherTextAreaControl.UpdateLayout();
+			motherTextAreaControl.UpdateLayout();
 		}
 		
 		#region keyboard handling methods
@@ -622,7 +622,7 @@ namespace ICSharpCode.TextEditor
 			}
 			
 			if (!hiddenMouseCursor && TextEditorProperties.HideMouseCursor) {
-				if (this.ClientRectangle.Contains(PointToClient(Cursor.Position))) {
+				if (ClientRectangle.Contains(PointToClient(Cursor.Position))) {
 					mouseCursorHidePosition = Cursor.Position;
 					hiddenMouseCursor = true;
 					Cursor.Hide();
@@ -896,7 +896,7 @@ namespace ICSharpCode.TextEditor
 			
 			lineBegin = Document.GetVisibleLine(lineBegin);
 			int y         = Math.Max(    0, (int)(lineBegin * textView.FontHeight));
-			y = Math.Max(0, y - this.virtualTop.Y);
+			y = Math.Max(0, y - virtualTop.Y);
 			Rectangle r = new Rectangle(0,
 			                            y,
 			                            Width,
@@ -925,7 +925,7 @@ namespace ICSharpCode.TextEditor
 //				return;
 //			}
 			
-			InvalidateLines((int)(xPos * this.TextView.WideSpaceWidth), lineBegin, lineEnd);
+			InvalidateLines((int)(xPos * TextView.WideSpaceWidth), lineBegin, lineEnd);
 		}
 
 	    private void InvalidateLines(int xPos, int lineBegin, int lineEnd)
@@ -936,7 +936,7 @@ namespace ICSharpCode.TextEditor
 			int height    = Math.Min(textView.DrawingPosition.Height, (int)((1 + lineEnd - lineBegin) * (textView.FontHeight + 1)));
 			
 			Rectangle r = new Rectangle(0,
-			                            y - 1 - this.virtualTop.Y,
+			                            y - 1 - virtualTop.Y,
 			                            Width,
 			                            height + 3);
 			

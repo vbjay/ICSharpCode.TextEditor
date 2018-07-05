@@ -283,7 +283,7 @@ namespace ICSharpCode.TextEditor.Document
 		public string SerializeToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach (FoldMarker marker in this.foldMarker) {
+			foreach (FoldMarker marker in foldMarker) {
 				sb.Append(marker.Offset);sb.Append("\n");
 				sb.Append(marker.Length);sb.Append("\n");
 				sb.Append(marker.FoldText);sb.Append("\n");

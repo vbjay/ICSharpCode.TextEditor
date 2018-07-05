@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor.Util
 			if (baseList == null)
 				throw new ArgumentNullException("baseList");
 			this.baseList = baseList;
-			this.threadID = Thread.CurrentThread.ManagedThreadId;
+			threadID = Thread.CurrentThread.ManagedThreadId;
 		}
 
 	    private void CheckRead()

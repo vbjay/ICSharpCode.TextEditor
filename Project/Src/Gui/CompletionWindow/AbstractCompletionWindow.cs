@@ -14,7 +14,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	/// <summary>
 	/// Description of AbstractCompletionWindow.
 	/// </summary>
-	public abstract class AbstractCompletionWindow : System.Windows.Forms.Form
+	public abstract class AbstractCompletionWindow : Form
 	{
 		protected TextEditorControl control;
 		protected Size              drawingSize;
@@ -112,19 +112,19 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 		{
 			Owner = parentForm;
 			Enabled = true;
-			this.Show();
+			Show();
 			
 			control.Focus();
 			
 			if (parentForm != null) {
-				parentForm.LocationChanged += new EventHandler(this.ParentFormLocationChanged);
+				parentForm.LocationChanged += new EventHandler(ParentFormLocationChanged);
 			}
 			
 			control.ActiveTextAreaControl.VScrollBar.ValueChanged     += new EventHandler(ParentFormLocationChanged);
 			control.ActiveTextAreaControl.HScrollBar.ValueChanged     += new EventHandler(ParentFormLocationChanged);
 			control.ActiveTextAreaControl.TextArea.DoProcessDialogKey += new DialogKeyProcessor(ProcessTextAreaKey);
 			control.ActiveTextAreaControl.Caret.PositionChanged       += new EventHandler(CaretOffsetChanged);
-			control.ActiveTextAreaControl.TextArea.LostFocus          += new EventHandler(this.TextEditorLostFocus);
+			control.ActiveTextAreaControl.TextArea.LostFocus          += new EventHandler(TextEditorLostFocus);
 			control.Resize += new EventHandler(ParentFormLocationChanged);
 			
 			foreach (Control c in Controls) {
@@ -161,7 +161,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 		
 		protected void TextEditorLostFocus(object sender, EventArgs e)
 		{
-			if (!control.ActiveTextAreaControl.TextArea.Focused && !this.ContainsFocus) {
+			if (!control.ActiveTextAreaControl.TextArea.Focused && !ContainsFocus) {
 				Close();
 			}
 		}
@@ -184,7 +184,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 				control.ActiveTextAreaControl.HScrollBar.ValueChanged -= new EventHandler(ParentFormLocationChanged);
 			}
 			
-			control.ActiveTextAreaControl.TextArea.LostFocus          -= new EventHandler(this.TextEditorLostFocus);
+			control.ActiveTextAreaControl.TextArea.LostFocus          -= new EventHandler(TextEditorLostFocus);
 			control.ActiveTextAreaControl.Caret.PositionChanged       -= new EventHandler(CaretOffsetChanged);
 			control.ActiveTextAreaControl.TextArea.DoProcessDialogKey -= new DialogKeyProcessor(ProcessTextAreaKey);
 			control.Resize -= new EventHandler(ParentFormLocationChanged);

@@ -37,8 +37,8 @@ namespace ICSharpCode.TextEditor.Document
 			public RBNode(LineSegment lineSegment)
 			{
 				this.lineSegment = lineSegment;
-				this.count = 1;
-				this.totalLength = lineSegment.TotalLength;
+				count = 1;
+				totalLength = lineSegment.TotalLength;
 			}
 			
 			public override string ToString()
@@ -133,9 +133,9 @@ namespace ICSharpCode.TextEditor.Document
 
 	    private RedBlackTreeNode<RBNode> GetNodeByOffset(int offset)
 		{
-			if (offset < 0 || offset > this.TotalLength)
-				throw new ArgumentOutOfRangeException("offset", offset, "offset should be between 0 and " + this.TotalLength);
-			if (offset == this.TotalLength) {
+			if (offset < 0 || offset > TotalLength)
+				throw new ArgumentOutOfRangeException("offset", offset, "offset should be between 0 and " + TotalLength);
+			if (offset == TotalLength) {
 				if (tree.root == null)
 					throw new InvalidOperationException("Cannot call GetNodeByOffset while tree is empty.");
 				return tree.root.RightMost;
@@ -263,7 +263,7 @@ namespace ICSharpCode.TextEditor.Document
 		public int IndexOf(LineSegment item)
 		{
 			int index = item.LineNumber;
-			if (index < 0 || index >= this.Count)
+			if (index < 0 || index >= Count)
 				return -1;
 			if (item != this[index])
 				return -1;
@@ -280,9 +280,9 @@ namespace ICSharpCode.TextEditor.Document
 		private void CheckProperties()
 		{
 			if (tree.root == null) {
-				Debug.Assert(this.Count == 0);
+				Debug.Assert(Count == 0);
 			} else {
-				Debug.Assert(tree.root.val.count == this.Count);
+				Debug.Assert(tree.root.val.count == Count);
 				CheckProperties(tree.root);
 			}
 		}
@@ -352,12 +352,12 @@ namespace ICSharpCode.TextEditor.Document
 		
 		IEnumerator<LineSegment> IEnumerable<LineSegment>.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 		
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 		
 		public Enumerator GetEnumerator()

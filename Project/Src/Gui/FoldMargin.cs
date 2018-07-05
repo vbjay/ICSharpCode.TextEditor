@@ -59,9 +59,9 @@ namespace ICSharpCode.TextEditor
 						                markerRectangle);
 						
 						g.DrawLine(BrushRegistry.GetDotPen(lineNumberPainterColor.Color),
-						           base.drawingPosition.X,
+						           drawingPosition.X,
 						           markerRectangle.Y,
-						           base.drawingPosition.X,
+						           drawingPosition.X,
 						           markerRectangle.Bottom);
 					} else {
 						g.FillRectangle(BrushRegistry.GetBrush(textArea.Enabled ? lineNumberPainterColor.BackgroundColor : SystemColors.InactiveBorder), markerRectangle);
@@ -79,7 +79,7 @@ namespace ICSharpCode.TextEditor
 		{
 			if (list != null) {
 				for (int i = 0; i < list.Count; ++i) {
-					if (this.selectedFoldLine == list[i].StartLine) {
+					if (selectedFoldLine == list[i].StartLine) {
 						return true;
 					}
 				}

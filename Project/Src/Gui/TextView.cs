@@ -90,7 +90,7 @@ namespace ICSharpCode.TextEditor
 		
 		public TextView(TextArea textArea) : base(textArea)
 		{
-			base.Cursor = Cursors.IBeam;
+			Cursor = Cursors.IBeam;
 			OptionsChanged();
 		}
 
@@ -129,13 +129,13 @@ namespace ICSharpCode.TextEditor
 		
 		public void OptionsChanged()
 		{
-			this.lastFont = TextEditorProperties.FontContainer.RegularFont;
-			this.fontHeight = GetFontHeight(lastFont);
+			lastFont = TextEditorProperties.FontContainer.RegularFont;
+			fontHeight = GetFontHeight(lastFont);
 			// use minimum width - in some fonts, space has no width but kerning is used instead
 			// -> DivideByZeroException
-			this.spaceWidth = Math.Max(GetWidth(' ', lastFont), 1);
+			spaceWidth = Math.Max(GetWidth(' ', lastFont), 1);
 			// tab should have the width of 4*'x'
-			this.wideSpaceWidth = Math.Max(spaceWidth, GetWidth('x', lastFont));
+			wideSpaceWidth = Math.Max(spaceWidth, GetWidth('x', lastFont));
 		}
 		
 		#region Paint functions
@@ -153,7 +153,7 @@ namespace ICSharpCode.TextEditor
 			
 			int horizontalDelta = textArea.VirtualTop.X;
 			if (horizontalDelta > 0) {
-				g.SetClip(this.DrawingPosition);
+				g.SetClip(DrawingPosition);
 			}
 			
 			for (int y = 0; y < (DrawingPosition.Height + VisibleLineDrawingRemainder) / fontHeight + 1; ++y) {
@@ -265,7 +265,7 @@ namespace ICSharpCode.TextEditor
 
 	    private bool DrawLineMarkerAtLine(int lineNumber)
 		{
-			return lineNumber == base.textArea.Caret.Line && textArea.MotherTextAreaControl.TextEditorProperties.LineViewerStyle == LineViewerStyle.FullRow;
+			return lineNumber == textArea.Caret.Line && textArea.MotherTextAreaControl.TextEditorProperties.LineViewerStyle == LineViewerStyle.FullRow;
 		}
 
 	    private Brush GetBgColorBrush(int lineNumber)
@@ -754,7 +754,7 @@ namespace ICSharpCode.TextEditor
 		/// </summary>
 		public int GetLogicalLine(int visualPosY)
 		{
-			int clickedVisualLine = Math.Max(0, (visualPosY + this.textArea.VirtualTop.Y) / fontHeight);
+			int clickedVisualLine = Math.Max(0, (visualPosY + textArea.VirtualTop.Y) / fontHeight);
 			return Document.GetFirstLogicalLine(clickedVisualLine);
 		}
 		

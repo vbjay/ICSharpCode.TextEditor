@@ -159,7 +159,7 @@ namespace ICSharpCode.TextEditor.Document
 						}
 						if (!found) {
 							aSpan.RuleSet = null;
-							throw new HighlightingDefinitionInvalidException("The RuleSet " + aSpan.Rule + " could not be found in mode definition " + this.Name);
+							throw new HighlightingDefinitionInvalidException("The RuleSet " + aSpan.Rule + " could not be found in mode definition " + Name);
 						}
 					} else {
 						aSpan.RuleSet = null;
@@ -168,7 +168,7 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			
 			if (defaultRuleSet == null) {
-				throw new HighlightingDefinitionInvalidException("No default RuleSet is defined for mode definition " + this.Name);
+				throw new HighlightingDefinitionInvalidException("No default RuleSet is defined for mode definition " + Name);
 			}
 		}
 
@@ -180,11 +180,11 @@ namespace ICSharpCode.TextEditor.Document
 					IHighlightingStrategy highlighter = HighlightingManager.Manager.FindHighlighter (ruleSet.Reference);
 					
 					if (highlighter == null)
-						throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + this.Name + " mode definition could not be found");
+						throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + Name + " mode definition could not be found");
 					if (highlighter is IHighlightingStrategyUsingRuleSets)
 						ruleSet.Highlighter = (IHighlightingStrategyUsingRuleSets)highlighter;
 					else
-						throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + this.Name + " mode definition does not implement IHighlightingStrategyUsingRuleSets");
+						throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + Name + " mode definition does not implement IHighlightingStrategyUsingRuleSets");
 				}
 			}
 		}
@@ -239,7 +239,7 @@ namespace ICSharpCode.TextEditor.Document
 		public HighlightRuleSet GetRuleSet(Span aSpan)
 		{
 			if (aSpan == null) {
-				return this.defaultRuleSet;
+				return defaultRuleSet;
 			} else {
 				if (aSpan.RuleSet != null)
 				{
@@ -754,7 +754,7 @@ namespace ICSharpCode.TextEditor.Document
 					if (c == null) {
 						c = activeSpan.Color;
 						if (c.Color == Color.Transparent) {
-							c = this.DefaultTextColor;
+							c = DefaultTextColor;
 						}
 						hasDefaultColor = true;
 					}
@@ -762,7 +762,7 @@ namespace ICSharpCode.TextEditor.Document
 				} else {
 					HighlightColor c = markNext != null ? markNext : GetColor(activeRuleSet, document, currentLine, currentOffset, currentLength);
 					if (c == null) {
-						words.Add(new TextWord(document, currentLine, currentOffset, currentLength, this.DefaultTextColor, true));
+						words.Add(new TextWord(document, currentLine, currentOffset, currentLength, DefaultTextColor, true));
 					} else {
 						words.Add(new TextWord(document, currentLine, currentOffset, currentLength, c, false));
 					}

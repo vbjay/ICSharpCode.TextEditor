@@ -49,9 +49,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
 	    private CodeCompletionWindow(ICompletionDataProvider completionDataProvider, ICompletionData[] completionData, Form parentForm, TextEditorControl control, bool showDeclarationWindow, bool fixedListViewWidth) : base(parentForm, control)
 		{
-			this.dataProvider = completionDataProvider;
+			dataProvider = completionDataProvider;
 			this.completionData = completionData;
-			this.document = control.Document;
+			document = control.Document;
 			this.showDeclarationWindow = showDeclarationWindow;
 			this.fixedListViewWidth = fixedListViewWidth;
 
@@ -81,7 +81,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 				Controls.Add(vScrollBar);
 			}
 			
-			this.drawingSize = GetListViewSize();
+			drawingSize = GetListViewSize();
 			SetLocation();
 			
 			if (declarationViewWindow == null) {

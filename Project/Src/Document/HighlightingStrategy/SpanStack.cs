@@ -23,8 +23,8 @@ namespace ICSharpCode.TextEditor.Document
 			
 			public StackNode(StackNode previous, Span data)
 			{
-				this.Previous = previous;
-				this.Data = data;
+				Previous = previous;
+				Data = data;
 			}
 		}
 
@@ -56,12 +56,12 @@ namespace ICSharpCode.TextEditor.Document
 		public SpanStack Clone()
 		{
 			SpanStack n = new SpanStack();
-			n.top = this.top;
+			n.top = top;
 			return n;
 		}
 		object ICloneable.Clone()
 		{
-			return this.Clone();
+			return Clone();
 		}
 		
 		public Enumerator GetEnumerator()
@@ -70,11 +70,11 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		IEnumerator<Span> IEnumerable<Span>.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 		
 		public struct Enumerator : IEnumerator<Span>

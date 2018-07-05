@@ -97,7 +97,7 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public FontContainer(Font defaultFont)
 		{
-			this.DefaultFont = defaultFont;
+			DefaultFont = defaultFont;
 		}
 	}
 }

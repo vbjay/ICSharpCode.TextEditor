@@ -54,7 +54,7 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public int LineNumber {
 			get {
-				return this.Line.LineNumber;
+				return Line.LineNumber;
 			}
 		}
 		
@@ -70,13 +70,13 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public TextLocation Location {
 			get {
-				return new TextLocation(this.ColumnNumber, this.LineNumber);
+				return new TextLocation(ColumnNumber, LineNumber);
 			}
 		}
 		
 		public int Offset {
 			get {
-				return this.Line.Offset + columnNumber;
+				return Line.Offset + columnNumber;
 			}
 		}
 		
@@ -109,10 +109,10 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public override string ToString()
 		{
-			if (this.IsDeleted)
+			if (IsDeleted)
 				return "[TextAnchor (deleted)]";
 			else
-				return "[TextAnchor " + this.Location.ToString() + "]";
+				return "[TextAnchor " + Location.ToString() + "]";
 		}
 	}
 }

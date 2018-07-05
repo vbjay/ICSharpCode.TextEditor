@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class DrawableLine
 	{
-	    private static StringFormat sf = (StringFormat)System.Drawing.StringFormat.GenericTypographic.Clone();
+	    private static StringFormat sf = (StringFormat)StringFormat.GenericTypographic.Clone();
 
 	    private List<SimpleTextWord> words = new List<SimpleTextWord>();
 	    private SizeF spaceSize;

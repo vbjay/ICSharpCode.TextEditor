@@ -115,9 +115,9 @@ namespace ICSharpCode.TextEditor.Document
 
 		public void Dispose()
 		{
-			if (this.document != null) {
+			if (document != null) {
 				document.DocumentChanged -= new DocumentEventHandler(DocumentChanged);
-				this.document = null;
+				document = null;
 			}
 		}
 
@@ -202,7 +202,7 @@ namespace ICSharpCode.TextEditor.Document
 				return;
 			}
 
-			ISelection selection = this.selectionCollection[0];
+			ISelection selection = selectionCollection[0];
 
 			if (min == max) {
 				//selection.StartPosition = newPosition;
@@ -281,7 +281,7 @@ namespace ICSharpCode.TextEditor.Document
 				newSelectionStart.Line = document.TotalNumberOfLines-1;
 				newSelectionStart.Column = document.GetLineSegment(document.TotalNumberOfLines-1).Length;
 			}
-			this.SelectionStart = newSelectionStart;
+			SelectionStart = newSelectionStart;
 
 			ClearWithoutUpdate();
 			document.CommitUpdate();

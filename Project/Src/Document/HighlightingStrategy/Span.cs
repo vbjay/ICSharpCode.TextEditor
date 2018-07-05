@@ -138,17 +138,17 @@ namespace ICSharpCode.TextEditor.Document
 			beginColor = new HighlightColor(span["Begin"], color);
 			
 			if (span["Begin"].HasAttribute("singleword")) {
-				this.isBeginSingleWord = Boolean.Parse(span["Begin"].GetAttribute("singleword"));
+				isBeginSingleWord = Boolean.Parse(span["Begin"].GetAttribute("singleword"));
 			}
 			if (span["Begin"].HasAttribute("startofline")) {
-				this.isBeginStartOfLine = Boolean.Parse(span["Begin"].GetAttribute("startofline"));
+				isBeginStartOfLine = Boolean.Parse(span["Begin"].GetAttribute("startofline"));
 			}
 			
 			if (span["End"] != null) {
 				end  = span["End"].InnerText.ToCharArray();
 				endColor = new HighlightColor(span["End"], color);
 				if (span["End"].HasAttribute("singleword")) {
-					this.isEndSingleWord = Boolean.Parse(span["End"].GetAttribute("singleword"));
+					isEndSingleWord = Boolean.Parse(span["End"].GetAttribute("singleword"));
 				}
 
 			}

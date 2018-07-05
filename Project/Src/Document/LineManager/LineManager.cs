@@ -79,10 +79,10 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			Debug.WriteLine("Replace offset="+offset+" length="+length+" text.Length="+text.Length);
 			int lineStart = GetLineNumberForOffset(offset);
-			int oldNumberOfLines = this.TotalNumberOfLines;
+			int oldNumberOfLines = TotalNumberOfLines;
 			DeferredEventList deferredEventList = new DeferredEventList();
 			RemoveInternal(ref deferredEventList, offset, length);
-			int numberOfLinesAfterRemoving = this.TotalNumberOfLines;
+			int numberOfLinesAfterRemoving = TotalNumberOfLines;
 			if (!string.IsNullOrEmpty(text)) {
 				InsertInternal(offset, text);
 			}
@@ -94,15 +94,15 @@ namespace ICSharpCode.TextEditor.Document
 //			#endif
 			// Only fire events after RemoveInternal+InsertInternal finished completely:
 			// Otherwise we would expose inconsistent state to the event handlers.
-			RunHighlighter(lineStart, 1 + Math.Max(0, this.TotalNumberOfLines - numberOfLinesAfterRemoving));
+			RunHighlighter(lineStart, 1 + Math.Max(0, TotalNumberOfLines - numberOfLinesAfterRemoving));
 			
 			if (deferredEventList.removedLines != null) {
 				foreach (LineSegment ls in deferredEventList.removedLines)
 					OnLineDeleted(new LineEventArgs(document, ls));
 			}
 			deferredEventList.RaiseEvents();
-			if (this.TotalNumberOfLines != oldNumberOfLines) {
-				OnLineCountChanged(new LineCountChangeEventArgs(document, lineStart, this.TotalNumberOfLines - oldNumberOfLines));
+			if (TotalNumberOfLines != oldNumberOfLines) {
+				OnLineCountChanged(new LineCountChangeEventArgs(document, lineStart, TotalNumberOfLines - oldNumberOfLines));
 			}
 		}
 

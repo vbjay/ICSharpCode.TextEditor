@@ -537,7 +537,7 @@ namespace ICSharpCode.TextEditor.Actions
 		{
 			BlockCommentRegion other = obj as BlockCommentRegion;
 			if (other == null) return false;
-			return this.commentStart == other.commentStart && this.commentEnd == other.commentEnd && this.startOffset == other.startOffset && this.endOffset == other.endOffset;
+			return commentStart == other.commentStart && commentEnd == other.commentEnd && startOffset == other.startOffset && endOffset == other.endOffset;
 		}
 	}
 	

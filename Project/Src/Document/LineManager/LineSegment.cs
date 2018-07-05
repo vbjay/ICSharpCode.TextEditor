@@ -50,11 +50,11 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		int ISegment.Offset {
-			get { return this.Offset; }
+			get { return Offset; }
 			set { throw new NotSupportedException(); }
 		}
 		int ISegment.Length {
-			get { return this.Length; }
+			get { return Length; }
 			set { throw new NotSupportedException(); }
 		}
 		
@@ -236,12 +236,12 @@ namespace ICSharpCode.TextEditor.Document
 				List<TextAnchor> movedAnchors = null;
 				foreach (TextAnchor a in anchors) {
 					if (a.MovementType == AnchorMovementType.BeforeInsertion
-					    ? a.ColumnNumber > this.Length
-					    : a.ColumnNumber >= this.Length)
+					    ? a.ColumnNumber > Length
+					    : a.ColumnNumber >= Length)
 					{
 						a.Line = followingLine;
 						followingLine.AddAnchor(a);
-						a.ColumnNumber -= this.Length;
+						a.ColumnNumber -= Length;
 						
 						if (movedAnchors == null)
 							movedAnchors = new List<TextAnchor>();

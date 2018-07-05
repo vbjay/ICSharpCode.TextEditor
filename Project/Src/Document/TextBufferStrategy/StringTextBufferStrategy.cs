@@ -75,7 +75,7 @@ namespace ICSharpCode.TextEditor.Document
 		public static ITextBufferStrategy CreateTextBufferFromFile(string fileName)
 		{
 			if (!File.Exists(fileName)) {
-				throw new System.IO.FileNotFoundException(fileName);
+				throw new FileNotFoundException(fileName);
 			}
 			StringTextBufferStrategy s = new StringTextBufferStrategy();
 			s.SetContent(Util.FileReader.ReadFileContent(fileName, Encoding.Default));

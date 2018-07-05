@@ -35,7 +35,7 @@ namespace ICSharpCode.TextEditor.Util
 		
 		object System.Collections.IEnumerator.Current {
 			get {
-				return this.Current;
+				return Current;
 			}
 		}
 		

@@ -144,7 +144,7 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			this.document = document;
 			this.isEnabled = isEnabled;
-			this.Location = location;
+			Location = location;
 		}
 		
 		public virtual bool Click(SWF.Control parent, SWF.MouseEventArgs e)

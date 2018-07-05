@@ -22,19 +22,19 @@ namespace ICSharpCode.TextEditor.Util
 	    private void DrawTriangle(float x, float y, bool flipped)
 		{
 			Brush brush = BrushRegistry.GetBrush(Color.FromArgb(192, 192, 192));
-			base.Graphics.FillRectangle(brush, new RectangleF(x, y, triHeight, triHeight));
+			Graphics.FillRectangle(brush, new RectangleF(x, y, triHeight, triHeight));
 			float triHeight2 = triHeight / 2;
 			float triHeight4 = triHeight / 4;
 			brush = Brushes.Black;
 			if (flipped) {
-				base.Graphics.FillPolygon(brush, new PointF[] {
+				Graphics.FillPolygon(brush, new PointF[] {
 				                          	new PointF(x,                y + triHeight2 - triHeight4),
 				                          	new PointF(x + triWidth / 2, y + triHeight2 + triHeight4),
 				                          	new PointF(x + triWidth,     y + triHeight2 - triHeight4),
 				                          });
 				
 			} else {
-				base.Graphics.FillPolygon(brush, new PointF[] {
+				Graphics.FillPolygon(brush, new PointF[] {
 				                          	new PointF(x,                y +  triHeight2 + triHeight4),
 				                          	new PointF(x + triWidth / 2, y +  triHeight2 - triHeight4),
 				                          	new PointF(x + triWidth,     y +  triHeight2 + triHeight4),
@@ -53,12 +53,12 @@ namespace ICSharpCode.TextEditor.Util
 				                                  (int)location.Y + 2,
 				                                  (int)(triWidth),
 				                                  (int)(triHeight));
-				DrawingRectangle2 = new Rectangle((int)(location.X + base.AllocatedSize.Width - triWidth  - 2),
+				DrawingRectangle2 = new Rectangle((int)(location.X + AllocatedSize.Width - triWidth  - 2),
 				                                  (int)location.Y + 2,
 				                                  (int)(triWidth),
 				                                  (int)(triHeight));
 				DrawTriangle(location.X + 2, location.Y + 2, false);
-				DrawTriangle(location.X + base.AllocatedSize.Width - triWidth  - 2, location.Y + 2, true);
+				DrawTriangle(location.X + AllocatedSize.Width - triWidth  - 2, location.Y + 2, true);
 			}
 		}
 		

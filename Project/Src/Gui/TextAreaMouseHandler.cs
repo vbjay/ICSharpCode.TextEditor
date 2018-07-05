@@ -479,7 +479,7 @@ namespace ICSharpCode.TextEditor
 	    private TextLocation minSelection = TextLocation.Empty;
 	    private TextLocation maxSelection = TextLocation.Empty;
 
-	    private void OnDoubleClick(object sender, System.EventArgs e)
+	    private void OnDoubleClick(object sender, EventArgs e)
 		{
 			if (dodragdrop) {
 				return;

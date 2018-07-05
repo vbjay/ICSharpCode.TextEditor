@@ -33,7 +33,7 @@ namespace ICSharpCode.TextEditor
 	}
 	
 	
-	public class Caret : System.IDisposable
+	public class Caret : IDisposable
 	{
 	    private int       line          = 0;
 	    private int       column        = 0;
@@ -219,10 +219,10 @@ namespace ICSharpCode.TextEditor
 		
 		public Point ScreenPosition {
 			get {
-				int xpos = textArea.TextView.GetDrawingXPos(this.line, this.column);
+				int xpos = textArea.TextView.GetDrawingXPos(line, column);
 				return new Point(textArea.TextView.DrawingPosition.X + xpos,
 				                 textArea.TextView.DrawingPosition.Y
-				                 + (textArea.Document.GetVisibleLine(this.line)) * textArea.TextView.FontHeight
+				                 + (textArea.Document.GetVisibleLine(line)) * textArea.TextView.FontHeight
 				                 - textArea.TextView.TextArea.VirtualTop.Y);
 			}
 		}
@@ -278,8 +278,8 @@ namespace ICSharpCode.TextEditor
 				outstandingUpdate = false;
 			}
 			ValidateCaretPos();
-			int lineNr = this.line;
-			int xpos = textArea.TextView.GetDrawingXPos(lineNr, this.column);
+			int lineNr = line;
+			int xpos = textArea.TextView.GetDrawingXPos(lineNr, column);
 			//LineSegment lineSegment = textArea.Document.GetLineSegment(lineNr);
 			Point pos = ScreenPosition;
 			if (xpos >= 0) {
@@ -347,9 +347,9 @@ namespace ICSharpCode.TextEditor
 			
 			public ManagedCaret(Caret caret)
 			{
-				base.RequireRedrawOnPositionChange = true;
-				this.textArea = caret.textArea;
-				this.parentCaret = caret;
+				RequireRedrawOnPositionChange = true;
+				textArea = caret.textArea;
+				parentCaret = caret;
 				timer.Tick += CaretTimerTick;
 			}
 
@@ -362,7 +362,7 @@ namespace ICSharpCode.TextEditor
 			
 			public override bool Create(int width, int height)
 			{
-				this.visible = true;
+				visible = true;
 				this.width = width - 2;
 				this.height = height;
 				timer.Enabled = true;
@@ -420,7 +420,7 @@ namespace ICSharpCode.TextEditor
 			
 			public Win32Caret(Caret caret)
 			{
-				this.textArea = caret.textArea;
+				textArea = caret.textArea;
 			}
 			
 			public override bool Create(int width, int height)
@@ -458,14 +458,14 @@ namespace ICSharpCode.TextEditor
 		
 		protected virtual void OnPositionChanged(EventArgs e)
 		{
-			if (this.textArea.MotherTextEditorControl.IsInUpdate) {
+			if (textArea.MotherTextEditorControl.IsInUpdate) {
 				if (firePositionChangedAfterUpdateEnd == false) {
 					firePositionChangedAfterUpdateEnd = true;
-					this.textArea.Document.UpdateCommited += FirePositionChangedAfterUpdateEnd;
+					textArea.Document.UpdateCommited += FirePositionChangedAfterUpdateEnd;
 				}
 				return;
 			} else if (firePositionChangedAfterUpdateEnd) {
-				this.textArea.Document.UpdateCommited -= FirePositionChangedAfterUpdateEnd;
+				textArea.Document.UpdateCommited -= FirePositionChangedAfterUpdateEnd;
 				firePositionChangedAfterUpdateEnd = false;
 			}
 			

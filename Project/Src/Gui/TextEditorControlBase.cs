@@ -648,16 +648,16 @@ namespace ICSharpCode.TextEditor
 			}
 			
 			if (autodetectEncoding) {
-				Encoding encoding = this.Encoding;
+				Encoding encoding = Encoding;
 				Document.TextContent = Util.FileReader.ReadFileContent(stream, ref encoding);
-				this.Encoding = encoding;
+				Encoding = encoding;
 			} else {
-				using (StreamReader reader = new StreamReader(fileName, this.Encoding)) {
+				using (StreamReader reader = new StreamReader(fileName, Encoding)) {
 					Document.TextContent = reader.ReadToEnd();
 				}
 			}
 			
-			this.FileName = fileName;
+			FileName = fileName;
 			Document.UpdateQueue.Clear();
 			EndUpdate();
 			
@@ -685,7 +685,7 @@ namespace ICSharpCode.TextEditor
 			using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write)) {
 				SaveFile(fs);
 			}
-			this.FileName = fileName;
+			FileName = fileName;
 		}
 		
 		/// <remarks>
@@ -694,7 +694,7 @@ namespace ICSharpCode.TextEditor
 		/// </remarks>
 		public void SaveFile(Stream stream)
 		{
-			StreamWriter streamWriter = new StreamWriter(stream, this.Encoding ?? Encoding.UTF8);
+			StreamWriter streamWriter = new StreamWriter(stream, Encoding ?? Encoding.UTF8);
 			
 			// save line per line to apply the LineTerminator to all lines
 			// (otherwise we might save files with mixed-up line endings)

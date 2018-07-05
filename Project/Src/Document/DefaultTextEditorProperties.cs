@@ -22,7 +22,7 @@ namespace ICSharpCode.TextEditor.Document
 	    private int                   indentationSize       = 4;
 	    private IndentStyle           indentStyle           = IndentStyle.Smart;
 	    private DocumentSelectionMode documentSelectionMode = DocumentSelectionMode.Normal;
-	    private Encoding              encoding              = System.Text.Encoding.UTF8;
+	    private Encoding              encoding              = Encoding.UTF8;
 	    private BracketMatchingStyle  bracketMatchingStyle  = BracketMatchingStyle.After;
 	    private FontContainer fontContainer;
 	    private static Font DefaultFont;
@@ -32,7 +32,7 @@ namespace ICSharpCode.TextEditor.Document
 			if (DefaultFont == null) {
 				DefaultFont = new Font("Courier New", 10);
 			}
-			this.fontContainer = new FontContainer(DefaultFont);
+			fontContainer = new FontContainer(DefaultFont);
 		}
 
 	    private bool        allowCaretBeyondEOL = false;

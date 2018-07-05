@@ -40,7 +40,7 @@ namespace ICSharpCode.TextEditor.Document
 			public SpaceTextWord(HighlightColor color)
 			{
 				length = 1;
-				base.SyntaxColor = color;
+				SyntaxColor = color;
 			}
 			
 			public override Font GetFont(FontContainer fontContainer)
@@ -69,7 +69,7 @@ namespace ICSharpCode.TextEditor.Document
 			public TabTextWord(HighlightColor color)
 			{
 				length = 1;
-				base.SyntaxColor = color;
+				SyntaxColor = color;
 			}
 			
 			public override Font GetFont(FontContainer fontContainer)
