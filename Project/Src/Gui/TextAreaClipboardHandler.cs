@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor
 {
 	public class TextAreaClipboardHandler
 	{
-		TextArea textArea;
+	    private TextArea textArea;
 		
 		public bool EnableCut {
 			get {
@@ -80,15 +80,15 @@ namespace ICSharpCode.TextEditor
 			this.textArea = textArea;
 			textArea.SelectionManager.SelectionChanged += new EventHandler(DocumentSelectionChanged);
 		}
-		
-		void DocumentSelectionChanged(object sender, EventArgs e)
+
+	    private void DocumentSelectionChanged(object sender, EventArgs e)
 		{
 //			((DefaultWorkbench)WorkbenchSingleton.Workbench).UpdateToolbars();
 		}
 
-		const string LineSelectedType = "MSDEVLineSelect";  // This is the type VS 2003 and 2005 use for flagging a whole line copy
-		
-		bool CopyTextToClipboard(string stringToCopy, bool asLine)
+	    private const string LineSelectedType = "MSDEVLineSelect";  // This is the type VS 2003 and 2005 use for flagging a whole line copy
+
+	    private bool CopyTextToClipboard(string stringToCopy, bool asLine)
 		{
 			if (stringToCopy.Length > 0) {
 				DataObject dataObject = new DataObject();
@@ -112,9 +112,9 @@ namespace ICSharpCode.TextEditor
 		}
 		
 		// Code duplication: TextAreaClipboardHandler.cs also has SafeSetClipboard
-		[ThreadStatic] static int SafeSetClipboardDataVersion;
-		
-		static void SafeSetClipboard(object dataObject)
+		[ThreadStatic] private static int SafeSetClipboardDataVersion;
+
+	    private static void SafeSetClipboard(object dataObject)
 		{
 			// Work around ExternalException bug. (SD2-426)
 			// Best reproducable inside Virtual PC.
@@ -137,7 +137,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 
-		bool CopyTextToClipboard(string stringToCopy)
+	    private bool CopyTextToClipboard(string stringToCopy)
 		{
 			return CopyTextToClipboard(stringToCopy, false);
 		}
@@ -252,7 +252,7 @@ namespace ICSharpCode.TextEditor
 	public delegate void CopyTextEventHandler(object sender, CopyTextEventArgs e);
 	public class CopyTextEventArgs : EventArgs
 	{
-		string text;
+	    private string text;
 		
 		public string Text {
 			get {

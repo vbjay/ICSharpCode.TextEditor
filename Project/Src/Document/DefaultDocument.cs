@@ -92,16 +92,16 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	internal sealed class DefaultDocument : IDocument
 	{
-		bool readOnly = false;
-		
-		LineManager           lineTrackingStrategy;
-		BookmarkManager       bookmarkManager;
-		ITextBufferStrategy   textBufferStrategy;
-		IFormattingStrategy   formattingStrategy;
-		FoldingManager        foldingManager;
-		UndoStack             undoStack = new UndoStack();
-		ITextEditorProperties textEditorProperties = new DefaultTextEditorProperties();
-		MarkerStrategy        markerStrategy;
+	    private bool readOnly = false;
+
+	    private LineManager           lineTrackingStrategy;
+	    private BookmarkManager       bookmarkManager;
+	    private ITextBufferStrategy   textBufferStrategy;
+	    private IFormattingStrategy   formattingStrategy;
+	    private FoldingManager        foldingManager;
+	    private UndoStack             undoStack = new UndoStack();
+	    private ITextEditorProperties textEditorProperties = new DefaultTextEditorProperties();
+	    private MarkerStrategy        markerStrategy;
 		
 		public LineManager LineManager {
 			get { return lineTrackingStrategy; }
@@ -391,15 +391,15 @@ namespace ICSharpCode.TextEditor.Document
 				s.Length = segmentEnd - segmentStart;
 			}
 		}
-		
-		void OnDocumentAboutToBeChanged(DocumentEventArgs e)
+
+	    private void OnDocumentAboutToBeChanged(DocumentEventArgs e)
 		{
 			if (DocumentAboutToBeChanged != null) {
 				DocumentAboutToBeChanged(this, e);
 			}
 		}
-		
-		void OnDocumentChanged(DocumentEventArgs e)
+
+	    private void OnDocumentChanged(DocumentEventArgs e)
 		{
 			if (DocumentChanged != null) {
 				DocumentChanged(this, e);
@@ -410,7 +410,7 @@ namespace ICSharpCode.TextEditor.Document
 		public event DocumentEventHandler DocumentChanged;
 		
 		// UPDATE STUFF
-		List<TextAreaUpdate> updateQueue = new List<TextAreaUpdate>();
+	    private List<TextAreaUpdate> updateQueue = new List<TextAreaUpdate>();
 		
 		public List<TextAreaUpdate> UpdateQueue {
 			get {
@@ -437,8 +437,8 @@ namespace ICSharpCode.TextEditor.Document
 				UpdateCommited(this, EventArgs.Empty);
 			}
 		}
-		
-		void OnTextContentChanged(EventArgs e)
+
+	    private void OnTextContentChanged(EventArgs e)
 		{
 			if (TextContentChanged != null) {
 				TextContentChanged(this, e);

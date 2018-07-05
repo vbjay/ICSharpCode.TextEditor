@@ -20,18 +20,18 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class TextAreaMouseHandler
 	{
-		TextArea  textArea;
-		bool      doubleclick = false;
-		bool      clickedOnSelectedText = false;
-		
-		MouseButtons button;
-		
-		static readonly Point nilPoint = new Point(-1, -1);
-		Point mousedownpos       = nilPoint;
-		Point lastmousedownpos   = nilPoint;
-		
-		bool gotmousedown = false;
-		bool dodragdrop = false;
+	    private TextArea  textArea;
+	    private bool      doubleclick = false;
+	    private bool      clickedOnSelectedText = false;
+
+	    private MouseButtons button;
+
+	    private static readonly Point nilPoint = new Point(-1, -1);
+	    private Point mousedownpos       = nilPoint;
+	    private Point lastmousedownpos   = nilPoint;
+
+	    private bool gotmousedown = false;
+	    private bool dodragdrop = false;
 		
 		public TextAreaMouseHandler(TextArea ttextArea)
 		{
@@ -50,8 +50,8 @@ namespace ICSharpCode.TextEditor
 			textArea.LostFocus   += new EventHandler(TextAreaLostFocus);
 			textArea.ToolTipRequest += new ToolTipRequestEventHandler(OnToolTipRequest);
 		}
-		
-		void OnToolTipRequest(object sender, ToolTipRequestEventArgs e)
+
+	    private void OnToolTipRequest(object sender, ToolTipRequestEventArgs e)
 		{
 			if (e.ToolTipShown)
 				return;
@@ -88,14 +88,14 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		void ShowHiddenCursorIfMovedOrLeft()
+
+	    private void ShowHiddenCursorIfMovedOrLeft()
 		{
 			textArea.ShowHiddenCursor(!textArea.Focused ||
 			                          !textArea.ClientRectangle.Contains(textArea.PointToClient(Cursor.Position)));
 		}
-		
-		void TextAreaLostFocus(object sender, EventArgs e)
+
+	    private void TextAreaLostFocus(object sender, EventArgs e)
 		{
 			// The call to ShowHiddenCursorIfMovedOrLeft is delayed
 			// until pending messages have been processed
@@ -105,22 +105,22 @@ namespace ICSharpCode.TextEditor
 			// but immediately gives back focus to the TextArea.
 			textArea.BeginInvoke(new MethodInvoker(ShowHiddenCursorIfMovedOrLeft));
 		}
-		
-		void OnMouseLeave(object sender, EventArgs e)
+
+	    private void OnMouseLeave(object sender, EventArgs e)
 		{
 			ShowHiddenCursorIfMovedOrLeft();
 			gotmousedown = false;
 			mousedownpos = nilPoint;
 		}
-		
-		void OnMouseUp(object sender, MouseEventArgs e)
+
+	    private void OnMouseUp(object sender, MouseEventArgs e)
 		{
 			textArea.SelectionManager.selectFrom.where = WhereFrom.None;
 			gotmousedown = false;
 			mousedownpos = nilPoint;
 		}
-		
-		void TextAreaClick(object sender, EventArgs e)
+
+	    private void TextAreaClick(object sender, EventArgs e)
 		{
 			Point mousepos;
 			mousepos = textArea.mousepos;
@@ -141,9 +141,9 @@ namespace ICSharpCode.TextEditor
 				textArea.SetDesiredColumn();
 			}
 		}
-		
-		
-		void TextAreaMouseMove(object sender, MouseEventArgs e)
+
+
+	    private void TextAreaMouseMove(object sender, MouseEventArgs e)
 		{
 			textArea.mousepos = e.Location;
 
@@ -196,8 +196,8 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		void ExtendSelectionToMouse()
+
+	    private void ExtendSelectionToMouse()
 		{
 			Point mousepos;
 			mousepos = textArea.mousepos;
@@ -247,8 +247,8 @@ namespace ICSharpCode.TextEditor
 			}
 			textArea.SetDesiredColumn();
 		}
-		
-		void DoubleClickSelectionExtend()
+
+	    private void DoubleClickSelectionExtend()
 		{
 			Point mousepos;
 			mousepos = textArea.mousepos;
@@ -306,7 +306,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 
-		void OnMouseDown(object sender, MouseEventArgs e)
+	    private void OnMouseDown(object sender, MouseEventArgs e)
 		{
 			Point mousepos;
 			textArea.mousepos = e.Location;
@@ -414,8 +414,8 @@ namespace ICSharpCode.TextEditor
 			}
 			textArea.Focus();
 		}
-		
-		int FindNext(IDocument document, int offset, char ch)
+
+	    private int FindNext(IDocument document, int offset, char ch)
 		{
 			LineSegment line = document.GetLineSegmentForOffset(offset);
 			int         endPos = line.Offset + line.Length;
@@ -425,13 +425,13 @@ namespace ICSharpCode.TextEditor
 			}
 			return offset;
 		}
-		
-		bool IsSelectableChar(char ch)
+
+	    private bool IsSelectableChar(char ch)
 		{
 			return Char.IsLetterOrDigit(ch) || ch=='_';
 		}
-		
-		int FindWordStart(IDocument document, int offset)
+
+	    private int FindWordStart(IDocument document, int offset)
 		{
 			LineSegment line = document.GetLineSegmentForOffset(offset);
 			
@@ -450,8 +450,8 @@ namespace ICSharpCode.TextEditor
 			}
 			return offset;
 		}
-		
-		int FindWordEnd(IDocument document, int offset)
+
+	    private int FindWordEnd(IDocument document, int offset)
 		{
 			LineSegment line   = document.GetLineSegmentForOffset(offset);
 			if (line.Length == 0)
@@ -475,10 +475,11 @@ namespace ICSharpCode.TextEditor
 			
 			return offset;
 		}
-		TextLocation minSelection = TextLocation.Empty;
-		TextLocation maxSelection = TextLocation.Empty;
-		
-		void OnDoubleClick(object sender, System.EventArgs e)
+
+	    private TextLocation minSelection = TextLocation.Empty;
+	    private TextLocation maxSelection = TextLocation.Empty;
+
+	    private void OnDoubleClick(object sender, System.EventArgs e)
 		{
 			if (dodragdrop) {
 				return;

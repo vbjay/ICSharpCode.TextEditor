@@ -16,8 +16,8 @@ namespace ICSharpCode.TextEditor.Undo
 	/// </summary>
 	public class UndoStack
 	{
-		Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
-		Stack<IUndoableOperation> redostack = new Stack<IUndoableOperation>();
+	    private Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
+	    private Stack<IUndoableOperation> redostack = new Stack<IUndoableOperation>();
 		
 		public TextEditorControlBase TextEditorControl = null;
 		
@@ -71,9 +71,9 @@ namespace ICSharpCode.TextEditor.Undo
 				return redostack.Count;
 			}
 		}
-		
-		int undoGroupDepth;
-		int actionCountInUndoGroup;
+
+	    private int undoGroupDepth;
+	    private int actionCountInUndoGroup;
 		
 		public void StartUndoGroup()
 		{
@@ -194,12 +194,12 @@ namespace ICSharpCode.TextEditor.Undo
 				ActionRedone(null, null);
 			}
 		}
-		
-		class UndoableSetCaretPosition : IUndoableOperation
+
+	    private class UndoableSetCaretPosition : IUndoableOperation
 		{
-			UndoStack stack;
-			TextLocation pos;
-			TextLocation redoPos;
+		    private UndoStack stack;
+		    private TextLocation pos;
+		    private TextLocation redoPos;
 			
 			public UndoableSetCaretPosition(UndoStack stack, TextLocation pos)
 			{
@@ -228,8 +228,8 @@ namespace ICSharpCode.TextEditor.Undo
 		{
 			this.op = op;
 		}
-		
-		IUndoableOperation op;
+
+	    private IUndoableOperation op;
 		
 		public IUndoableOperation Operation {
 			get {

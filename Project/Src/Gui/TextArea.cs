@@ -29,35 +29,35 @@ namespace ICSharpCode.TextEditor
 	[ToolboxItem(false)]
 	public class TextArea : Control
 	{
-		bool hiddenMouseCursor = false;
+	    private bool hiddenMouseCursor = false;
 		/// <summary>
 		/// The position where the mouse cursor was when it was hidden. Sometimes the text editor gets MouseMove
 		/// events when typing text even if the mouse is not moved.
 		/// </summary>
-		Point mouseCursorHidePosition;
-		
-		Point virtualTop        = new Point(0, 0);
-		TextAreaControl         motherTextAreaControl;
-		TextEditorControl       motherTextEditorControl;
-		
-		List<BracketHighlightingSheme> bracketshemes  = new List<BracketHighlightingSheme>();
-		TextAreaClipboardHandler  textAreaClipboardHandler;
-		bool autoClearSelection = false;
-		
-		List<AbstractMargin> leftMargins = new List<AbstractMargin>();
-		
-		TextView      textView;
-		GutterMargin  gutterMargin;
-		FoldMargin    foldMargin;
-		IconBarMargin iconBarMargin;
-		
-		SelectionManager selectionManager;
-		Caret            caret;
+		private Point mouseCursorHidePosition;
+
+	    private Point virtualTop        = new Point(0, 0);
+	    private TextAreaControl         motherTextAreaControl;
+	    private TextEditorControl       motherTextEditorControl;
+
+	    private List<BracketHighlightingSheme> bracketshemes  = new List<BracketHighlightingSheme>();
+	    private TextAreaClipboardHandler  textAreaClipboardHandler;
+	    private bool autoClearSelection = false;
+
+	    private List<AbstractMargin> leftMargins = new List<AbstractMargin>();
+
+	    private TextView      textView;
+	    private GutterMargin  gutterMargin;
+	    private FoldMargin    foldMargin;
+	    private IconBarMargin iconBarMargin;
+
+	    private SelectionManager selectionManager;
+	    private Caret            caret;
 
 		internal Point mousepos = new Point(0, 0);
 		//public Point selectionStartPos = new Point(0,0);
 
-		bool disposed;
+	    private bool disposed;
 		
 		[Browsable(false)]
 		public IList<AbstractMargin> LeftMargins {
@@ -219,13 +219,14 @@ namespace ICSharpCode.TextEditor
 		{
 			SearchMatchingBracket(null, null);
 		}
-		
-		void TextContentChanged(object sender, EventArgs e)
+
+	    private void TextContentChanged(object sender, EventArgs e)
 		{
 			Caret.Position = new TextLocation(0, 0);
 			SelectionManager.SelectionCollection.Clear();
 		}
-		void SearchMatchingBracket(object sender, EventArgs e)
+
+	    private void SearchMatchingBracket(object sender, EventArgs e)
 		{
 			if (!TextEditorProperties.ShowMatchingBracket) {
 				textView.Highlight = null;
@@ -285,8 +286,8 @@ namespace ICSharpCode.TextEditor
 			caret.UpdateCaretPosition();
 			Refresh();
 		}
-		
-		AbstractMargin lastMouseInMargin;
+
+	    private AbstractMargin lastMouseInMargin;
 		
 		protected override void OnMouseLeave(System.EventArgs e)
 		{
@@ -334,10 +335,10 @@ namespace ICSharpCode.TextEditor
 		
 		// static because the mouse can only be in one text area and we don't want to have
 		// tooltips of text areas from inactive tabs floating around.
-		static DeclarationViewWindow toolTip;
-		static string oldToolTip;
-		
-		void SetToolTip(string text, int lineNumber)
+	    private static DeclarationViewWindow toolTip;
+	    private static string oldToolTip;
+
+	    private void SetToolTip(string text, int lineNumber)
 		{
 			if (toolTip == null || toolTip.IsDisposed)
 				toolTip = new DeclarationViewWindow(this.FindForm());
@@ -370,16 +371,16 @@ namespace ICSharpCode.TextEditor
 				ToolTipRequest(this, e);
 			}
 		}
-		
-		bool toolTipActive;
+
+	    private bool toolTipActive;
 		/// <summary>
 		/// Rectangle in text area that caused the current tool tip.
 		/// Prevents tooltip from re-showing when it was closed because of a click or keyboard
 		/// input and the mouse was not used.
 		/// </summary>
-		Rectangle toolTipRectangle;
-		
-		void CloseToolTip()
+		private Rectangle toolTipRectangle;
+
+	    private void CloseToolTip()
 		{
 			if (toolTipActive) {
 				//Console.WriteLine("Closing tooltip");
@@ -471,7 +472,8 @@ namespace ICSharpCode.TextEditor
 			}
 			this.Cursor = Cursors.Default;
 		}
-		AbstractMargin updateMargin = null;
+
+	    private AbstractMargin updateMargin = null;
 		
 		public void Refresh(AbstractMargin margin)
 		{
@@ -551,7 +553,8 @@ namespace ICSharpCode.TextEditor
 			
 			base.OnPaint(e);
 		}
-		void DocumentFoldingsChanged(object sender, EventArgs e)
+
+	    private void DocumentFoldingsChanged(object sender, EventArgs e)
 		{
 			Caret.UpdateCaretPosition();
 			Invalidate();
@@ -730,8 +733,8 @@ namespace ICSharpCode.TextEditor
 					return !IsReadOnly(Caret.Offset);
 			}
 		}
-		
-		string GenerateWhitespaceString(int length)
+
+	    private string GenerateWhitespaceString(int length)
 		{
 			return new String(' ', length);
 		}
@@ -910,7 +913,8 @@ namespace ICSharpCode.TextEditor
 		{
 			UpdateLines(line, line);
 		}
-		int FirstPhysicalLine {
+
+	    private int FirstPhysicalLine {
 			get {
 				return VirtualTop.Y / textView.FontHeight;
 			}
@@ -923,8 +927,8 @@ namespace ICSharpCode.TextEditor
 			
 			InvalidateLines((int)(xPos * this.TextView.WideSpaceWidth), lineBegin, lineEnd);
 		}
-		
-		void InvalidateLines(int xPos, int lineBegin, int lineEnd)
+
+	    private void InvalidateLines(int xPos, int lineBegin, int lineEnd)
 		{
 			lineBegin     = Math.Max(Document.GetVisibleLine(lineBegin), FirstPhysicalLine);
 			lineEnd       = Math.Min(Document.GetVisibleLine(lineEnd),   FirstPhysicalLine + textView.VisibleLineCount);

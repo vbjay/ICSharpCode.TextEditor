@@ -16,10 +16,10 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class Bookmark
 	{
-		IDocument document;
-		TextAnchor anchor;
-		TextLocation location;
-		bool isEnabled = true;
+	    private IDocument document;
+	    private TextAnchor anchor;
+	    private TextLocation location;
+	    private bool isEnabled = true;
 		
 		public IDocument Document {
 			get {
@@ -37,8 +37,8 @@ namespace ICSharpCode.TextEditor.Document
 				}
 			}
 		}
-		
-		void CreateAnchor()
+
+	    private void CreateAnchor()
 		{
 			if (document != null) {
 				LineSegment line = document.GetLineSegment(Math.Max(0, Math.Min(location.Line, document.TotalNumberOfLines-1)));
@@ -48,8 +48,8 @@ namespace ICSharpCode.TextEditor.Document
 				anchor.Deleted += AnchorDeleted;
 			}
 		}
-		
-		void AnchorDeleted(object sender, EventArgs e)
+
+	    private void AnchorDeleted(object sender, EventArgs e)
 		{
 			document.BookmarkManager.RemoveMark(this);
 		}

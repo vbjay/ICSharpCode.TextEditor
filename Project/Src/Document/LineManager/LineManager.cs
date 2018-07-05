@@ -13,10 +13,10 @@ namespace ICSharpCode.TextEditor.Document
 {
 	internal sealed class LineManager
 	{
-		LineSegmentTree lineCollection = new LineSegmentTree();
-		
-		IDocument document;
-		IHighlightingStrategy highlightingStrategy;
+	    private LineSegmentTree lineCollection = new LineSegmentTree();
+
+	    private IDocument document;
+	    private IHighlightingStrategy highlightingStrategy;
 		
 		public IList<LineSegment> LineSegmentCollection {
 			get {
@@ -105,8 +105,8 @@ namespace ICSharpCode.TextEditor.Document
 				OnLineCountChanged(new LineCountChangeEventArgs(document, lineStart, this.TotalNumberOfLines - oldNumberOfLines));
 			}
 		}
-		
-		void RemoveInternal(ref DeferredEventList deferredEventList, int offset, int length)
+
+	    private void RemoveInternal(ref DeferredEventList deferredEventList, int offset, int length)
 		{
 			Debug.Assert(length >= 0);
 			if (length == 0) return;
@@ -149,8 +149,8 @@ namespace ICSharpCode.TextEditor.Document
 				segmentToRemove.Deleted(ref deferredEventList);
 			} while (segmentToRemove != endSegment);
 		}
-		
-		void InsertInternal(int offset, string text)
+
+	    private void InsertInternal(int offset, string text)
 		{
 			LineSegment segment = lineCollection.GetByOffset(offset);
 			DelimiterSegment ds = NextDelimiter(text, 0);
@@ -184,8 +184,8 @@ namespace ICSharpCode.TextEditor.Document
 				SetSegmentLength(segment, segment.TotalLength + text.Length - lastDelimiterEnd);
 			}
 		}
-		
-		void SetSegmentLength(LineSegment segment, int newTotalLength)
+
+	    private void SetSegmentLength(LineSegment segment, int newTotalLength)
 		{
 			int delta = newTotalLength - segment.TotalLength;
 			if (delta != 0) {
@@ -193,8 +193,8 @@ namespace ICSharpCode.TextEditor.Document
 				OnLineLengthChanged(new LineLengthChangeEventArgs(document, segment, delta));
 			}
 		}
-		
-		void RunHighlighter(int firstLine, int lineCount)
+
+	    private void RunHighlighter(int firstLine, int lineCount)
 		{
 			if (highlightingStrategy != null) {
 				List<LineSegment> markLines = new List<LineSegment>();
@@ -308,9 +308,9 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		// use always the same DelimiterSegment object for the NextDelimiter
-		DelimiterSegment delimiterSegment = new DelimiterSegment();
-		
-		DelimiterSegment NextDelimiter(string text, int offset)
+	    private DelimiterSegment delimiterSegment = new DelimiterSegment();
+
+	    private DelimiterSegment NextDelimiter(string text, int offset)
 		{
 			for (int i = offset; i < text.Length; i++) {
 				switch (text[i]) {
@@ -334,22 +334,22 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return null;
 		}
-		
-		void OnLineCountChanged(LineCountChangeEventArgs e)
+
+	    private void OnLineCountChanged(LineCountChangeEventArgs e)
 		{
 			if (LineCountChanged != null) {
 				LineCountChanged(this, e);
 			}
 		}
-		
-		void OnLineLengthChanged(LineLengthChangeEventArgs e)
+
+	    private void OnLineLengthChanged(LineLengthChangeEventArgs e)
 		{
 			if (LineLengthChanged != null) {
 				LineLengthChanged(this, e);
 			}
 		}
-		
-		void OnLineDeleted(LineEventArgs e)
+
+	    private void OnLineDeleted(LineEventArgs e)
 		{
 			if (LineDeleted != null) {
 				LineDeleted(this, e);
@@ -359,8 +359,8 @@ namespace ICSharpCode.TextEditor.Document
 		public event EventHandler<LineLengthChangeEventArgs> LineLengthChanged;
 		public event EventHandler<LineCountChangeEventArgs> LineCountChanged;
 		public event EventHandler<LineEventArgs> LineDeleted;
-		
-		sealed class DelimiterSegment
+
+	    private sealed class DelimiterSegment
 		{
 			internal int Offset;
 			internal int Length;

@@ -11,12 +11,12 @@ using System.Drawing;
 
 namespace ICSharpCode.TextEditor.Util
 {
-	abstract class TipSection
+    internal abstract class TipSection
 	{
-		SizeF    tipAllocatedSize;
-		Graphics tipGraphics;
-		SizeF    tipMaxSize;
-		SizeF    tipRequiredSize;
+	    private SizeF    tipAllocatedSize;
+	    private Graphics tipGraphics;
+	    private SizeF    tipMaxSize;
+	    private SizeF    tipRequiredSize;
 		
 		protected TipSection(Graphics graphics)
 		{

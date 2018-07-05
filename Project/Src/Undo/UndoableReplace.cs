@@ -16,11 +16,11 @@ namespace ICSharpCode.TextEditor.Undo
 	/// </summary>
 	public class UndoableReplace : IUndoableOperation
 	{
-		IDocument document;
+	    private IDocument document;
 //		int       oldCaretPos;
-		int       offset;
-		string    text;
-		string    origText;
+	    private int       offset;
+	    private string    text;
+	    private string    origText;
 		
 		/// <summary>
 		/// Creates a new instance of <see cref="UndoableReplace"/>

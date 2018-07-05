@@ -10,16 +10,16 @@ using System.Drawing;
 
 namespace ICSharpCode.TextEditor.Util
 {
-	class CountTipText: TipText
+    internal class CountTipText: TipText
 	{
-		float triHeight = 10;
-		float triWidth  = 10;
+	    private float triHeight = 10;
+	    private float triWidth  = 10;
 		
 		public CountTipText(Graphics graphics, Font font, string text) : base(graphics, font, text)
 		{
 		}
-		
-		void DrawTriangle(float x, float y, bool flipped)
+
+	    private void DrawTriangle(float x, float y, bool flipped)
 		{
 			Brush brush = BrushRegistry.GetBrush(Color.FromArgb(192, 192, 192));
 			base.Graphics.FillRectangle(brush, new RectangleF(x, y, triHeight, triHeight));
@@ -76,8 +76,8 @@ namespace ICSharpCode.TextEditor.Util
 		}
 		
 	}
-	
-	class TipText: TipSection
+
+    internal class TipText: TipSection
 	{
 		protected StringAlignment horzAlign;
 		protected StringAlignment vertAlign;
@@ -133,8 +133,8 @@ namespace ICSharpCode.TextEditor.Util
 				SetRequiredSize(SizeF.Empty);
 			}
 		}
-		
-		static StringFormat CreateTipStringFormat(StringAlignment horizontalAlignment, StringAlignment verticalAlignment)
+
+	    private static StringFormat CreateTipStringFormat(StringAlignment horizontalAlignment, StringAlignment verticalAlignment)
 		{
 			StringFormat format = (StringFormat)StringFormat.GenericTypographic.Clone();
 			format.FormatFlags = StringFormatFlags.FitBlackBox | StringFormatFlags.MeasureTrailingSpaces;

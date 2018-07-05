@@ -18,8 +18,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	{
 		protected TextEditorControl control;
 		protected Size              drawingSize;
-		Rectangle workingScreen;
-		Form parentForm;
+	    private Rectangle workingScreen;
+	    private Form parentForm;
 		
 		protected AbstractCompletionWindow(Form parentForm, TextEditorControl control)
 		{
@@ -79,8 +79,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 				return p;
 			}
 		}
-		
-		static int shadowStatus;
+
+	    private static int shadowStatus;
 		
 		/// <summary>
 		/// Adds a shadow to the create params if it is supported by the operating system.
@@ -131,8 +131,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 				c.MouseMove += ControlMouseMove;
 			}
 		}
-		
-		void ParentFormLocationChanged(object sender, EventArgs e)
+
+	    private void ParentFormLocationChanged(object sender, EventArgs e)
 		{
 			SetLocation();
 		}

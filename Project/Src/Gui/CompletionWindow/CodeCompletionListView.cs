@@ -16,10 +16,10 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	/// </summary>
 	public class CodeCompletionListView : System.Windows.Forms.UserControl
 	{
-		ICompletionData[] completionData;
-		int               firstItem    = 0;
-		int               selectedItem = -1;
-		ImageList         imageList;
+	    private ICompletionData[] completionData;
+	    private int               firstItem    = 0;
+	    private int               selectedItem = -1;
+	    private ImageList         imageList;
 		
 		public ImageList ImageList {
 			get {

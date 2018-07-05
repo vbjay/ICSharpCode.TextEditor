@@ -16,9 +16,9 @@ namespace ICSharpCode.TextEditor.Util
 {
 	public class RtfWriter
 	{
-		static Dictionary<string, int> colors;
-		static int           colorNum;
-		static StringBuilder colorString;
+	    private static Dictionary<string, int> colors;
+	    private static int           colorNum;
+	    private static StringBuilder colorString;
 		
 		public static string GenerateRtf(TextArea textArea)
 		{
@@ -41,22 +41,22 @@ namespace ICSharpCode.TextEditor.Util
 			rtf.Append("}");
 			return rtf.ToString();
 		}
-		
-		static void BuildColorTable(IDocument doc, StringBuilder rtf)
+
+	    private static void BuildColorTable(IDocument doc, StringBuilder rtf)
 		{
 			rtf.Append(@"{\colortbl ;");
 			rtf.Append(colorString.ToString());
 			rtf.Append("}");
 		}
-		
-		static void BuildFontTable(IDocument doc, StringBuilder rtf)
+
+	    private static void BuildFontTable(IDocument doc, StringBuilder rtf)
 		{
 			rtf.Append(@"{\fonttbl");
 			rtf.Append(@"{\f0\fmodern\fprq1\fcharset0 " + doc.TextEditorProperties.Font.Name + ";}");
 			rtf.Append("}");
 		}
-		
-		static string BuildFileContent(TextArea textArea)
+
+	    private static string BuildFileContent(TextArea textArea)
 		{
 			StringBuilder rtf = new StringBuilder();
 			bool firstLine = true;
@@ -160,8 +160,8 @@ namespace ICSharpCode.TextEditor.Util
 			
 			return rtf.ToString();
 		}
-		
-		static void AppendText(StringBuilder rtfOutput, string text)
+
+	    private static void AppendText(StringBuilder rtfOutput, string text)
 		{
 			//rtf.Append(printWord.Replace(@"\", @"\\").Replace("{", "\\{").Replace("}", "\\}"));
 			foreach (char c in text) {

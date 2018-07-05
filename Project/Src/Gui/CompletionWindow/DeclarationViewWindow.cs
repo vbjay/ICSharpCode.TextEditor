@@ -25,8 +25,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	
 	public class DeclarationViewWindow : Form, IDeclarationViewWindow
 	{
-		string description = String.Empty;
-		bool fixedWidth;
+	    private string description = String.Empty;
+	    private bool fixedWidth;
 		
 		public string Description {
 			get {

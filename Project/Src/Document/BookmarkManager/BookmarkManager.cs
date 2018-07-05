@@ -22,9 +22,9 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class BookmarkManager
 	{
-		IDocument      document;
+	    private IDocument      document;
 		#if DEBUG
-		IList<Bookmark> bookmark = new CheckedList<Bookmark>();
+	    private IList<Bookmark> bookmark = new CheckedList<Bookmark>();
 		#else
 		List<Bookmark> bookmark = new List<Bookmark>();
 		#endif
@@ -166,7 +166,8 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return last;
 		}
-		bool AcceptAnyMarkPredicate(Bookmark mark)
+
+	    private bool AcceptAnyMarkPredicate(Bookmark mark)
 		{
 			return true;
 		}

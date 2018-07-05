@@ -117,8 +117,8 @@ namespace ICSharpCode.TextEditor
 			[ MarshalAs(UnmanagedType.ByValTStr, SizeConst=32) ] public string lfFaceName = null;
 		}
 		private const int IMC_SETCOMPOSITIONFONT = 0x000a;
-		LOGFONT lf = null;
-		static bool disableIME;
+	    private LOGFONT lf = null;
+	    private static bool disableIME;
 		
 		private void SetIMEWindowFont(Font f)
 		{
@@ -166,8 +166,8 @@ namespace ICSharpCode.TextEditor
 				Handle(ex);
 			}
 		}
-		
-		void Handle(Exception ex)
+
+	    private void Handle(Exception ex)
 		{
 			Console.WriteLine(ex);
 			if (!disableIME) {

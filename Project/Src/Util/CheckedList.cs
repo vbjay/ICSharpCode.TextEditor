@@ -15,11 +15,11 @@ namespace ICSharpCode.TextEditor.Util
 	/// A IList{T} that checks that it is only accessed on the thread that created it, and that
 	/// it is not modified while an enumerator is running.
 	/// </summary>
-	sealed class CheckedList<T> : IList<T>
+	internal sealed class CheckedList<T> : IList<T>
 	{
-		readonly int threadID;
-		readonly IList<T> baseList;
-		int enumeratorCount;
+	    private readonly int threadID;
+	    private readonly IList<T> baseList;
+	    private int enumeratorCount;
 		
 		public CheckedList() : this(new List<T>()) {}
 		
@@ -30,14 +30,14 @@ namespace ICSharpCode.TextEditor.Util
 			this.baseList = baseList;
 			this.threadID = Thread.CurrentThread.ManagedThreadId;
 		}
-		
-		void CheckRead()
+
+	    private void CheckRead()
 		{
 			if (Thread.CurrentThread.ManagedThreadId != threadID)
 				throw new InvalidOperationException("CheckList cannot be accessed from this thread!");
 		}
-		
-		void CheckWrite()
+
+	    private void CheckWrite()
 		{
 			if (Thread.CurrentThread.ManagedThreadId != threadID)
 				throw new InvalidOperationException("CheckList cannot be accessed from this thread!");
@@ -129,8 +129,8 @@ namespace ICSharpCode.TextEditor.Util
 			CheckRead();
 			return Enumerate();
 		}
-		
-		IEnumerator<T> Enumerate()
+
+	    private IEnumerator<T> Enumerate()
 		{
 			CheckRead();
 			try {

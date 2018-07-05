@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class StringTextBufferStrategy : ITextBufferStrategy
 	{
-		string storedText = "";
+	    private string storedText = "";
 		
 		public int Length {
 			get {

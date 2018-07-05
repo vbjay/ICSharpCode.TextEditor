@@ -16,9 +16,9 @@ namespace ICSharpCode.TextEditor.Util
 	/// </summary>
 	public class LookupTable
 	{
-		Node root = new Node(null, null);
-		bool casesensitive;
-		int  length;
+	    private Node root = new Node(null, null);
+	    private bool casesensitive;
+	    private int  length;
 		
 		/// <value>
 		/// The number of elements in the table
@@ -122,8 +122,8 @@ namespace ICSharpCode.TextEditor.Util
 		{
 			this.casesensitive = casesensitive;
 		}
-		
-		class Node
+
+	    private class Node
 		{
 			public Node(object color, string word)
 			{

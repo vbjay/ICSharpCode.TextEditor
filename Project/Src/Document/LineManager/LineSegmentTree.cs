@@ -26,7 +26,7 @@ namespace ICSharpCode.TextEditor.Document
 	/// 
 	/// NOTE: The tree is never empty, Clear() causes it to contain an empty segment.
 	/// </summary>
-	sealed class LineSegmentTree : IList<LineSegment>
+	internal sealed class LineSegmentTree : IList<LineSegment>
 	{
 		internal struct RBNode
 		{
@@ -50,8 +50,8 @@ namespace ICSharpCode.TextEditor.Document
 					+ " lineSegment.DelimiterLength=" + lineSegment.DelimiterLength + "]";
 			}
 		}
-		
-		struct MyHost : IRedBlackTreeHost<RBNode>
+
+	    private struct MyHost : IRedBlackTreeHost<RBNode>
 		{
 			public int Compare(RBNode x, RBNode y)
 			{
@@ -94,10 +94,10 @@ namespace ICSharpCode.TextEditor.Document
 				UpdateAfterChildrenChange(node.parent);
 			}
 		}
-		
-		readonly AugmentableRedBlackTree<RBNode, MyHost> tree = new AugmentableRedBlackTree<RBNode, MyHost>(new MyHost());
-		
-		RedBlackTreeNode<RBNode> GetNode(int index)
+
+	    private readonly AugmentableRedBlackTree<RBNode, MyHost> tree = new AugmentableRedBlackTree<RBNode, MyHost>(new MyHost());
+
+	    private RedBlackTreeNode<RBNode> GetNode(int index)
 		{
 			if (index < 0 || index >= tree.Count)
 				throw new ArgumentOutOfRangeException("index", index, "index should be between 0 and " + (tree.Count-1));
@@ -116,8 +116,8 @@ namespace ICSharpCode.TextEditor.Document
 				}
 			}
 		}
-		
-		static int GetIndexFromNode(RedBlackTreeNode<RBNode> node)
+
+	    private static int GetIndexFromNode(RedBlackTreeNode<RBNode> node)
 		{
 			int index = (node.left != null) ? node.left.val.count : 0;
 			while (node.parent != null) {
@@ -130,8 +130,8 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return index;
 		}
-		
-		RedBlackTreeNode<RBNode> GetNodeByOffset(int offset)
+
+	    private RedBlackTreeNode<RBNode> GetNodeByOffset(int offset)
 		{
 			if (offset < 0 || offset > this.TotalLength)
 				throw new ArgumentOutOfRangeException("offset", offset, "offset should be between 0 and " + this.TotalLength);
@@ -155,8 +155,8 @@ namespace ICSharpCode.TextEditor.Document
 				}
 			}
 		}
-		
-		static int GetOffsetFromNode(RedBlackTreeNode<RBNode> node)
+
+	    private static int GetOffsetFromNode(RedBlackTreeNode<RBNode> node)
 		{
 			int offset = (node.left != null) ? node.left.val.totalLength : 0;
 			while (node.parent != null) {
@@ -219,8 +219,8 @@ namespace ICSharpCode.TextEditor.Document
 			newSegment.treeEntry = InsertAfter(segment.treeEntry.it.node, newSegment);
 			return newSegment;
 		}
-		
-		Enumerator InsertAfter(RedBlackTreeNode<RBNode> node, LineSegment newSegment)
+
+	    private Enumerator InsertAfter(RedBlackTreeNode<RBNode> node, LineSegment newSegment)
 		{
 			RedBlackTreeNode<RBNode> newNode = new RedBlackTreeNode<RBNode>(new RBNode(newSegment));
 			if (node.right == null) {
@@ -277,7 +277,7 @@ namespace ICSharpCode.TextEditor.Document
 		
 		#if DEBUG
 		[Conditional("DATACONSISTENCYTEST")]
-		void CheckProperties()
+		private void CheckProperties()
 		{
 			if (tree.root == null) {
 				Debug.Assert(this.Count == 0);
@@ -286,8 +286,8 @@ namespace ICSharpCode.TextEditor.Document
 				CheckProperties(tree.root);
 			}
 		}
-		
-		void CheckProperties(RedBlackTreeNode<RBNode> node)
+
+	    private void CheckProperties(RedBlackTreeNode<RBNode> node)
 		{
 			int count = 1;
 			int totalLength = node.val.lineSegment.TotalLength;

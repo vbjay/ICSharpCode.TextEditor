@@ -16,10 +16,10 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class DefaultSelection : ISelection
 	{
-		IDocument document;
-		bool      isRectangularSelection;
-		TextLocation     startPosition;
-		TextLocation     endPosition;
+	    private IDocument document;
+	    private bool      isRectangularSelection;
+	    private TextLocation     startPosition;
+	    private TextLocation     endPosition;
 		
 		public TextLocation StartPosition {
 			get {

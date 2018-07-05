@@ -50,14 +50,14 @@ namespace ICSharpCode.TextEditor.Document
                                  offset,
                                  length);
         }
-		
-		bool      isFolded = false;
-		string    foldText = "...";
-		FoldType  foldType = FoldType.Unspecified;
-		IDocument document = null;
-		int startLine = -1, startColumn, endLine = -1, endColumn;
-		
-		static void GetPointForOffset(IDocument document, int offset, out int line, out int column)
+
+        private bool      isFolded = false;
+        private string    foldText = "...";
+        private FoldType  foldType = FoldType.Unspecified;
+        private IDocument document = null;
+        private int startLine = -1, startColumn, endLine = -1, endColumn;
+
+        private static void GetPointForOffset(IDocument document, int offset, out int line, out int column)
 		{
 			if (offset > document.TextLength) {
 				line = document.TotalNumberOfLines + 1;

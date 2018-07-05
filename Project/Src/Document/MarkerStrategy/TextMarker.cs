@@ -62,12 +62,12 @@ namespace ICSharpCode.TextEditor.Document
                                  length,
                                  textMarkerType);
         }
-		
-		TextMarkerType textMarkerType;
-		Color          color;
-		Color          foreColor;
-		string         toolTip = null;
-		bool           overrideForeColor = false;
+
+        private TextMarkerType textMarkerType;
+        private Color          color;
+        private Color          foreColor;
+        private string         toolTip = null;
+        private bool           overrideForeColor = false;
 		
 		public TextMarkerType TextMarkerType {
 			get {

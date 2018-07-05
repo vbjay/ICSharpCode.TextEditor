@@ -20,9 +20,9 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class IconBarMargin : AbstractMargin
 	{
-		const int iconBarWidth = 18;
-		
-		static readonly Size iconBarSize = new Size(iconBarWidth, -1);
+	    private const int iconBarWidth = 18;
+
+	    private static readonly Size iconBarSize = new Size(iconBarWidth, -1);
 		
 		public override Size Size {
 			get {
@@ -172,8 +172,8 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		GraphicsPath CreateArrowGraphicsPath(Rectangle r)
+
+	    private GraphicsPath CreateArrowGraphicsPath(Rectangle r)
 		{
 			GraphicsPath gp = new GraphicsPath();
 			int halfX = r.Width / 2;
@@ -188,8 +188,8 @@ namespace ICSharpCode.TextEditor
 			gp.CloseFigure();
 			return gp;
 		}
-		
-		GraphicsPath CreateRoundRectGraphicsPath(Rectangle r)
+
+	    private GraphicsPath CreateRoundRectGraphicsPath(Rectangle r)
 		{
 			GraphicsPath gp = new GraphicsPath();
 			int radius = r.Width / 2;
@@ -208,29 +208,29 @@ namespace ICSharpCode.TextEditor
 			gp.CloseFigure();
 			return gp;
 		}
-		
-		void DrawRoundRect(Graphics g, Pen p , Rectangle r)
+
+	    private void DrawRoundRect(Graphics g, Pen p , Rectangle r)
 		{
 			using (GraphicsPath gp = CreateRoundRectGraphicsPath(r)) {
 				g.DrawPath(p, gp);
 			}
 		}
-		
-		void FillRoundRect(Graphics g, Brush b , Rectangle r)
+
+	    private void FillRoundRect(Graphics g, Brush b , Rectangle r)
 		{
 			using (GraphicsPath gp = CreateRoundRectGraphicsPath(r)) {
 				g.FillPath(b, gp);
 			}
 		}
 
-		void DrawArrow(Graphics g, Pen p , Rectangle r)
+	    private void DrawArrow(Graphics g, Pen p , Rectangle r)
 		{
 			using (GraphicsPath gp = CreateArrowGraphicsPath(r)) {
 				g.DrawPath(p, gp);
 			}
 		}
-		
-		void FillArrow(Graphics g, Brush b , Rectangle r)
+
+	    private void FillArrow(Graphics g, Brush b , Rectangle r)
 		{
 			using (GraphicsPath gp = CreateArrowGraphicsPath(r)) {
 				g.FillPath(b, gp);
@@ -238,8 +238,8 @@ namespace ICSharpCode.TextEditor
 		}
 
 		#endregion
-		
-		static bool IsLineInsideRegion(int top, int bottom, int regionTop, int regionBottom)
+
+	    private static bool IsLineInsideRegion(int top, int bottom, int regionTop, int regionBottom)
 		{
 			if (top >= regionTop && top <= regionBottom) {
 				// Region overlaps the line's top edge.

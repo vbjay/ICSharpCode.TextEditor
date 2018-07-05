@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class GotoPrevBookmark : AbstractEditAction
 	{
-		Predicate<Bookmark> predicate = null;
+	    private Predicate<Bookmark> predicate = null;
 		
 		public GotoPrevBookmark(Predicate<Bookmark> predicate)
 		{
@@ -43,7 +43,7 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class GotoNextBookmark : AbstractEditAction
 	{
-		Predicate<Bookmark> predicate = null;
+	    private Predicate<Bookmark> predicate = null;
 		
 		public GotoNextBookmark(Predicate<Bookmark> predicate)
 		{
@@ -63,7 +63,7 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class ClearAllBookmarks : AbstractEditAction
 	{
-		Predicate<Bookmark> predicate = null;
+	    private Predicate<Bookmark> predicate = null;
 		
 		public ClearAllBookmarks(Predicate<Bookmark> predicate)
 		{

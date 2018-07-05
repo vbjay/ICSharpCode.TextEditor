@@ -27,8 +27,8 @@ namespace ICSharpCode.TextEditor.Document
 				this.Data = data;
 			}
 		}
-		
-		StackNode top = null;
+
+	    private StackNode top = null;
 		
 		public Span Pop()
 		{
@@ -79,7 +79,7 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public struct Enumerator : IEnumerator<Span>
 		{
-			StackNode c;
+		    private StackNode c;
 			
 			internal Enumerator(StackNode node)
 			{

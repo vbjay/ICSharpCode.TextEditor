@@ -16,9 +16,9 @@ namespace ICSharpCode.TextEditor.Tests
 	[TestFixture]
 	public class BlockCommentTests
 	{
-		IDocument document = null;
-		string commentStart = "<!--";
-		string commentEnd = "-->";
+	    private IDocument document = null;
+	    private string commentStart = "<!--";
+	    private string commentEnd = "-->";
 		
 		[SetUp]
 		public void Init()

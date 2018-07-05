@@ -28,13 +28,13 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public sealed class TextAnchor
 	{
-		static Exception AnchorDeletedError()
+	    private static Exception AnchorDeletedError()
 		{
 			return new InvalidOperationException("The text containing the anchor was deleted");
 		}
-		
-		LineSegment lineSegment;
-		int columnNumber;
+
+	    private LineSegment lineSegment;
+	    private int columnNumber;
 		
 		public LineSegment Line {
 			get {

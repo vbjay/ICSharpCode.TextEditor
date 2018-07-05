@@ -20,11 +20,11 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class TextView : AbstractMargin, IDisposable
 	{
-		int          fontHeight;
+	    private int          fontHeight;
 		//Hashtable    charWitdh           = new Hashtable();
 		//StringFormat measureStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
-		Highlight    highlight;
-		int          physicalColumn = 0; // used for calculating physical column during paint
+	    private Highlight    highlight;
+	    private int          physicalColumn = 0; // used for calculating physical column during paint
 		
 		public void Dispose()
 		{
@@ -93,15 +93,15 @@ namespace ICSharpCode.TextEditor
 			base.Cursor = Cursors.IBeam;
 			OptionsChanged();
 		}
-		
-		static int GetFontHeight(Font font)
+
+	    private static int GetFontHeight(Font font)
 		{
 			int height1 = TextRenderer.MeasureText("_", font).Height;
 			int height2 = (int)Math.Ceiling(font.GetHeight());
 			return Math.Max(height1, height2) + 1;
 		}
-		
-		int spaceWidth;
+
+	    private int spaceWidth;
 		
 		/// <summary>
 		/// Gets the width of a space character.
@@ -112,8 +112,8 @@ namespace ICSharpCode.TextEditor
 				return spaceWidth;
 			}
 		}
-		
-		int wideSpaceWidth;
+
+	    private int wideSpaceWidth;
 		
 		/// <summary>
 		/// Gets the width of a 'wide space' (=one quarter of a tab, if tab is set to 4 spaces).
@@ -124,8 +124,8 @@ namespace ICSharpCode.TextEditor
 				return wideSpaceWidth;
 			}
 		}
-		
-		Font lastFont;
+
+	    private Font lastFont;
 		
 		public void OptionsChanged()
 		{
@@ -176,8 +176,8 @@ namespace ICSharpCode.TextEditor
 			}
 			textArea.Caret.PaintCaret(g);
 		}
-		
-		void PaintDocumentLine(Graphics g, int lineNumber, Rectangle lineRectangle)
+
+	    private void PaintDocumentLine(Graphics g, int lineNumber, Rectangle lineRectangle)
 		{
 			Debug.Assert(lineNumber >= 0);
 			Brush bgColorBrush    = GetBgColorBrush(lineNumber);
@@ -262,13 +262,13 @@ namespace ICSharpCode.TextEditor
 			}
 //			bgColorBrush.Dispose();
 		}
-		
-		bool DrawLineMarkerAtLine(int lineNumber)
+
+	    private bool DrawLineMarkerAtLine(int lineNumber)
 		{
 			return lineNumber == base.textArea.Caret.Line && textArea.MotherTextAreaControl.TextEditorProperties.LineViewerStyle == LineViewerStyle.FullRow;
 		}
-		
-		Brush GetBgColorBrush(int lineNumber)
+
+	    private Brush GetBgColorBrush(int lineNumber)
 		{
 			if (DrawLineMarkerAtLine(lineNumber)) {
 				HighlightColor caretLine = textArea.Document.HighlightingStrategy.GetColorFor("CaretMarker");
@@ -278,10 +278,10 @@ namespace ICSharpCode.TextEditor
 			Color bgColor = background.BackgroundColor;
 			return BrushRegistry.GetBrush(bgColor);
 		}
-		
-		const int additionalFoldTextSize = 1;
-		
-		int PaintFoldingText(Graphics g, int lineNumber, int physicalXPos, Rectangle lineRectangle, string text, bool drawSelected)
+
+	    private const int additionalFoldTextSize = 1;
+
+	    private int PaintFoldingText(Graphics g, int lineNumber, int physicalXPos, Rectangle lineRectangle, string text, bool drawSelected)
 		{
 			// TODO: get font and color from the highlighting file
 			HighlightColor      selectionColor  = textArea.Document.HighlightingStrategy.GetColorFor("Selection");
@@ -305,8 +305,8 @@ namespace ICSharpCode.TextEditor
 			
 			return physicalXPos + wordWidth + 1;
 		}
-		
-		struct MarkerToDraw {
+
+	    private struct MarkerToDraw {
 			internal TextMarker marker;
 			internal RectangleF drawingRect;
 			
@@ -316,16 +316,16 @@ namespace ICSharpCode.TextEditor
 				this.drawingRect = drawingRect;
 			}
 		}
-		
-		List<MarkerToDraw> markersToDraw = new List<MarkerToDraw>();
-		
-		void DrawMarker(Graphics g, TextMarker marker, RectangleF drawingRect)
+
+	    private List<MarkerToDraw> markersToDraw = new List<MarkerToDraw>();
+
+	    private void DrawMarker(Graphics g, TextMarker marker, RectangleF drawingRect)
 		{
 			// draw markers later so they can overdraw the following text
 			markersToDraw.Add(new MarkerToDraw(marker, drawingRect));
 		}
-		
-		void DrawMarkerDraw(Graphics g)
+
+	    private void DrawMarkerDraw(Graphics g)
 		{
 			foreach (MarkerToDraw m in markersToDraw) {
 				TextMarker marker = m.marker;
@@ -359,7 +359,7 @@ namespace ICSharpCode.TextEditor
 		/// <param name="length">The length.</param>
 		/// <param name="markers">All markers that have been found.</param>
 		/// <returns>The Brush or null when no marker was found.</returns>
-		Brush GetMarkerBrush(IList<TextMarker> markers, ref Color foreColor)
+		private Brush GetMarkerBrush(IList<TextMarker> markers, ref Color foreColor)
 		{
 			foreach (TextMarker marker in markers) {
 				if (marker.TextMarkerType == TextMarkerType.SolidBlock) {
@@ -371,8 +371,8 @@ namespace ICSharpCode.TextEditor
 			}
 			return null;
 		}
-		
-		int PaintLinePart(Graphics g, int lineNumber, int startColumn, int endColumn, Rectangle lineRectangle, int physicalXPos)
+
+	    private int PaintLinePart(Graphics g, int lineNumber, int startColumn, int endColumn, Rectangle lineRectangle, int physicalXPos)
 		{
 			bool  drawLineMarker  = DrawLineMarkerAtLine(lineNumber);
 			Brush backgroundBrush = textArea.Enabled ? GetBgColorBrush(lineNumber) : SystemBrushes.InactiveBorder;
@@ -557,8 +557,8 @@ namespace ICSharpCode.TextEditor
 			}
 			return physicalXPos;
 		}
-		
-		int DrawDocumentWord(Graphics g, string word, Point position, Font font, Color foreColor, Brush backBrush)
+
+	    private int DrawDocumentWord(Graphics g, string word, Point position, Font font, Color foreColor, Brush backBrush)
 		{
 			if (word == null || word.Length == 0) {
 				return 0;
@@ -591,10 +591,10 @@ namespace ICSharpCode.TextEditor
 			           position.Y);
 			return wordWidth;
 		}
-		
-		struct WordFontPair {
-			string word;
-			Font font;
+
+	    private struct WordFontPair {
+	        private string word;
+	        private Font font;
 			public WordFontPair(string word, Font font) {
 				this.word = word;
 				this.font = font;
@@ -609,15 +609,15 @@ namespace ICSharpCode.TextEditor
 				return word.GetHashCode() ^ font.GetHashCode();
 			}
 		}
-		
-		Dictionary<WordFontPair, int> measureCache = new Dictionary<WordFontPair, int>();
+
+	    private Dictionary<WordFontPair, int> measureCache = new Dictionary<WordFontPair, int>();
 		
 		// split words after 1000 characters. Fixes GDI+ crash on very longs words, for example
 		// a 100 KB Base64-file without any line breaks.
-		const int MaximumWordLength = 1000;
-		const int MaximumCacheSize = 2000;
-		
-		int MeasureStringWidth(Graphics g, string word, Font font)
+	    private const int MaximumWordLength = 1000;
+	    private const int MaximumCacheSize = 2000;
+
+	    private int MeasureStringWidth(Graphics g, string word, Font font)
 		{
 			int width;
 			
@@ -654,12 +654,13 @@ namespace ICSharpCode.TextEditor
 		
 		// Important: Some flags combinations work on WinXP, but not on Win2000.
 		// Make sure to test changes here on all operating systems.
-		const TextFormatFlags textFormatFlags =
+	    private const TextFormatFlags textFormatFlags =
 			TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix | TextFormatFlags.PreserveGraphicsClipping;
 		#endregion
 		
 		#region Conversion Functions
-		Dictionary<Font, Dictionary<char, int>> fontBoundCharWidth = new Dictionary<Font, Dictionary<char, int>>();
+
+	    private Dictionary<Font, Dictionary<char, int>> fontBoundCharWidth = new Dictionary<Font, Dictionary<char, int>>();
 		
 		public int GetWidth(char ch, Font font)
 		{
@@ -806,8 +807,8 @@ namespace ICSharpCode.TextEditor
 			}
 			return new TextLocation(result, lineNumber);
 		}
-		
-		int GetLogicalColumnInternal(Graphics g, LineSegment line, int start, int end, ref int drawingPos, int targetVisualPosX)
+
+	    private int GetLogicalColumnInternal(Graphics g, LineSegment line, int start, int end, ref int drawingPos, int targetVisualPosX)
 		{
 			if (start == end)
 				return end;
@@ -879,13 +880,13 @@ namespace ICSharpCode.TextEditor
 			}
 			return wordOffset;
 		}
-		
-		static bool IsNearerToAThanB(int num, int a, int b)
+
+	    private static bool IsNearerToAThanB(int num, int a, int b)
 		{
 			return Math.Abs(a - num) < Math.Abs(b - num);
 		}
-		
-		FoldMarker FindNextFoldedFoldingOnLineAfterColumn(int lineNumber, int column)
+
+	    private FoldMarker FindNextFoldedFoldingOnLineAfterColumn(int lineNumber, int column)
 		{
 			List<FoldMarker> list = Document.FoldingManager.GetFoldedFoldingsWithStartAfterColumn(lineNumber, column);
 			if (list.Count != 0)
@@ -893,10 +894,10 @@ namespace ICSharpCode.TextEditor
 			else
 				return null;
 		}
-		
-		const int MinTabWidth = 4;
-		
-		float CountColumns(ref int column, int start, int end, int logicalLine, Graphics g)
+
+	    private const int MinTabWidth = 4;
+
+	    private float CountColumns(ref int column, int start, int end, int logicalLine, Graphics g)
 		{
 			if (start > end) throw new ArgumentException("start > end");
 			if (start == end) return 0;
@@ -1037,36 +1038,37 @@ namespace ICSharpCode.TextEditor
 		#endregion
 		
 		#region DrawHelper functions
-		void DrawBracketHighlight(Graphics g, Rectangle rect)
+
+	    private void DrawBracketHighlight(Graphics g, Rectangle rect)
 		{
 			g.FillRectangle(BrushRegistry.GetBrush(Color.FromArgb(50, 0, 0, 255)), rect);
 			g.DrawRectangle(Pens.Blue, rect);
 		}
-		
-		void DrawString(Graphics g, string text, Font font, Color color, int x, int y)
+
+	    private void DrawString(Graphics g, string text, Font font, Color color, int x, int y)
 		{
 			TextRenderer.DrawText(g, text, font, new Point(x, y), color, textFormatFlags);
 		}
-		
-		void DrawInvalidLineMarker(Graphics g, int x, int y)
+
+	    private void DrawInvalidLineMarker(Graphics g, int x, int y)
 		{
 			HighlightColor invalidLinesColor = textArea.Document.HighlightingStrategy.GetColorFor("InvalidLines");
 			DrawString(g, "~", invalidLinesColor.GetFont(TextEditorProperties.FontContainer), invalidLinesColor.Color, x, y);
 		}
-		
-		void DrawSpaceMarker(Graphics g, Color color, int x, int y)
+
+	    private void DrawSpaceMarker(Graphics g, Color color, int x, int y)
 		{
 			HighlightColor spaceMarkerColor = textArea.Document.HighlightingStrategy.GetColorFor("SpaceMarkers");
 			DrawString(g, "\u00B7", spaceMarkerColor.GetFont(TextEditorProperties.FontContainer), color, x, y);
 		}
-		
-		void DrawTabMarker(Graphics g, Color color, int x, int y)
+
+	    private void DrawTabMarker(Graphics g, Color color, int x, int y)
 		{
 			HighlightColor tabMarkerColor   = textArea.Document.HighlightingStrategy.GetColorFor("TabMarkers");
 			DrawString(g, "\u00BB", tabMarkerColor.GetFont(TextEditorProperties.FontContainer), color, x, y);
 		}
-		
-		int DrawEOLMarker(Graphics g, Color color, Brush backBrush, int x, int y)
+
+	    private int DrawEOLMarker(Graphics g, Color color, Brush backBrush, int x, int y)
 		{
 			HighlightColor eolMarkerColor = textArea.Document.HighlightingStrategy.GetColorFor("EOLMarkers");
 			
@@ -1077,8 +1079,8 @@ namespace ICSharpCode.TextEditor
 			DrawString(g, "\u00B6", eolMarkerColor.GetFont(TextEditorProperties.FontContainer), color, x, y);
 			return width;
 		}
-		
-		void DrawVerticalRuler(Graphics g, Rectangle lineRectangle)
+
+	    private void DrawVerticalRuler(Graphics g, Rectangle lineRectangle)
 		{
 			int xpos = WideSpaceWidth * TextEditorProperties.VerticalRulerRow - textArea.VirtualTop.X;
 			if (xpos <= 0) {

@@ -16,10 +16,10 @@ namespace ICSharpCode.TextEditor.Document
 	public sealed class LineSegment : ISegment
 	{
 		internal LineSegmentTree.Enumerator treeEntry;
-		int totalLength, delimiterLength;
-		
-		List<TextWord> words;
-		SpanStack highlightSpanStack;
+	    private int totalLength, delimiterLength;
+
+	    private List<TextWord> words;
+	    private SpanStack highlightSpanStack;
 		
 		public TextWord GetWord(int column)
 		{
@@ -113,7 +113,8 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		#region Anchor management
-		Util.WeakCollection<TextAnchor> anchors;
+
+	    private Util.WeakCollection<TextAnchor> anchors;
 		
 		public TextAnchor CreateAnchor(int column)
 		{
@@ -123,8 +124,8 @@ namespace ICSharpCode.TextEditor.Document
 			AddAnchor(anchor);
 			return anchor;
 		}
-		
-		void AddAnchor(TextAnchor anchor)
+
+	    private void AddAnchor(TextAnchor anchor)
 		{
 			Debug.Assert(anchor.Line == this);
 			

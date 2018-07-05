@@ -18,8 +18,8 @@ namespace ICSharpCode.TextEditor.Tests
 	[TestFixture]
 	public class FoldingManagerTests
 	{
-		FoldingManager manager;
-		List<FoldMarker> list;
+	    private FoldingManager manager;
+	    private List<FoldMarker> list;
 		
 		[SetUp]
 		public void SetUp()
@@ -105,13 +105,13 @@ namespace ICSharpCode.TextEditor.Tests
 			AssertPosition(16, 0,  6);
 			AssertPosition(16, 1);
 		}
-		
-		void AssertPosition(int line, int column, params int[] markers)
+
+	    private void AssertPosition(int line, int column, params int[] markers)
 		{
 			AssertList(manager.GetFoldingsFromPosition(line, column), markers);
 		}
-		
-		void AssertList(List<FoldMarker> l, params int[] markers)
+
+	    private void AssertList(List<FoldMarker> l, params int[] markers)
 		{
 			Assert.AreEqual(markers.Length, l.Count);
 			foreach (int m in markers) {

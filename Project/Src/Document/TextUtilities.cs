@@ -285,8 +285,8 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return true;
 		}
-		
-		static bool IsWordPart(char ch)
+
+	    private static bool IsWordPart(char ch)
 		{
 			return IsLetterDigitOrUnderscore(ch) || ch == '.';
 		}

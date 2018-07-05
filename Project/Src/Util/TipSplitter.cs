@@ -11,11 +11,11 @@ using System.Drawing;
 
 namespace ICSharpCode.TextEditor.Util
 {
-	class TipSplitter: TipSection
+    internal class TipSplitter: TipSection
 	{
-		bool         isHorizontal;
-		float     [] offsets;
-		TipSection[] tipSections;
+	    private bool         isHorizontal;
+	    private float     [] offsets;
+	    private TipSection[] tipSections;
 		
 		public TipSplitter(Graphics graphics, bool horizontal, params TipSection[] sections): base(graphics)
 		{

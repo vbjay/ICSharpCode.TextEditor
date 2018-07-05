@@ -47,9 +47,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	
 	public class DefaultCompletionData : ICompletionData
 	{
-		string text;
-		string description;
-		int imageIndex;
+	    private string text;
+	    private string description;
+	    private int imageIndex;
 		
 		public int ImageIndex {
 			get {
@@ -71,8 +71,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 				return description;
 			}
 		}
-		
-		double priority;
+
+	    private double priority;
 		
 		public double Priority {
 			get {

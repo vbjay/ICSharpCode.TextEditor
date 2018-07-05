@@ -18,14 +18,14 @@ namespace ICSharpCode.TextEditor.Document
 	
 	public class DefaultTextEditorProperties : ITextEditorProperties
 	{
-		int                   tabIndent             = 4;
-		int                   indentationSize       = 4;
-		IndentStyle           indentStyle           = IndentStyle.Smart;
-		DocumentSelectionMode documentSelectionMode = DocumentSelectionMode.Normal;
-		Encoding              encoding              = System.Text.Encoding.UTF8;
-		BracketMatchingStyle  bracketMatchingStyle  = BracketMatchingStyle.After;
-		FontContainer fontContainer;
-		static Font DefaultFont;
+	    private int                   tabIndent             = 4;
+	    private int                   indentationSize       = 4;
+	    private IndentStyle           indentStyle           = IndentStyle.Smart;
+	    private DocumentSelectionMode documentSelectionMode = DocumentSelectionMode.Normal;
+	    private Encoding              encoding              = System.Text.Encoding.UTF8;
+	    private BracketMatchingStyle  bracketMatchingStyle  = BracketMatchingStyle.After;
+	    private FontContainer fontContainer;
+	    private static Font DefaultFont;
 		
 		public DefaultTextEditorProperties()
 		{
@@ -34,37 +34,37 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			this.fontContainer = new FontContainer(DefaultFont);
 		}
-		
-		bool        allowCaretBeyondEOL = false;
 
-		bool        caretLine           = false;
-		
-		bool        showMatchingBracket = true;
-		bool        showLineNumbers     = true;
-		
-		bool        showSpaces          = false;
-		bool        showTabs            = false;
-		bool        showEOLMarker       = false;
-		
-		bool        showInvalidLines    = false;
-		
-		bool        isIconBarVisible    = false;
-		bool        enableFolding       = true;
-		bool        showHorizontalRuler = false;
-		bool        showVerticalRuler   = true;
-		bool        convertTabsToSpaces = false;
-		System.Drawing.Text.TextRenderingHint textRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-		bool        mouseWheelScrollDown = true;
-		bool        mouseWheelTextZoom   = true;
-		
-		bool        hideMouseCursor      = false;
-		bool        cutCopyWholeLine     = true;
-		
-		int         verticalRulerRow    = 80;
-		LineViewerStyle  lineViewerStyle = LineViewerStyle.None;
-		string      lineTerminator = "\r\n";
-		bool        autoInsertCurlyBracket = true;
-		bool        supportReadOnlySegments = false;
+	    private bool        allowCaretBeyondEOL = false;
+
+	    private bool        caretLine           = false;
+
+	    private bool        showMatchingBracket = true;
+	    private bool        showLineNumbers     = true;
+
+	    private bool        showSpaces          = false;
+	    private bool        showTabs            = false;
+	    private bool        showEOLMarker       = false;
+
+	    private bool        showInvalidLines    = false;
+
+	    private bool        isIconBarVisible    = false;
+	    private bool        enableFolding       = true;
+	    private bool        showHorizontalRuler = false;
+	    private bool        showVerticalRuler   = true;
+	    private bool        convertTabsToSpaces = false;
+	    private System.Drawing.Text.TextRenderingHint textRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+	    private bool        mouseWheelScrollDown = true;
+	    private bool        mouseWheelTextZoom   = true;
+
+	    private bool        hideMouseCursor      = false;
+	    private bool        cutCopyWholeLine     = true;
+
+	    private int         verticalRulerRow    = 80;
+	    private LineViewerStyle  lineViewerStyle = LineViewerStyle.None;
+	    private string      lineTerminator = "\r\n";
+	    private bool        autoInsertCurlyBracket = true;
+	    private bool        supportReadOnlySegments = false;
 		
 		public int TabIndent {
 			get {

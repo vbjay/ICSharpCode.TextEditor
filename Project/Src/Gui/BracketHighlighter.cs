@@ -25,8 +25,8 @@ namespace ICSharpCode.TextEditor
 	
 	public class BracketHighlightingSheme
 	{
-		char opentag;
-		char closingtag;
+	    private char opentag;
+	    private char closingtag;
 		
 		public char OpenTag {
 			get {

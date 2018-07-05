@@ -23,12 +23,12 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class TextWord
 	{
-		HighlightColor  color;
-		LineSegment     line;
-		IDocument       document;
-		
-		int          offset;
-		int          length;
+	    private HighlightColor  color;
+	    private LineSegment     line;
+	    private IDocument       document;
+
+	    private int          offset;
+	    private int          length;
 		
 		public sealed class SpaceTextWord : TextWord
 		{
@@ -88,11 +88,11 @@ namespace ICSharpCode.TextEditor.Document
 				}
 			}
 		}
-		
-		static TextWord spaceWord = new SpaceTextWord();
-		static TextWord tabWord   = new TabTextWord();
-		
-		bool hasDefaultColor;
+
+	    private static TextWord spaceWord = new SpaceTextWord();
+	    private static TextWord tabWord   = new TabTextWord();
+
+	    private bool hasDefaultColor;
 		
 		public static TextWord Space {
 			get {

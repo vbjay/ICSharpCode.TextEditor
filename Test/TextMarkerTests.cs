@@ -14,8 +14,8 @@ namespace ICSharpCode.TextEditor.Tests
 	[TestFixture]
 	public class TextMarkerTests
 	{
-		IDocument document;
-		TextMarker marker;
+	    private IDocument document;
+	    private TextMarker marker;
 		
 		[SetUp]
 		public void SetUp()

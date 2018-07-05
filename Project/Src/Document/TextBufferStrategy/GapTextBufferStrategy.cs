@@ -13,24 +13,24 @@ namespace ICSharpCode.TextEditor.Document
 	public class GapTextBufferStrategy : ITextBufferStrategy
 	{
 		#if DEBUG
-		int creatorThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
-		
-		void CheckThread()
+	    private int creatorThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
+
+	    private void CheckThread()
 		{
 			if (System.Threading.Thread.CurrentThread.ManagedThreadId != creatorThread)
 				throw new InvalidOperationException("GapTextBufferStategy is not thread-safe!");
 		}
 		#endif
-		
-		char[] buffer = new char[0];
-		string cachedContent;
-		
-		int gapBeginOffset = 0;
-		int gapEndOffset = 0;
-		int gapLength = 0; // gapLength == gapEndOffset - gapBeginOffset
-		
-		const int minGapLength = 128;
-		const int maxGapLength = 2048;
+
+	    private char[] buffer = new char[0];
+	    private string cachedContent;
+
+	    private int gapBeginOffset = 0;
+	    private int gapEndOffset = 0;
+	    private int gapLength = 0; // gapLength == gapEndOffset - gapBeginOffset
+
+	    private const int minGapLength = 128;
+	    private const int maxGapLength = 2048;
 		
 		public int Length {
 			get {
@@ -82,8 +82,8 @@ namespace ICSharpCode.TextEditor.Document
 				return GetTextInternal(offset, length);
 			}
 		}
-		
-		string GetTextInternal(int offset, int length)
+
+	    private string GetTextInternal(int offset, int length)
 		{
 			int end = offset + length;
 			
@@ -144,8 +144,8 @@ namespace ICSharpCode.TextEditor.Document
 				MakeNewBuffer(gapBeginOffset, minGapLength);
 			}
 		}
-		
-		void PlaceGap(int newGapOffset, int minRequiredGapLength)
+
+	    private void PlaceGap(int newGapOffset, int minRequiredGapLength)
 		{
 			if (gapLength < minRequiredGapLength) {
 				// enlarge gap
@@ -159,8 +159,8 @@ namespace ICSharpCode.TextEditor.Document
 				}
 			}
 		}
-		
-		void MakeNewBuffer(int newGapOffset, int newGapLength)
+
+	    private void MakeNewBuffer(int newGapOffset, int newGapLength)
 		{
 			if (newGapLength < minGapLength) newGapLength = minGapLength;
 			

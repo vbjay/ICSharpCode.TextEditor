@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class HRuler : Control
 	{
-		TextArea textArea;
+	    private TextArea textArea;
 		
 		public HRuler(TextArea textArea)
 		{

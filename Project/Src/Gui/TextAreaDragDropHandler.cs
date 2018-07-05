@@ -16,8 +16,8 @@ namespace ICSharpCode.TextEditor
 	public class TextAreaDragDropHandler
 	{
 		public static Action<Exception> OnDragDropException = ex => MessageBox.Show(ex.ToString());
-		
-		TextArea textArea;
+
+	    private TextArea textArea;
 		
 		public void Attach(TextArea textArea)
 		{
@@ -33,7 +33,7 @@ namespace ICSharpCode.TextEditor
 		/// Create a drag'n'drop event handler.
 		/// Windows Forms swallows unhandled exceptions during drag'n'drop, so we report them here.
 		/// </summary>
-		static DragEventHandler MakeDragEventHandler(DragEventHandler h)
+		private static DragEventHandler MakeDragEventHandler(DragEventHandler h)
 		{
 			return (sender, e) => {
 				try {
@@ -43,8 +43,8 @@ namespace ICSharpCode.TextEditor
 				}
 			};
 		}
-		
-		static DragDropEffects GetDragDropEffect(DragEventArgs e)
+
+	    private static DragDropEffects GetDragDropEffect(DragEventArgs e)
 		{
 			if ((e.AllowedEffect & DragDropEffects.Move) > 0 &&
 			    (e.AllowedEffect & DragDropEffects.Copy) > 0) {
@@ -63,9 +63,9 @@ namespace ICSharpCode.TextEditor
 				e.Effect = GetDragDropEffect(e);
 			}
 		}
-		
-		
-		void InsertString(int offset, string str)
+
+
+	    private void InsertString(int offset, string str)
 		{
 			textArea.Document.Insert(offset, str);
 			

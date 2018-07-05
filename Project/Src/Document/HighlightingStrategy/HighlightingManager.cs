@@ -15,14 +15,14 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class HighlightingManager
 	{
-		ArrayList syntaxModeFileProviders = new ArrayList();
-		static HighlightingManager highlightingManager;
+	    private ArrayList syntaxModeFileProviders = new ArrayList();
+	    private static HighlightingManager highlightingManager;
 		
 		// hash table from extension name to highlighting definition,
 		// OR from extension name to Pair SyntaxMode,ISyntaxModeFileProvider
-		Hashtable highlightingDefs = new Hashtable();
-		
-		Hashtable extensionsToName = new Hashtable();
+	    private Hashtable highlightingDefs = new Hashtable();
+
+	    private Hashtable extensionsToName = new Hashtable();
 		
 		public Hashtable HighlightingDefinitions {
 			get {
@@ -80,16 +80,16 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			OnReloadSyntaxHighlighting(EventArgs.Empty);
 		}
-		
-		void CreateDefaultHighlightingStrategy()
+
+	    private void CreateDefaultHighlightingStrategy()
 		{
 			DefaultHighlightingStrategy defaultHighlightingStrategy = new DefaultHighlightingStrategy();
 			defaultHighlightingStrategy.Extensions = new string[] {};
 			defaultHighlightingStrategy.Rules.Add(new HighlightRuleSet());
 			highlightingDefs["Default"] = defaultHighlightingStrategy;
 		}
-		
-		IHighlightingStrategy LoadDefinition(DictionaryEntry entry)
+
+	    private IHighlightingStrategy LoadDefinition(DictionaryEntry entry)
 		{
 			SyntaxMode              syntaxMode             = (SyntaxMode)entry.Key;
 			ISyntaxModeFileProvider syntaxModeFileProvider = (ISyntaxModeFileProvider)entry.Value;

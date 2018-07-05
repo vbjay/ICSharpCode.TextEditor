@@ -10,9 +10,9 @@ using System.Drawing;
 
 namespace ICSharpCode.TextEditor.Util
 {
-	class TipSpacer: TipSection
+    internal class TipSpacer: TipSection
 	{
-		SizeF spacerSize;
+	    private SizeF spacerSize;
 		
 		public TipSpacer(Graphics graphics, SizeF size): base(graphics)
 		{

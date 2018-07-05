@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class SelectionManager : IDisposable
 	{
-		TextLocation selectionStart;
+	    private TextLocation selectionStart;
 		
 		internal TextLocation SelectionStart {
 			get { return selectionStart; }
@@ -26,8 +26,9 @@ namespace ICSharpCode.TextEditor.Document
 				selectionStart = value;
 			}
 		}
-		IDocument document;
-		TextArea textArea;
+
+	    private IDocument document;
+	    private TextArea textArea;
 		internal SelectFrom selectFrom = new SelectFrom();
 
 		internal List<ISelection> selectionCollection = new List<ISelection>();
@@ -119,8 +120,8 @@ namespace ICSharpCode.TextEditor.Document
 				this.document = null;
 			}
 		}
-		
-		void DocumentChanged(object sender, DocumentEventArgs e)
+
+	    private void DocumentChanged(object sender, DocumentEventArgs e)
 		{
 			if (e.Text == null) {
 				Remove(e.Offset, e.Length);
@@ -252,7 +253,7 @@ namespace ICSharpCode.TextEditor.Document
 				return new TextLocation(document.GetLineSegment(document.TotalNumberOfLines - 1).Length + 1, line);
 		}
 
-		void ClearWithoutUpdate()
+	    private void ClearWithoutUpdate()
 		{
 			while (selectionCollection.Count > 0) {
 				ISelection selection = selectionCollection[selectionCollection.Count - 1];
@@ -331,9 +332,9 @@ namespace ICSharpCode.TextEditor.Document
 				document.CommitUpdate();
 			}
 		}
-		
-		
-		bool SelectionsOverlap(ISelection s1, ISelection s2)
+
+
+	    private bool SelectionsOverlap(ISelection s1, ISelection s2)
 		{
 			return (s1.Offset <= s2.Offset && s2.Offset <= s1.Offset + s1.Length)                         ||
 				(s1.Offset <= s2.Offset + s2.Length && s2.Offset + s2.Length <= s1.Offset + s1.Length) ||

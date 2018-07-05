@@ -16,8 +16,8 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class FontContainer
 	{
-		Font defaultFont;
-		Font regularfont, boldfont, italicfont, bolditalicfont;
+	    private Font defaultFont;
+	    private Font regularfont, boldfont, italicfont, bolditalicfont;
 		
 		/// <value>
 		/// The scaled, regular version of the base font
@@ -54,8 +54,8 @@ namespace ICSharpCode.TextEditor.Document
 				return bolditalicfont;
 			}
 		}
-		
-		static float twipsPerPixelY;
+
+	    private static float twipsPerPixelY;
 		
 		public static float TwipsPerPixelY {
 			get {

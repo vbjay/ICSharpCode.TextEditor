@@ -26,9 +26,9 @@ namespace ICSharpCode.TextEditor
 	[ToolboxItem(false)]
 	public abstract class TextEditorControlBase : UserControl
 	{
-		string    currentFileName = null;
-		int       updateLevel     = 0;
-		IDocument document;
+	    private string    currentFileName = null;
+	    private int       updateLevel     = 0;
+	    private IDocument document;
 		
 		/// <summary>
 		/// This hashtable contains all editor keys, where
@@ -48,8 +48,8 @@ namespace ICSharpCode.TextEditor
 				OptionsChanged();
 			}
 		}
-		
-		Encoding encoding;
+
+	    private Encoding encoding;
 		
 		/// <value>
 		/// Current file's character encoding
@@ -104,8 +104,8 @@ namespace ICSharpCode.TextEditor
 				document.DocumentChanged += OnDocumentChanged;
 			}
 		}
-		
-		void OnDocumentChanged(object sender, EventArgs e)
+
+	    private void OnDocumentChanged(object sender, EventArgs e)
 		{
 			OnTextChanged(e);
 		}
@@ -128,8 +128,8 @@ namespace ICSharpCode.TextEditor
 			add { base.TextChanged += value; }
 			remove { base.TextChanged -= value; }
 		}
-		
-		static Font ParseFont(string font)
+
+	    private static Font ParseFont(string font)
 		{
 			string[] descr = font.Split(new char[]{',', '='});
 			return new Font(descr[1], Single.Parse(descr[3]));
@@ -521,7 +521,7 @@ namespace ICSharpCode.TextEditor
 			return (IEditAction)editactions[keyData];
 		}
 
-		void GenerateDefaultActions()
+	    private void GenerateDefaultActions()
 		{
 			editactions[Keys.Left] = new CaretLeft();
 			editactions[Keys.Left | Keys.Shift] = new ShiftCaretLeft();

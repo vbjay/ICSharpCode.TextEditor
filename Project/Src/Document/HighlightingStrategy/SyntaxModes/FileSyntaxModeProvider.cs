@@ -15,8 +15,8 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class FileSyntaxModeProvider : ISyntaxModeFileProvider
 	{
-		string    directory;
-		List<SyntaxMode> syntaxModes = null;
+	    private string    directory;
+	    private List<SyntaxMode> syntaxModes = null;
 		
 		public ICollection<SyntaxMode> SyntaxModes {
 			get {
@@ -50,8 +50,8 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return new XmlTextReader(File.OpenRead(syntaxModeFile));
 		}
-		
-		List<SyntaxMode> ScanDirectory(string directory)
+
+	    private List<SyntaxMode> ScanDirectory(string directory)
 		{
 			string[] files = Directory.GetFiles(directory);
 			List<SyntaxMode> modes = new List<SyntaxMode>();

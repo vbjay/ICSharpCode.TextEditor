@@ -36,7 +36,7 @@ namespace ICSharpCode.TextEditor.Actions
 	/// </summary>
 	public abstract class AbstractEditAction : IEditAction
 	{
-		Keys[] keys = null;
+	    private Keys[] keys = null;
 		
 		/// <value>
 		/// An array of keys on which this edit action occurs.

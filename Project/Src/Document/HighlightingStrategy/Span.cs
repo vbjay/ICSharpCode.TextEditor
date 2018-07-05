@@ -12,20 +12,20 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public sealed class Span
 	{
-		bool        stopEOL;
-		HighlightColor color;
-		HighlightColor beginColor;
-		HighlightColor endColor;
-		char[]      begin;
-		char[]      end;
-		string      name;
-		string      rule;
-		HighlightRuleSet ruleSet;
-		char escapeCharacter;
-		bool ignoreCase;
-		bool isBeginSingleWord;
-		bool? isBeginStartOfLine;
-		bool isEndSingleWord;
+	    private bool        stopEOL;
+	    private HighlightColor color;
+	    private HighlightColor beginColor;
+	    private HighlightColor endColor;
+	    private char[]      begin;
+	    private char[]      end;
+	    private string      name;
+	    private string      rule;
+	    private HighlightRuleSet ruleSet;
+	    private char escapeCharacter;
+	    private bool ignoreCase;
+	    private bool isBeginSingleWord;
+	    private bool? isBeginStartOfLine;
+	    private bool isEndSingleWord;
 		
 		internal HighlightRuleSet RuleSet {
 			get {

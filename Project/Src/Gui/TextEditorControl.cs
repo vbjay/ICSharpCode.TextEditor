@@ -23,11 +23,11 @@ namespace ICSharpCode.TextEditor
 	public class TextEditorControl : TextEditorControlBase
 	{
 		protected Panel textAreaPanel     = new Panel();
-		TextAreaControl primaryTextArea;
-		Splitter        textAreaSplitter  = null;
-		TextAreaControl secondaryTextArea = null;
-		
-		PrintDocument   printDocument = null;
+	    private TextAreaControl primaryTextArea;
+	    private Splitter        textAreaSplitter  = null;
+	    private TextAreaControl secondaryTextArea = null;
+
+	    private PrintDocument   printDocument = null;
 		
 		[Browsable(false)]
 		public PrintDocument PrintDocument {
@@ -40,8 +40,8 @@ namespace ICSharpCode.TextEditor
 				return printDocument;
 			}
 		}
-		
-		TextAreaControl activeTextAreaControl;
+
+	    private TextAreaControl activeTextAreaControl;
 		
 		public override TextAreaControl ActiveTextAreaControl {
 			get {
@@ -220,8 +220,8 @@ namespace ICSharpCode.TextEditor
 				ActiveTextAreaControl.Caret.OnEndUpdate();
 			}
 		}
-		
-		void CommitUpdateRequested(object sender, EventArgs e)
+
+	    private void CommitUpdateRequested(object sender, EventArgs e)
 		{
 			if (IsInUpdate) {
 				return;
@@ -270,11 +270,12 @@ namespace ICSharpCode.TextEditor
 		#endregion
 		
 		#region Printing routines
-		int          curLineNr = 0;
-		float        curTabIndent = 0;
-		StringFormat printingStringFormat;
-		
-		void BeginPrint(object sender, PrintEventArgs ev)
+
+	    private int          curLineNr = 0;
+	    private float        curTabIndent = 0;
+	    private StringFormat printingStringFormat;
+
+	    private void BeginPrint(object sender, PrintEventArgs ev)
 		{
 			curLineNr = 0;
 			printingStringFormat = (StringFormat)System.Drawing.StringFormat.GenericTypographic.Clone();
@@ -287,8 +288,8 @@ namespace ICSharpCode.TextEditor
 			
 			printingStringFormat.SetTabStops(0, tabStops);
 		}
-		
-		void Advance(ref float x, ref float y, float maxWidth, float size, float fontHeight)
+
+	    private void Advance(ref float x, ref float y, float maxWidth, float size, float fontHeight)
 		{
 			if (x + size < maxWidth) {
 				x += size;
@@ -299,7 +300,7 @@ namespace ICSharpCode.TextEditor
 		}
 		
 		// btw. I hate source code duplication ... but this time I don't care !!!!
-		float MeasurePrintingHeight(Graphics g, LineSegment line, float maxWidth)
+	    private float MeasurePrintingHeight(Graphics g, LineSegment line, float maxWidth)
 		{
 			float xPos = 0;
 			float yPos = 0;
@@ -333,8 +334,8 @@ namespace ICSharpCode.TextEditor
 			}
 			return yPos + fontHeight;
 		}
-		
-		void DrawLine(Graphics g, LineSegment line, float yPos, RectangleF margin)
+
+	    private void DrawLine(Graphics g, LineSegment line, float yPos, RectangleF margin)
 		{
 			float xPos = 0;
 			float fontHeight = Font.GetHeight(g);
@@ -368,8 +369,8 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		void PrintPage(object sender, PrintPageEventArgs ev)
+
+	    private void PrintPage(object sender, PrintPageEventArgs ev)
 		{
 			Graphics g = ev.Graphics;
 			float yPos = ev.MarginBounds.Top;

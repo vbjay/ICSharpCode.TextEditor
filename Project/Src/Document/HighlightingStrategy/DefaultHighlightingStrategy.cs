@@ -15,15 +15,15 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class DefaultHighlightingStrategy : IHighlightingStrategyUsingRuleSets
 	{
-		string    name;
-		List<HighlightRuleSet> rules = new List<HighlightRuleSet>();
-		
-		Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
-		Dictionary<string, string> properties       = new Dictionary<string, string>();
-		string[]  extensions;
-		
-		HighlightColor   digitColor;
-		HighlightRuleSet defaultRuleSet = null;
+	    private string    name;
+	    private List<HighlightRuleSet> rules = new List<HighlightRuleSet>();
+
+	    private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
+	    private Dictionary<string, string> properties       = new Dictionary<string, string>();
+	    private string[]  extensions;
+
+	    private HighlightColor   digitColor;
+	    private HighlightRuleSet defaultRuleSet = null;
 		
 		public HighlightColor DigitColor {
 			get {
@@ -139,8 +139,8 @@ namespace ICSharpCode.TextEditor.Document
 			// Resolve references from RuleSet defintitions to Highlighters defined in an external mode file
 			ResolveExternalReferences();
 		}
-		
-		void ResolveRuleSetReferences()
+
+	    private void ResolveRuleSetReferences()
 		{
 			foreach (HighlightRuleSet ruleSet in Rules) {
 				if (ruleSet.Name == null) {
@@ -171,8 +171,8 @@ namespace ICSharpCode.TextEditor.Document
 				throw new HighlightingDefinitionInvalidException("No default RuleSet is defined for mode definition " + this.Name);
 			}
 		}
-		
-		void ResolveExternalReferences()
+
+	    private void ResolveExternalReferences()
 		{
 			foreach (HighlightRuleSet ruleSet in Rules) {
 				ruleSet.Highlighter = this;
@@ -194,8 +194,8 @@ namespace ICSharpCode.TextEditor.Document
 //			return (HighlightColor)environmentColors[name];
 //			defaultColor = color;
 //		}
-		
-		HighlightColor defaultTextColor;
+
+	    private HighlightColor defaultTextColor;
 		
 		public HighlightColor DefaultTextColor {
 			get {
@@ -306,8 +306,8 @@ namespace ICSharpCode.TextEditor.Document
 			document.CommitUpdate();
 			currentLine = null;
 		}
-		
-		bool MarkTokensInLine(IDocument document, int lineNumber, ref bool spanChanged)
+
+	    private bool MarkTokensInLine(IDocument document, int lineNumber, ref bool spanChanged)
 		{
 			currentLineNumber = lineNumber;
 			bool processNextLine = false;
@@ -458,15 +458,15 @@ namespace ICSharpCode.TextEditor.Document
 		// Line scanning state variables
 		protected int currentOffset;
 		protected int currentLength;
-		
-		void UpdateSpanStateVariables()
+
+	    private void UpdateSpanStateVariables()
 		{
 			inSpan = (currentSpanStack != null && !currentSpanStack.IsEmpty);
 			activeSpan = inSpan ? currentSpanStack.Peek() : null;
 			activeRuleSet = GetRuleSet(activeSpan);
 		}
 
-		List<TextWord> ParseLine(IDocument document)
+	    private List<TextWord> ParseLine(IDocument document)
 		{
 			List<TextWord> words = new List<TextWord>();
 			HighlightColor markNext = null;
@@ -717,7 +717,7 @@ namespace ICSharpCode.TextEditor.Document
 		/// pushes the curWord string on the word list, with the
 		/// correct color.
 		/// </summary>
-		void PushCurWord(IDocument document, ref HighlightColor markNext, List<TextWord> words)
+		private void PushCurWord(IDocument document, ref HighlightColor markNext, List<TextWord> words)
 		{
 			// Svante Lidman : Need to look through the next prev logic.
 			if (currentLength > 0) {
@@ -790,7 +790,7 @@ namespace ICSharpCode.TextEditor.Document
 		/// get the string, which matches the regular expression expr,
 		/// in string s2 at index
 		/// </summary>
-		static string GetRegString(LineSegment lineSegment, char[] expr, int index, IDocument document)
+		private static string GetRegString(LineSegment lineSegment, char[] expr, int index, IDocument document)
 		{
 			int j = 0;
 			StringBuilder regexpr = new StringBuilder();
@@ -831,7 +831,7 @@ namespace ICSharpCode.TextEditor.Document
 		/// <summary>
 		/// returns true, if the get the string s2 at index matches the expression expr
 		/// </summary>
-		static bool MatchExpr(LineSegment lineSegment, char[] expr, int index, IDocument document, bool ignoreCase)
+		private static bool MatchExpr(LineSegment lineSegment, char[] expr, int index, IDocument document, bool ignoreCase)
 		{
 			for (int i = 0, j = 0; i < expr.Length; ++i, ++j) {
 				switch (expr[i]) {

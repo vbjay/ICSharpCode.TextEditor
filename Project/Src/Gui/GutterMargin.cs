@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class GutterMargin : AbstractMargin, IDisposable
 	{
-		StringFormat numberStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
+	    private StringFormat numberStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
 		
 		public static Cursor RightLeftCursor;
 		

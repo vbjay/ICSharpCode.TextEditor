@@ -27,8 +27,8 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class TextAreaUpdate
 	{
-		TextLocation position;
-		TextAreaUpdateType type;
+	    private TextLocation position;
+	    private TextAreaUpdateType type;
 		
 		public TextAreaUpdateType TextAreaUpdateType {
 			get {

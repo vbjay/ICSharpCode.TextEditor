@@ -38,8 +38,8 @@ namespace ICSharpCode.TextEditor.Actions
 			}
 			return indent.ToString();
 		}
-		
-		void InsertTabs(IDocument document, ISelection selection, int y1, int y2)
+
+	    private void InsertTabs(IDocument document, ISelection selection, int y1, int y2)
 		{
 			string indentationString = GetIndentationString(document);
 			for (int i = y2; i >= y1; --i) {
@@ -56,8 +56,8 @@ namespace ICSharpCode.TextEditor.Actions
 				document.Insert(line.Offset, indentationString);
 			}
 		}
-		
-		void InsertTabAtCaretPosition(TextArea textArea)
+
+	    private void InsertTabAtCaretPosition(TextArea textArea)
 		{
 			switch (textArea.Caret.CaretMode) {
 				case CaretMode.InsertMode:
@@ -108,7 +108,7 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class ShiftTab : AbstractEditAction
 	{
-		void RemoveTabs(IDocument document, ISelection selection, int y1, int y2)
+	    private void RemoveTabs(IDocument document, ISelection selection, int y1, int y2)
 		{
 			document.UndoStack.StartUndoGroup();
 			for (int i = y2; i >= y1; --i) {
@@ -231,10 +231,10 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class ToggleLineComment : AbstractEditAction
 	{
-		int firstLine;
-		int lastLine;
-		
-		void RemoveCommentAt(IDocument document, string comment, ISelection selection, int y1, int y2)
+	    private int firstLine;
+	    private int lastLine;
+
+	    private void RemoveCommentAt(IDocument document, string comment, ISelection selection, int y1, int y2)
 		{
 			firstLine = y1;
 			lastLine  = y2;
@@ -252,8 +252,8 @@ namespace ICSharpCode.TextEditor.Actions
 				}
 			}
 		}
-		
-		void SetCommentAt(IDocument document, string comment, ISelection selection, int y1, int y2)
+
+	    private void SetCommentAt(IDocument document, string comment, ISelection selection, int y1, int y2)
 		{
 			firstLine = y1;
 			lastLine  = y2;
@@ -269,8 +269,8 @@ namespace ICSharpCode.TextEditor.Actions
 				document.Insert(line.Offset, comment);
 			}
 		}
-		
-		bool ShouldComment(IDocument document, string comment, ISelection selection, int startLine, int endLine)
+
+	    private bool ShouldComment(IDocument document, string comment, ISelection selection, int startLine, int endLine)
 		{
 			for (int i = endLine; i >= startLine; --i) {
 				LineSegment line = document.GetLineSegment(i);
@@ -464,15 +464,15 @@ namespace ICSharpCode.TextEditor.Actions
 			
 			return null;
 		}
-		
 
-		void SetCommentAt(IDocument document, int offsetStart, int offsetEnd, string commentStart, string commentEnd)
+
+	    private void SetCommentAt(IDocument document, int offsetStart, int offsetEnd, string commentStart, string commentEnd)
 		{
 			document.Insert(offsetEnd, commentEnd);
 			document.Insert(offsetStart, commentStart);
 		}
-		
-		void RemoveComment(IDocument document, BlockCommentRegion commentRegion)
+
+	    private void RemoveComment(IDocument document, BlockCommentRegion commentRegion)
 		{
 			document.Remove(commentRegion.EndOffset, commentRegion.CommentEnd.Length);
 			document.Remove(commentRegion.StartOffset, commentRegion.CommentStart.Length);
@@ -481,10 +481,10 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class BlockCommentRegion
 	{
-		string commentStart = String.Empty;
-		string commentEnd = String.Empty;
-		int startOffset = -1;
-		int endOffset = -1;
+	    private string commentStart = String.Empty;
+	    private string commentEnd = String.Empty;
+	    private int startOffset = -1;
+	    private int endOffset = -1;
 		
 		/// <summary>
 		/// The end offset is the offset where the comment end string starts from.

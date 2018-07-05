@@ -25,8 +25,8 @@ namespace ICSharpCode.TextEditor
 			x = column;
 			y = line;
 		}
-		
-		int x, y;
+
+	    private int x, y;
 		
 		public int X {
 			get { return x; }

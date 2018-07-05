@@ -15,9 +15,9 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class SyntaxMode
 	{
-		string   fileName;
-		string   name;
-		string[] extensions;
+	    private string   fileName;
+	    private string   name;
+	    private string[] extensions;
 		
 		public string FileName {
 			get {

@@ -14,10 +14,10 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class FoldingManager
 	{
-		List<FoldMarker>    foldMarker      = new List<FoldMarker>();
-		List<FoldMarker>    foldMarkerByEnd = new List<FoldMarker>();
-		IFoldingStrategy    foldingStrategy = null;
-		IDocument document;
+	    private List<FoldMarker>    foldMarker      = new List<FoldMarker>();
+	    private List<FoldMarker>    foldMarkerByEnd = new List<FoldMarker>();
+	    private IFoldingStrategy    foldingStrategy = null;
+	    private IDocument document;
 		
 		public IList<FoldMarker> FoldMarker {
 			get {
@@ -56,8 +56,8 @@ namespace ICSharpCode.TextEditor.Document
 //			foldMarker.Add(fm2);
 //			foldMarker.Sort();
 		}
-		
-		void DocumentChanged(object sender, DocumentEventArgs e)
+
+	    private void DocumentChanged(object sender, DocumentEventArgs e)
 		{
 			int oldCount = foldMarker.Count;
 			document.UpdateSegmentListOnDocumentChange(foldMarker, e);
@@ -81,8 +81,8 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return foldings;
 		}
-		
-		class StartComparer : IComparer<FoldMarker>
+
+	    private class StartComparer : IComparer<FoldMarker>
 		{
 			public readonly static StartComparer Instance = new StartComparer();
 			
@@ -96,8 +96,8 @@ namespace ICSharpCode.TextEditor.Document
 					return 1;
 			}
 		}
-		
-		class EndComparer : IComparer<FoldMarker>
+
+	    private class EndComparer : IComparer<FoldMarker>
 		{
 			public readonly static EndComparer Instance = new EndComparer();
 			
@@ -111,8 +111,8 @@ namespace ICSharpCode.TextEditor.Document
 					return 1;
 			}
 		}
-		
-		List<FoldMarker> GetFoldingsByStartAfterColumn(int lineNumber, int column, bool forceFolded)
+
+	    private List<FoldMarker> GetFoldingsByStartAfterColumn(int lineNumber, int column, bool forceFolded)
 		{
 			List<FoldMarker> foldings = new List<FoldMarker>();
 			
@@ -149,8 +149,8 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			return GetFoldingsByStartAfterColumn(lineNumber, column, true);
 		}
-		
-		List<FoldMarker> GetFoldingsByEndAfterColumn(int lineNumber, int column, bool forceFolded)
+
+	    private List<FoldMarker> GetFoldingsByEndAfterColumn(int lineNumber, int column, bool forceFolded)
 		{
 			List<FoldMarker> foldings = new List<FoldMarker>();
 			

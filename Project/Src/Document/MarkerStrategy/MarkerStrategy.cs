@@ -16,8 +16,8 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public sealed class MarkerStrategy
 	{
-		List<TextMarker> textMarker = new List<TextMarker>();
-		IDocument document;
+	    private List<TextMarker> textMarker = new List<TextMarker>();
+	    private IDocument document;
 		
 		public IDocument Document {
 			get {
@@ -60,8 +60,8 @@ namespace ICSharpCode.TextEditor.Document
 			this.document = document;
 			document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
 		}
-		
-		Dictionary<int, List<TextMarker>> markersTable = new Dictionary<int, List<TextMarker>>();
+
+	    private Dictionary<int, List<TextMarker>> markersTable = new Dictionary<int, List<TextMarker>>();
 		
 		public List<TextMarker> GetMarkers(int offset)
 		{
@@ -110,8 +110,8 @@ namespace ICSharpCode.TextEditor.Document
 			LineSegment segment = document.GetLineSegment(position.Y);
 			return GetMarkers(segment.Offset + position.X);
 		}
-		
-		void DocumentChanged(object sender, DocumentEventArgs e)
+
+	    private void DocumentChanged(object sender, DocumentEventArgs e)
 		{
 			// reset markers table
 			markersTable.Clear();

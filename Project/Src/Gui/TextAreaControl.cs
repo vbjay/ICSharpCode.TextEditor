@@ -22,15 +22,15 @@ namespace ICSharpCode.TextEditor
 	[ToolboxItem(false)]
 	public class TextAreaControl : Panel
 	{
-		TextEditorControl motherTextEditorControl;
-		
-		HRuler     hRuler     = null;
-		
-		VScrollBar vScrollBar = new VScrollBar();
-		HScrollBar hScrollBar = new HScrollBar();
-		TextArea   textArea;
-		bool       doHandleMousewheel = true;
-		bool       disposed;
+	    private TextEditorControl motherTextEditorControl;
+
+	    private HRuler     hRuler     = null;
+
+	    private VScrollBar vScrollBar = new VScrollBar();
+	    private HScrollBar hScrollBar = new HScrollBar();
+	    private TextArea   textArea;
+	    private bool       doHandleMousewheel = true;
+	    private bool       disposed;
 		
 		public TextArea TextArea {
 			get {
@@ -132,8 +132,8 @@ namespace ICSharpCode.TextEditor
 			}
 			base.Dispose(disposing);
 		}
-		
-		void DocumentTextContentChanged(object sender, EventArgs e)
+
+	    private void DocumentTextContentChanged(object sender, EventArgs e)
 		{
 			// after the text content is changed abruptly, we need to validate the
 			// caret position - otherwise the caret position is invalid for a short amount
@@ -147,10 +147,10 @@ namespace ICSharpCode.TextEditor
 		    UpdateLayout();
 		}
 
-	    bool adjustScrollBarsOnNextUpdate;
-		Point scrollToPosOnNextUpdate;
-		
-		void AdjustScrollBarsOnDocumentChange(object sender, DocumentEventArgs e)
+	    private bool adjustScrollBarsOnNextUpdate;
+	    private Point scrollToPosOnNextUpdate;
+
+	    private void AdjustScrollBarsOnDocumentChange(object sender, DocumentEventArgs e)
 		{
 			if (motherTextEditorControl.IsInUpdate == false) {
 				AdjustScrollBarsClearCache();
@@ -159,8 +159,8 @@ namespace ICSharpCode.TextEditor
 				adjustScrollBarsOnNextUpdate = true;
 			}
 		}
-		
-		void DocumentUpdateCommitted(object sender, EventArgs e)
+
+	    private void DocumentUpdateCommitted(object sender, EventArgs e)
 		{
 			if (motherTextEditorControl.IsInUpdate == false) {
 				Caret.ValidateCaretPos();
@@ -175,11 +175,11 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		int[] lineLengthCache;
-		const int LineLengthCacheAdditionalSize = 100;
-		
-		void AdjustScrollBarsClearCache()
+
+	    private int[] lineLengthCache;
+	    private const int LineLengthCacheAdditionalSize = 100;
+
+	    private void AdjustScrollBarsClearCache()
 		{
 			if (lineLengthCache != null) {
 				if (lineLengthCache.Length < this.Document.TotalNumberOfLines + 2 * LineLengthCacheAdditionalSize) {
@@ -361,21 +361,21 @@ namespace ICSharpCode.TextEditor
 			
 			UpdateLayout();
 		}
-		
-		void VScrollBarValueChanged(object sender, EventArgs e)
+
+	    private void VScrollBarValueChanged(object sender, EventArgs e)
 		{
 			textArea.VirtualTop = new Point(textArea.VirtualTop.X, vScrollBar.Value);
 			textArea.Invalidate();
 			UpdateLayout();
 		}
-		
-		void HScrollBarValueChanged(object sender, EventArgs e)
+
+	    private void HScrollBarValueChanged(object sender, EventArgs e)
 		{
 			textArea.VirtualTop = new Point(hScrollBar.Value * textArea.TextView.WideSpaceWidth, textArea.VirtualTop.Y);
 			textArea.Invalidate();
 		}
-		
-		Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
+
+	    private Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
 		
 		public void HandleMouseWheel(MouseEventArgs e)
 		{
@@ -439,8 +439,8 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		int scrollMarginHeight  = 3;
+
+	    private int scrollMarginHeight  = 3;
 		
 		/// <summary>
 		/// Ensure that <paramref name="line"/> is visible.

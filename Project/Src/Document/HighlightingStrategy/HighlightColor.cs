@@ -19,13 +19,13 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class HighlightColor
 	{
-		Color  color;
-		Color  backgroundcolor = System.Drawing.Color.WhiteSmoke;
-		
-		bool   bold   = false;
-		bool   italic = false;
-		bool   hasForeground = false;
-		bool   hasBackground = false;
+	    private Color  color;
+	    private Color  backgroundcolor = System.Drawing.Color.WhiteSmoke;
+
+	    private bool   bold   = false;
+	    private bool   italic = false;
+	    private bool   hasForeground = false;
+	    private bool   hasBackground = false;
 		
 		public bool HasForeground {
 			get {
@@ -86,8 +86,8 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			return Italic ? fontContainer.ItalicFont : fontContainer.RegularFont;
 		}
-		
-		Color ParseColorString(string colorName)
+
+	    private Color ParseColorString(string colorName)
 		{
 			string[] cNames = colorName.Split('*');
 			PropertyInfo myPropInfo = typeof(System.Drawing.SystemColors).GetProperty(cNames[0], BindingFlags.Public |
@@ -244,8 +244,8 @@ namespace ICSharpCode.TextEditor.Document
 			this.bold         = bold;
 			this.italic       = italic;
 		}
-		
-		static Color ParseColor(string c)
+
+	    private static Color ParseColor(string c)
 		{
 			int a = 255;
 			int offset = 0;

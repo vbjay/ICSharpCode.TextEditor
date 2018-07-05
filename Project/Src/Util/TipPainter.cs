@@ -11,10 +11,10 @@ using System.Windows.Forms;
 
 namespace ICSharpCode.TextEditor.Util
 {
-	static class TipPainter
+    internal static class TipPainter
 	{
-		const float HorizontalBorder = 2;
-		const float VerticalBorder   = 1;
+	    private const float HorizontalBorder = 2;
+	    private const float VerticalBorder   = 1;
 		
 		//static StringFormat centerTipFormat = CreateTipStringFormat();
 		
@@ -22,8 +22,8 @@ namespace ICSharpCode.TextEditor.Util
 		{
 			return GetTipSize(control, graphics, new TipText (graphics, font, description));
 		}
-		
-		static Rectangle GetWorkingArea(Control control)
+
+	    private static Rectangle GetWorkingArea(Control control)
 		{
 			Form ownerForm = control.FindForm();
 			if (ownerForm.Owner != null) {

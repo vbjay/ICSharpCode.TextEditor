@@ -19,7 +19,7 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class FoldMargin : AbstractMargin
 	{
-		int selectedFoldLine = -1;
+	    private int selectedFoldLine = -1;
 		
 		public override Size Size {
 			get {
@@ -74,8 +74,8 @@ namespace ICSharpCode.TextEditor
 				}
 			}
 		}
-		
-		bool SelectedFoldingFrom(List<FoldMarker> list)
+
+	    private bool SelectedFoldingFrom(List<FoldMarker> list)
 		{
 			if (list != null) {
 				for (int i = 0; i < list.Count; ++i) {
@@ -86,8 +86,8 @@ namespace ICSharpCode.TextEditor
 			}
 			return false;
 		}
-		
-		void PaintFoldMarker(Graphics g, int lineNumber, Rectangle drawingRectangle)
+
+	    private void PaintFoldMarker(Graphics g, int lineNumber, Rectangle drawingRectangle)
 		{
 			HighlightColor foldLineColor    = textArea.Document.HighlightingStrategy.GetColorFor("FoldLine");
 			HighlightColor selectedFoldLine = textArea.Document.HighlightingStrategy.GetColorFor("SelectedFoldLine");
@@ -242,7 +242,8 @@ namespace ICSharpCode.TextEditor
 		}
 		
 		#region Drawing functions
-		void DrawFoldMarker(Graphics g, RectangleF rectangle, bool isOpened, bool isSelected)
+
+	    private void DrawFoldMarker(Graphics g, RectangleF rectangle, bool isOpened, bool isSelected)
 		{
 			HighlightColor foldMarkerColor = textArea.Document.HighlightingStrategy.GetColorFor("FoldMarker");
 			HighlightColor foldLineColor   = textArea.Document.HighlightingStrategy.GetColorFor("FoldLine");

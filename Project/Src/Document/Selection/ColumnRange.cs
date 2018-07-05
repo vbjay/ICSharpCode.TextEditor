@@ -13,9 +13,9 @@ namespace ICSharpCode.TextEditor.Document
 	{
 		public static readonly ColumnRange NoColumn    = new ColumnRange(-2, -2);
 		public static readonly ColumnRange WholeColumn = new ColumnRange(-1, -1);
-		
-		int startColumn;
-		int endColumn;
+
+	    private int startColumn;
+	    private int endColumn;
 		
 		public int StartColumn {
 			get {

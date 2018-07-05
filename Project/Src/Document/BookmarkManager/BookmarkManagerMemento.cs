@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class BookmarkManagerMemento
 	{
-		List<int> bookmarks = new List<int>();
+	    private List<int> bookmarks = new List<int>();
 		
 		/// <value>
 		/// Contains all bookmarks as int values

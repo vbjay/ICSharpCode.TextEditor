@@ -15,9 +15,9 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class NextMarker
 	{
-		string      what;
-		HighlightColor color;
-		bool        markMarker = false;
+	    private string      what;
+	    private HighlightColor color;
+	    private bool        markMarker = false;
 		
 		/// <value>
 		/// String value to indicate to mark next token

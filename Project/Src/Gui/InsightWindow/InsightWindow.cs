@@ -95,8 +95,8 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 		}
 		
 		#endregion
-		
-		MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
+
+	    private MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
 		
 		public void HandleMouseWheel(MouseEventArgs e)
 		{
@@ -145,9 +145,10 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 		#endregion
 		
 		#region InsightDataProvider handling
-		Stack<InsightDataProviderStackElement> insightDataProviderStack = new Stack<InsightDataProviderStackElement>();
-		
-		int CurrentData {
+
+	    private Stack<InsightDataProviderStackElement> insightDataProviderStack = new Stack<InsightDataProviderStackElement>();
+
+	    private int CurrentData {
 			get {
 				return insightDataProviderStack.Peek().currentData;
 			}
@@ -155,8 +156,8 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 				insightDataProviderStack.Peek().currentData = value;
 			}
 		}
-		
-		IInsightDataProvider DataProvider {
+
+	    private IInsightDataProvider DataProvider {
 			get {
 				if (insightDataProviderStack.Count == 0) {
 					return null;
@@ -172,8 +173,8 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 				insightDataProviderStack.Push(new InsightDataProviderStackElement(provider));
 			}
 		}
-		
-		void CloseCurrentDataProvider()
+
+	    private void CloseCurrentDataProvider()
 		{
 			insightDataProviderStack.Pop();
 			if (insightDataProviderStack.Count == 0) {
@@ -182,8 +183,8 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 				Refresh();
 			}
 		}
-		
-		class InsightDataProviderStackElement
+
+	    private class InsightDataProviderStackElement
 		{
 			public int                  currentData;
 			public IInsightDataProvider dataProvider;

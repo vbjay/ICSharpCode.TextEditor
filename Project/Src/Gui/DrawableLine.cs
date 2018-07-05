@@ -18,12 +18,12 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class DrawableLine
 	{
-		static StringFormat sf = (StringFormat)System.Drawing.StringFormat.GenericTypographic.Clone();
-		
-		List<SimpleTextWord> words = new List<SimpleTextWord>();
-		SizeF spaceSize;
-		Font monospacedFont;
-		Font boldMonospacedFont;
+	    private static StringFormat sf = (StringFormat)System.Drawing.StringFormat.GenericTypographic.Clone();
+
+	    private List<SimpleTextWord> words = new List<SimpleTextWord>();
+	    private SizeF spaceSize;
+	    private Font monospacedFont;
+	    private Font boldMonospacedFont;
 		
 		private class SimpleTextWord {
 			internal TextWordType Type;
