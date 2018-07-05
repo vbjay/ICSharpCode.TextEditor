@@ -21,8 +21,6 @@ namespace ICSharpCode.TextEditor
     {
         private Font lastFont;
 
-        //Hashtable    charWitdh           = new Hashtable();
-        //StringFormat measureStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
         private int physicalColumn; // used for calculating physical column during paint
 
         public TextView(TextArea textArea) : base(textArea)
@@ -71,7 +69,6 @@ namespace ICSharpCode.TextEditor
         public void Dispose()
         {
             measureCache.Clear();
-            //measureStringFormat.Dispose();
         }
 
         private static int GetFontHeight(Font font)
@@ -146,12 +143,11 @@ namespace ICSharpCode.TextEditor
                     DrawInvalidLineMarker(g, lineRectangle.Left, lineRectangle.Top);
                 if (TextEditorProperties.ShowVerticalRuler)
                     DrawVerticalRuler(g, lineRectangle);
-//                bgColorBrush.Dispose();
                 return;
             }
 
             var physicalXPos = lineRectangle.X;
-            // there can't be a folding wich starts in an above line and ends here, because the line is a new one,
+            // there can't be a folding which starts in an above line and ends here, because the line is a new one,
             // there must be a return before this line.
             var column = 0;
             physicalColumn = 0;
@@ -968,7 +964,7 @@ namespace ICSharpCode.TextEditor
             var foldings = Document.FoldingManager.GetTopLevelFoldedFoldings();
             int i;
             FoldMarker f = null;
-            // search the last folding that's interresting
+            // search the last folding that's interesting
             for (i = foldings.Count - 1; i >= 0; --i)
             {
                 f = foldings[i];
@@ -985,7 +981,7 @@ namespace ICSharpCode.TextEditor
             var tabIndent = Document.TextEditorProperties.TabIndent;
             float drawingPos;
             var g = textArea.CreateGraphics();
-            // if no folding is interresting
+            // if no folding is interesting
             if (f == null || !(f.StartLine < logicalLine || f.StartLine == logicalLine && f.StartColumn < logicalColumn))
             {
                 drawingPos = CountColumns(ref column, start: 0, logicalColumn, logicalLine, g);
@@ -1002,7 +998,7 @@ namespace ICSharpCode.TextEditor
 
             lastFolding = i;
 
-            // search backwards until a new visible line is reched
+            // search backwards until a new visible line is reached
             for (; i >= 0; --i)
             {
                 f = foldings[i];
