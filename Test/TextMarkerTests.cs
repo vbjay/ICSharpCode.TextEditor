@@ -6,7 +6,6 @@
 // </file>
 
 using ICSharpCode.TextEditor.Document;
-using System;
 using NUnit.Framework;
 
 namespace ICSharpCode.TextEditor.Tests

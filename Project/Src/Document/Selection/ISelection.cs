@@ -5,8 +5,6 @@
 //     <version>$Revision$</version>
 // </file>
 
-using System.Drawing;
-
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>

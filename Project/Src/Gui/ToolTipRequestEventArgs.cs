@@ -5,7 +5,6 @@
 //     <version>$Revision$</version>
 // </file>
 
-using System;
 using System.Drawing;
 
 namespace ICSharpCode.TextEditor

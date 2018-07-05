@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace ICSharpCode.TextEditor.Document
 {
