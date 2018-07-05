@@ -38,7 +38,7 @@ namespace ICSharpCode.TextEditor.Document
         /// <summary>
         ///     Creates a new instance of <see cref="BookmarkManager" />
         /// </summary>
-        internal BookmarkManager(IDocument document, LineManager lineTracker)
+        internal BookmarkManager(IDocument document)
         {
             Document = document;
         }

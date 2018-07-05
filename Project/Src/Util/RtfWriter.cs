@@ -31,7 +31,7 @@ namespace ICSharpCode.TextEditor.Util
             rtf.Append(value: '\n');
 
             var fileContent = BuildFileContent(textArea);
-            BuildColorTable(textArea.Document, rtf);
+            BuildColorTable(rtf);
             rtf.Append(value: '\n');
             rtf.Append(@"\viewkind4\uc1\pard");
             rtf.Append(fileContent);
@@ -39,7 +39,7 @@ namespace ICSharpCode.TextEditor.Util
             return rtf.ToString();
         }
 
-        private static void BuildColorTable(IDocument doc, StringBuilder rtf)
+        private static void BuildColorTable(StringBuilder rtf)
         {
             rtf.Append(@"{\colortbl ;");
             rtf.Append(colorString);

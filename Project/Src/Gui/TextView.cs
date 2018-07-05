@@ -280,7 +280,7 @@ namespace ICSharpCode.TextEditor
 
         private readonly List<MarkerToDraw> markersToDraw = new List<MarkerToDraw>();
 
-        private void DrawMarker(Graphics g, TextMarker marker, RectangleF drawingRect)
+        private void DrawMarker(TextMarker marker, RectangleF drawingRect)
         {
             // draw markers later so they can overdraw the following text
             markersToDraw.Add(new MarkerToDraw(marker, drawingRect));
@@ -498,7 +498,7 @@ namespace ICSharpCode.TextEditor
 
                 foreach (var marker in markers)
                     if (marker.TextMarkerType != TextMarkerType.SolidBlock)
-                        DrawMarker(g, marker, wordRectangle);
+                        DrawMarker(marker, wordRectangle);
 
                 // draw bracket highlight
                 if (Highlight != null)
@@ -521,7 +521,7 @@ namespace ICSharpCode.TextEditor
                 IList<TextMarker> markers = Document.MarkerStrategy.GetMarkers(currentLine.Offset + currentLine.Length);
                 foreach (var marker in markers)
                     if (marker.TextMarkerType != TextMarkerType.SolidBlock)
-                        DrawMarker(g, marker, new RectangleF(physicalXPos, lineRectangle.Y, WideSpaceWidth, lineRectangle.Height));
+                        DrawMarker(marker, new RectangleF(physicalXPos, lineRectangle.Y, WideSpaceWidth, lineRectangle.Height));
             }
 
             return physicalXPos;

@@ -881,10 +881,10 @@ namespace ICSharpCode.TextEditor
 //                return;
 //            }
 
-            InvalidateLines(xPos*TextView.WideSpaceWidth, lineBegin, lineEnd);
+            InvalidateLines(lineBegin, lineEnd);
         }
 
-        private void InvalidateLines(int xPos, int lineBegin, int lineEnd)
+        private void InvalidateLines(int lineBegin, int lineEnd)
         {
             lineBegin = Math.Max(Document.GetVisibleLine(lineBegin), FirstPhysicalLine);
             lineEnd = Math.Min(Document.GetVisibleLine(lineEnd), FirstPhysicalLine + TextView.VisibleLineCount);
