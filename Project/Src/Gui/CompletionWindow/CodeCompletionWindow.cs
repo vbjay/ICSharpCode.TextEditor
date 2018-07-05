@@ -6,10 +6,11 @@
 // </file>
 
 using System;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
+using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 {
@@ -66,9 +67,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             codeCompletionListView = new CodeCompletionListView(completionData);
             codeCompletionListView.ImageList = completionDataProvider.ImageList;
             codeCompletionListView.Dock = DockStyle.Fill;
-            codeCompletionListView.SelectedItemChanged += new EventHandler(CodeCompletionListViewSelectedItemChanged);
-            codeCompletionListView.DoubleClick += new EventHandler(CodeCompletionListViewDoubleClick);
-            codeCompletionListView.Click  += new EventHandler(CodeCompletionListViewClick);
+            codeCompletionListView.SelectedItemChanged += CodeCompletionListViewSelectedItemChanged;
+            codeCompletionListView.DoubleClick += CodeCompletionListViewDoubleClick;
+            codeCompletionListView.Click  += CodeCompletionListViewClick;
             Controls.Add(codeCompletionListView);
 
             if (completionData.Length > MaxListLength) {
@@ -77,7 +78,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
                 vScrollBar.Maximum = completionData.Length - 1;
                 vScrollBar.SmallChange = 1;
                 vScrollBar.LargeChange = MaxListLength;
-                codeCompletionListView.FirstItemChanged += new EventHandler(CodeCompletionListViewFirstItemChanged);
+                codeCompletionListView.FirstItemChanged += CodeCompletionListViewFirstItemChanged;
                 Controls.Add(vScrollBar);
             }
 
@@ -162,7 +163,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             }
         }
 
-        private readonly Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
+        private readonly MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
 
         public void HandleMouseWheel(MouseEventArgs e)
         {
@@ -347,7 +348,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             float width = defaultWidth;
             using (Graphics graphics = codeCompletionListView.CreateGraphics()) {
                 for (int i = 0; i < completionData.Length; ++i) {
-                    float itemWidth = graphics.MeasureString(completionData[i].Text.ToString(), codeCompletionListView.Font).Width;
+                    float itemWidth = graphics.MeasureString(completionData[i].Text, codeCompletionListView.Font).Width;
                     if(itemWidth > width) {
                         width = itemWidth;
                     }

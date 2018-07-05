@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor.Util
             string documentation = null;
 
             if (IsVisibleText(description)) {
-                string[] splitDescription = description.Split(new char[] { '\n' }, 2);
+                string[] splitDescription = description.Split(new[] { '\n' }, 2);
 
                 if (splitDescription.Length > 0) {
                     basicDescription = splitDescription[0];
@@ -49,7 +49,7 @@ namespace ICSharpCode.TextEditor.Util
             string documentation = null;
 
             if (IsVisibleText(description)) {
-                string[] splitDescription = description.Split(new char[] { '\n' }, 2);
+                string[] splitDescription = description.Split(new[] { '\n' }, 2);
 
                 if (splitDescription.Length > 0) {
                     basicDescription = splitDescription[0];
@@ -74,7 +74,7 @@ namespace ICSharpCode.TextEditor.Util
 
             if (IsVisibleText(description)) {
                 string[] splitDescription = description.Split
-                    (new char[] { '\n' }, 2);
+                    (new[] { '\n' }, 2);
 
                 if (splitDescription.Length > 0) {
                     basicDescription = splitDescription[0];
@@ -100,7 +100,7 @@ namespace ICSharpCode.TextEditor.Util
 
             if (IsVisibleText(description)) {
                 string[] splitDescription = description.Split
-                    (new char[] { '\n' }, 2);
+                    (new[] { '\n' }, 2);
 
                 if (splitDescription.Length > 0) {
                     basicDescription = splitDescription[0];

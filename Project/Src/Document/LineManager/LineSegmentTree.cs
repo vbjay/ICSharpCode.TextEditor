@@ -6,6 +6,7 @@
 // </file>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ICSharpCode.TextEditor.Util;
@@ -179,11 +180,11 @@ namespace ICSharpCode.TextEditor.Document
         /// Gets the total length of all line segments. Runs in O(1).
         /// </summary>
         public int TotalLength {
-            get {
+            get
+            {
                 if (tree.root == null)
                     return 0;
-                else
-                    return tree.root.val.totalLength;
+                return tree.root.val.totalLength;
             }
         }
 
@@ -347,7 +348,7 @@ namespace ICSharpCode.TextEditor.Document
             return GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -373,7 +374,7 @@ namespace ICSharpCode.TextEditor.Document
             /// An invalid enumerator value. Calling MoveNext on the invalid enumerator
             /// will always return false, accessing Current will throw an exception.
             /// </summary>
-            public static readonly Enumerator Invalid = default(Enumerator);
+            public static readonly Enumerator Invalid = default;
 
             internal RedBlackTreeIterator<RBNode> it;
 
@@ -411,7 +412,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
 
-            object System.Collections.IEnumerator.Current => it.Current.lineSegment;
+            object IEnumerator.Current => it.Current.lineSegment;
 
             public void Dispose()
             {
@@ -433,7 +434,7 @@ namespace ICSharpCode.TextEditor.Document
                 return it.MoveBack();
             }
 
-            void System.Collections.IEnumerator.Reset()
+            void IEnumerator.Reset()
             {
                 throw new NotSupportedException();
             }

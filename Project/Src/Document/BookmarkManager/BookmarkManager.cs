@@ -40,7 +40,7 @@ namespace ICSharpCode.TextEditor.Document
         /// </summary>
         internal BookmarkManager(IDocument document, LineManager lineTracker)
         {
-            this.Document = document;
+            Document = document;
         }
 
         /// <summary>

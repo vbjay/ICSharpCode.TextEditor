@@ -33,9 +33,9 @@ namespace ICSharpCode.TextEditor
 
         public ToolTipRequestEventArgs(Point mousePosition, TextLocation logicalPosition, bool inDocument)
         {
-            this.MousePosition = mousePosition;
-            this.LogicalPosition = logicalPosition;
-            this.InDocument = inDocument;
+            MousePosition = mousePosition;
+            LogicalPosition = logicalPosition;
+            InDocument = inDocument;
         }
     }
 }

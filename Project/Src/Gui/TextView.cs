@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -53,7 +52,7 @@ namespace ICSharpCode.TextEditor
 
         public int VisibleLineCount => 1 + DrawingPosition.Height / FontHeight;
 
-        public int VisibleColumnCount => (int)(DrawingPosition.Width / WideSpaceWidth) - 1;
+        public int VisibleColumnCount => DrawingPosition.Width / WideSpaceWidth - 1;
 
         public TextView(TextArea textArea) : base(textArea)
         {
@@ -165,7 +164,7 @@ namespace ICSharpCode.TextEditor
                         break;
                     }
                     // search the first starting folding
-                    FoldMarker firstFolding = (FoldMarker)starts[0];
+                    FoldMarker firstFolding = starts[0];
                     foreach (FoldMarker fm in starts) {
                         if (fm.StartColumn < firstFolding.StartColumn) {
                             firstFolding = fm;
@@ -719,7 +718,7 @@ namespace ICSharpCode.TextEditor
 
             inFoldMarker = null;
             if (lineNumber >= Document.TotalNumberOfLines) {
-                return new TextLocation((int)(visualPosX / WideSpaceWidth), lineNumber);
+                return new TextLocation(visualPosX / WideSpaceWidth, lineNumber);
             }
             if (visualPosX <= 0) {
                 return new TextLocation(0, lineNumber);
@@ -754,8 +753,7 @@ namespace ICSharpCode.TextEditor
                         inFoldMarker = nextFolding;
                         if (IsNearerToAThanB(visualPosX, posX, newPosX))
                             return new TextLocation(nextFolding.StartColumn, nextFolding.StartLine);
-                        else
-                            return new TextLocation(nextFolding.EndColumn, nextFolding.EndLine);
+                        return new TextLocation(nextFolding.EndColumn, nextFolding.EndLine);
                     }
                     posX = newPosX;
                 }
@@ -801,7 +799,7 @@ namespace ICSharpCode.TextEditor
                             break;
                         case TextWordType.Tab:
                             // go to next tab position
-                            drawingPos = (int)((drawingPos + MinTabWidth) / tabIndent / WideSpaceWidth) * tabIndent * WideSpaceWidth;
+                            drawingPos = (drawingPos + MinTabWidth) / tabIndent / WideSpaceWidth * tabIndent * WideSpaceWidth;
                             newDrawingPos = drawingPos + tabIndent * WideSpaceWidth;
                             if (newDrawingPos >= targetVisualPosX)
                                 return IsNearerToAThanB(targetVisualPosX, drawingPos, newDrawingPos) ? wordOffset : wordOffset+1;
@@ -815,11 +813,11 @@ namespace ICSharpCode.TextEditor
                             if (newDrawingPos >= targetVisualPosX) {
                                 for (int j = 0; j < text.Length; j++) {
                                     newDrawingPos = drawingPos + MeasureStringWidth(g, text[j].ToString(), font);
-                                    if (newDrawingPos >= targetVisualPosX) {
+                                    if (newDrawingPos >= targetVisualPosX)
+                                    {
                                         if (IsNearerToAThanB(targetVisualPosX, drawingPos, newDrawingPos))
                                             return wordStart + j;
-                                        else
-                                            return wordStart + j + 1;
+                                        return wordStart + j + 1;
                                     }
                                     drawingPos = newDrawingPos;
                                 }
@@ -846,8 +844,7 @@ namespace ICSharpCode.TextEditor
             List<FoldMarker> list = Document.FoldingManager.GetFoldedFoldingsWithStartAfterColumn(lineNumber, column);
             if (list.Count != 0)
                 return list[0];
-            else
-                return null;
+            return null;
         }
 
         private const int MinTabWidth = 4;
@@ -964,7 +961,7 @@ namespace ICSharpCode.TextEditor
 
             // search backwards until a new visible line is reched
             for (; i >= 0; --i) {
-                f = (FoldMarker)foldings[i];
+                f = foldings[i];
                 if (f.EndLine < logicalLine) { // reached the begin of a new visible line
                     break;
                 }

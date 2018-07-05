@@ -11,8 +11,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
+using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor
 {
@@ -52,10 +52,10 @@ namespace ICSharpCode.TextEditor
             TextArea                = new TextArea(motherTextEditorControl, this);
             Controls.Add(TextArea);
 
-            VScrollBar.ValueChanged += new EventHandler(VScrollBarValueChanged);
+            VScrollBar.ValueChanged += VScrollBarValueChanged;
             Controls.Add(VScrollBar);
 
-            HScrollBar.ValueChanged += new EventHandler(HScrollBarValueChanged);
+            HScrollBar.ValueChanged += HScrollBarValueChanged;
             Controls.Add(HScrollBar);
             ResizeRedraw = true;
 
@@ -174,8 +174,6 @@ namespace ICSharpCode.TextEditor
                 }
                 fromVisibilities = to.visibilities;
             }
-
-            return;
 
             ScrollVisibilities GetScrollVisibilities(bool h, bool v) {
                 return (h ? ScrollVisibilities.H : ScrollVisibilities.None)
@@ -332,7 +330,7 @@ namespace ICSharpCode.TextEditor
             TextArea.Invalidate();
         }
 
-        private readonly Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
+        private readonly MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
 
         public void HandleMouseWheel(MouseEventArgs e)
         {
@@ -373,13 +371,13 @@ namespace ICSharpCode.TextEditor
             if (motherTextEditorControl.IsInUpdate) {
                 scrollToPosOnNextUpdate = new Point(column, line);
                 return;
-            } else {
-                scrollToPosOnNextUpdate = Point.Empty;
             }
+
+            scrollToPosOnNextUpdate = Point.Empty;
 
             ScrollTo(line);
 
-            int curCharMin  = (int)(HScrollBar.Value - HScrollBar.Minimum);
+            int curCharMin  = HScrollBar.Value - HScrollBar.Minimum;
             int curCharMax  = curCharMin + TextArea.TextView.VisibleColumnCount;
 
             int pos = TextArea.TextView.GetVisualColumn(line, column);
@@ -388,10 +386,10 @@ namespace ICSharpCode.TextEditor
                 HScrollBar.Value = 0;
             } else {
                 if (pos < curCharMin) {
-                    HScrollBar.Value = (int)(Math.Max(0, pos - scrollMarginHeight));
+                    HScrollBar.Value = Math.Max(0, pos - scrollMarginHeight);
                 } else {
                     if (pos > curCharMax) {
-                        HScrollBar.Value = (int)Math.Max(0, Math.Min(HScrollBar.Maximum, (pos - TextArea.TextView.VisibleColumnCount + scrollMarginHeight)));
+                        HScrollBar.Value = Math.Max(0, Math.Min(HScrollBar.Maximum, (pos - TextArea.TextView.VisibleColumnCount + scrollMarginHeight)));
                     }
                 }
             }

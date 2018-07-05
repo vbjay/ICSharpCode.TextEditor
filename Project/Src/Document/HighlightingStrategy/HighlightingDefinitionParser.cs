@@ -51,13 +51,13 @@ namespace ICSharpCode.TextEditor.Document
                     KeyValuePair<SyntaxMode, ISyntaxModeFileProvider> entry = HighlightingManager.Manager.FindHighlighterEntry(doc.DocumentElement.GetAttribute("extends"));
                     if (entry.Key == null) {
                         throw new HighlightingDefinitionInvalidException("Cannot find referenced highlighting source " + doc.DocumentElement.GetAttribute("extends"));
-                    } else {
-                        highlighter = Parse(highlighter, entry.Key, entry.Value.GetSyntaxModeFile(entry.Key));
-                        if (highlighter == null) return null;
                     }
+
+                    highlighter = Parse(highlighter, entry.Key, entry.Value.GetSyntaxModeFile(entry.Key));
+                    if (highlighter == null) return null;
                 }
                 if (doc.DocumentElement.HasAttribute("extensions")) {
-                    highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(new char[] { ';', '|' });
+                    highlighter.Extensions = doc.DocumentElement.GetAttribute("extensions").Split(';', '|');
                 }
 
                 XmlElement environment = doc.DocumentElement["Environment"];
@@ -97,9 +97,9 @@ namespace ICSharpCode.TextEditor.Document
                         msg.AppendLine(args.Message);
                     }
                     throw new HighlightingDefinitionInvalidException(msg.ToString());
-                } else {
-                    return highlighter;
                 }
+
+                return highlighter;
             } catch (Exception e) {
                 throw new HighlightingDefinitionInvalidException("Could not load mode definition file '" + syntaxMode.FileName + "'.\n", e);
             }

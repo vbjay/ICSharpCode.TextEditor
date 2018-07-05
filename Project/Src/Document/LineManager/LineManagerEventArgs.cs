@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public LineCountChangeEventArgs(IDocument document, int lineStart, int linesMoved)
         {
-            this.Document = document;
+            Document = document;
             LineStart    = lineStart;
             LinesMoved    = linesMoved;
         }
@@ -42,8 +42,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public LineEventArgs(IDocument document, LineSegment lineSegment)
         {
-            this.Document = document;
-            this.LineSegment = lineSegment;
+            Document = document;
+            LineSegment = lineSegment;
         }
 
         public override string ToString()

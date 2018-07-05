@@ -47,8 +47,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public MarkerStrategy(IDocument document)
         {
-            this.Document = document;
-            document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
+            Document = document;
+            document.DocumentChanged += DocumentChanged;
         }
 
         private readonly Dictionary<int, List<TextMarker>> markersTable = new Dictionary<int, List<TextMarker>>();
@@ -58,7 +58,7 @@ namespace ICSharpCode.TextEditor.Document
             if (!markersTable.ContainsKey(offset)) {
                 List<TextMarker> markers = new List<TextMarker>();
                 for (int i = 0; i < textMarker.Count; ++i) {
-                    TextMarker marker = (TextMarker)textMarker[i];
+                    TextMarker marker = textMarker[i];
                     if (marker.Offset <= offset && offset <= marker.EndOffset) {
                         markers.Add(marker);
                     }
@@ -73,7 +73,7 @@ namespace ICSharpCode.TextEditor.Document
             int endOffset = offset + length - 1;
             List<TextMarker> markers = new List<TextMarker>();
             for (int i = 0; i < textMarker.Count; ++i) {
-                TextMarker marker = (TextMarker)textMarker[i];
+                TextMarker marker = textMarker[i];
                 int markerOffset = marker.Offset;
                 int markerEndOffset = marker.EndOffset;
                 if (// start in marker region

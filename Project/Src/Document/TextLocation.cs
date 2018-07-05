@@ -77,20 +77,18 @@ namespace ICSharpCode.TextEditor
         {
             if (a.Y < b.Y)
                 return true;
-            else if (a.Y == b.Y)
+            if (a.Y == b.Y)
                 return a.X < b.X;
-            else
-                return false;
+            return false;
         }
 
         public static bool operator >(TextLocation a, TextLocation b)
         {
             if (a.Y > b.Y)
                 return true;
-            else if (a.Y == b.Y)
+            if (a.Y == b.Y)
                 return a.X > b.X;
-            else
-                return false;
+            return false;
         }
 
         public static bool operator <=(TextLocation a, TextLocation b)
@@ -109,8 +107,7 @@ namespace ICSharpCode.TextEditor
                 return 0;
             if (this < other)
                 return -1;
-            else
-                return 1;
+            return 1;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor.Document
         public void CheckMemento(IDocument document)
         {
             for (int i = 0; i < Bookmarks.Count; ++i) {
-                int mark = (int)Bookmarks[i];
+                int mark = Bookmarks[i];
                 if (mark < 0 || mark >= document.TotalNumberOfLines) {
                     Bookmarks.RemoveAt(i);
                     --i;
@@ -58,7 +58,7 @@ namespace ICSharpCode.TextEditor.Document
         /// </summary>
         public BookmarkManagerMemento(List<int> bookmarks)
         {
-            this.Bookmarks = bookmarks;
+            Bookmarks = bookmarks;
         }
 
         /// <summary>

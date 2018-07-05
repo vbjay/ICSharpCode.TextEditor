@@ -6,6 +6,7 @@
 // </file>
 
 using System.Drawing;
+using System.Drawing.Text;
 using System.Text;
 
 namespace ICSharpCode.TextEditor.Document
@@ -48,7 +49,7 @@ namespace ICSharpCode.TextEditor.Document
             set;
         }
 
-        System.Drawing.Text.TextRenderingHint TextRenderingHint { // is wrapped in text editor control
+        TextRenderingHint TextRenderingHint { // is wrapped in text editor control
             get;
             set;
         }

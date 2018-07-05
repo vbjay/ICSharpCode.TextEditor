@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
+using ICSharpCode.TextEditor.Actions;
 using ICSharpCode.TextEditor.Document;
 using ICSharpCode.TextEditor.Util;
 
@@ -44,12 +44,12 @@ namespace ICSharpCode.TextEditor
                 ClipboardContainsTextDelegate d = GetClipboardContainsText;
                 if (d != null) {
                     return d();
-                } else {
-                    try {
-                        return Clipboard.ContainsText();
-                    } catch (ExternalException) {
-                        return false;
-                    }
+                }
+
+                try {
+                    return Clipboard.ContainsText();
+                } catch (ExternalException) {
+                    return false;
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace ICSharpCode.TextEditor
         public TextAreaClipboardHandler(TextArea textArea)
         {
             this.textArea = textArea;
-            textArea.SelectionManager.SelectionChanged += new EventHandler(DocumentSelectionChanged);
+            textArea.SelectionManager.SelectionChanged += DocumentSelectionChanged;
         }
 
         private void DocumentSelectionChanged(object sender, EventArgs e)
@@ -89,9 +89,9 @@ namespace ICSharpCode.TextEditor
 
                 SafeSetClipboard(dataObject);
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         // Code duplication: TextAreaClipboardHandler.cs also has SafeSetClipboard
@@ -214,12 +214,12 @@ namespace ICSharpCode.TextEditor
 
         public void Delete(object sender, EventArgs e)
         {
-            new Actions.Delete().Execute(textArea);
+            new Delete().Execute(textArea);
         }
 
         public void SelectAll(object sender, EventArgs e)
         {
-            new Actions.SelectWholeDocument().Execute(textArea);
+            new SelectWholeDocument().Execute(textArea);
         }
 
         protected virtual void OnCopyText(CopyTextEventArgs e)
@@ -237,7 +237,7 @@ namespace ICSharpCode.TextEditor
 
         public CopyTextEventArgs(string text)
         {
-            this.Text = text;
+            Text = text;
         }
     }
 }

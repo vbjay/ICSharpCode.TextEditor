@@ -38,7 +38,7 @@ namespace ICSharpCode.TextEditor.Util
                 int wordOffset = line.Offset + offset;
                 if (casesensitive) {
                     for (int i = 0; i < length; ++i) {
-                        int index = ((int)document.GetCharAt(wordOffset + i)) % 256;
+                        int index = document.GetCharAt(wordOffset + i) % 256;
                         next = next[index];
 
                         if (next == null) {
@@ -51,7 +51,7 @@ namespace ICSharpCode.TextEditor.Util
                     }
                 } else {
                     for (int i = 0; i < length; ++i) {
-                        int index = ((int)Char.ToUpper(document.GetCharAt(wordOffset + i))) % 256;
+                        int index = Char.ToUpper(document.GetCharAt(wordOffset + i)) % 256;
 
                         next = next[index];
 
@@ -82,7 +82,7 @@ namespace ICSharpCode.TextEditor.Util
 
                 // insert word into the tree
                 for (int i = 0; i < keyword.Length; ++i) {
-                    int index = ((int)keyword[i]) % 256; // index of curchar
+                    int index = keyword[i] % 256; // index of curchar
                     bool d = keyword[i] == '\\';
 
                     next = next[index];             // get node to this index

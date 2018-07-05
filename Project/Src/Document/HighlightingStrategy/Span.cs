@@ -30,12 +30,13 @@ namespace ICSharpCode.TextEditor.Document
         public HighlightColor Color { get; }
 
         public HighlightColor BeginColor {
-            get {
+            get
+            {
                 if(beginColor != null) {
                     return beginColor;
-                } else {
-                    return Color;
                 }
+
+                return Color;
             }
         }
 

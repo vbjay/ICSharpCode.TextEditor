@@ -22,16 +22,16 @@ namespace ICSharpCode.TextEditor.Document
 
         public SyntaxMode(string fileName, string name, string extensions)
         {
-            this.FileName   = fileName;
-            this.Name       = name;
-            this.Extensions = extensions.Split(';', '|', ',');
+            FileName   = fileName;
+            Name       = name;
+            Extensions = extensions.Split(';', '|', ',');
         }
 
         public SyntaxMode(string fileName, string name, string[] extensions)
         {
-            this.FileName = fileName;
-            this.Name = name;
-            this.Extensions = extensions;
+            FileName = fileName;
+            Name = name;
+            Extensions = extensions;
         }
 
         public static List<SyntaxMode> GetSyntaxModes(Stream xmlSyntaxModeStream)

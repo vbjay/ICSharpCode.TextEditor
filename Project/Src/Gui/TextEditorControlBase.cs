@@ -10,13 +10,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Drawing.Text;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Actions;
 using ICSharpCode.TextEditor.Document;
+using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor
 {
@@ -104,7 +105,7 @@ namespace ICSharpCode.TextEditor
 
         [EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(System.Drawing.Design.UITypeEditor))]
+        [Editor("System.ComponentModel.Design.MultilineStringEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
         public override string Text {
             get => Document.TextContent;
             set => Document.TextContent = value;
@@ -119,7 +120,7 @@ namespace ICSharpCode.TextEditor
 
         private static Font ParseFont(string font)
         {
-            string[] descr = font.Split(new char[]{',', '='});
+            string[] descr = font.Split(',', '=');
             return new Font(descr[1], Single.Parse(descr[3]));
         }
 
@@ -429,7 +430,7 @@ namespace ICSharpCode.TextEditor
         protected TextEditorControlBase()
         {
             GenerateDefaultActions();
-            HighlightingManager.Manager.ReloadSyntaxHighlighting += new EventHandler(OnReloadHighlighting);
+            HighlightingManager.Manager.ReloadSyntaxHighlighting += OnReloadHighlighting;
         }
 
         protected virtual void OnReloadHighlighting(object sender, EventArgs e)
@@ -454,7 +455,7 @@ namespace ICSharpCode.TextEditor
             if (!IsEditAction(keyData)) {
                 return null;
             }
-            return (IEditAction)editactions[keyData];
+            return editactions[keyData];
         }
 
         private void GenerateDefaultActions()
@@ -585,7 +586,7 @@ namespace ICSharpCode.TextEditor
 
             if (autodetectEncoding) {
                 Encoding encoding = Encoding;
-                Document.TextContent = Util.FileReader.ReadFileContent(stream, ref encoding);
+                Document.TextContent = FileReader.ReadFileContent(stream, ref encoding);
                 Encoding = encoding;
             } else {
                 using (StreamReader reader = new StreamReader(fileName, Encoding)) {
@@ -606,7 +607,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public bool CanSaveWithCurrentEncoding()
         {
-            if (encoding == null || Util.FileReader.IsUnicode(encoding))
+            if (encoding == null || FileReader.IsUnicode(encoding))
                 return true;
             // not a unicode codepage
             string text = document.TextContent;
@@ -675,7 +676,7 @@ namespace ICSharpCode.TextEditor
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
-                HighlightingManager.Manager.ReloadSyntaxHighlighting -= new EventHandler(OnReloadHighlighting);
+                HighlightingManager.Manager.ReloadSyntaxHighlighting -= OnReloadHighlighting;
                 document.HighlightingStrategy = null;
                 document.UndoStack.TextEditorControl = null;
             }

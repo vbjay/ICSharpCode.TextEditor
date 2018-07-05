@@ -65,7 +65,7 @@ namespace ICSharpCode.TextEditor.Document
             if (cNames.Length == 2) {
                 // hack : can't figure out how to parse doubles with '.' (culture info might set the '.' to ',')
                 double factor = Double.Parse(cNames[1]) / 100;
-                c = Color.FromArgb((int)((double)c.R * factor), (int)((double)c.G * factor), (int)((double)c.B * factor));
+                c = Color.FromArgb((int)(c.R * factor), (int)(c.G * factor), (int)(c.B * factor));
             }
 
             return c;
@@ -165,9 +165,9 @@ namespace ICSharpCode.TextEditor.Document
         public HighlightColor(Color color, bool bold, bool italic)
         {
             HasForeground = true;
-            this.Color  = color;
-            this.Bold   = bold;
-            this.Italic = italic;
+            Color  = color;
+            Bold   = bold;
+            Italic = italic;
         }
 
         /// <summary>
@@ -177,10 +177,10 @@ namespace ICSharpCode.TextEditor.Document
         {
             HasForeground = true;
             HasBackground  = true;
-            this.Color            = color;
-            this.BackgroundColor  = backgroundcolor;
-            this.Bold             = bold;
-            this.Italic           = italic;
+            Color            = color;
+            BackgroundColor  = backgroundcolor;
+            Bold             = bold;
+            Italic           = italic;
         }
 
         /// <summary>
@@ -194,8 +194,8 @@ namespace ICSharpCode.TextEditor.Document
             Color = ParseColorString(systemColor);
             BackgroundColor = ParseColorString(systemBackgroundColor);
 
-            this.Bold         = bold;
-            this.Italic       = italic;
+            Bold         = bold;
+            Italic       = italic;
         }
 
         /// <summary>
@@ -207,8 +207,8 @@ namespace ICSharpCode.TextEditor.Document
 
             Color = ParseColorString(systemColor);
 
-            this.Bold         = bold;
-            this.Italic       = italic;
+            Bold         = bold;
+            Italic       = italic;
         }
 
         private static Color ParseColor(string c)

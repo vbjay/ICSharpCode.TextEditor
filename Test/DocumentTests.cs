@@ -5,8 +5,8 @@
 //     <version>$Revision$</version>
 // </file>
 
-using NUnit.Framework;
 using ICSharpCode.TextEditor.Document;
+using NUnit.Framework;
 
 namespace ICSharpCode.TextEditor.Tests
 {

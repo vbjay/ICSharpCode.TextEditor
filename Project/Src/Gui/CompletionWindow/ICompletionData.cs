@@ -63,15 +63,15 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
         public DefaultCompletionData(string text, int imageIndex)
         {
-            this.Text        = text;
-            this.ImageIndex  = imageIndex;
+            Text        = text;
+            ImageIndex  = imageIndex;
         }
 
         public DefaultCompletionData(string text, string description, int imageIndex)
         {
-            this.Text        = text;
-            this.Description = description;
-            this.ImageIndex  = imageIndex;
+            Text        = text;
+            Description = description;
+            ImageIndex  = imageIndex;
         }
 
         public static int Compare(ICompletionData a, ICompletionData b)

@@ -6,9 +6,10 @@
 // </file>
 
 using System;
-using System.Text;
-using System.Diagnostics;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 
 namespace ICSharpCode.TextEditor.Util
 {
@@ -324,8 +325,7 @@ namespace ICSharpCode.TextEditor.Util
         {
             if (node == node.parent.left)
                 return node.parent.right;
-            else
-                return node.parent.left;
+            return node.parent.left;
         }
         #endregion
 
@@ -388,8 +388,7 @@ namespace ICSharpCode.TextEditor.Util
             Debug.Assert(node == null || node.parent == parentNode);
             if (node == parentNode.left)
                 return parentNode.right;
-            else
-                return parentNode.left;
+            return parentNode.left;
         }
 
         private const bool RED = true;
@@ -490,7 +489,7 @@ namespace ICSharpCode.TextEditor.Util
                     return it;
                 it.MoveNext();
             }
-            return default(RedBlackTreeIterator<T>);
+            return default;
         }
 
         /// <summary>
@@ -528,7 +527,7 @@ namespace ICSharpCode.TextEditor.Util
         /// </summary>
         public RedBlackTreeIterator<T> Begin()
         {
-            if (root == null) return default(RedBlackTreeIterator<T>);
+            if (root == null) return default;
             return new RedBlackTreeIterator<T>(root.LeftMost);
         }
 
@@ -537,8 +536,8 @@ namespace ICSharpCode.TextEditor.Util
         /// </summary>
         public RedBlackTreeIterator<T> GetEnumerator()
         {
-            if (root == null) return default(RedBlackTreeIterator<T>);
-            RedBlackTreeNode<T> dummyNode = new RedBlackTreeNode<T>(default(T));
+            if (root == null) return default;
+            RedBlackTreeNode<T> dummyNode = new RedBlackTreeNode<T>(default);
             dummyNode.right = root;
             return new RedBlackTreeIterator<T>(dummyNode);
         }
@@ -555,10 +554,10 @@ namespace ICSharpCode.TextEditor.Util
             RedBlackTreeIterator<T> it = Find(item);
             if (!it.IsValid) {
                 return false;
-            } else {
-                RemoveAt(it);
-                return true;
             }
+
+            RemoveAt(it);
+            return true;
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -566,7 +565,7 @@ namespace ICSharpCode.TextEditor.Util
             return GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }

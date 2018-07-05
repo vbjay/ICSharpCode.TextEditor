@@ -20,8 +20,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public ColumnRange(int startColumn, int endColumn)
         {
-            this.StartColumn = startColumn;
-            this.EndColumn = endColumn;
+            StartColumn = startColumn;
+            EndColumn = endColumn;
 
         }
 

@@ -20,7 +20,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public BookmarkEventArgs(Bookmark bookmark)
         {
-            this.Bookmark = bookmark;
+            Bookmark = bookmark;
         }
     }
 }

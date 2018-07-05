@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor.Util
@@ -43,7 +42,7 @@ namespace ICSharpCode.TextEditor.Util
         private static void BuildColorTable(IDocument doc, StringBuilder rtf)
         {
             rtf.Append(@"{\colortbl ;");
-            rtf.Append(colorString.ToString());
+            rtf.Append(colorString);
             rtf.Append("}");
         }
 
@@ -101,7 +100,7 @@ namespace ICSharpCode.TextEditor.Util
                                         colorString.Append(@"\red" + c.R + @"\green" + c.G + @"\blue" + c.B + ";");
                                     }
                                     if (c != curColor || firstLine) {
-                                        rtf.Append(@"\cf" + colors[colorstr].ToString());
+                                        rtf.Append(@"\cf" + colors[colorstr]);
                                         curColor = c;
                                         escapeSequence = true;
                                     }
@@ -178,7 +177,7 @@ namespace ICSharpCode.TextEditor.Util
                             rtfOutput.Append(c);
                         } else {
                             // yes, RTF really expects signed 16-bit integers!
-                            rtfOutput.Append("\\u" + unchecked((short)c).ToString() + "?");
+                            rtfOutput.Append("\\u" + unchecked((short)c) + "?");
                         }
                         break;
                 }

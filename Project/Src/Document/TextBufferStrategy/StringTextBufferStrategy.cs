@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.Text;
+using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor.Document
 {
@@ -64,17 +65,13 @@ namespace ICSharpCode.TextEditor.Document
             storedText = text;
         }
 
-        public StringTextBufferStrategy()
-        {
-        }
-
         public static ITextBufferStrategy CreateTextBufferFromFile(string fileName)
         {
             if (!File.Exists(fileName)) {
                 throw new FileNotFoundException(fileName);
             }
             StringTextBufferStrategy s = new StringTextBufferStrategy();
-            s.SetContent(Util.FileReader.ReadFileContent(fileName, Encoding.Default));
+            s.SetContent(FileReader.ReadFileContent(fileName, Encoding.Default));
             return s;
         }
     }

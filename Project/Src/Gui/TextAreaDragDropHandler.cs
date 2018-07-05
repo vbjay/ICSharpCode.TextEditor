@@ -8,7 +8,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -49,9 +48,13 @@ namespace ICSharpCode.TextEditor
             if ((e.AllowedEffect & DragDropEffects.Move) > 0 &&
                 (e.AllowedEffect & DragDropEffects.Copy) > 0) {
                 return (e.KeyState & 8) > 0 ? DragDropEffects.Copy : DragDropEffects.Move;
-            } else if ((e.AllowedEffect & DragDropEffects.Move) > 0) {
+            }
+
+            if ((e.AllowedEffect & DragDropEffects.Move) > 0) {
                 return DragDropEffects.Move;
-            } else if ((e.AllowedEffect & DragDropEffects.Copy) > 0) {
+            }
+
+            if ((e.AllowedEffect & DragDropEffects.Copy) > 0) {
                 return DragDropEffects.Copy;
             }
             return DragDropEffects.None;

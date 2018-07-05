@@ -79,8 +79,8 @@ namespace ICSharpCode.TextEditor.Document
             if (length < 1) length = 1;
             this.offset          = offset;
             this.length          = length;
-            this.TextMarkerType  = textMarkerType;
-            this.Color           = color;
+            TextMarkerType  = textMarkerType;
+            Color           = color;
         }
 
         public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
@@ -88,9 +88,9 @@ namespace ICSharpCode.TextEditor.Document
             if (length < 1) length = 1;
             this.offset          = offset;
             this.length          = length;
-            this.TextMarkerType  = textMarkerType;
-            this.Color           = color;
-            this.ForeColor       = foreColor;
+            TextMarkerType  = textMarkerType;
+            Color           = color;
+            ForeColor       = foreColor;
             OverrideForeColor = true;
         }
     }

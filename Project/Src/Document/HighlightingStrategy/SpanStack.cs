@@ -6,6 +6,7 @@
 // </file>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ICSharpCode.TextEditor.Document
@@ -68,7 +69,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             return GetEnumerator();
         }
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
@@ -84,7 +85,7 @@ namespace ICSharpCode.TextEditor.Document
 
             public Span Current => c.Data;
 
-            object System.Collections.IEnumerator.Current => c.Data;
+            object IEnumerator.Current => c.Data;
 
             public void Dispose()
             {

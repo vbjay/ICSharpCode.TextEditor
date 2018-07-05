@@ -6,6 +6,7 @@
 // </file>
 
 using System.Drawing;
+using System.Drawing.Text;
 using System.Text;
 
 namespace ICSharpCode.TextEditor.Document
@@ -61,7 +62,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public bool ConvertTabsToSpaces { get; set; } = false;
 
-        public System.Drawing.Text.TextRenderingHint TextRenderingHint { get; set; } = System.Drawing.Text.TextRenderingHint.SystemDefault;
+        public TextRenderingHint TextRenderingHint { get; set; } = TextRenderingHint.SystemDefault;
 
         public bool MouseWheelScrollDown { get; set; } = true;
 

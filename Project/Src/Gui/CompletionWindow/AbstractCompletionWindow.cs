@@ -113,15 +113,15 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             control.Focus();
 
             if (parentForm != null) {
-                parentForm.LocationChanged += new EventHandler(ParentFormLocationChanged);
+                parentForm.LocationChanged += ParentFormLocationChanged;
             }
 
-            control.ActiveTextAreaControl.VScrollBar.ValueChanged     += new EventHandler(ParentFormLocationChanged);
-            control.ActiveTextAreaControl.HScrollBar.ValueChanged     += new EventHandler(ParentFormLocationChanged);
-            control.ActiveTextAreaControl.TextArea.DoProcessDialogKey += new DialogKeyProcessor(ProcessTextAreaKey);
-            control.ActiveTextAreaControl.Caret.PositionChanged       += new EventHandler(CaretOffsetChanged);
-            control.ActiveTextAreaControl.TextArea.LostFocus          += new EventHandler(TextEditorLostFocus);
-            control.Resize += new EventHandler(ParentFormLocationChanged);
+            control.ActiveTextAreaControl.VScrollBar.ValueChanged     += ParentFormLocationChanged;
+            control.ActiveTextAreaControl.HScrollBar.ValueChanged     += ParentFormLocationChanged;
+            control.ActiveTextAreaControl.TextArea.DoProcessDialogKey += ProcessTextAreaKey;
+            control.ActiveTextAreaControl.Caret.PositionChanged       += CaretOffsetChanged;
+            control.ActiveTextAreaControl.TextArea.LostFocus          += TextEditorLostFocus;
+            control.Resize += ParentFormLocationChanged;
 
             foreach (Control c in Controls) {
                 c.MouseMove += ControlMouseMove;
@@ -167,23 +167,23 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
             base.OnClosed(e);
 
             // take out the inserted methods
-            parentForm.LocationChanged -= new EventHandler(ParentFormLocationChanged);
+            parentForm.LocationChanged -= ParentFormLocationChanged;
 
             foreach (Control c in Controls) {
                 c.MouseMove -= ControlMouseMove;
             }
 
             if (control.ActiveTextAreaControl.VScrollBar != null) {
-                control.ActiveTextAreaControl.VScrollBar.ValueChanged -= new EventHandler(ParentFormLocationChanged);
+                control.ActiveTextAreaControl.VScrollBar.ValueChanged -= ParentFormLocationChanged;
             }
             if (control.ActiveTextAreaControl.HScrollBar != null) {
-                control.ActiveTextAreaControl.HScrollBar.ValueChanged -= new EventHandler(ParentFormLocationChanged);
+                control.ActiveTextAreaControl.HScrollBar.ValueChanged -= ParentFormLocationChanged;
             }
 
-            control.ActiveTextAreaControl.TextArea.LostFocus          -= new EventHandler(TextEditorLostFocus);
-            control.ActiveTextAreaControl.Caret.PositionChanged       -= new EventHandler(CaretOffsetChanged);
-            control.ActiveTextAreaControl.TextArea.DoProcessDialogKey -= new DialogKeyProcessor(ProcessTextAreaKey);
-            control.Resize -= new EventHandler(ParentFormLocationChanged);
+            control.ActiveTextAreaControl.TextArea.LostFocus          -= TextEditorLostFocus;
+            control.ActiveTextAreaControl.Caret.PositionChanged       -= CaretOffsetChanged;
+            control.ActiveTextAreaControl.TextArea.DoProcessDialogKey -= ProcessTextAreaKey;
+            control.Resize -= ParentFormLocationChanged;
             Dispose();
         }
 

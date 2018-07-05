@@ -134,9 +134,9 @@ namespace ICSharpCode.TextEditor.Document
                     return LoadDefinition(entry);
                 }
                 return def == null ? DefaultHighlighting : (IHighlightingStrategy)def;
-            } else {
-                return DefaultHighlighting;
             }
+
+            return DefaultHighlighting;
         }
 
         protected virtual void OnReloadSyntaxHighlighting(EventArgs e)

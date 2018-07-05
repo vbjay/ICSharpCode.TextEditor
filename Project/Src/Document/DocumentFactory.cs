@@ -6,6 +6,7 @@
 // </file>
 
 using System.Text;
+using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor.Document
 {
@@ -49,7 +50,7 @@ namespace ICSharpCode.TextEditor.Document
         public IDocument CreateFromFile(string fileName)
         {
             IDocument document = CreateDocument();
-            document.TextContent = Util.FileReader.ReadFileContent(fileName, Encoding.Default);
+            document.TextContent = FileReader.ReadFileContent(fileName, Encoding.Default);
             return document;
         }
     }

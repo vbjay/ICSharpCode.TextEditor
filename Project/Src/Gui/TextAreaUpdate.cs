@@ -35,7 +35,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public TextAreaUpdate(TextAreaUpdateType type)
         {
-            this.TextAreaUpdateType = type;
+            TextAreaUpdateType = type;
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public TextAreaUpdate(TextAreaUpdateType type, TextLocation position)
         {
-            this.TextAreaUpdateType     = type;
-            this.Position = position;
+            TextAreaUpdateType     = type;
+            Position = position;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public TextAreaUpdate(TextAreaUpdateType type, int startLine, int endLine)
         {
-            this.TextAreaUpdateType     = type;
+            TextAreaUpdateType     = type;
             Position = new TextLocation(startLine, endLine);
         }
 
@@ -61,7 +61,7 @@ namespace ICSharpCode.TextEditor
         /// </summary>
         public TextAreaUpdate(TextAreaUpdateType type, int singleLine)
         {
-            this.TextAreaUpdateType     = type;
+            TextAreaUpdateType     = type;
             Position = new TextLocation(0, singleLine);
         }
 

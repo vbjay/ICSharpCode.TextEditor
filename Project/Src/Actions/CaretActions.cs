@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor.Actions

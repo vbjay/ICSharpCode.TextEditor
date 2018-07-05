@@ -30,8 +30,8 @@ namespace ICSharpCode.TextEditor
 
         public BracketHighlightingSheme(char opentag, char closingtag)
         {
-            this.OpenTag    = opentag;
-            this.ClosingTag = closingtag;
+            OpenTag    = opentag;
+            ClosingTag = closingtag;
         }
 
         public Highlight GetHighlight(IDocument document, int offset)

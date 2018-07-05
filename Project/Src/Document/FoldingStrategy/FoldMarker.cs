@@ -117,8 +117,8 @@ namespace ICSharpCode.TextEditor.Document
             this.document = document;
             this.offset   = offset;
             this.length   = length;
-            this.FoldText = foldText;
-            this.IsFolded = isFolded;
+            FoldText = foldText;
+            IsFolded = isFolded;
         }
 
         public FoldMarker(IDocument document, int startLine, int startColumn, int endLine, int endColumn) : this(document, startLine, startColumn, endLine, endColumn, FoldType.Unspecified)
@@ -149,10 +149,10 @@ namespace ICSharpCode.TextEditor.Document
             }
 
             FoldType = foldType;
-            this.FoldText = foldText;
+            FoldText = foldText;
             offset = startLineSegment.Offset + Math.Min(startColumn, startLineSegment.Length);
             length = (endLineSegment.Offset + Math.Min(endColumn, endLineSegment.Length)) - offset;
-            this.IsFolded = isFolded;
+            IsFolded = isFolded;
         }
 
         public int CompareTo(object o)

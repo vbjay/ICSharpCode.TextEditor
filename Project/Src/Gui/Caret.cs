@@ -7,10 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
-
+using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -98,8 +98,8 @@ namespace ICSharpCode.TextEditor
         public Caret(TextArea textArea)
         {
             this.textArea = textArea;
-            textArea.GotFocus  += new EventHandler(GotFocus);
-            textArea.LostFocus += new EventHandler(LostFocus);
+            textArea.GotFocus  += GotFocus;
+            textArea.LostFocus += LostFocus;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
                 caretImplementation = new ManagedCaret(this);
             else
@@ -108,8 +108,8 @@ namespace ICSharpCode.TextEditor
 
         public void Dispose()
         {
-            textArea.GotFocus  -= new EventHandler(GotFocus);
-            textArea.LostFocus -= new EventHandler(LostFocus);
+            textArea.GotFocus  -= GotFocus;
+            textArea.LostFocus -= LostFocus;
             textArea = null;
             caretImplementation.Dispose();
         }
@@ -149,7 +149,7 @@ namespace ICSharpCode.TextEditor
                         caretCreated = caretImplementation.Create(2, textArea.TextView.FontHeight);
                         break;
                     case CaretMode.OverwriteMode:
-                        caretCreated = caretImplementation.Create((int)textArea.TextView.SpaceWidth, textArea.TextView.FontHeight);
+                        caretCreated = caretImplementation.Create(textArea.TextView.SpaceWidth, textArea.TextView.FontHeight);
                         break;
                 }
             }
@@ -252,9 +252,9 @@ namespace ICSharpCode.TextEditor
             if (hidden || textArea.MotherTextEditorControl.IsInUpdate) {
                 outstandingUpdate = true;
                 return;
-            } else {
-                outstandingUpdate = false;
             }
+
+            outstandingUpdate = false;
             ValidateCaretPos();
             int lineNr = line;
             int xpos = textArea.TextView.GetDrawingXPos(lineNr, column);
@@ -316,7 +316,7 @@ namespace ICSharpCode.TextEditor
 
         private class ManagedCaret : CaretImplementation
         {
-            private readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer { Interval = 300 };
+            private readonly Timer timer = new Timer { Interval = 300 };
             private bool visible;
             private bool blink = true;
             private int x, y, width, height;
@@ -442,7 +442,9 @@ namespace ICSharpCode.TextEditor
                     textArea.Document.UpdateCommited += FirePositionChangedAfterUpdateEnd;
                 }
                 return;
-            } else if (firePositionChangedAfterUpdateEnd) {
+            }
+
+            if (firePositionChangedAfterUpdateEnd) {
                 textArea.Document.UpdateCommited -= FirePositionChangedAfterUpdateEnd;
                 firePositionChangedAfterUpdateEnd = false;
             }

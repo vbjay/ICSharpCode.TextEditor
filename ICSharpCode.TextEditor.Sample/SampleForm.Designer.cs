@@ -1,8 +1,10 @@
-﻿namespace ICSharpCode.TextEditor.Sample
+﻿using System.ComponentModel;
+
+namespace ICSharpCode.TextEditor.Sample
 {
     partial class SampleForm
     {
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         protected override void Dispose(bool disposing)
         {
@@ -46,6 +48,6 @@
 
         #endregion
 
-        private ICSharpCode.TextEditor.TextEditorControl textEditor;
+        private TextEditorControl textEditor;
     }
 }

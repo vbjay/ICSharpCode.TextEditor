@@ -6,6 +6,7 @@
 // </file>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ICSharpCode.TextEditor.Util
@@ -22,21 +23,21 @@ namespace ICSharpCode.TextEditor.Util
         public bool IsValid => node != null;
 
         public T Current {
-            get {
+            get
+            {
                 if (node != null)
                     return node.val;
-                else
-                    throw new InvalidOperationException();
+                throw new InvalidOperationException();
             }
         }
 
-        object System.Collections.IEnumerator.Current => Current;
+        object IEnumerator.Current => Current;
 
         void IDisposable.Dispose()
         {
         }
 
-        void System.Collections.IEnumerator.Reset()
+        void IEnumerator.Reset()
         {
             throw new NotSupportedException();
         }

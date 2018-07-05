@@ -43,12 +43,10 @@ namespace ICSharpCode.TextEditor.Document
                     // equal.
                     return 0;
                 }
-                else
-                {
-                    // If x is null and y is not null, y
-                    // is greater.
-                    return -1;
-                }
+
+                // If x is null and y is not null, y
+                // is greater.
+                return -1;
             }
 
             // If x is not null and y is null, x is greater.

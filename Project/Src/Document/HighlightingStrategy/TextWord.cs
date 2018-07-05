@@ -118,29 +118,29 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         public Color Color {
-            get {
+            get
+            {
                 if (color == null)
                     return Color.Black;
-                else
-                    return color.Color;
+                return color.Color;
             }
         }
 
         public bool Bold {
-            get {
+            get
+            {
                 if (color == null)
                     return false;
-                else
-                    return color.Bold;
+                return color.Bold;
             }
         }
 
         public bool Italic {
-            get {
+            get
+            {
                 if (color == null)
                     return false;
-                else
-                    return color.Italic;
+                return color.Italic;
             }
         }
 
@@ -167,10 +167,10 @@ namespace ICSharpCode.TextEditor.Document
 
             this.document = document;
             this.line  = line;
-            this.Offset = offset;
-            this.Length = length;
+            Offset = offset;
+            Length = length;
             this.color = color;
-            this.HasDefaultColor = hasDefaultColor;
+            HasDefaultColor = hasDefaultColor;
         }
 
         /// <summary>

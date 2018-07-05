@@ -6,6 +6,7 @@
 // </file>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -124,7 +125,7 @@ namespace ICSharpCode.TextEditor.Util
             return Enumerate();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             CheckRead();
             return Enumerate();

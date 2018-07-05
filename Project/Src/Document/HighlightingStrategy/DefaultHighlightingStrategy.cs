@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
+using System.Text;
 
 namespace ICSharpCode.TextEditor.Document
 {
@@ -42,7 +42,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public DefaultHighlightingStrategy(string name)
         {
-            this.Name = name;
+            Name = name;
 
             DigitColor       = new HighlightColor(SystemColors.WindowText, false, false);
             DefaultTextColor = new HighlightColor(SystemColors.WindowText, false, false);
@@ -170,8 +170,7 @@ namespace ICSharpCode.TextEditor.Document
             HighlightColor color;
             if (environmentColors.TryGetValue(name, out color))
                 return color;
-            else
-                return DefaultTextColor;
+            return DefaultTextColor;
         }
 
         public HighlightColor GetColor(IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)
@@ -181,12 +180,13 @@ namespace ICSharpCode.TextEditor.Document
 
         protected virtual HighlightColor GetColor(HighlightRuleSet ruleSet, IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)
         {
-            if (ruleSet != null) {
+            if (ruleSet != null)
+            {
                 if (ruleSet.Reference != null) {
                     return ruleSet.Highlighter.GetColor(document, currentSegment, currentOffset, currentLength);
-                } else {
-                    return (HighlightColor)ruleSet.KeyWords[document,  currentSegment, currentOffset, currentLength];
                 }
+
+                return (HighlightColor)ruleSet.KeyWords[document,  currentSegment, currentOffset, currentLength];
             }
             return null;
         }
@@ -195,18 +195,18 @@ namespace ICSharpCode.TextEditor.Document
         {
             if (aSpan == null) {
                 return defaultRuleSet;
-            } else {
-                if (aSpan.RuleSet != null)
-                {
-                    if (aSpan.RuleSet.Reference != null) {
-                        return aSpan.RuleSet.Highlighter.GetRuleSet(null);
-                    } else {
-                        return aSpan.RuleSet;
-                    }
-                } else {
-                    return null;
-                }
             }
+
+            if (aSpan.RuleSet != null)
+            {
+                if (aSpan.RuleSet.Reference != null) {
+                    return aSpan.RuleSet.Highlighter.GetRuleSet(null);
+                }
+
+                return aSpan.RuleSet;
+            }
+
+            return null;
         }
 
         // Line state variable
@@ -240,7 +240,7 @@ namespace ICSharpCode.TextEditor.Document
                     if (currentSpanStack.IsEmpty) currentSpanStack = null;
                 }
 
-                currentLine = (LineSegment)document.LineSegmentCollection[lineNumber];
+                currentLine = document.LineSegmentCollection[lineNumber];
 
                 if (currentLine.Length == -1) { // happens when buffer is empty !
                     return;
@@ -276,7 +276,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
             }
 
-            currentLine = (LineSegment)document.LineSegmentCollection[lineNumber];
+            currentLine = document.LineSegmentCollection[lineNumber];
 
             if (currentLine.Length == -1) { // happens when buffer is empty !
                 return false;
@@ -317,14 +317,14 @@ namespace ICSharpCode.TextEditor.Document
                     while (!done) {
                         bool blockSpanIn1 = false;
                         while (e1.MoveNext()) {
-                            if (!((Span)e1.Current).StopEOL) {
+                            if (!e1.Current.StopEOL) {
                                 blockSpanIn1 = true;
                                 break;
                             }
                         }
                         bool blockSpanIn2 = false;
                         while (e2.MoveNext()) {
-                            if (!((Span)e2.Current).StopEOL) {
+                            if (!e2.Current.StopEOL) {
                                 blockSpanIn2 = true;
                                 break;
                             }
@@ -638,7 +638,7 @@ namespace ICSharpCode.TextEditor.Document
                 }
 
                 // check if the char is a delimiter
-                if (activeRuleSet != null && (int)ch < 256 && activeRuleSet.Delimiters[(int)ch]) {
+                if (activeRuleSet != null && ch < 256 && activeRuleSet.Delimiters[ch]) {
                     PushCurWord(document, ref markNext, words);
                     if (currentOffset + currentLength +1 < currentLine.Length) {
                         ++currentLength;
@@ -678,8 +678,8 @@ namespace ICSharpCode.TextEditor.Document
                     TextWord prevWord = null;
                     int pInd = words.Count - 1;
                     while (pInd >= 0) {
-                        if (!((TextWord)words[pInd]).IsWhiteSpace) {
-                            prevWord = (TextWord)words[pInd];
+                        if (!words[pInd].IsWhiteSpace) {
+                            prevWord = words[pInd];
                             if (prevWord.HasDefaultColor) {
                                 PrevMarker marker = (PrevMarker)activeRuleSet.PrevMarkers[document, currentLine, currentOffset, currentLength];
                                 if (marker != null) {
@@ -725,7 +725,7 @@ namespace ICSharpCode.TextEditor.Document
                     NextMarker nextMarker = (NextMarker)activeRuleSet.NextMarkers[document, currentLine, currentOffset, currentLength];
                     if (nextMarker != null) {
                         if (nextMarker.MarkMarker && words.Count > 0) {
-                            TextWord prevword = ((TextWord)words[words.Count - 1]);
+                            TextWord prevword = words[words.Count - 1];
                             prevword.SyntaxColor = nextMarker.Color;
                         }
                         markNext = nextMarker.Color;

@@ -17,13 +17,6 @@ namespace ICSharpCode.TextEditor.Document
     public class DefaultFormattingStrategy : IFormattingStrategy
     {
         /// <summary>
-        /// Creates a new instance off <see cref="DefaultFormattingStrategy"/>
-        /// </summary>
-        public DefaultFormattingStrategy()
-        {
-        }
-
-        /// <summary>
         /// returns the whitespaces which are before a non white space character in the line line
         /// as a string.
         /// </summary>

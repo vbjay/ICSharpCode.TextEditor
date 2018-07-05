@@ -8,7 +8,6 @@
 using System;
 using System.Collections;
 using System.Xml;
-
 using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor.Document
@@ -69,7 +68,7 @@ namespace ICSharpCode.TextEditor.Document
             if (el["Delimiters"] != null) {
                 string delimiterString = el["Delimiters"].InnerText;
                 foreach (char ch in delimiterString) {
-                    Delimiters[(int)ch] = true;
+                    Delimiters[ch] = true;
                 }
             }
 

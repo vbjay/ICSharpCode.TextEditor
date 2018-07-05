@@ -10,7 +10,6 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -39,8 +38,8 @@ namespace ICSharpCode.TextEditor
 
         public override Cursor Cursor => RightLeftCursor;
 
-        public override Size Size => new Size((int)(textArea.TextView.WideSpaceWidth
-                                                    * Math.Max(3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1)),
+        public override Size Size => new Size(textArea.TextView.WideSpaceWidth
+                                              * Math.Max(3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1),
             -1);
 
         public override bool IsVisible => textArea.TextEditorProperties.ShowLineNumbers;

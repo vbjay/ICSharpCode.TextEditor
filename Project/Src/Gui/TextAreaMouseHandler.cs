@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -40,15 +39,15 @@ namespace ICSharpCode.TextEditor
 
         public void Attach()
         {
-            textArea.Click       += new EventHandler(TextAreaClick);
-            textArea.MouseMove   += new MouseEventHandler(TextAreaMouseMove);
+            textArea.Click       += TextAreaClick;
+            textArea.MouseMove   += TextAreaMouseMove;
 
-            textArea.MouseDown   += new MouseEventHandler(OnMouseDown);
-            textArea.DoubleClick += new EventHandler(OnDoubleClick);
-            textArea.MouseLeave  += new EventHandler(OnMouseLeave);
-            textArea.MouseUp     += new MouseEventHandler(OnMouseUp);
-            textArea.LostFocus   += new EventHandler(TextAreaLostFocus);
-            textArea.ToolTipRequest += new ToolTipRequestEventHandler(OnToolTipRequest);
+            textArea.MouseDown   += OnMouseDown;
+            textArea.DoubleClick += OnDoubleClick;
+            textArea.MouseLeave  += OnMouseLeave;
+            textArea.MouseUp     += OnMouseUp;
+            textArea.LostFocus   += TextAreaLostFocus;
+            textArea.ToolTipRequest += OnToolTipRequest;
         }
 
         private void OnToolTipRequest(object sender, ToolTipRequestEventArgs e)

@@ -90,8 +90,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             if (IsDeleted)
                 return "[TextAnchor (deleted)]";
-            else
-                return "[TextAnchor " + Location.ToString() + "]";
+            return "[TextAnchor " + Location + "]";
         }
     }
 }

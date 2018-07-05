@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -21,7 +20,7 @@ namespace ICSharpCode.TextEditor
     {
         private int selectedFoldLine = -1;
 
-        public override Size Size => new Size((int)(textArea.TextView.FontHeight),
+        public override Size Size => new Size(textArea.TextView.FontHeight,
             -1);
 
         public override bool IsVisible => textArea.TextEditorProperties.EnableFolding;
@@ -97,7 +96,7 @@ namespace ICSharpCode.TextEditor
 
             int foldMarkerSize = (int)Math.Round(textArea.TextView.FontHeight * 0.57f);
             foldMarkerSize -= (foldMarkerSize) % 2;
-            int foldMarkerYPos = drawingRectangle.Y + (int)((drawingRectangle.Height - foldMarkerSize) / 2);
+            int foldMarkerYPos = drawingRectangle.Y + (drawingRectangle.Height - foldMarkerSize) / 2;
             int xPos = drawingRectangle.X + (drawingRectangle.Width - foldMarkerSize) / 2 + foldMarkerSize / 2;
 
             if (isFoldStart) {
@@ -184,7 +183,7 @@ namespace ICSharpCode.TextEditor
         public override void HandleMouseMove(Point mousepos, MouseButtons mouseButtons)
         {
             bool  showFolding  = textArea.Document.TextEditorProperties.EnableFolding;
-            int   physicalLine = + (int)((mousepos.Y + textArea.VirtualTop.Y) / textArea.TextView.FontHeight);
+            int   physicalLine = + ((mousepos.Y + textArea.VirtualTop.Y) / textArea.TextView.FontHeight);
             int   realline     = textArea.Document.GetFirstLogicalLine(physicalLine);
 
             if (!showFolding || realline < 0 || realline + 1 >= textArea.Document.TotalNumberOfLines) {
@@ -206,7 +205,7 @@ namespace ICSharpCode.TextEditor
         public override void HandleMouseDown(Point mousepos, MouseButtons mouseButtons)
         {
             bool  showFolding  = textArea.Document.TextEditorProperties.EnableFolding;
-            int   physicalLine = + (int)((mousepos.Y + textArea.VirtualTop.Y) / textArea.TextView.FontHeight);
+            int   physicalLine = + ((mousepos.Y + textArea.VirtualTop.Y) / textArea.TextView.FontHeight);
             int   realline     = textArea.Document.GetFirstLogicalLine(physicalLine);
 
             // focus the textarea if the user clicks on the line number view
@@ -243,7 +242,7 @@ namespace ICSharpCode.TextEditor
             g.FillRectangle(BrushRegistry.GetBrush(foldMarkerColor.BackgroundColor), intRect);
             g.DrawRectangle(BrushRegistry.GetPen(isSelected ? selectedFoldLine.Color : foldLineColor.Color), intRect);
 
-            int space  = (int)Math.Round(((double)rectangle.Height) / 8d) + 1;
+            int space  = (int)Math.Round(rectangle.Height / 8d) + 1;
             int mid    = intRect.Height / 2 + intRect.Height % 2;
 
             // draw minus

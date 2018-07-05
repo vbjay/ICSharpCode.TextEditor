@@ -65,10 +65,10 @@ namespace ICSharpCode.TextEditor.Document
         /// </summary>
         public DocumentEventArgs(IDocument document, int offset, int length, string text)
         {
-            this.Document = document;
-            this.Offset   = offset;
-            this.Length   = length;
-            this.Text     = text;
+            Document = document;
+            Offset   = offset;
+            Length   = length;
+            Text     = text;
         }
         public override string ToString()
         {

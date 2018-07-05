@@ -58,11 +58,11 @@ namespace ICSharpCode.TextEditor.Document
         public TextAnchor Anchor { get; private set; }
 
         public TextLocation Location {
-            get {
+            get
+            {
                 if (Anchor != null)
                     return Anchor.Location;
-                else
-                    return location;
+                return location;
             }
             set {
                 location = value;
@@ -99,20 +99,20 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         public int LineNumber {
-            get {
+            get
+            {
                 if (Anchor != null)
                     return Anchor.LineNumber;
-                else
-                    return location.Line;
+                return location.Line;
             }
         }
 
         public int ColumnNumber {
-            get {
+            get
+            {
                 if (Anchor != null)
                     return Anchor.ColumnNumber;
-                else
-                    return location.Column;
+                return location.Column;
             }
         }
 

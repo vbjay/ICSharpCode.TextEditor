@@ -7,8 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
+using ICSharpCode.TextEditor.Util;
 
 namespace ICSharpCode.TextEditor.Document
 {
@@ -75,13 +76,12 @@ namespace ICSharpCode.TextEditor.Document
         {
             if (IsDeleted)
                 return "[LineSegment: (deleted) Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
-            else
-                return "[LineSegment: LineNumber=" + LineNumber + ", Offset = "+ Offset +", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
+            return "[LineSegment: LineNumber=" + LineNumber + ", Offset = "+ Offset +", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
         }
 
         #region Anchor management
 
-        private Util.WeakCollection<TextAnchor> anchors;
+        private WeakCollection<TextAnchor> anchors;
 
         public TextAnchor CreateAnchor(int column)
         {
@@ -97,7 +97,7 @@ namespace ICSharpCode.TextEditor.Document
             Debug.Assert(anchor.Line == this);
 
             if (anchors == null)
-                anchors = new Util.WeakCollection<TextAnchor>();
+                anchors = new WeakCollection<TextAnchor>();
 
             anchors.Add(anchor);
         }

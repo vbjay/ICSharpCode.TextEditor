@@ -95,7 +95,7 @@ namespace ICSharpCode.TextEditor.Undo
         {
             AssertNoUndoGroupOpen();
             if (undostack.Count > 0) {
-                IUndoableOperation uedit = (IUndoableOperation)undostack.Pop();
+                IUndoableOperation uedit = undostack.Pop();
                 redostack.Push(uedit);
                 uedit.Undo();
                 OnActionUndone();
@@ -109,7 +109,7 @@ namespace ICSharpCode.TextEditor.Undo
         {
             AssertNoUndoGroupOpen();
             if (redostack.Count > 0) {
-                IUndoableOperation uedit = (IUndoableOperation)redostack.Pop();
+                IUndoableOperation uedit = redostack.Pop();
                 undostack.Push(uedit);
                 uedit.Redo();
                 OnActionRedone();
@@ -203,7 +203,7 @@ namespace ICSharpCode.TextEditor.Undo
     {
         public OperationEventArgs(IUndoableOperation op)
         {
-            this.Operation = op;
+            Operation = op;
         }
 
         public IUndoableOperation Operation { get; }

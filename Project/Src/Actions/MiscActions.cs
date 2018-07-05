@@ -8,7 +8,6 @@
 using System;
 using System.Diagnostics;
 using System.Text;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor.Actions
@@ -297,7 +296,7 @@ namespace ICSharpCode.TextEditor.Actions
 
             string comment = null;
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("LineComment")) {
-                comment = textArea.Document.HighlightingStrategy.Properties["LineComment"].ToString();
+                comment = textArea.Document.HighlightingStrategy.Properties["LineComment"];
             }
 
             if (comment == null || comment.Length == 0) {
@@ -357,12 +356,12 @@ namespace ICSharpCode.TextEditor.Actions
 
             string commentStart = null;
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin")) {
-                commentStart = textArea.Document.HighlightingStrategy.Properties["BlockCommentBegin"].ToString();
+                commentStart = textArea.Document.HighlightingStrategy.Properties["BlockCommentBegin"];
             }
 
             string commentEnd = null;
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentEnd")) {
-                commentEnd = textArea.Document.HighlightingStrategy.Properties["BlockCommentEnd"].ToString();
+                commentEnd = textArea.Document.HighlightingStrategy.Properties["BlockCommentEnd"];
             }
 
             if (commentStart == null || commentStart.Length == 0 || commentEnd == null || commentEnd.Length == 0) {
@@ -484,10 +483,10 @@ namespace ICSharpCode.TextEditor.Actions
         /// </summary>
         public BlockCommentRegion(string commentStart, string commentEnd, int startOffset, int endOffset)
         {
-            this.CommentStart = commentStart;
-            this.CommentEnd = commentEnd;
-            this.StartOffset = startOffset;
-            this.EndOffset = endOffset;
+            CommentStart = commentStart;
+            CommentEnd = commentEnd;
+            StartOffset = startOffset;
+            EndOffset = endOffset;
         }
 
         public string CommentStart { get; } = String.Empty;

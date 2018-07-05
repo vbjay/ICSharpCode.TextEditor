@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Actions;
 using ICSharpCode.TextEditor.Document;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
@@ -99,8 +98,8 @@ namespace ICSharpCode.TextEditor
 
         public TextArea(TextEditorControl motherTextEditorControl, TextAreaControl motherTextAreaControl)
         {
-            this.MotherTextAreaControl      = motherTextAreaControl;
-            this.MotherTextEditorControl    = motherTextEditorControl;
+            MotherTextAreaControl      = motherTextAreaControl;
+            MotherTextEditorControl    = motherTextEditorControl;
 
             Caret            = new Caret(this);
             SelectionManager = new SelectionManager(Document, this);
@@ -131,9 +130,9 @@ namespace ICSharpCode.TextEditor
             bracketshemes.Add(new BracketHighlightingSheme('(', ')'));
             bracketshemes.Add(new BracketHighlightingSheme('[', ']'));
 
-            Caret.PositionChanged += new EventHandler(SearchMatchingBracket);
-            Document.TextContentChanged += new EventHandler(TextContentChanged);
-            Document.FoldingManager.FoldingsChanged += new EventHandler(DocumentFoldingsChanged);
+            Caret.PositionChanged += SearchMatchingBracket;
+            Document.TextContentChanged += TextContentChanged;
+            Document.FoldingManager.FoldingsChanged += DocumentFoldingsChanged;
         }
 
         public void UpdateMatchingBracket()
@@ -507,9 +506,9 @@ namespace ICSharpCode.TextEditor
             }
             if (TextEditorProperties.SupportReadOnlySegments) {
                 return Document.MarkerStrategy.GetMarkers(offset).Exists(m=>m.IsReadOnly);
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         internal bool IsReadOnly(int offset, int length)
@@ -519,9 +518,9 @@ namespace ICSharpCode.TextEditor
             }
             if (TextEditorProperties.SupportReadOnlySegments) {
                 return Document.MarkerStrategy.GetMarkers(offset, length).Exists(m=>m.IsReadOnly);
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         public void SimulateKeyPress(char ch)
@@ -645,8 +644,7 @@ namespace ICSharpCode.TextEditor
                     return false;
                 if (SelectionManager.HasSomethingSelected)
                     return !SelectionManager.SelectionIsReadonly;
-                else
-                    return !IsReadOnly(Caret.Offset);
+                return !IsReadOnly(Caret.Offset);
             }
         }
 
@@ -774,13 +772,13 @@ namespace ICSharpCode.TextEditor
                 if (!disposed) {
                     disposed = true;
                     if (Caret != null) {
-                        Caret.PositionChanged -= new EventHandler(SearchMatchingBracket);
+                        Caret.PositionChanged -= SearchMatchingBracket;
                         Caret.Dispose();
                     }
 
                     SelectionManager?.Dispose();
-                    Document.TextContentChanged -= new EventHandler(TextContentChanged);
-                    Document.FoldingManager.FoldingsChanged -= new EventHandler(DocumentFoldingsChanged);
+                    Document.TextContentChanged -= TextContentChanged;
+                    Document.FoldingManager.FoldingsChanged -= DocumentFoldingsChanged;
                     MotherTextAreaControl = null;
                     MotherTextEditorControl = null;
                     foreach (AbstractMargin margin in leftMargins) {
@@ -810,7 +808,7 @@ namespace ICSharpCode.TextEditor
 //            }
 
             lineBegin = Document.GetVisibleLine(lineBegin);
-            int y         = Math.Max(    0, (int)(lineBegin * TextView.FontHeight));
+            int y         = Math.Max(    0, lineBegin * TextView.FontHeight);
             y = Math.Max(0, y - virtualTop.Y);
             Rectangle r = new Rectangle(0,
                                         y,
@@ -837,15 +835,15 @@ namespace ICSharpCode.TextEditor
 //                return;
 //            }
 
-            InvalidateLines((int)(xPos * TextView.WideSpaceWidth), lineBegin, lineEnd);
+            InvalidateLines(xPos * TextView.WideSpaceWidth, lineBegin, lineEnd);
         }
 
         private void InvalidateLines(int xPos, int lineBegin, int lineEnd)
         {
             lineBegin     = Math.Max(Document.GetVisibleLine(lineBegin), FirstPhysicalLine);
             lineEnd       = Math.Min(Document.GetVisibleLine(lineEnd),   FirstPhysicalLine + TextView.VisibleLineCount);
-            int y         = Math.Max(    0, (int)(lineBegin  * TextView.FontHeight));
-            int height    = Math.Min(TextView.DrawingPosition.Height, (int)((1 + lineEnd - lineBegin) * (TextView.FontHeight + 1)));
+            int y         = Math.Max(    0, lineBegin  * TextView.FontHeight);
+            int height    = Math.Min(TextView.DrawingPosition.Height, (1 + lineEnd - lineBegin) * (TextView.FontHeight + 1));
 
             Rectangle r = new Rectangle(0,
                                         y - 1 - virtualTop.Y,

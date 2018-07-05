@@ -5,10 +5,10 @@
 //     <version>$Revision$</version>
 // </file>
 
+using System;
 using ICSharpCode.TextEditor.Actions;
 using ICSharpCode.TextEditor.Document;
 using NUnit.Framework;
-using System;
 
 namespace ICSharpCode.TextEditor.Tests
 {

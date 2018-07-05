@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -45,7 +44,7 @@ namespace ICSharpCode.TextEditor
             foreach (Bookmark mark in textArea.Document.BookmarkManager.Marks) {
                 int lineNumber = textArea.Document.GetVisibleLine(mark.LineNumber);
                 int lineHeight = textArea.TextView.FontHeight;
-                int yPos = (int)(lineNumber * lineHeight) - textArea.VirtualTop.Y;
+                int yPos = lineNumber * lineHeight - textArea.VirtualTop.Y;
                 if (IsLineInsideRegion(yPos, yPos + lineHeight, rect.Y, rect.Bottom)) {
                     if (lineNumber == textArea.Document.GetVisibleLine(mark.LineNumber - 1)) {
                         // marker is inside folded region, do not draw it
@@ -234,7 +233,9 @@ namespace ICSharpCode.TextEditor
             if (top >= regionTop && top <= regionBottom) {
                 // Region overlaps the line's top edge.
                 return true;
-            } else if(regionTop > top && regionTop < bottom) {
+            }
+
+            if(regionTop > top && regionTop < bottom) {
                 // Region's top edge inside line.
                 return true;
             }

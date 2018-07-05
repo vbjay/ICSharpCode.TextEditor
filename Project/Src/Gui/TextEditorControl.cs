@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
-
 using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
@@ -34,8 +33,8 @@ namespace ICSharpCode.TextEditor
             get {
                 if (printDocument == null) {
                     printDocument = new PrintDocument();
-                    printDocument.BeginPrint += new PrintEventHandler(BeginPrint);
-                    printDocument.PrintPage  += new PrintPageEventHandler(PrintPage);
+                    printDocument.BeginPrint += BeginPrint;
+                    printDocument.PrintPage  += PrintPage;
                 }
                 return printDocument;
             }
@@ -75,7 +74,7 @@ namespace ICSharpCode.TextEditor
             InitializeTextAreaControl(primaryTextArea);
             Controls.Add(textAreaPanel);
             ResizeRedraw = true;
-            Document.UpdateCommited += new EventHandler(CommitUpdateRequested);
+            Document.UpdateCommited += CommitUpdateRequested;
             OptionsChanged();
         }
 
@@ -168,12 +167,12 @@ namespace ICSharpCode.TextEditor
         {
             if (disposing) {
                 if (printDocument != null) {
-                    printDocument.BeginPrint -= new PrintEventHandler(BeginPrint);
-                    printDocument.PrintPage  -= new PrintPageEventHandler(PrintPage);
+                    printDocument.BeginPrint -= BeginPrint;
+                    printDocument.PrintPage  -= PrintPage;
                     printDocument = null;
                 }
                 Document.UndoStack.ClearAll();
-                Document.UpdateCommited -= new EventHandler(CommitUpdateRequested);
+                Document.UpdateCommited -= CommitUpdateRequested;
                 if (textAreaPanel != null) {
                     if (secondaryTextArea != null) {
                         secondaryTextArea.Dispose();

@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor.Document
         internal FoldingManager(IDocument document, LineManager lineTracker)
         {
             this.document = document;
-            document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
+            document.DocumentChanged += DocumentChanged;
 
 //            lineTracker.LineCountChanged  += new LineManagerEventHandler(LineManagerLineCountChanged);
 //            lineTracker.LineLengthChanged += new LineLengthEventHandler(LineManagerLineLengthChanged);
@@ -78,10 +78,9 @@ namespace ICSharpCode.TextEditor.Document
             {
                 if (x.StartLine < y.StartLine)
                     return -1;
-                else if (x.StartLine == y.StartLine)
+                if (x.StartLine == y.StartLine)
                     return x.StartColumn.CompareTo(y.StartColumn);
-                else
-                    return 1;
+                return 1;
             }
         }
 
@@ -93,10 +92,9 @@ namespace ICSharpCode.TextEditor.Document
             {
                 if (x.EndLine < y.EndLine)
                     return -1;
-                else if (x.EndLine == y.EndLine)
+                if (x.EndLine == y.EndLine)
                     return x.EndColumn.CompareTo(y.EndColumn);
-                else
-                    return 1;
+                return 1;
             }
         }
 

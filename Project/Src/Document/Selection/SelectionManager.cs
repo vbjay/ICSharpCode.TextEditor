@@ -59,8 +59,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             if (document.TextEditorProperties.SupportReadOnlySegments)
                 return document.MarkerStrategy.GetMarkers(sel.Offset, sel.Length).Exists(m=>m.IsReadOnly);
-            else
-                return false;
+            return false;
         }
 
         /// <value>
@@ -92,7 +91,7 @@ namespace ICSharpCode.TextEditor.Document
         public SelectionManager(IDocument document)
         {
             this.document = document;
-            document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
+            document.DocumentChanged += DocumentChanged;
         }
 
         /// <summary>
@@ -102,13 +101,13 @@ namespace ICSharpCode.TextEditor.Document
         {
             this.document = document;
             this.textArea = textArea;
-            document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
+            document.DocumentChanged += DocumentChanged;
         }
 
         public void Dispose()
         {
             if (document != null) {
-                document.DocumentChanged -= new DocumentEventHandler(DocumentChanged);
+                document.DocumentChanged -= DocumentChanged;
                 document = null;
             }
         }
@@ -199,33 +198,33 @@ namespace ICSharpCode.TextEditor.Document
             if (min == max) {
                 //selection.StartPosition = newPosition;
                 return;
-            } else {
-                // changed selection via gutter
-                if (selectFrom.where == WhereFrom.Gutter)
-                {
-                    // selection new position is always at the left edge for gutter selections
-                    newPosition.X = 0;
-                }
+            }
 
-                if (GreaterEqPos(newPosition, SelectionStart)) // selecting forward
-                {
-                    selection.StartPosition = SelectionStart;
-                    // this handles last line selection
-                    if (selectFrom.where == WhereFrom.Gutter ) //&& newPosition.Y != oldPosition.Y)
-                        selection.EndPosition = new TextLocation(textArea.Caret.Column, textArea.Caret.Line);
-                    else {
-                        newPosition.X = oldnewX;
-                        selection.EndPosition = newPosition;
-                    }
-                } else { // selecting back
-                    if (selectFrom.where == WhereFrom.Gutter && selectFrom.first == WhereFrom.Gutter)
-                    { // gutter selection
-                        selection.EndPosition = NextValidPosition(SelectionStart.Y);
-                    } else { // internal text selection
-                        selection.EndPosition = SelectionStart; //selection.StartPosition;
-                    }
-                    selection.StartPosition = newPosition;
+            // changed selection via gutter
+            if (selectFrom.where == WhereFrom.Gutter)
+            {
+                // selection new position is always at the left edge for gutter selections
+                newPosition.X = 0;
+            }
+
+            if (GreaterEqPos(newPosition, SelectionStart)) // selecting forward
+            {
+                selection.StartPosition = SelectionStart;
+                // this handles last line selection
+                if (selectFrom.where == WhereFrom.Gutter ) //&& newPosition.Y != oldPosition.Y)
+                    selection.EndPosition = new TextLocation(textArea.Caret.Column, textArea.Caret.Line);
+                else {
+                    newPosition.X = oldnewX;
+                    selection.EndPosition = newPosition;
                 }
+            } else { // selecting back
+                if (selectFrom.where == WhereFrom.Gutter && selectFrom.first == WhereFrom.Gutter)
+                { // gutter selection
+                    selection.EndPosition = NextValidPosition(SelectionStart.Y);
+                } else { // internal text selection
+                    selection.EndPosition = SelectionStart; //selection.StartPosition;
+                }
+                selection.StartPosition = newPosition;
             }
 
             document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.LinesBetween, min.Y, max.Y));
@@ -241,8 +240,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             if (line < document.TotalNumberOfLines - 1)
                 return new TextLocation(0, line + 1);
-            else
-                return new TextLocation(document.GetLineSegment(document.TotalNumberOfLines - 1).Length + 1, line);
+            return new TextLocation(document.GetLineSegment(document.TotalNumberOfLines - 1).Length + 1, line);
         }
 
         private void ClearWithoutUpdate()
@@ -441,10 +439,6 @@ namespace ICSharpCode.TextEditor.Document
     internal class SelectFrom {
         public int where = WhereFrom.None; // last selection initiator
         public int first = WhereFrom.None; // first selection initiator
-
-        public SelectFrom()
-        {
-        }
     }
 
     // selection initiated from type...

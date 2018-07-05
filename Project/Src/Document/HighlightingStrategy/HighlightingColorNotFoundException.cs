@@ -10,10 +10,10 @@ using System.Runtime.Serialization;
 
 namespace ICSharpCode.TextEditor.Document
 {
-    [Serializable()]
+    [Serializable]
     public class HighlightingColorNotFoundException : Exception
     {
-        public HighlightingColorNotFoundException() : base()
+        public HighlightingColorNotFoundException()
         {
         }
 

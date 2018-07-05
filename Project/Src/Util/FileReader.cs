@@ -60,13 +60,13 @@ namespace ICSharpCode.TextEditor.Util
                     default:
                         return AutoDetect(fs, (byte)firstByte, (byte)secondByte, defaultEncoding);
                 }
-            } else {
-                if (defaultEncoding != null) {
-                    return new StreamReader(fs, defaultEncoding);
-                } else {
-                    return new StreamReader(fs);
-                }
             }
+
+            if (defaultEncoding != null) {
+                return new StreamReader(fs, defaultEncoding);
+            }
+
+            return new StreamReader(fs);
         }
 
         private static StreamReader AutoDetect(Stream fs, byte firstByte, byte secondByte, Encoding defaultEncoding)
@@ -100,7 +100,9 @@ namespace ICSharpCode.TextEditor.Util
                         if (sequenceLength < 0) {
                             state = Error;
                             break;
-                        } else if (sequenceLength == 0) {
+                        }
+
+                        if (sequenceLength == 0) {
                             state = UTF8;
                         }
                     } else {

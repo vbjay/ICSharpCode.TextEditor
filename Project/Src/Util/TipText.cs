@@ -27,17 +27,17 @@ namespace ICSharpCode.TextEditor.Util
             float triHeight4 = triHeight / 4;
             brush = Brushes.Black;
             if (flipped) {
-                Graphics.FillPolygon(brush, new PointF[] {
+                Graphics.FillPolygon(brush, new[] {
                                               new PointF(x,                y + triHeight2 - triHeight4),
                                               new PointF(x + triWidth / 2, y + triHeight2 + triHeight4),
-                                              new PointF(x + triWidth,     y + triHeight2 - triHeight4),
+                                              new PointF(x + triWidth,     y + triHeight2 - triHeight4)
                                           });
 
             } else {
-                Graphics.FillPolygon(brush, new PointF[] {
+                Graphics.FillPolygon(brush, new[] {
                                               new PointF(x,                y +  triHeight2 + triHeight4),
                                               new PointF(x + triWidth / 2, y +  triHeight2 - triHeight4),
-                                              new PointF(x + triWidth,     y +  triHeight2 + triHeight4),
+                                              new PointF(x + triWidth,     y +  triHeight2 + triHeight4)
                                           });
             }
         }

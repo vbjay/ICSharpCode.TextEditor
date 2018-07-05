@@ -50,7 +50,7 @@ namespace ICSharpCode.TextEditor.Util
             SizeF availableArea = MaximumSize;
 
             for (int i = 0; i < tipSections.Length; i ++) {
-                TipSection section = (TipSection)tipSections[i];
+                TipSection section = tipSections[i];
 
                 section.SetMaximumSize(availableArea);
 

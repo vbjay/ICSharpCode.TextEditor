@@ -7,17 +7,18 @@
 
 using System;
 using System.Text;
+using System.Threading;
 
 namespace ICSharpCode.TextEditor.Document
 {
     public class GapTextBufferStrategy : ITextBufferStrategy
     {
         #if DEBUG
-        private readonly int creatorThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
+        private readonly int creatorThread = Thread.CurrentThread.ManagedThreadId;
 
         private void CheckThread()
         {
-            if (System.Threading.Thread.CurrentThread.ManagedThreadId != creatorThread)
+            if (Thread.CurrentThread.ManagedThreadId != creatorThread)
                 throw new InvalidOperationException("GapTextBufferStategy is not thread-safe!");
         }
         #endif
@@ -51,7 +52,7 @@ namespace ICSharpCode.TextEditor.Document
             #endif
 
             if (offset < 0 || offset >= Length) {
-                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset < " + Length.ToString());
+                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset < " + Length);
             }
 
             return offset < gapBeginOffset ? buffer[offset] : buffer[offset + gapLength];
@@ -64,19 +65,19 @@ namespace ICSharpCode.TextEditor.Document
             #endif
 
             if (offset < 0 || offset > Length) {
-                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length.ToString());
+                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length);
             }
             if (length < 0 || offset + length > Length) {
-                throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset(" + offset + ")+length <= " + Length.ToString());
+                throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset(" + offset + ")+length <= " + Length);
             }
-            if (offset == 0 && length == Length) {
+            if (offset == 0 && length == Length)
+            {
                 if (cachedContent != null)
                     return cachedContent;
-                else
-                    return cachedContent = GetTextInternal(offset, length);
-            } else {
-                return GetTextInternal(offset, length);
+                return cachedContent = GetTextInternal(offset, length);
             }
+
+            return GetTextInternal(offset, length);
         }
 
         private string GetTextInternal(int offset, int length)
@@ -121,10 +122,10 @@ namespace ICSharpCode.TextEditor.Document
             #endif
 
             if (offset < 0 || offset > Length) {
-                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length.ToString());
+                throw new ArgumentOutOfRangeException("offset", offset, "0 <= offset <= " + Length);
             }
             if (length < 0 || offset + length > Length) {
-                throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset+length <= " + Length.ToString());
+                throw new ArgumentOutOfRangeException("length", length, "0 <= length, offset+length <= " + Length);
             }
 
             cachedContent = null;
