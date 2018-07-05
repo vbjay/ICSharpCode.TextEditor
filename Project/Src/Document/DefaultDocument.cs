@@ -279,7 +279,7 @@ namespace ICSharpCode.TextEditor.Document
         public void UpdateSegmentListOnDocumentChange<T>(List<T> list, DocumentEventArgs e) where T : ISegment
         {
             var removedCharacters = e.Length > 0 ? e.Length : 0;
-            var insertedCharacters = e.Text != null ? e.Text.Length : 0;
+            var insertedCharacters = e.Text?.Length ?? 0;
             for (var i = 0; i < list.Count; ++i)
             {
                 ISegment s = list[i];

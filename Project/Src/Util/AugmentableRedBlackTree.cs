@@ -426,7 +426,7 @@ namespace ICSharpCode.TextEditor.Util
 
         private static bool GetColor(RedBlackTreeNode<T> node)
         {
-            return node != null ? node.color : BLACK;
+            return node != null && node.color;
         }
 
         private void FixTreeOnDelete(RedBlackTreeNode<T> node, RedBlackTreeNode<T> parentNode)

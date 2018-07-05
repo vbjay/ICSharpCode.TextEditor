@@ -164,7 +164,7 @@ namespace ICSharpCode.TextEditor.Document
 
         private static int GetIndexFromNode(RedBlackTreeNode<RBNode> node)
         {
-            var index = node.left != null ? node.left.val.count : 0;
+            var index = node.left?.val.count ?? 0;
             while (node.parent != null)
             {
                 if (node == node.parent.right)
@@ -210,7 +210,7 @@ namespace ICSharpCode.TextEditor.Document
 
         private static int GetOffsetFromNode(RedBlackTreeNode<RBNode> node)
         {
-            var offset = node.left != null ? node.left.val.totalLength : 0;
+            var offset = node.left?.val.totalLength ?? 0;
             while (node.parent != null)
             {
                 if (node == node.parent.right)

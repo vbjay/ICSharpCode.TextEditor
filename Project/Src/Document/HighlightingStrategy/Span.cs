@@ -70,7 +70,7 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
-        public HighlightColor EndColor => endColor != null ? endColor : Color;
+        public HighlightColor EndColor => endColor ?? Color;
 
         public char[] Begin { get; }
 

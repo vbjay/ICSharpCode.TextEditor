@@ -760,7 +760,7 @@ namespace ICSharpCode.TextEditor
                 {
                     var line = Document.GetLineSegment(lineNumber);
                     var nextFolding = FindNextFoldedFoldingOnLineAfterColumn(lineNumber, start - 1);
-                    var end = nextFolding != null ? nextFolding.StartColumn : int.MaxValue;
+                    var end = nextFolding?.StartColumn ?? int.MaxValue;
                     result = GetLogicalColumnInternal(g, line, start, end, ref posX, visualPosX);
 
                     // break when GetLogicalColumnInternal found the result column
