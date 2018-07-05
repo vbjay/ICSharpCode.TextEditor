@@ -80,13 +80,12 @@ namespace ICSharpCode.TextEditor
 
         public override void HandleMouseDown(Point mousepos, MouseButtons mouseButtons)
         {
-            TextLocation selectionStartPos;
-
             textArea.SelectionManager.selectFrom.where = WhereFrom.Gutter;
             var realline = textArea.TextView.GetLogicalLine(mousepos.Y);
             if (realline >= 0 && realline < textArea.Document.TotalNumberOfLines)
             {
                 // shift-select
+                TextLocation selectionStartPos;
                 if ((Control.ModifierKeys & Keys.Shift) != 0)
                 {
                     if (!textArea.SelectionManager.HasSomethingSelected && realline != textArea.Caret.Position.Y)

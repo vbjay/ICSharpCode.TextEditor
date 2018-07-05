@@ -356,12 +356,11 @@ namespace ICSharpCode.TextEditor
 
             var currentWordOffset = 0; // we cannot use currentWord.Offset because it is not set on space words
 
-            TextWord currentWord;
             TextWord nextCurrentWord = null;
             var fontContainer = TextEditorProperties.FontContainer;
             for (var wordIdx = 0; wordIdx < currentLine.Words.Count; wordIdx++)
             {
-                currentWord = currentLine.Words[wordIdx];
+                var currentWord = currentLine.Words[wordIdx];
                 if (currentWordOffset < startColumn)
                 {
                     // TODO: maybe we need to split at startColumn when we support fold markers

@@ -81,9 +81,9 @@ namespace ICSharpCode.TextEditor.Util
             const int UTF8Sequence = 3;
             var state = ASCII;
             var sequenceLength = 0;
-            byte b;
             for (var i = 0; i < max; i++)
             {
+                byte b;
                 if (i == 0)
                     b = firstByte;
                 else if (i == 1)
