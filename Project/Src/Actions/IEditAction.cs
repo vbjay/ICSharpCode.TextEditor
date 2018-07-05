@@ -36,21 +36,12 @@ namespace ICSharpCode.TextEditor.Actions
 	/// </summary>
 	public abstract class AbstractEditAction : IEditAction
 	{
-	    private Keys[] keys = null;
-		
-		/// <value>
+	    /// <value>
 		/// An array of keys on which this edit action occurs.
 		/// </value>
-		public Keys[] Keys {
-			get {
-				return keys;
-			}
-			set {
-				keys = value;
-			}
-		}
-		
-		/// <remarks>
+		public Keys[] Keys { get; set; } = null;
+
+	    /// <remarks>
 		/// When the key which is defined per XML is pressed, this method will be launched.
 		/// </remarks>
 		public abstract void Execute(TextArea textArea);

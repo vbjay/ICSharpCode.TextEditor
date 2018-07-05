@@ -25,31 +25,14 @@ namespace ICSharpCode.TextEditor
 	
 	public class BracketHighlightingSheme
 	{
-	    private char opentag;
-	    private char closingtag;
-		
-		public char OpenTag {
-			get {
-				return opentag;
-			}
-			set {
-				opentag = value;
-			}
-		}
-		
-		public char ClosingTag {
-			get {
-				return closingtag;
-			}
-			set {
-				closingtag = value;
-			}
-		}
-		
-		public BracketHighlightingSheme(char opentag, char closingtag)
+	    public char OpenTag { get; set; }
+
+	    public char ClosingTag { get; set; }
+
+	    public BracketHighlightingSheme(char opentag, char closingtag)
 		{
-			this.opentag    = opentag;
-			this.closingtag = closingtag;
+			this.OpenTag    = opentag;
+			this.ClosingTag = closingtag;
 		}
 		
 		public Highlight GetHighlight(IDocument document, int offset)
@@ -63,17 +46,17 @@ namespace ICSharpCode.TextEditor
 			char word = document.GetCharAt(Math.Max(0, Math.Min(document.TextLength - 1, searchOffset)));
 			
 			TextLocation endP = document.OffsetToPosition(searchOffset);
-			if (word == opentag) {
+			if (word == OpenTag) {
 				if (searchOffset < document.TextLength) {
-					int bracketOffset = TextUtilities.SearchBracketForward(document, searchOffset + 1, opentag, closingtag);
+					int bracketOffset = TextUtilities.SearchBracketForward(document, searchOffset + 1, OpenTag, ClosingTag);
 					if (bracketOffset >= 0) {
 						TextLocation p = document.OffsetToPosition(bracketOffset);
 						return new Highlight(p, endP);
 					}
 				}
-			} else if (word == closingtag) {
+			} else if (word == ClosingTag) {
 				if (searchOffset > 0) {
-					int bracketOffset = TextUtilities.SearchBracketBackward(document, searchOffset - 1, opentag, closingtag);
+					int bracketOffset = TextUtilities.SearchBracketBackward(document, searchOffset - 1, OpenTag, ClosingTag);
 					if (bracketOffset >= 0) {
 						TextLocation p = document.OffsetToPosition(bracketOffset);
 						return new Highlight(p, endP);

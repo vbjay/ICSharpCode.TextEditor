@@ -17,7 +17,6 @@ namespace ICSharpCode.TextEditor.Document
 	public class DefaultSelection : ISelection
 	{
 	    private readonly IDocument document;
-	    private bool      isRectangularSelection;
 	    private TextLocation     startPosition;
 	    private TextLocation     endPosition;
 		
@@ -72,16 +71,9 @@ namespace ICSharpCode.TextEditor.Document
 		/// Returns true, if the selection is rectangular
 		/// </value>
 		// TODO : make this unused property used.
-		public bool IsRectangularSelection {
-			get {
-				return isRectangularSelection;
-			}
-			set {
-				isRectangularSelection = value;
-			}
-		}
-		
-		/// <value>
+		public bool IsRectangularSelection { get; set; }
+
+	    /// <value>
 		/// The text which is selected by this selection.
 		/// </value>
 		public string SelectedText {

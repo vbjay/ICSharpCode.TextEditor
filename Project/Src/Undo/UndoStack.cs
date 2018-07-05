@@ -226,16 +226,10 @@ namespace ICSharpCode.TextEditor.Undo
 	{
 		public OperationEventArgs(IUndoableOperation op)
 		{
-			this.op = op;
+			this.Operation = op;
 		}
 
-	    private readonly IUndoableOperation op;
-		
-		public IUndoableOperation Operation {
-			get {
-				return op;
-			}
-		}
+	    public IUndoableOperation Operation { get; }
 	}
 	
 	public delegate void OperationEventHandler(object sender, OperationEventArgs e);

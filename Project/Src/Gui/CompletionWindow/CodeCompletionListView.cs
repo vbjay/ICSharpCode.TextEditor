@@ -19,18 +19,10 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	    private readonly ICompletionData[] completionData;
 	    private int               firstItem    = 0;
 	    private int               selectedItem = -1;
-	    private ImageList         imageList;
-		
-		public ImageList ImageList {
-			get {
-				return imageList;
-			}
-			set {
-				imageList = value;
-			}
-		}
-		
-		public int FirstItem {
+
+	    public ImageList ImageList { get; set; }
+
+	    public int FirstItem {
 			get {
 				return firstItem;
 			}
@@ -53,7 +45,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 		
 		public int ItemHeight {
 			get {
-				return Math.Max(imageList.ImageSize.Height, (int)(Font.Height * 1.25));
+				return Math.Max(ImageList.ImageSize.Height, (int)(Font.Height * 1.25));
 			}
 		}
 		
@@ -217,7 +209,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			float yPos       = 1;
 			float itemHeight = ItemHeight;
 			// Maintain aspect ratio
-			int imageWidth = (int)(itemHeight * imageList.ImageSize.Width / imageList.ImageSize.Height);
+			int imageWidth = (int)(itemHeight * ImageList.ImageSize.Width / ImageList.ImageSize.Height);
 			
 			int curItem = firstItem;
 			Graphics g  = pe.Graphics;
@@ -233,8 +225,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 					
 					// draw Icon
 					int   xPos   = 0;
-					if (imageList != null && completionData[curItem].ImageIndex < imageList.Images.Count) {
-						g.DrawImage(imageList.Images[completionData[curItem].ImageIndex], new RectangleF(1, yPos, imageWidth, itemHeight));
+					if (ImageList != null && completionData[curItem].ImageIndex < ImageList.Images.Count) {
+						g.DrawImage(ImageList.Images[completionData[curItem].ImageIndex], new RectangleF(1, yPos, imageWidth, itemHeight));
 						xPos = imageWidth;
 					}
 					

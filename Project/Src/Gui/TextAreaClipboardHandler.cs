@@ -252,17 +252,11 @@ namespace ICSharpCode.TextEditor
 	public delegate void CopyTextEventHandler(object sender, CopyTextEventArgs e);
 	public class CopyTextEventArgs : EventArgs
 	{
-	    private readonly string text;
-		
-		public string Text {
-			get {
-				return text;
-			}
-		}
-		
-		public CopyTextEventArgs(string text)
+	    public string Text { get; }
+
+	    public CopyTextEventArgs(string text)
 		{
-			this.text = text;
+			this.Text = text;
 		}
 	}
 }

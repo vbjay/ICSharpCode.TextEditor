@@ -51,9 +51,6 @@ namespace ICSharpCode.TextEditor.Document
                                  length);
         }
 
-        private bool      isFolded = false;
-        private readonly string    foldText = "...";
-        private FoldType  foldType = FoldType.Unspecified;
         private readonly IDocument document = null;
         private int startLine = -1, startColumn, endLine = -1, endColumn;
 
@@ -71,12 +68,9 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 		
-		public FoldType FoldType {
-			get { return foldType; }
-			set { foldType = value; }
-		}
-		
-		public int StartLine {
+		public FoldType FoldType { get; set; } = FoldType.Unspecified;
+
+        public int StartLine {
 			get {
 				if (startLine < 0) {
 					GetPointForOffset(document, offset, out startLine, out startColumn);
@@ -112,22 +106,11 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 		
-		public bool IsFolded {
-			get {
-				return isFolded;
-			}
-			set {
-				isFolded = value;
-			}
-		}
-		
-		public string FoldText {
-			get {
-				return foldText;
-			}
-		}
-		
-		public string InnerText {
+		public bool IsFolded { get; set; } = false;
+
+        public string FoldText { get; } = "...";
+
+        public string InnerText {
 			get {
 				return document.GetText(offset, length);
 			}
@@ -138,8 +121,8 @@ namespace ICSharpCode.TextEditor.Document
 			this.document = document;
 			this.offset   = offset;
 			this.length   = length;
-			this.foldText = foldText;
-			this.isFolded = isFolded;
+			this.FoldText = foldText;
+			this.IsFolded = isFolded;
 		}
 		
 		public FoldMarker(IDocument document, int startLine, int startColumn, int endLine, int endColumn) : this(document, startLine, startColumn, endLine, endColumn, FoldType.Unspecified)
@@ -170,10 +153,10 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			
 			FoldType = foldType;
-			this.foldText = foldText;
+			this.FoldText = foldText;
 			offset = startLineSegment.Offset + Math.Min(startColumn, startLineSegment.Length);
 			length = (endLineSegment.Offset + Math.Min(endColumn, endLineSegment.Length)) - offset;
-			this.isFolded = isFolded;
+			this.IsFolded = isFolded;
 		}
 		
 		public int CompareTo(object o)

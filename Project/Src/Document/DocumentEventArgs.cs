@@ -19,48 +19,27 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class DocumentEventArgs : EventArgs
 	{
-	    private readonly IDocument document;
-	    private readonly int       offset;
-	    private readonly int       length;
-	    private readonly string    text;
-		
-		/// <returns>
+	    /// <returns>
 		/// always a valid Document which is related to the Event.
 		/// </returns>
-		public IDocument Document {
-			get {
-				return document;
-			}
-		}
-		
-		/// <returns>
+		public IDocument Document { get; }
+
+	    /// <returns>
 		/// -1 if no offset was specified for this event
 		/// </returns>
-		public int Offset {
-			get {
-				return offset;
-			}
-		}
-		
-		/// <returns>
+		public int Offset { get; }
+
+	    /// <returns>
 		/// null if no text was specified for this event
 		/// </returns>
-		public string Text {
-			get {
-				return text;
-			}
-		}
-		
-		/// <returns>
+		public string Text { get; }
+
+	    /// <returns>
 		/// -1 if no length was specified for this event
 		/// </returns>
-		public int Length {
-			get {
-				return length;
-			}
-		}
-		
-		/// <summary>
+		public int Length { get; }
+
+	    /// <summary>
 		/// Creates a new instance off <see cref="DocumentEventArgs"/>
 		/// </summary>
 		public DocumentEventArgs(IDocument document) : this(document, -1, -1, null)
@@ -86,10 +65,10 @@ namespace ICSharpCode.TextEditor.Document
 		/// </summary>
 		public DocumentEventArgs(IDocument document, int offset, int length, string text)
 		{
-			this.document = document;
-			this.offset   = offset;
-			this.length   = length;
-			this.text     = text;
+			this.Document = document;
+			this.Offset   = offset;
+			this.Length   = length;
+			this.Text     = text;
 		}
 		public override string ToString()
 		{

@@ -26,9 +26,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	public class DeclarationViewWindow : Form, IDeclarationViewWindow
 	{
 	    private string description = String.Empty;
-	    private bool fixedWidth;
-		
-		public string Description {
+
+	    public string Description {
 			get {
 				return description;
 			}
@@ -43,16 +42,9 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 			}
 		}
 		
-		public bool FixedWidth {
-			get {
-				return fixedWidth;
-			}
-			set {
-				fixedWidth = value;
-			}
-		}
-		
-		public int GetRequiredLeftHandSideWidth(Point p) {
+		public bool FixedWidth { get; set; }
+
+	    public int GetRequiredLeftHandSideWidth(Point p) {
 			if (description != null && description.Length > 0) {
 				using (Graphics g = CreateGraphics()) {
 					Size s = TipPainterTools.GetLeftHandSideDrawingSizeHelpTipFromCombinedDescription(this, g, Font, null, description, p);
@@ -109,7 +101,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 		protected override void OnPaint(PaintEventArgs pe)
 		{
 			if (description != null && description.Length > 0) {
-				if (fixedWidth) {
+				if (FixedWidth) {
 					TipPainterTools.DrawFixedWidthHelpTipFromCombinedDescription(this, pe.Graphics, Font, null, description);
 				} else {
 					TipPainterTools.DrawHelpTipFromCombinedDescription(this, pe.Graphics, Font, null, description);

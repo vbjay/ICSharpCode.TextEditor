@@ -27,27 +27,16 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class TextAreaUpdate
 	{
-	    private readonly TextLocation position;
-	    private readonly TextAreaUpdateType type;
-		
-		public TextAreaUpdateType TextAreaUpdateType {
-			get {
-				return type;
-			}
-		}
-		
-		public TextLocation Position {
-			get {
-				return position;
-			}
-		}
-		
-		/// <summary>
+	    public TextAreaUpdateType TextAreaUpdateType { get; }
+
+	    public TextLocation Position { get; }
+
+	    /// <summary>
 		/// Creates a new instance of <see cref="TextAreaUpdate"/>
 		/// </summary>
 		public TextAreaUpdate(TextAreaUpdateType type)
 		{
-			this.type = type;
+			this.TextAreaUpdateType = type;
 		}
 		
 		/// <summary>
@@ -55,8 +44,8 @@ namespace ICSharpCode.TextEditor
 		/// </summary>
 		public TextAreaUpdate(TextAreaUpdateType type, TextLocation position)
 		{
-			this.type     = type;
-			this.position = position;
+			this.TextAreaUpdateType     = type;
+			this.Position = position;
 		}
 		
 		/// <summary>
@@ -64,8 +53,8 @@ namespace ICSharpCode.TextEditor
 		/// </summary>
 		public TextAreaUpdate(TextAreaUpdateType type, int startLine, int endLine)
 		{
-			this.type     = type;
-			position = new TextLocation(startLine, endLine);
+			this.TextAreaUpdateType     = type;
+			Position = new TextLocation(startLine, endLine);
 		}
 		
 		/// <summary>
@@ -73,13 +62,13 @@ namespace ICSharpCode.TextEditor
 		/// </summary>
 		public TextAreaUpdate(TextAreaUpdateType type, int singleLine)
 		{
-			this.type     = type;
-			position = new TextLocation(0, singleLine);
+			this.TextAreaUpdateType     = type;
+			Position = new TextLocation(0, singleLine);
 		}
 		
 		public override string ToString()
 		{
-			return String.Format("[TextAreaUpdate: Type={0}, Position={1}]", type, position);
+			return String.Format("[TextAreaUpdate: Type={0}, Position={1}]", TextAreaUpdateType, Position);
 		}
 	}
 }

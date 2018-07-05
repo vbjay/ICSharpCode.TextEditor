@@ -18,18 +18,13 @@ namespace ICSharpCode.TextEditor.Util
 	{
 	    private readonly Node root = new Node(null, null);
 	    private readonly bool casesensitive;
-	    private int  length;
-		
-		/// <value>
+
+	    /// <value>
 		/// The number of elements in the table
 		/// </value>
-		public int Count {
-			get {
-				return length;
-			}
-		}
-		
-		/// <summary>
+		public int Count { get; private set; }
+
+	    /// <summary>
 		/// Get the object, which was inserted under the keyword (line, at offset, with length length),
 		/// returns null, if no such keyword was inserted.
 		/// </summary>
@@ -83,7 +78,7 @@ namespace ICSharpCode.TextEditor.Util
 				if (!casesensitive) {
 					keyword = keyword.ToUpper();
 				}
-				++length;
+				++Count;
 				
 				// insert word into the tree
 				for (int i = 0; i < keyword.Length; ++i) {

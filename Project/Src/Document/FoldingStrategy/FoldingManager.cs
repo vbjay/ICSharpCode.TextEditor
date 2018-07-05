@@ -16,7 +16,6 @@ namespace ICSharpCode.TextEditor.Document
 	{
 	    private List<FoldMarker>    foldMarker      = new List<FoldMarker>();
 	    private List<FoldMarker>    foldMarkerByEnd = new List<FoldMarker>();
-	    private IFoldingStrategy    foldingStrategy = null;
 	    private readonly IDocument document;
 		
 		public IList<FoldMarker> FoldMarker {
@@ -25,16 +24,9 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 		
-		public IFoldingStrategy FoldingStrategy {
-			get {
-				return foldingStrategy;
-			}
-			set {
-				foldingStrategy = value;
-			}
-		}
-		
-		internal FoldingManager(IDocument document, LineManager lineTracker)
+		public IFoldingStrategy FoldingStrategy { get; set; } = null;
+
+	    internal FoldingManager(IDocument document, LineManager lineTracker)
 		{
 			this.document = document;
 			document.DocumentChanged += new DocumentEventHandler(DocumentChanged);
@@ -237,7 +229,7 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public void UpdateFoldings(string fileName, object parseInfo)
 		{
-			UpdateFoldings(foldingStrategy.GenerateFoldMarkers(document, fileName, parseInfo));
+			UpdateFoldings(FoldingStrategy.GenerateFoldMarkers(document, fileName, parseInfo));
 		}
 		
 		public void UpdateFoldings(List<FoldMarker> newFoldings)

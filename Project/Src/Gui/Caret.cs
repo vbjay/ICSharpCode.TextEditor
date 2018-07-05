@@ -37,7 +37,6 @@ namespace ICSharpCode.TextEditor
 	{
 	    private int       line          = 0;
 	    private int       column        = 0;
-	    private int       desiredXPos   = 0;
 	    private CaretMode caretMode;
 
 	    private static bool     caretCreated = false;
@@ -51,16 +50,9 @@ namespace ICSharpCode.TextEditor
 		/// The 'prefered' xPos in which the caret moves, when it is moved
 		/// up/down. Measured in pixels, not in characters!
 		/// </value>
-		public int DesiredColumn {
-			get {
-				return desiredXPos;
-			}
-			set {
-				desiredXPos = value;
-			}
-		}
-		
-		/// <value>
+		public int DesiredColumn { get; set; } = 0;
+
+	    /// <value>
 		/// The current caret mode.
 		/// </value>
 		public CaretMode CaretMode {

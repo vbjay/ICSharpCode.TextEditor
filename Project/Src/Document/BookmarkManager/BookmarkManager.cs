@@ -22,8 +22,7 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class BookmarkManager
 	{
-	    private readonly IDocument      document;
-		#if DEBUG
+#if DEBUG
 	    private readonly IList<Bookmark> bookmark = new CheckedList<Bookmark>();
 		#else
 		List<Bookmark> bookmark = new List<Bookmark>();
@@ -38,18 +37,14 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 		
-		public IDocument Document {
-			get {
-				return document;
-			}
-		}
-		
-		/// <summary>
+		public IDocument Document { get; }
+
+	    /// <summary>
 		/// Creates a new instance of <see cref="BookmarkManager"/>
 		/// </summary>
 		internal BookmarkManager(IDocument document, LineManager lineTracker)
 		{
-			this.document = document;
+			this.Document = document;
 		}
 		
 		/// <summary>
@@ -65,9 +60,9 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			Bookmark newMark;
 			if (Factory != null) {
-				newMark = Factory.CreateBookmark(document, location);
+				newMark = Factory.CreateBookmark(Document, location);
 			} else {
-				newMark = new Bookmark(document, location);
+				newMark = new Bookmark(Document, location);
 			}
 			
 			Type newMarkType = newMark.GetType();

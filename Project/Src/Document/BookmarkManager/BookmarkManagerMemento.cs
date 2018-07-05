@@ -16,30 +16,21 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class BookmarkManagerMemento
 	{
-	    private List<int> bookmarks = new List<int>();
-		
-		/// <value>
+	    /// <value>
 		/// Contains all bookmarks as int values
 		/// </value>
-		public List<int> Bookmarks {
-			get {
-				return bookmarks;
-			}
-			set {
-				bookmarks = value;
-			}
-		}
-		
-		/// <summary>
+		public List<int> Bookmarks { get; set; } = new List<int>();
+
+	    /// <summary>
 		/// Validates all bookmarks if they're in range of the document.
 		/// (removing all bookmarks &lt; 0 and bookmarks &gt; max. line number
 		/// </summary>
 		public void CheckMemento(IDocument document)
 		{
-			for (int i = 0; i < bookmarks.Count; ++i) {
-				int mark = (int)bookmarks[i];
+			for (int i = 0; i < Bookmarks.Count; ++i) {
+				int mark = (int)Bookmarks[i];
 				if (mark < 0 || mark >= document.TotalNumberOfLines) {
-					bookmarks.RemoveAt(i);
+					Bookmarks.RemoveAt(i);
 					--i;
 				}
 			}
@@ -58,7 +49,7 @@ namespace ICSharpCode.TextEditor.Document
 		public BookmarkManagerMemento(XmlElement element)
 		{
 			foreach (XmlElement el in element.ChildNodes) {
-				bookmarks.Add(Int32.Parse(el.Attributes["line"].InnerText));
+				Bookmarks.Add(Int32.Parse(el.Attributes["line"].InnerText));
 			}
 		}
 		
@@ -67,7 +58,7 @@ namespace ICSharpCode.TextEditor.Document
 		/// </summary>
 		public BookmarkManagerMemento(List<int> bookmarks)
 		{
-			this.bookmarks = bookmarks;
+			this.Bookmarks = bookmarks;
 		}
 		
 		/// <summary>
@@ -85,7 +76,7 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			XmlElement bookmarknode  = doc.CreateElement("Bookmarks");
 			
-			foreach (int line in bookmarks) {
+			foreach (int line in Bookmarks) {
 				XmlElement markNode = doc.CreateElement("Mark");
 				
 				XmlAttribute lineAttr = doc.CreateAttribute("line");

@@ -481,54 +481,33 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class BlockCommentRegion
 	{
-	    private readonly string commentStart = String.Empty;
-	    private readonly string commentEnd = String.Empty;
-	    private readonly int startOffset = -1;
-	    private readonly int endOffset = -1;
-		
-		/// <summary>
+	    /// <summary>
 		/// The end offset is the offset where the comment end string starts from.
 		/// </summary>
 		public BlockCommentRegion(string commentStart, string commentEnd, int startOffset, int endOffset)
 		{
-			this.commentStart = commentStart;
-			this.commentEnd = commentEnd;
-			this.startOffset = startOffset;
-			this.endOffset = endOffset;
+			this.CommentStart = commentStart;
+			this.CommentEnd = commentEnd;
+			this.StartOffset = startOffset;
+			this.EndOffset = endOffset;
 		}
 		
-		public string CommentStart {
-			get {
-				return commentStart;
-			}
-		}
-		
-		public string CommentEnd {
-			get {
-				return commentEnd;
-			}
-		}
-		
-		public int StartOffset {
-			get {
-				return startOffset;
-			}
-		}
-		
-		public int EndOffset {
-			get {
-				return endOffset;
-			}
-		}
-		
-		public override int GetHashCode()
+		public string CommentStart { get; } = String.Empty;
+
+	    public string CommentEnd { get; } = String.Empty;
+
+	    public int StartOffset { get; } = -1;
+
+	    public int EndOffset { get; } = -1;
+
+	    public override int GetHashCode()
 		{
 			int hashCode = 0;
 			unchecked {
-				if (commentStart != null) hashCode += 1000000007 * commentStart.GetHashCode();
-				if (commentEnd != null) hashCode += 1000000009 * commentEnd.GetHashCode();
-				hashCode += 1000000021 * startOffset.GetHashCode();
-				hashCode += 1000000033 * endOffset.GetHashCode();
+				if (CommentStart != null) hashCode += 1000000007 * CommentStart.GetHashCode();
+				if (CommentEnd != null) hashCode += 1000000009 * CommentEnd.GetHashCode();
+				hashCode += 1000000021 * StartOffset.GetHashCode();
+				hashCode += 1000000033 * EndOffset.GetHashCode();
 			}
 			return hashCode;
 		}
@@ -537,7 +516,7 @@ namespace ICSharpCode.TextEditor.Actions
 		{
 			BlockCommentRegion other = obj as BlockCommentRegion;
 			if (other == null) return false;
-			return commentStart == other.commentStart && commentEnd == other.commentEnd && startOffset == other.startOffset && endOffset == other.endOffset;
+			return CommentStart == other.CommentStart && CommentEnd == other.CommentEnd && StartOffset == other.StartOffset && EndOffset == other.EndOffset;
 		}
 	}
 	

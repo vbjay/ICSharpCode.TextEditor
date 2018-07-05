@@ -60,54 +60,25 @@ namespace ICSharpCode.TextEditor.Document
             return String.Format("[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
                                  offset,
                                  length,
-                                 textMarkerType);
+                                 TextMarkerType);
         }
 
-        private readonly TextMarkerType textMarkerType;
-        private readonly Color          color;
-        private readonly Color          foreColor;
-        private string         toolTip = null;
-        private readonly bool           overrideForeColor = false;
-		
-		public TextMarkerType TextMarkerType {
-			get {
-				return textMarkerType;
-			}
-		}
-		
-		public Color Color {
-			get {
-				return color;
-			}
-		}
-		
-		public Color ForeColor {
-			get {
-				return foreColor;
-			}
-		}
-		
-		public bool OverrideForeColor {
-			get {
-				return overrideForeColor;
-			}
-		}
-		
-		/// <summary>
+        public TextMarkerType TextMarkerType { get; }
+
+        public Color Color { get; }
+
+        public Color ForeColor { get; }
+
+        public bool OverrideForeColor { get; } = false;
+
+        /// <summary>
 		/// Marks the text segment as read-only.
 		/// </summary>
 		public bool IsReadOnly { get; set; }
 		
-		public string ToolTip {
-			get {
-				return toolTip;
-			}
-			set {
-				toolTip = value;
-			}
-		}
-		
-		/// <summary>
+		public string ToolTip { get; set; } = null;
+
+        /// <summary>
 		/// Gets the last offset that is inside the marker region.
 		/// </summary>
 		public int EndOffset {
@@ -125,8 +96,8 @@ namespace ICSharpCode.TextEditor.Document
 			if (length < 1) length = 1;
 			this.offset          = offset;
 			this.length          = length;
-			this.textMarkerType  = textMarkerType;
-			this.color           = color;
+			this.TextMarkerType  = textMarkerType;
+			this.Color           = color;
 		}
 		
 		public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
@@ -134,10 +105,10 @@ namespace ICSharpCode.TextEditor.Document
 			if (length < 1) length = 1;
 			this.offset          = offset;
 			this.length          = length;
-			this.textMarkerType  = textMarkerType;
-			this.color           = color;
-			this.foreColor       = foreColor;
-			overrideForeColor = true;
+			this.TextMarkerType  = textMarkerType;
+			this.Color           = color;
+			this.ForeColor       = foreColor;
+			OverrideForeColor = true;
 		}
     }
 }

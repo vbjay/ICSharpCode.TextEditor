@@ -17,7 +17,6 @@ namespace ICSharpCode.TextEditor.Document
 	public class Bookmark
 	{
 	    private IDocument document;
-	    private TextAnchor anchor;
 	    private TextLocation location;
 	    private bool isEnabled = true;
 		
@@ -27,9 +26,9 @@ namespace ICSharpCode.TextEditor.Document
 			}
 			set {
 				if (document != value) {
-					if (anchor != null) {
-						location = anchor.Location;
-						anchor = null;
+					if (Anchor != null) {
+						location = Anchor.Location;
+						Anchor = null;
 					}
 					document = value;
 					CreateAnchor();
@@ -42,10 +41,10 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			if (document != null) {
 				LineSegment line = document.GetLineSegment(Math.Max(0, Math.Min(location.Line, document.TotalNumberOfLines-1)));
-				anchor = line.CreateAnchor(Math.Max(0, Math.Min(location.Column, line.Length)));
+				Anchor = line.CreateAnchor(Math.Max(0, Math.Min(location.Column, line.Length)));
 				// after insertion: keep bookmarks after the initial whitespace (see DefaultFormattingStrategy.SmartReplaceLine)
-				anchor.MovementType = AnchorMovementType.AfterInsertion;
-				anchor.Deleted += AnchorDeleted;
+				Anchor.MovementType = AnchorMovementType.AfterInsertion;
+				Anchor.Deleted += AnchorDeleted;
 			}
 		}
 
@@ -58,14 +57,12 @@ namespace ICSharpCode.TextEditor.Document
 		/// Gets the TextAnchor used for this bookmark.
 		/// Is null if the bookmark is not connected to a document.
 		/// </summary>
-		public TextAnchor Anchor {
-			get { return anchor; }
-		}
-		
-		public TextLocation Location {
+		public TextAnchor Anchor { get; private set; }
+
+	    public TextLocation Location {
 			get {
-				if (anchor != null)
-					return anchor.Location;
+				if (Anchor != null)
+					return Anchor.Location;
 				else
 					return location;
 			}
@@ -111,8 +108,8 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public int LineNumber {
 			get {
-				if (anchor != null)
-					return anchor.LineNumber;
+				if (Anchor != null)
+					return Anchor.LineNumber;
 				else
 					return location.Line;
 			}
@@ -120,8 +117,8 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public int ColumnNumber {
 			get {
-				if (anchor != null)
-					return anchor.ColumnNumber;
+				if (Anchor != null)
+					return Anchor.ColumnNumber;
 				else
 					return location.Column;
 			}

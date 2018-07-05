@@ -15,47 +15,31 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class NextMarker
 	{
-	    private readonly string      what;
-	    private readonly HighlightColor color;
-	    private readonly bool        markMarker = false;
-		
-		/// <value>
+	    /// <value>
 		/// String value to indicate to mark next token
 		/// </value>
-		public string What {
-			get {
-				return what;
-			}
-		}
-		
-		/// <value>
+		public string What { get; }
+
+	    /// <value>
 		/// Color for marking next token
 		/// </value>
-		public HighlightColor Color {
-			get {
-				return color;
-			}
-		}
-		
-		/// <value>
+		public HighlightColor Color { get; }
+
+	    /// <value>
 		/// If true the indication text will be marked with the same color
 		/// too
 		/// </value>
-		public bool MarkMarker {
-			get {
-				return markMarker;
-			}
-		}
-		
-		/// <summary>
+		public bool MarkMarker { get; } = false;
+
+	    /// <summary>
 		/// Creates a new instance of <see cref="NextMarker"/>
 		/// </summary>
 		public NextMarker(XmlElement mark)
 		{
-			color = new HighlightColor(mark);
-			what  = mark.InnerText;
+			Color = new HighlightColor(mark);
+			What  = mark.InnerText;
 			if (mark.Attributes["markmarker"] != null) {
-				markMarker = Boolean.Parse(mark.Attributes["markmarker"].InnerText);
+				MarkMarker = Boolean.Parse(mark.Attributes["markmarker"].InnerText);
 			}
 		}
 	}

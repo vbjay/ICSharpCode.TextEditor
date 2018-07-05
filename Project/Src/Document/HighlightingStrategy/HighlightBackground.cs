@@ -16,24 +16,18 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class HighlightBackground : HighlightColor
 	{
-	    private readonly Image backgroundImage;
-		
-		/// <value>
+	    /// <value>
 		/// The image used as background
 		/// </value>
-		public Image BackgroundImage {
-			get {
-				return backgroundImage;
-			}
-		}
-		
-		/// <summary>
+		public Image BackgroundImage { get; }
+
+	    /// <summary>
 		/// Creates a new instance of <see cref="HighlightBackground"/>
 		/// </summary>
 		public HighlightBackground(XmlElement el) : base(el)
 		{
 			if (el.Attributes["image"] != null) {
-				backgroundImage = new Bitmap(el.Attributes["image"].InnerText);
+				BackgroundImage = new Bitmap(el.Attributes["image"].InnerText);
 			}
 		}
 		

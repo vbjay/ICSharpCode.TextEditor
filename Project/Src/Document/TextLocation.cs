@@ -22,46 +22,38 @@ namespace ICSharpCode.TextEditor
 		
 		public TextLocation(int column, int line)
 		{
-			x = column;
-			y = line;
+			X = column;
+			Y = line;
 		}
 
-	    private int x, y;
-		
-		public int X {
-			get { return x; }
-			set { x = value; }
-		}
-		
-		public int Y {
-			get { return y; }
-			set { y = value; }
-		}
-		
-		public int Line {
-			get { return y; }
-			set { y = value; }
+	    public int X { get; set; }
+
+	    public int Y { get; set; }
+
+	    public int Line {
+			get { return Y; }
+			set { Y = value; }
 		}
 		
 		public int Column {
-			get { return x; }
-			set { x = value; }
+			get { return X; }
+			set { X = value; }
 		}
 		
 		public bool IsEmpty {
 			get {
-				return x <= 0 && y <= 0;
+				return X <= 0 && Y <= 0;
 			}
 		}
 		
 		public override string ToString()
 		{
-			return string.Format("(Line {1}, Col {0})", x, y);
+			return string.Format("(Line {1}, Col {0})", X, Y);
 		}
 		
 		public override int GetHashCode()
 		{
-			return unchecked (87 * x.GetHashCode() ^ y.GetHashCode());
+			return unchecked (87 * X.GetHashCode() ^ Y.GetHashCode());
 		}
 		
 		public override bool Equals(object obj)
@@ -77,30 +69,30 @@ namespace ICSharpCode.TextEditor
 		
 		public static bool operator ==(TextLocation a, TextLocation b)
 		{
-			return a.x == b.x && a.y == b.y;
+			return a.X == b.X && a.Y == b.Y;
 		}
 		
 		public static bool operator !=(TextLocation a, TextLocation b)
 		{
-			return a.x != b.x || a.y != b.y;
+			return a.X != b.X || a.Y != b.Y;
 		}
 		
 		public static bool operator <(TextLocation a, TextLocation b)
 		{
-			if (a.y < b.y)
+			if (a.Y < b.Y)
 				return true;
-			else if (a.y == b.y)
-				return a.x < b.x;
+			else if (a.Y == b.Y)
+				return a.X < b.X;
 			else
 				return false;
 		}
 		
 		public static bool operator >(TextLocation a, TextLocation b)
 		{
-			if (a.y > b.y)
+			if (a.Y > b.Y)
 				return true;
-			else if (a.y == b.y)
-				return a.x > b.x;
+			else if (a.Y == b.Y)
+				return a.X > b.X;
 			else
 				return false;
 		}

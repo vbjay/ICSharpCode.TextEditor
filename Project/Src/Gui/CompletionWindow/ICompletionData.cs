@@ -47,59 +47,31 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	
 	public class DefaultCompletionData : ICompletionData
 	{
-	    private string text;
-	    private readonly string description;
-	    private readonly int imageIndex;
-		
-		public int ImageIndex {
-			get {
-				return imageIndex;
-			}
-		}
-		
-		public string Text {
-			get {
-				return text;
-			}
-			set {
-				text = value;
-			}
-		}
-		
-		public virtual string Description {
-			get {
-				return description;
-			}
-		}
+	    public int ImageIndex { get; }
 
-	    private double priority;
-		
-		public double Priority {
-			get {
-				return priority;
-			}
-			set {
-				priority = value;
-			}
-		}
-		
-		public virtual bool InsertAction(TextArea textArea, char ch)
+	    public string Text { get; set; }
+
+	    public virtual string Description { get; }
+
+	    public double Priority { get; set; }
+
+	    public virtual bool InsertAction(TextArea textArea, char ch)
 		{
-			textArea.InsertString(text);
+			textArea.InsertString(Text);
 			return false;
 		}
 		
 		public DefaultCompletionData(string text, int imageIndex)
 		{
-			this.text        = text;
-			this.imageIndex  = imageIndex;
+			this.Text        = text;
+			this.ImageIndex  = imageIndex;
 		}
 		
 		public DefaultCompletionData(string text, string description, int imageIndex)
 		{
-			this.text        = text;
-			this.description = description;
-			this.imageIndex  = imageIndex;
+			this.Text        = text;
+			this.Description = description;
+			this.ImageIndex  = imageIndex;
 		}
 		
 		public static int Compare(ICompletionData a, ICompletionData b)

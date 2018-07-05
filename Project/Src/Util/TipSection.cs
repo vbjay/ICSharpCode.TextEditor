@@ -13,14 +13,11 @@ namespace ICSharpCode.TextEditor.Util
 {
     internal abstract class TipSection
 	{
-	    private SizeF    tipAllocatedSize;
-	    private readonly Graphics tipGraphics;
-	    private SizeF    tipMaxSize;
 	    private SizeF    tipRequiredSize;
 		
 		protected TipSection(Graphics graphics)
 		{
-			tipGraphics = graphics;
+			Graphics = graphics;
 		}
 		
 		public abstract void Draw(PointF location);
@@ -35,12 +32,12 @@ namespace ICSharpCode.TextEditor.Util
 			Debug.Assert(allocatedSize.Width >= tipRequiredSize.Width &&
 			             allocatedSize.Height >= tipRequiredSize.Height);
 			
-			tipAllocatedSize = allocatedSize; OnAllocatedSizeChanged();
+			AllocatedSize = allocatedSize; OnAllocatedSizeChanged();
 		}
 		
 		public void SetMaximumSize(SizeF maximumSize)
 		{
-			tipMaxSize = maximumSize; OnMaximumSizeChanged();
+			MaximumSize = maximumSize; OnMaximumSizeChanged();
 		}
 		
 		protected virtual void OnAllocatedSizeChanged()
@@ -57,28 +54,16 @@ namespace ICSharpCode.TextEditor.Util
 		{
 			requiredSize.Width  = Math.Max(0, requiredSize.Width);
 			requiredSize.Height = Math.Max(0, requiredSize.Height);
-			requiredSize.Width  = Math.Min(tipMaxSize.Width, requiredSize.Width);
-			requiredSize.Height = Math.Min(tipMaxSize.Height, requiredSize.Height);
+			requiredSize.Width  = Math.Min(MaximumSize.Width, requiredSize.Width);
+			requiredSize.Height = Math.Min(MaximumSize.Height, requiredSize.Height);
 			
 			tipRequiredSize = requiredSize;
 		}
 		
-		protected Graphics Graphics	{
-			get {
-				return tipGraphics;
-			}
-		}
-		
-		protected SizeF AllocatedSize {
-			get {
-				return tipAllocatedSize;
-			}
-		}
-		
-		protected SizeF MaximumSize {
-			get {
-				return tipMaxSize;
-			}
-		}
+		protected Graphics Graphics { get; }
+
+	    protected SizeF AllocatedSize { get; private set; }
+
+	    protected SizeF MaximumSize { get; private set; }
 	}
 }

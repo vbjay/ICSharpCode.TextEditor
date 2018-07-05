@@ -27,19 +27,16 @@ namespace ICSharpCode.TextEditor.Document
 	    private readonly LineSegment     line;
 	    private readonly IDocument       document;
 
-	    private readonly int          offset;
-	    private int          length;
-		
-		public sealed class SpaceTextWord : TextWord
+	    public sealed class SpaceTextWord : TextWord
 		{
 			public SpaceTextWord()
 			{
-				length = 1;
+				Length = 1;
 			}
 			
 			public SpaceTextWord(HighlightColor color)
 			{
-				length = 1;
+				Length = 1;
 				SyntaxColor = color;
 			}
 			
@@ -64,11 +61,11 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			public TabTextWord()
 			{
-				length = 1;
+				Length = 1;
 			}
 			public TabTextWord(HighlightColor color)
 			{
-				length = 1;
+				Length = 1;
 				SyntaxColor = color;
 			}
 			
@@ -89,36 +86,15 @@ namespace ICSharpCode.TextEditor.Document
 			}
 		}
 
-	    private static readonly TextWord spaceWord = new SpaceTextWord();
-	    private static readonly TextWord tabWord   = new TabTextWord();
+	    public static TextWord Space { get; } = new SpaceTextWord();
 
-	    private readonly bool hasDefaultColor;
-		
-		public static TextWord Space {
-			get {
-				return spaceWord;
-			}
-		}
-		
-		public static TextWord Tab {
-			get {
-				return tabWord;
-			}
-		}
-		
-		public int Offset {
-			get {
-				return offset;
-			}
-		}
-		
-		public int Length {
-			get {
-				return length;
-			}
-		}
-		
-		/// <summary>
+	    public static TextWord Tab { get; } = new TabTextWord();
+
+	    public int Offset { get; }
+
+	    public int Length { get; private set; }
+
+	    /// <summary>
 		/// Splits the <paramref name="word"/> into two parts: the part before <paramref name="pos"/> is assigned to
 		/// the reference parameter <paramref name="word"/>, the part after <paramref name="pos"/> is returned.
 		/// </summary>
@@ -132,18 +108,14 @@ namespace ICSharpCode.TextEditor.Document
 			if (pos >= word.Length)
 				throw new ArgumentOutOfRangeException("pos", pos, "pos must be < word.Length");
 			#endif
-			TextWord after = new TextWord(word.document, word.line, word.offset + pos, word.length - pos, word.color, word.hasDefaultColor);
-			word = new TextWord(word.document, word.line, word.offset, pos, word.color, word.hasDefaultColor);
+			TextWord after = new TextWord(word.document, word.line, word.Offset + pos, word.Length - pos, word.color, word.HasDefaultColor);
+			word = new TextWord(word.document, word.line, word.Offset, pos, word.color, word.HasDefaultColor);
 			return after;
 		}
 		
-		public bool HasDefaultColor {
-			get {
-				return hasDefaultColor;
-			}
-		}
-		
-		public virtual TextWordType Type {
+		public bool HasDefaultColor { get; }
+
+	    public virtual TextWordType Type {
 			get {
 				return TextWordType.Word;
 			}
@@ -154,7 +126,7 @@ namespace ICSharpCode.TextEditor.Document
 				if (document == null) {
 					return String.Empty;
 				}
-				return document.GetText(line.Offset + offset, length);
+				return document.GetText(line.Offset + Offset, Length);
 			}
 		}
 		
@@ -219,10 +191,10 @@ namespace ICSharpCode.TextEditor.Document
 			
 			this.document = document;
 			this.line  = line;
-			this.offset = offset;
-			this.length = length;
+			this.Offset = offset;
+			this.Length = length;
 			this.color = color;
-			this.hasDefaultColor = hasDefaultColor;
+			this.HasDefaultColor = hasDefaultColor;
 		}
 		
 		/// <summary>

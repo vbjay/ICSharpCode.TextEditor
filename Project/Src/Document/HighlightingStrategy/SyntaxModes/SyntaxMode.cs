@@ -15,49 +15,24 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class SyntaxMode
 	{
-	    private string   fileName;
-	    private string   name;
-	    private string[] extensions;
-		
-		public string FileName {
-			get {
-				return fileName;
-			}
-			set {
-				fileName = value;
-			}
-		}
-		
-		public string Name {
-			get {
-				return name;
-			}
-			set {
-				name = value;
-			}
-		}
-		
-		public string[] Extensions {
-			get {
-				return extensions;
-			}
-			set {
-				extensions = value;
-			}
-		}
-		
-		public SyntaxMode(string fileName, string name, string extensions)
+	    public string FileName { get; set; }
+
+	    public string Name { get; set; }
+
+	    public string[] Extensions { get; set; }
+
+	    public SyntaxMode(string fileName, string name, string extensions)
 		{
-			this.fileName   = fileName;
-			this.name       = name;
-			this.extensions = extensions.Split(';', '|', ',');
+			this.FileName   = fileName;
+			this.Name       = name;
+			this.Extensions = extensions.Split(';', '|', ',');
 		}
 		
 		public SyntaxMode(string fileName, string name, string[] extensions)
 		{
-			this.fileName = fileName;
-			this.name = name;
-			this.extensions = extensions;
+			this.FileName = fileName;
+			this.Name = name;
+			this.Extensions = extensions;
 		}
 		
 		public static List<SyntaxMode> GetSyntaxModes(Stream xmlSyntaxModeStream)
@@ -90,7 +65,7 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		public override string ToString() 
 		{
-			return String.Format("[SyntaxMode: FileName={0}, Name={1}, Extensions=({2})]", fileName, name, String.Join(",", extensions));
+			return String.Format("[SyntaxMode: FileName={0}, Name={1}, Extensions=({2})]", FileName, Name, String.Join(",", Extensions));
 		}
 	}
 }

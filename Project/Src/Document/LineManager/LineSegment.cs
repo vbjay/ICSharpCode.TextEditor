@@ -16,15 +16,11 @@ namespace ICSharpCode.TextEditor.Document
 	public sealed class LineSegment : ISegment
 	{
 		internal LineSegmentTree.Enumerator treeEntry;
-	    private int totalLength, delimiterLength;
 
-	    private List<TextWord> words;
-	    private SpanStack highlightSpanStack;
-		
-		public TextWord GetWord(int column)
+	    public TextWord GetWord(int column)
 		{
 			int curColumn = 0;
-			foreach (TextWord word in words) {
+			foreach (TextWord word in Words) {
 				if (column < curColumn + word.Length) {
 					return word;
 				}
@@ -46,7 +42,7 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		public int Length {
-			get	{ return totalLength - delimiterLength; }
+			get	{ return TotalLength - DelimiterLength; }
 		}
 		
 		int ISegment.Offset {
@@ -58,27 +54,14 @@ namespace ICSharpCode.TextEditor.Document
 			set { throw new NotSupportedException(); }
 		}
 		
-		public int TotalLength {
-			get { return totalLength; }
-			internal set { totalLength = value; }
-		}
-		
-		public int DelimiterLength {
-			get { return delimiterLength; }
-			internal set { delimiterLength = value; }
-		}
-		
-		// highlighting information
-		public List<TextWord> Words {
-			get {
-				return words;
-			}
-			set {
-				words = value;
-			}
-		}
-		
-		public HighlightColor GetColorForPosition(int x)
+		public int TotalLength { get; internal set; }
+
+	    public int DelimiterLength { get; internal set; }
+
+	    // highlighting information
+		public List<TextWord> Words { get; set; }
+
+	    public HighlightColor GetColorForPosition(int x)
 		{
 			if (Words != null) {
 				int xPos = 0;
@@ -92,24 +75,17 @@ namespace ICSharpCode.TextEditor.Document
 			return new HighlightColor(Color.Black, false, false);
 		}
 		
-		public SpanStack HighlightSpanStack {
-			get {
-				return highlightSpanStack;
-			}
-			set {
-				highlightSpanStack = value;
-			}
-		}
-		
-		/// <summary>
+		public SpanStack HighlightSpanStack { get; set; }
+
+	    /// <summary>
 		/// Converts a <see cref="LineSegment"/> instance to string (for debug purposes)
 		/// </summary>
 		public override string ToString()
 		{
 			if (IsDeleted)
-				return "[LineSegment: (deleted) Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + delimiterLength + "]";
+				return "[LineSegment: (deleted) Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
 			else
-				return "[LineSegment: LineNumber=" + LineNumber + ", Offset = "+ Offset +", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + delimiterLength + "]";
+				return "[LineSegment: LineNumber=" + LineNumber + ", Offset = "+ Offset +", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
 		}
 		
 		#region Anchor management

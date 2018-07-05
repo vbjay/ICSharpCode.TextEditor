@@ -17,43 +17,26 @@ namespace ICSharpCode.TextEditor.Document
 	public class FontContainer
 	{
 	    private Font defaultFont;
-	    private Font regularfont, boldfont, italicfont, bolditalicfont;
-		
-		/// <value>
+
+	    /// <value>
 		/// The scaled, regular version of the base font
 		/// </value>
-		public Font RegularFont {
-			get {
-				return regularfont;
-			}
-		}
-		
-		/// <value>
+		public Font RegularFont { get; private set; }
+
+	    /// <value>
 		/// The scaled, bold version of the base font
 		/// </value>
-		public Font BoldFont {
-			get {
-				return boldfont;
-			}
-		}
-		
-		/// <value>
+		public Font BoldFont { get; private set; }
+
+	    /// <value>
 		/// The scaled, italic version of the base font
 		/// </value>
-		public Font ItalicFont {
-			get {
-				return italicfont;
-			}
-		}
-		
-		/// <value>
+		public Font ItalicFont { get; private set; }
+
+	    /// <value>
 		/// The scaled, bold/italic version of the base font
 		/// </value>
-		public Font BoldItalicFont {
-			get {
-				return bolditalicfont;
-			}
-		}
+		public Font BoldItalicFont { get; private set; }
 
 	    private static float twipsPerPixelY;
 		
@@ -82,10 +65,10 @@ namespace ICSharpCode.TextEditor.Document
 				float pixelSize = (float)Math.Round(value.SizeInPoints * 20 / TwipsPerPixelY);
 				
 				defaultFont    = value;
-				regularfont    = new Font(value.FontFamily, pixelSize * TwipsPerPixelY / 20f, FontStyle.Regular);
-				boldfont       = new Font(regularfont, FontStyle.Bold);
-				italicfont     = new Font(regularfont, FontStyle.Italic);
-				bolditalicfont = new Font(regularfont, FontStyle.Bold | FontStyle.Italic);
+				RegularFont    = new Font(value.FontFamily, pixelSize * TwipsPerPixelY / 20f, FontStyle.Regular);
+				BoldFont       = new Font(RegularFont, FontStyle.Bold);
+				ItalicFont     = new Font(RegularFont, FontStyle.Italic);
+				BoldItalicFont = new Font(RegularFont, FontStyle.Bold | FontStyle.Italic);
 			}
 		}
 		

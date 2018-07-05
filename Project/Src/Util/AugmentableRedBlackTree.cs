@@ -57,8 +57,7 @@ namespace ICSharpCode.TextEditor.Util
 	internal sealed class AugmentableRedBlackTree<T, Host> : ICollection<T> where Host : IRedBlackTreeHost<T>
 	{
 	    private readonly Host host;
-	    private int count;
-		internal RedBlackTreeNode<T> root;
+	    internal RedBlackTreeNode<T> root;
 		
 		public AugmentableRedBlackTree(Host host)
 		{
@@ -66,14 +65,12 @@ namespace ICSharpCode.TextEditor.Util
 			this.host = host;
 		}
 		
-		public int Count {
-			get { return count; }
-		}
-		
-		public void Clear()
+		public int Count { get; private set; }
+
+	    public void Clear()
 		{
 			root = null;
-			count = 0;
+			Count = 0;
 		}
 		
 		#region Debugging code
@@ -91,7 +88,7 @@ namespace ICSharpCode.TextEditor.Util
 			foreach (T val in this) {
 				nodeCount++;
 			}
-			Debug.Assert(count == nodeCount);
+			Debug.Assert(Count == nodeCount);
 		}
 		
 		/*
@@ -166,7 +163,7 @@ namespace ICSharpCode.TextEditor.Util
 		{
 			Debug.Assert(newNode.color == BLACK);
 			if (root == null) {
-				count = 1;
+				Count = 1;
 				root = newNode;
 				return;
 			}
@@ -197,7 +194,7 @@ namespace ICSharpCode.TextEditor.Util
 			newNode.color = RED;
 			host.UpdateAfterChildrenChange(parentNode);
 			FixTreeOnInsert(newNode);
-			count++;
+			Count++;
 		}
 		
 		internal void InsertAsRight(RedBlackTreeNode<T> parentNode, RedBlackTreeNode<T> newNode)
@@ -208,7 +205,7 @@ namespace ICSharpCode.TextEditor.Util
 			newNode.color = RED;
 			host.UpdateAfterChildrenChange(parentNode);
 			FixTreeOnInsert(newNode);
-			count++;
+			Count++;
 		}
 
 	    private void FixTreeOnInsert(RedBlackTreeNode<T> node)
@@ -369,7 +366,7 @@ namespace ICSharpCode.TextEditor.Util
 				return;
 			}
 			
-			count--;
+			Count--;
 			
 			// now either removedNode.left or removedNode.right is null
 			// get the remaining child

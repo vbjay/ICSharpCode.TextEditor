@@ -15,26 +15,13 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class DefaultHighlightingStrategy : IHighlightingStrategyUsingRuleSets
 	{
-	    private string    name;
-	    private List<HighlightRuleSet> rules = new List<HighlightRuleSet>();
-
 	    private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
-	    private Dictionary<string, string> properties       = new Dictionary<string, string>();
-	    private string[]  extensions;
 
-	    private HighlightColor   digitColor;
 	    private HighlightRuleSet defaultRuleSet = null;
 		
-		public HighlightColor DigitColor {
-			get {
-				return digitColor;
-			}
-			set {
-				digitColor = value;
-			}
-		}
-		
-		public IEnumerable<KeyValuePair<string, HighlightColor>> EnvironmentColors {
+		public HighlightColor DigitColor { get; set; }
+
+	    public IEnumerable<KeyValuePair<string, HighlightColor>> EnvironmentColors {
 			get {
 				return environmentColors;
 			}
@@ -44,14 +31,14 @@ namespace ICSharpCode.TextEditor.Document
 		{
 			if (source == null)
 				throw new ArgumentNullException("source");
-			properties = source.properties;
-			extensions = source.extensions;
-			digitColor = source.digitColor;
+			Properties = source.Properties;
+			Extensions = source.Extensions;
+			DigitColor = source.DigitColor;
 			defaultRuleSet = source.defaultRuleSet;
-			name = source.name;
-			rules = source.rules;
+			Name = source.Name;
+			Rules = source.Rules;
 			environmentColors = source.environmentColors;
-			defaultTextColor = source.defaultTextColor;
+			DefaultTextColor = source.DefaultTextColor;
 		}
 		
 		public DefaultHighlightingStrategy() : this("Default")
@@ -60,10 +47,10 @@ namespace ICSharpCode.TextEditor.Document
 		
 		public DefaultHighlightingStrategy(string name)
 		{
-			this.name = name;
+			this.Name = name;
 			
-			digitColor       = new HighlightColor(SystemColors.WindowText, false, false);
-			defaultTextColor = new HighlightColor(SystemColors.WindowText, false, false);
+			DigitColor       = new HighlightColor(SystemColors.WindowText, false, false);
+			DefaultTextColor = new HighlightColor(SystemColors.WindowText, false, false);
 			
 			// set small 'default color environment'
 			environmentColors["Default"]          = new HighlightBackground("WindowText", "Window", false, false);
@@ -83,38 +70,17 @@ namespace ICSharpCode.TextEditor.Document
 			
 		}
 		
-		public Dictionary<string, string> Properties {
-			get {
-				return properties;
-			}
-		}
-		
-		public string Name
+		public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
+
+	    public string Name { get; private set; }
+
+	    public string[] Extensions { set; get; }
+
+	    public List<HighlightRuleSet> Rules { get; private set; } = new List<HighlightRuleSet>();
+
+	    public HighlightRuleSet FindHighlightRuleSet(string name)
 		{
-			get {
-				return name;
-			}
-		}
-		
-		public string[] Extensions
-		{
-			set {
-				extensions = value;
-			}
-			get {
-				return extensions;
-			}
-		}
-		
-		public List<HighlightRuleSet> Rules {
-			get {
-				return rules;
-			}
-		}
-		
-		public HighlightRuleSet FindHighlightRuleSet(string name)
-		{
-			foreach(HighlightRuleSet ruleSet in rules) {
+			foreach(HighlightRuleSet ruleSet in Rules) {
 				if (ruleSet.Name == name) {
 					return ruleSet;
 				}
@@ -128,7 +94,7 @@ namespace ICSharpCode.TextEditor.Document
 			if (existing != null) {
 				existing.MergeFrom(aRuleSet);
 			} else {
-				rules.Add(aRuleSet);
+				Rules.Add(aRuleSet);
 			}
 		}
 		
@@ -195,18 +161,12 @@ namespace ICSharpCode.TextEditor.Document
 //			defaultColor = color;
 //		}
 
-	    private HighlightColor defaultTextColor;
-		
-		public HighlightColor DefaultTextColor {
-			get {
-				return defaultTextColor;
-			}
-		}
-		
-		public void SetColorFor(string name, HighlightColor color)
+	    public HighlightColor DefaultTextColor { get; private set; }
+
+	    public void SetColorFor(string name, HighlightColor color)
 		{
 			if (name == "Default")
-				defaultTextColor = new HighlightColor(color.Color, color.Bold, color.Italic);
+				DefaultTextColor = new HighlightColor(color.Color, color.Bold, color.Italic);
 			environmentColors[name] = color;
 		}
 
@@ -216,7 +176,7 @@ namespace ICSharpCode.TextEditor.Document
 			if (environmentColors.TryGetValue(name, out color))
 				return color;
 			else
-				return defaultTextColor;
+				return DefaultTextColor;
 		}
 		
 		public HighlightColor GetColor(IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)

@@ -20,10 +20,8 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class TextView : AbstractMargin, IDisposable
 	{
-	    private int          fontHeight;
-		//Hashtable    charWitdh           = new Hashtable();
+	    //Hashtable    charWitdh           = new Hashtable();
 		//StringFormat measureStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
-	    private Highlight    highlight;
 	    private int          physicalColumn = 0; // used for calculating physical column during paint
 		
 		public void Dispose()
@@ -32,33 +30,26 @@ namespace ICSharpCode.TextEditor
 			//measureStringFormat.Dispose();
 		}
 		
-		public Highlight Highlight {
+		public Highlight Highlight { get; set; }
+
+	    public int FirstPhysicalLine {
 			get {
-				return highlight;
-			}
-			set {
-				highlight = value;
-			}
-		}
-		
-		public int FirstPhysicalLine {
-			get {
-				return textArea.VirtualTop.Y / fontHeight;
+				return textArea.VirtualTop.Y / FontHeight;
 			}
 		}
 		public int LineHeightRemainder {
 			get {
-				return textArea.VirtualTop.Y % fontHeight;
+				return textArea.VirtualTop.Y % FontHeight;
 			}
 		}
 		/// <summary>Gets the first visible <b>logical</b> line.</summary>
 		public int FirstVisibleLine {
 			get {
-				return textArea.Document.GetFirstLogicalLine(textArea.VirtualTop.Y / fontHeight);
+				return textArea.Document.GetFirstLogicalLine(textArea.VirtualTop.Y / FontHeight);
 			}
 			set {
 				if (FirstVisibleLine != value) {
-					textArea.VirtualTop = new Point(textArea.VirtualTop.X, textArea.Document.GetVisibleLine(value) * fontHeight);
+					textArea.VirtualTop = new Point(textArea.VirtualTop.X, textArea.Document.GetVisibleLine(value) * FontHeight);
 					
 				}
 			}
@@ -66,19 +57,15 @@ namespace ICSharpCode.TextEditor
 		
 		public int VisibleLineDrawingRemainder {
 			get {
-				return textArea.VirtualTop.Y % fontHeight;
+				return textArea.VirtualTop.Y % FontHeight;
 			}
 		}
 		
-		public int FontHeight {
+		public int FontHeight { get; private set; }
+
+	    public int VisibleLineCount {
 			get {
-				return fontHeight;
-			}
-		}
-		
-		public int VisibleLineCount {
-			get {
-				return 1 + DrawingPosition.Height / fontHeight;
+				return 1 + DrawingPosition.Height / FontHeight;
 			}
 		}
 		
@@ -101,41 +88,29 @@ namespace ICSharpCode.TextEditor
 			return Math.Max(height1, height2) + 1;
 		}
 
-	    private int spaceWidth;
-		
-		/// <summary>
+	    /// <summary>
 		/// Gets the width of a space character.
 		/// This value can be quite small in some fonts - consider using WideSpaceWidth instead.
 		/// </summary>
-		public int SpaceWidth {
-			get {
-				return spaceWidth;
-			}
-		}
+		public int SpaceWidth { get; private set; }
 
-	    private int wideSpaceWidth;
-		
-		/// <summary>
+	    /// <summary>
 		/// Gets the width of a 'wide space' (=one quarter of a tab, if tab is set to 4 spaces).
 		/// On monospaced fonts, this is the same value as spaceWidth.
 		/// </summary>
-		public int WideSpaceWidth {
-			get {
-				return wideSpaceWidth;
-			}
-		}
+		public int WideSpaceWidth { get; private set; }
 
 	    private Font lastFont;
 		
 		public void OptionsChanged()
 		{
 			lastFont = TextEditorProperties.FontContainer.RegularFont;
-			fontHeight = GetFontHeight(lastFont);
+			FontHeight = GetFontHeight(lastFont);
 			// use minimum width - in some fonts, space has no width but kerning is used instead
 			// -> DivideByZeroException
-			spaceWidth = Math.Max(GetWidth(' ', lastFont), 1);
+			SpaceWidth = Math.Max(GetWidth(' ', lastFont), 1);
 			// tab should have the width of 4*'x'
-			wideSpaceWidth = Math.Max(spaceWidth, GetWidth('x', lastFont));
+			WideSpaceWidth = Math.Max(SpaceWidth, GetWidth('x', lastFont));
 		}
 		
 		#region Paint functions
@@ -156,11 +131,11 @@ namespace ICSharpCode.TextEditor
 				g.SetClip(DrawingPosition);
 			}
 			
-			for (int y = 0; y < (DrawingPosition.Height + VisibleLineDrawingRemainder) / fontHeight + 1; ++y) {
+			for (int y = 0; y < (DrawingPosition.Height + VisibleLineDrawingRemainder) / FontHeight + 1; ++y) {
 				Rectangle lineRectangle = new Rectangle(DrawingPosition.X - horizontalDelta,
-				                                        DrawingPosition.Top + y * fontHeight - VisibleLineDrawingRemainder,
+				                                        DrawingPosition.Top + y * FontHeight - VisibleLineDrawingRemainder,
 				                                        DrawingPosition.Width + horizontalDelta,
-				                                        fontHeight);
+				                                        FontHeight);
 				
 				if (rect.IntersectsWith(lineRectangle)) {
 					int fvl = textArea.Document.GetVisibleLine(FirstVisibleLine);
@@ -425,16 +400,16 @@ namespace ICSharpCode.TextEditor
 				// It is possible that we have to split the current word because a marker/the selection begins/ends inside it
 				if (currentWord.Length > 1) {
 					int splitPos = int.MaxValue;
-					if (highlight != null) {
+					if (Highlight != null) {
 						// split both before and after highlight
-						if (highlight.OpenBrace.Y == lineNumber) {
-							if (highlight.OpenBrace.X >= currentWordOffset && highlight.OpenBrace.X <= currentWordEndOffset) {
-								splitPos = Math.Min(splitPos, highlight.OpenBrace.X - currentWordOffset);
+						if (Highlight.OpenBrace.Y == lineNumber) {
+							if (Highlight.OpenBrace.X >= currentWordOffset && Highlight.OpenBrace.X <= currentWordEndOffset) {
+								splitPos = Math.Min(splitPos, Highlight.OpenBrace.X - currentWordOffset);
 							}
 						}
-						if (highlight.CloseBrace.Y == lineNumber) {
-							if (highlight.CloseBrace.X >= currentWordOffset && highlight.CloseBrace.X <= currentWordEndOffset) {
-								splitPos = Math.Min(splitPos, highlight.CloseBrace.X - currentWordOffset);
+						if (Highlight.CloseBrace.Y == lineNumber) {
+							if (Highlight.CloseBrace.X >= currentWordOffset && Highlight.CloseBrace.X <= currentWordEndOffset) {
+								splitPos = Math.Min(splitPos, Highlight.CloseBrace.X - currentWordOffset);
 							}
 						}
 						if (splitPos == 0) {
@@ -532,9 +507,9 @@ namespace ICSharpCode.TextEditor
 				}
 				
 				// draw bracket highlight
-				if (highlight != null) {
-					if (highlight.OpenBrace.Y == lineNumber && highlight.OpenBrace.X == currentWordOffset ||
-					    highlight.CloseBrace.Y == lineNumber && highlight.CloseBrace.X == currentWordOffset) {
+				if (Highlight != null) {
+					if (Highlight.OpenBrace.Y == lineNumber && Highlight.OpenBrace.X == currentWordOffset ||
+					    Highlight.CloseBrace.Y == lineNumber && Highlight.CloseBrace.X == currentWordOffset) {
 						DrawBracketHighlight(g, new Rectangle((int)wordRectangle.X, lineRectangle.Y, (int)wordRectangle.Width - 1, lineRectangle.Height - 1));
 					}
 				}
@@ -754,7 +729,7 @@ namespace ICSharpCode.TextEditor
 		/// </summary>
 		public int GetLogicalLine(int visualPosY)
 		{
-			int clickedVisualLine = Math.Max(0, (visualPosY + textArea.VirtualTop.Y) / fontHeight);
+			int clickedVisualLine = Math.Max(0, (visualPosY + textArea.VirtualTop.Y) / FontHeight);
 			return Document.GetFirstLogicalLine(clickedVisualLine);
 		}
 		
@@ -840,7 +815,7 @@ namespace ICSharpCode.TextEditor
 					int newDrawingPos;
 					switch (word.Type) {
 						case TextWordType.Space:
-							newDrawingPos = drawingPos + spaceWidth;
+							newDrawingPos = drawingPos + SpaceWidth;
 							if (newDrawingPos >= targetVisualPosX)
 								return IsNearerToAThanB(targetVisualPosX, drawingPos, newDrawingPos) ? wordOffset : wordOffset+1;
 							break;
@@ -1074,7 +1049,7 @@ namespace ICSharpCode.TextEditor
 			
 			int width = GetWidth('\u00B6', eolMarkerColor.GetFont(TextEditorProperties.FontContainer));
 			g.FillRectangle(backBrush,
-			                new RectangleF(x, y, width, fontHeight));
+			                new RectangleF(x, y, width, FontHeight));
 			
 			DrawString(g, "\u00B6", eolMarkerColor.GetFont(TextEditorProperties.FontContainer), color, x, y);
 			return width;

@@ -16,17 +16,11 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class BookmarkEventArgs : EventArgs
 	{
-	    private readonly Bookmark bookmark;
-		
-		public Bookmark Bookmark {
-			get {
-				return bookmark;
-			}
-		}
-		
-		public BookmarkEventArgs(Bookmark bookmark)
+	    public Bookmark Bookmark { get; }
+
+	    public BookmarkEventArgs(Bookmark bookmark)
 		{
-			this.bookmark = bookmark;
+			this.Bookmark = bookmark;
 		}
 	}
 }
