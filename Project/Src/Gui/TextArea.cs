@@ -784,8 +784,8 @@ namespace ICSharpCode.TextEditor
                     MotherTextAreaControl = null;
                     MotherTextEditorControl = null;
                     foreach (AbstractMargin margin in leftMargins) {
-                        if (margin is IDisposable)
-                            (margin as IDisposable).Dispose();
+                        if (margin is IDisposable disposable)
+                            disposable.Dispose();
                     }
                     TextView.Dispose();
                 }

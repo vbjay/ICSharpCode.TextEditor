@@ -119,8 +119,8 @@ namespace ICSharpCode.TextEditor.Document
         public IHighlightingStrategy FindHighlighter(string name)
         {
             object def = HighlightingDefinitions[name];
-            if (def is DictionaryEntry) {
-                return LoadDefinition((DictionaryEntry)def);
+            if (def is DictionaryEntry entry) {
+                return LoadDefinition(entry);
             }
             return def == null ? DefaultHighlighting : (IHighlightingStrategy)def;
         }
@@ -130,8 +130,8 @@ namespace ICSharpCode.TextEditor.Document
             string highlighterName = (string)extensionsToName[Path.GetExtension(fileName).ToUpperInvariant()];
             if (highlighterName != null) {
                 object def = HighlightingDefinitions[highlighterName];
-                if (def is DictionaryEntry) {
-                    return LoadDefinition((DictionaryEntry)def);
+                if (def is DictionaryEntry entry) {
+                    return LoadDefinition(entry);
                 }
                 return def == null ? DefaultHighlighting : (IHighlightingStrategy)def;
             } else {

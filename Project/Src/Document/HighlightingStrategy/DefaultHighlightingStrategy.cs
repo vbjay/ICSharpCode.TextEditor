@@ -142,8 +142,8 @@ namespace ICSharpCode.TextEditor.Document
 
                     if (highlighter == null)
                         throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + Name + " mode definition could not be found");
-                    if (highlighter is IHighlightingStrategyUsingRuleSets)
-                        ruleSet.Highlighter = (IHighlightingStrategyUsingRuleSets)highlighter;
+                    if (highlighter is IHighlightingStrategyUsingRuleSets sets)
+                        ruleSet.Highlighter = sets;
                     else
                         throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + Name + " mode definition does not implement IHighlightingStrategyUsingRuleSets");
                 }

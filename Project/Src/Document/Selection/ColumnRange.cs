@@ -32,9 +32,9 @@ namespace ICSharpCode.TextEditor.Document
 
         public override bool Equals(object obj)
         {
-            if (obj is ColumnRange) {
-                return ((ColumnRange)obj).StartColumn == StartColumn &&
-                       ((ColumnRange)obj).EndColumn == EndColumn;
+            if (obj is ColumnRange range) {
+                return range.StartColumn == StartColumn &&
+                       range.EndColumn == EndColumn;
 
             }
             return false;
