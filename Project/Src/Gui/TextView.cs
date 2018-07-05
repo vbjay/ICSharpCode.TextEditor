@@ -307,8 +307,8 @@ namespace ICSharpCode.TextEditor
 		}
 
 	    private struct MarkerToDraw {
-			internal TextMarker marker;
-			internal RectangleF drawingRect;
+			internal readonly TextMarker marker;
+			internal readonly RectangleF drawingRect;
 			
 			public MarkerToDraw(TextMarker marker, RectangleF drawingRect)
 			{
@@ -317,7 +317,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 
-	    private List<MarkerToDraw> markersToDraw = new List<MarkerToDraw>();
+	    private readonly List<MarkerToDraw> markersToDraw = new List<MarkerToDraw>();
 
 	    private void DrawMarker(Graphics g, TextMarker marker, RectangleF drawingRect)
 		{
@@ -593,8 +593,8 @@ namespace ICSharpCode.TextEditor
 		}
 
 	    private struct WordFontPair {
-	        private string word;
-	        private Font font;
+	        private readonly string word;
+	        private readonly Font font;
 			public WordFontPair(string word, Font font) {
 				this.word = word;
 				this.font = font;
@@ -610,7 +610,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 
-	    private Dictionary<WordFontPair, int> measureCache = new Dictionary<WordFontPair, int>();
+	    private readonly Dictionary<WordFontPair, int> measureCache = new Dictionary<WordFontPair, int>();
 		
 		// split words after 1000 characters. Fixes GDI+ crash on very longs words, for example
 		// a 100 KB Base64-file without any line breaks.
@@ -660,7 +660,7 @@ namespace ICSharpCode.TextEditor
 		
 		#region Conversion Functions
 
-	    private Dictionary<Font, Dictionary<char, int>> fontBoundCharWidth = new Dictionary<Font, Dictionary<char, int>>();
+	    private readonly Dictionary<Font, Dictionary<char, int>> fontBoundCharWidth = new Dictionary<Font, Dictionary<char, int>>();
 		
 		public int GetWidth(char ch, Font font)
 		{

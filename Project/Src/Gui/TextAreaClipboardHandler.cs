@@ -18,7 +18,7 @@ namespace ICSharpCode.TextEditor
 {
 	public class TextAreaClipboardHandler
 	{
-	    private TextArea textArea;
+	    private readonly TextArea textArea;
 		
 		public bool EnableCut {
 			get {
@@ -252,7 +252,7 @@ namespace ICSharpCode.TextEditor
 	public delegate void CopyTextEventHandler(object sender, CopyTextEventArgs e);
 	public class CopyTextEventArgs : EventArgs
 	{
-	    private string text;
+	    private readonly string text;
 		
 		public string Text {
 			get {

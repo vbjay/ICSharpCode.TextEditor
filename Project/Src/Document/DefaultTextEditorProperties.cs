@@ -24,7 +24,7 @@ namespace ICSharpCode.TextEditor.Document
 	    private DocumentSelectionMode documentSelectionMode = DocumentSelectionMode.Normal;
 	    private Encoding              encoding              = Encoding.UTF8;
 	    private BracketMatchingStyle  bracketMatchingStyle  = BracketMatchingStyle.After;
-	    private FontContainer fontContainer;
+	    private readonly FontContainer fontContainer;
 	    private static Font DefaultFont;
 		
 		public DefaultTextEditorProperties()

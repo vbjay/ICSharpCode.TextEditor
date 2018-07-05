@@ -40,19 +40,19 @@ namespace ICSharpCode.TextEditor
 	    private TextAreaControl         motherTextAreaControl;
 	    private TextEditorControl       motherTextEditorControl;
 
-	    private List<BracketHighlightingSheme> bracketshemes  = new List<BracketHighlightingSheme>();
-	    private TextAreaClipboardHandler  textAreaClipboardHandler;
+	    private readonly List<BracketHighlightingSheme> bracketshemes  = new List<BracketHighlightingSheme>();
+	    private readonly TextAreaClipboardHandler  textAreaClipboardHandler;
 	    private bool autoClearSelection = false;
 
-	    private List<AbstractMargin> leftMargins = new List<AbstractMargin>();
+	    private readonly List<AbstractMargin> leftMargins = new List<AbstractMargin>();
 
-	    private TextView      textView;
-	    private GutterMargin  gutterMargin;
-	    private FoldMargin    foldMargin;
-	    private IconBarMargin iconBarMargin;
+	    private readonly TextView      textView;
+	    private readonly GutterMargin  gutterMargin;
+	    private readonly FoldMargin    foldMargin;
+	    private readonly IconBarMargin iconBarMargin;
 
-	    private SelectionManager selectionManager;
-	    private Caret            caret;
+	    private readonly SelectionManager selectionManager;
+	    private readonly Caret            caret;
 
 		internal Point mousepos = new Point(0, 0);
 		//public Point selectionStartPos = new Point(0,0);

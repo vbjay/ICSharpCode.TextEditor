@@ -14,9 +14,9 @@ namespace ICSharpCode.TextEditor
 	
 	public class ToolTipRequestEventArgs
 	{
-	    private Point mousePosition;
-	    private TextLocation logicalPosition;
-	    private bool inDocument;
+	    private readonly Point mousePosition;
+	    private readonly TextLocation logicalPosition;
+	    private readonly bool inDocument;
 		
 		public Point MousePosition {
 			get {

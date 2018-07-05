@@ -15,14 +15,14 @@ namespace ICSharpCode.TextEditor.Document
 {
 	public class HighlightingManager
 	{
-	    private ArrayList syntaxModeFileProviders = new ArrayList();
-	    private static HighlightingManager highlightingManager;
+	    private readonly ArrayList syntaxModeFileProviders = new ArrayList();
+	    private static readonly HighlightingManager highlightingManager;
 		
 		// hash table from extension name to highlighting definition,
 		// OR from extension name to Pair SyntaxMode,ISyntaxModeFileProvider
-	    private Hashtable highlightingDefs = new Hashtable();
+	    private readonly Hashtable highlightingDefs = new Hashtable();
 
-	    private Hashtable extensionsToName = new Hashtable();
+	    private readonly Hashtable extensionsToName = new Hashtable();
 		
 		public Hashtable HighlightingDefinitions {
 			get {

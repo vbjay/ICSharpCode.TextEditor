@@ -17,8 +17,8 @@ namespace ICSharpCode.TextEditor.Tests
 	public class BlockCommentTests
 	{
 	    private IDocument document = null;
-	    private string commentStart = "<!--";
-	    private string commentEnd = "-->";
+	    private readonly string commentStart = "<!--";
+	    private readonly string commentEnd = "-->";
 		
 		[SetUp]
 		public void Init()

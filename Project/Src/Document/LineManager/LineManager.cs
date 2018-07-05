@@ -13,9 +13,9 @@ namespace ICSharpCode.TextEditor.Document
 {
 	internal sealed class LineManager
 	{
-	    private LineSegmentTree lineCollection = new LineSegmentTree();
+	    private readonly LineSegmentTree lineCollection = new LineSegmentTree();
 
-	    private IDocument document;
+	    private readonly IDocument document;
 	    private IHighlightingStrategy highlightingStrategy;
 		
 		public IList<LineSegment> LineSegmentCollection {
@@ -308,7 +308,7 @@ namespace ICSharpCode.TextEditor.Document
 		}
 		
 		// use always the same DelimiterSegment object for the NextDelimiter
-	    private DelimiterSegment delimiterSegment = new DelimiterSegment();
+	    private readonly DelimiterSegment delimiterSegment = new DelimiterSegment();
 
 	    private DelimiterSegment NextDelimiter(string text, int offset)
 		{

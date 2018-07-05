@@ -19,9 +19,9 @@ namespace ICSharpCode.TextEditor
 	/// </summary>
 	public class BrushRegistry
 	{
-	    private static Dictionary<Color, Brush> brushes = new Dictionary<Color, Brush>();
-	    private static Dictionary<Color, Pen> pens = new Dictionary<Color, Pen>();
-	    private static Dictionary<Color, Pen> dotPens = new Dictionary<Color, Pen>();
+	    private static readonly Dictionary<Color, Brush> brushes = new Dictionary<Color, Brush>();
+	    private static readonly Dictionary<Color, Pen> pens = new Dictionary<Color, Pen>();
+	    private static readonly Dictionary<Color, Pen> dotPens = new Dictionary<Color, Pen>();
 		
 		public static Brush GetBrush(Color color)
 		{

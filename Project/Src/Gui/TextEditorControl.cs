@@ -23,7 +23,7 @@ namespace ICSharpCode.TextEditor
 	public class TextEditorControl : TextEditorControlBase
 	{
 		protected Panel textAreaPanel     = new Panel();
-	    private TextAreaControl primaryTextArea;
+	    private readonly TextAreaControl primaryTextArea;
 	    private Splitter        textAreaSplitter  = null;
 	    private TextAreaControl secondaryTextArea = null;
 

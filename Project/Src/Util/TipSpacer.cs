@@ -12,7 +12,7 @@ namespace ICSharpCode.TextEditor.Util
 {
     internal class TipSpacer: TipSection
 	{
-	    private SizeF spacerSize;
+	    private readonly SizeF spacerSize;
 		
 		public TipSpacer(Graphics graphics, SizeF size): base(graphics)
 		{

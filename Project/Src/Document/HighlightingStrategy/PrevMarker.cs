@@ -15,9 +15,9 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class PrevMarker
 	{
-	    private string      what;
-	    private HighlightColor color;
-	    private bool        markMarker = false;
+	    private readonly string      what;
+	    private readonly HighlightColor color;
+	    private readonly bool        markMarker = false;
 		
 		/// <value>
 		/// String value to indicate to mark previous token

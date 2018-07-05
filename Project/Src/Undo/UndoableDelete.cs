@@ -16,10 +16,10 @@ namespace ICSharpCode.TextEditor.Undo
 	/// </summary>
 	public class UndoableDelete : IUndoableOperation
 	{
-	    private IDocument document;
+	    private readonly IDocument document;
 //		int      oldCaretPos;
-	    private int      offset;
-	    private string   text;
+	    private readonly int      offset;
+	    private readonly string   text;
 		
 		/// <summary>
 		/// Creates a new instance of <see cref="UndoableDelete"/>

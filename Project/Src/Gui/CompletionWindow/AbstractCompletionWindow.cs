@@ -18,8 +18,8 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	{
 		protected TextEditorControl control;
 		protected Size              drawingSize;
-	    private Rectangle workingScreen;
-	    private Form parentForm;
+	    private readonly Rectangle workingScreen;
+	    private readonly Form parentForm;
 		
 		protected AbstractCompletionWindow(Form parentForm, TextEditorControl control)
 		{

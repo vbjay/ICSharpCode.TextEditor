@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Document
 	    private List<FoldMarker>    foldMarker      = new List<FoldMarker>();
 	    private List<FoldMarker>    foldMarkerByEnd = new List<FoldMarker>();
 	    private IFoldingStrategy    foldingStrategy = null;
-	    private IDocument document;
+	    private readonly IDocument document;
 		
 		public IList<FoldMarker> FoldMarker {
 			get {

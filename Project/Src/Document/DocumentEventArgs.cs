@@ -19,10 +19,10 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class DocumentEventArgs : EventArgs
 	{
-	    private IDocument document;
-	    private int       offset;
-	    private int       length;
-	    private string    text;
+	    private readonly IDocument document;
+	    private readonly int       offset;
+	    private readonly int       length;
+	    private readonly string    text;
 		
 		/// <returns>
 		/// always a valid Document which is related to the Event.

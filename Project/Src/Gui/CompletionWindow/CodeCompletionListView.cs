@@ -16,7 +16,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 	/// </summary>
 	public class CodeCompletionListView : UserControl
 	{
-	    private ICompletionData[] completionData;
+	    private readonly ICompletionData[] completionData;
 	    private int               firstItem    = 0;
 	    private int               selectedItem = -1;
 	    private ImageList         imageList;

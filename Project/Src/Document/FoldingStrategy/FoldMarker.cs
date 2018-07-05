@@ -52,9 +52,9 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         private bool      isFolded = false;
-        private string    foldText = "...";
+        private readonly string    foldText = "...";
         private FoldType  foldType = FoldType.Unspecified;
-        private IDocument document = null;
+        private readonly IDocument document = null;
         private int startLine = -1, startColumn, endLine = -1, endColumn;
 
         private static void GetPointForOffset(IDocument document, int offset, out int line, out int column)

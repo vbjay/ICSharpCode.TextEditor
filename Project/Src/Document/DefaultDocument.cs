@@ -99,7 +99,7 @@ namespace ICSharpCode.TextEditor.Document
 	    private ITextBufferStrategy   textBufferStrategy;
 	    private IFormattingStrategy   formattingStrategy;
 	    private FoldingManager        foldingManager;
-	    private UndoStack             undoStack = new UndoStack();
+	    private readonly UndoStack             undoStack = new UndoStack();
 	    private ITextEditorProperties textEditorProperties = new DefaultTextEditorProperties();
 	    private MarkerStrategy        markerStrategy;
 		
@@ -410,7 +410,7 @@ namespace ICSharpCode.TextEditor.Document
 		public event DocumentEventHandler DocumentChanged;
 		
 		// UPDATE STUFF
-	    private List<TextAreaUpdate> updateQueue = new List<TextAreaUpdate>();
+	    private readonly List<TextAreaUpdate> updateQueue = new List<TextAreaUpdate>();
 		
 		public List<TextAreaUpdate> UpdateQueue {
 			get {

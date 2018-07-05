@@ -16,8 +16,8 @@ namespace ICSharpCode.TextEditor.Undo
 	/// </summary>
 	public class UndoStack
 	{
-	    private Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
-	    private Stack<IUndoableOperation> redostack = new Stack<IUndoableOperation>();
+	    private readonly Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
+	    private readonly Stack<IUndoableOperation> redostack = new Stack<IUndoableOperation>();
 		
 		public TextEditorControlBase TextEditorControl = null;
 		
@@ -197,8 +197,8 @@ namespace ICSharpCode.TextEditor.Undo
 
 	    private class UndoableSetCaretPosition : IUndoableOperation
 		{
-		    private UndoStack stack;
-		    private TextLocation pos;
+		    private readonly UndoStack stack;
+		    private readonly TextLocation pos;
 		    private TextLocation redoPos;
 			
 			public UndoableSetCaretPosition(UndoStack stack, TextLocation pos)
@@ -229,7 +229,7 @@ namespace ICSharpCode.TextEditor.Undo
 			this.op = op;
 		}
 
-	    private IUndoableOperation op;
+	    private readonly IUndoableOperation op;
 		
 		public IUndoableOperation Operation {
 			get {

@@ -22,9 +22,9 @@ namespace ICSharpCode.TextEditor.Document
 	/// </summary>
 	public class BookmarkManager
 	{
-	    private IDocument      document;
+	    private readonly IDocument      document;
 		#if DEBUG
-	    private IList<Bookmark> bookmark = new CheckedList<Bookmark>();
+	    private readonly IList<Bookmark> bookmark = new CheckedList<Bookmark>();
 		#else
 		List<Bookmark> bookmark = new List<Bookmark>();
 		#endif

@@ -481,10 +481,10 @@ namespace ICSharpCode.TextEditor.Actions
 	
 	public class BlockCommentRegion
 	{
-	    private string commentStart = String.Empty;
-	    private string commentEnd = String.Empty;
-	    private int startOffset = -1;
-	    private int endOffset = -1;
+	    private readonly string commentStart = String.Empty;
+	    private readonly string commentEnd = String.Empty;
+	    private readonly int startOffset = -1;
+	    private readonly int endOffset = -1;
 		
 		/// <summary>
 		/// The end offset is the offset where the comment end string starts from.

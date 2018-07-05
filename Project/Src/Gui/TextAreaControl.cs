@@ -28,7 +28,7 @@ namespace ICSharpCode.TextEditor
 
 	    private VScrollBar vScrollBar = new VScrollBar();
 	    private HScrollBar hScrollBar = new HScrollBar();
-	    private TextArea   textArea;
+	    private readonly TextArea   textArea;
 	    private bool       doHandleMousewheel = true;
 	    private bool       disposed;
 		
@@ -375,7 +375,7 @@ namespace ICSharpCode.TextEditor
 			textArea.Invalidate();
 		}
 
-	    private Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
+	    private readonly Util.MouseWheelHandler mouseWheelHandler = new Util.MouseWheelHandler();
 		
 		public void HandleMouseWheel(MouseEventArgs e)
 		{
@@ -440,7 +440,7 @@ namespace ICSharpCode.TextEditor
 			}
 		}
 
-	    private int scrollMarginHeight  = 3;
+	    private readonly int scrollMarginHeight  = 3;
 		
 		/// <summary>
 		/// Ensure that <paramref name="line"/> is visible.

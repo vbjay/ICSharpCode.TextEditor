@@ -17,7 +17,7 @@ namespace ICSharpCode.TextEditor.Undo
 	/// </summary>
 	internal sealed class UndoQueue : IUndoableOperation
 	{
-	    private List<IUndoableOperation> undolist = new List<IUndoableOperation>();
+	    private readonly List<IUndoableOperation> undolist = new List<IUndoableOperation>();
 		
 		/// <summary>
 		/// </summary>

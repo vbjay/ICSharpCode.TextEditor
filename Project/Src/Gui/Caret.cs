@@ -45,7 +45,7 @@ namespace ICSharpCode.TextEditor
 	    private TextArea textArea;
 	    private Point    currentPos   = new Point(-1, -1);
 	    private Ime      ime          = null;
-	    private CaretImplementation caretImplementation;
+	    private readonly CaretImplementation caretImplementation;
 		
 		/// <value>
 		/// The 'prefered' xPos in which the caret moves, when it is moved
@@ -338,12 +338,12 @@ namespace ICSharpCode.TextEditor
 
 	    private class ManagedCaret : CaretImplementation
 		{
-		    private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer { Interval = 300 };
+		    private readonly System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer { Interval = 300 };
 		    private bool visible;
 		    private bool blink = true;
 		    private int x, y, width, height;
-		    private TextArea textArea;
-		    private Caret parentCaret;
+		    private readonly TextArea textArea;
+		    private readonly Caret parentCaret;
 			
 			public ManagedCaret(Caret caret)
 			{
@@ -416,7 +416,7 @@ namespace ICSharpCode.TextEditor
 			[DllImport("User32.dll")]
 			private static extern bool HideCaret(IntPtr hWnd);
 
-		    private TextArea textArea;
+		    private readonly TextArea textArea;
 			
 			public Win32Caret(Caret caret)
 			{

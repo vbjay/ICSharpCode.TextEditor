@@ -96,7 +96,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 		
 		#endregion
 
-	    private MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
+	    private readonly MouseWheelHandler mouseWheelHandler = new MouseWheelHandler();
 		
 		public void HandleMouseWheel(MouseEventArgs e)
 		{
@@ -146,7 +146,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 		
 		#region InsightDataProvider handling
 
-	    private Stack<InsightDataProviderStackElement> insightDataProviderStack = new Stack<InsightDataProviderStackElement>();
+	    private readonly Stack<InsightDataProviderStackElement> insightDataProviderStack = new Stack<InsightDataProviderStackElement>();
 
 	    private int CurrentData {
 			get {
@@ -187,7 +187,7 @@ namespace ICSharpCode.TextEditor.Gui.InsightWindow
 	    private class InsightDataProviderStackElement
 		{
 			public int                  currentData;
-			public IInsightDataProvider dataProvider;
+			public readonly IInsightDataProvider dataProvider;
 			
 			public InsightDataProviderStackElement(IInsightDataProvider dataProvider)
 			{
