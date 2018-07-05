@@ -13,32 +13,32 @@ using System.Xml;
 
 namespace ICSharpCode.TextEditor.Document
 {
-	public class ResourceSyntaxModeProvider : ISyntaxModeFileProvider
-	{
-	    private readonly List<SyntaxMode> syntaxModes;
-		
-		public ICollection<SyntaxMode> SyntaxModes => syntaxModes;
+    public class ResourceSyntaxModeProvider : ISyntaxModeFileProvider
+    {
+        private readonly List<SyntaxMode> syntaxModes;
+        
+        public ICollection<SyntaxMode> SyntaxModes => syntaxModes;
 
-	    public ResourceSyntaxModeProvider()
-		{
-			Assembly assembly = typeof(SyntaxMode).Assembly;
-			Stream syntaxModeStream = assembly.GetManifestResourceStream("ICSharpCode.TextEditor.Resources.SyntaxModes.xml");
-			if (syntaxModeStream != null) {
-				syntaxModes = SyntaxMode.GetSyntaxModes(syntaxModeStream);
-			} else {
-				syntaxModes = new List<SyntaxMode>();
-			}
-		}
-		
-		public XmlTextReader GetSyntaxModeFile(SyntaxMode syntaxMode)
-		{
-			Assembly assembly = typeof(SyntaxMode).Assembly;
-			return new XmlTextReader(assembly.GetManifestResourceStream("ICSharpCode.TextEditor.Resources." + syntaxMode.FileName));
-		}
-		
-		public void UpdateSyntaxModeList()
-		{
-			// resources don't change during runtime
-		}
-	}
+        public ResourceSyntaxModeProvider()
+        {
+            Assembly assembly = typeof(SyntaxMode).Assembly;
+            Stream syntaxModeStream = assembly.GetManifestResourceStream("ICSharpCode.TextEditor.Resources.SyntaxModes.xml");
+            if (syntaxModeStream != null) {
+                syntaxModes = SyntaxMode.GetSyntaxModes(syntaxModeStream);
+            } else {
+                syntaxModes = new List<SyntaxMode>();
+            }
+        }
+        
+        public XmlTextReader GetSyntaxModeFile(SyntaxMode syntaxMode)
+        {
+            Assembly assembly = typeof(SyntaxMode).Assembly;
+            return new XmlTextReader(assembly.GetManifestResourceStream("ICSharpCode.TextEditor.Resources." + syntaxMode.FileName));
+        }
+        
+        public void UpdateSyntaxModeList()
+        {
+            // resources don't change during runtime
+        }
+    }
 }

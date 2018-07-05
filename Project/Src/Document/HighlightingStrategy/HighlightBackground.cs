@@ -11,35 +11,35 @@ using System.Xml;
 
 namespace ICSharpCode.TextEditor.Document
 {
-	/// <summary>
-	/// Extens the highlighting color with a background image.
-	/// </summary>
-	public class HighlightBackground : HighlightColor
-	{
-	    /// <value>
-		/// The image used as background
-		/// </value>
-		public Image BackgroundImage { get; }
+    /// <summary>
+    /// Extens the highlighting color with a background image.
+    /// </summary>
+    public class HighlightBackground : HighlightColor
+    {
+        /// <value>
+        /// The image used as background
+        /// </value>
+        public Image BackgroundImage { get; }
 
-	    /// <summary>
-		/// Creates a new instance of <see cref="HighlightBackground"/>
-		/// </summary>
-		public HighlightBackground(XmlElement el) : base(el)
-		{
-			if (el.Attributes["image"] != null) {
-				BackgroundImage = new Bitmap(el.Attributes["image"].InnerText);
-			}
-		}
-		
-		/// <summary>
-		/// Creates a new instance of <see cref="HighlightBackground"/>
-		/// </summary>
-		public HighlightBackground(Color color, Color backgroundcolor, bool bold, bool italic) : base(color, backgroundcolor, bold, italic)
-		{
-		}
-		
-		public HighlightBackground(string systemColor, string systemBackgroundColor, bool bold, bool italic) : base(systemColor, systemBackgroundColor, bold, italic)
-		{
-		}
-	}
+        /// <summary>
+        /// Creates a new instance of <see cref="HighlightBackground"/>
+        /// </summary>
+        public HighlightBackground(XmlElement el) : base(el)
+        {
+            if (el.Attributes["image"] != null) {
+                BackgroundImage = new Bitmap(el.Attributes["image"].InnerText);
+            }
+        }
+        
+        /// <summary>
+        /// Creates a new instance of <see cref="HighlightBackground"/>
+        /// </summary>
+        public HighlightBackground(Color color, Color backgroundcolor, bool bold, bool italic) : base(color, backgroundcolor, bold, italic)
+        {
+        }
+        
+        public HighlightBackground(string systemColor, string systemBackgroundColor, bool bold, bool italic) : base(systemColor, systemBackgroundColor, bold, italic)
+        {
+        }
+    }
 }

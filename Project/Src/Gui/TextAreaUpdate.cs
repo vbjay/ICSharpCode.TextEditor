@@ -10,65 +10,65 @@ using System.Drawing;
 
 namespace ICSharpCode.TextEditor
 {
-	/// <summary>
-	/// This enum describes all implemented request types
-	/// </summary>
-	public enum TextAreaUpdateType {
-		WholeTextArea,
-		SingleLine,
-		SinglePosition,
-		PositionToLineEnd,
-		PositionToEnd,
-		LinesBetween
-	}
-	
-	/// <summary>
-	/// This class is used to request an update of the textarea
-	/// </summary>
-	public class TextAreaUpdate
-	{
-	    public TextAreaUpdateType TextAreaUpdateType { get; }
+    /// <summary>
+    /// This enum describes all implemented request types
+    /// </summary>
+    public enum TextAreaUpdateType {
+        WholeTextArea,
+        SingleLine,
+        SinglePosition,
+        PositionToLineEnd,
+        PositionToEnd,
+        LinesBetween
+    }
+    
+    /// <summary>
+    /// This class is used to request an update of the textarea
+    /// </summary>
+    public class TextAreaUpdate
+    {
+        public TextAreaUpdateType TextAreaUpdateType { get; }
 
-	    public TextLocation Position { get; }
+        public TextLocation Position { get; }
 
-	    /// <summary>
-		/// Creates a new instance of <see cref="TextAreaUpdate"/>
-		/// </summary>
-		public TextAreaUpdate(TextAreaUpdateType type)
-		{
-			this.TextAreaUpdateType = type;
-		}
-		
-		/// <summary>
-		/// Creates a new instance of <see cref="TextAreaUpdate"/>
-		/// </summary>
-		public TextAreaUpdate(TextAreaUpdateType type, TextLocation position)
-		{
-			this.TextAreaUpdateType     = type;
-			this.Position = position;
-		}
-		
-		/// <summary>
-		/// Creates a new instance of <see cref="TextAreaUpdate"/>
-		/// </summary>
-		public TextAreaUpdate(TextAreaUpdateType type, int startLine, int endLine)
-		{
-			this.TextAreaUpdateType     = type;
-			Position = new TextLocation(startLine, endLine);
-		}
-		
-		/// <summary>
-		/// Creates a new instance of <see cref="TextAreaUpdate"/>
-		/// </summary>
-		public TextAreaUpdate(TextAreaUpdateType type, int singleLine)
-		{
-			this.TextAreaUpdateType     = type;
-			Position = new TextLocation(0, singleLine);
-		}
-		
-		public override string ToString()
-		{
-			return String.Format("[TextAreaUpdate: Type={0}, Position={1}]", TextAreaUpdateType, Position);
-		}
-	}
+        /// <summary>
+        /// Creates a new instance of <see cref="TextAreaUpdate"/>
+        /// </summary>
+        public TextAreaUpdate(TextAreaUpdateType type)
+        {
+            this.TextAreaUpdateType = type;
+        }
+        
+        /// <summary>
+        /// Creates a new instance of <see cref="TextAreaUpdate"/>
+        /// </summary>
+        public TextAreaUpdate(TextAreaUpdateType type, TextLocation position)
+        {
+            this.TextAreaUpdateType     = type;
+            this.Position = position;
+        }
+        
+        /// <summary>
+        /// Creates a new instance of <see cref="TextAreaUpdate"/>
+        /// </summary>
+        public TextAreaUpdate(TextAreaUpdateType type, int startLine, int endLine)
+        {
+            this.TextAreaUpdateType     = type;
+            Position = new TextLocation(startLine, endLine);
+        }
+        
+        /// <summary>
+        /// Creates a new instance of <see cref="TextAreaUpdate"/>
+        /// </summary>
+        public TextAreaUpdate(TextAreaUpdateType type, int singleLine)
+        {
+            this.TextAreaUpdateType     = type;
+            Position = new TextLocation(0, singleLine);
+        }
+        
+        public override string ToString()
+        {
+            return String.Format("[TextAreaUpdate: Type={0}, Position={1}]", TextAreaUpdateType, Position);
+        }
+    }
 }

@@ -9,62 +9,62 @@ using System;
 
 namespace ICSharpCode.TextEditor.Document
 {
-	public class LineCountChangeEventArgs : EventArgs
-	{
-	    /// <returns>
-		/// always a valid Document which is related to the Event.
-		/// </returns>
-		public IDocument Document { get; }
+    public class LineCountChangeEventArgs : EventArgs
+    {
+        /// <returns>
+        /// always a valid Document which is related to the Event.
+        /// </returns>
+        public IDocument Document { get; }
 
-	    /// <returns>
-		/// -1 if no offset was specified for this event
-		/// </returns>
-		public int LineStart { get; }
+        /// <returns>
+        /// -1 if no offset was specified for this event
+        /// </returns>
+        public int LineStart { get; }
 
-	    /// <returns>
-		/// -1 if no length was specified for this event
-		/// </returns>
-		public int LinesMoved { get; }
+        /// <returns>
+        /// -1 if no length was specified for this event
+        /// </returns>
+        public int LinesMoved { get; }
 
-	    public LineCountChangeEventArgs(IDocument document, int lineStart, int linesMoved)
-		{
-			this.Document = document;
-			LineStart    = lineStart;
-			LinesMoved    = linesMoved;
-		}
-	}
-	
-	public class LineEventArgs : EventArgs
-	{
-	    public IDocument Document { get; }
+        public LineCountChangeEventArgs(IDocument document, int lineStart, int linesMoved)
+        {
+            this.Document = document;
+            LineStart    = lineStart;
+            LinesMoved    = linesMoved;
+        }
+    }
+    
+    public class LineEventArgs : EventArgs
+    {
+        public IDocument Document { get; }
 
-	    public LineSegment LineSegment { get; }
+        public LineSegment LineSegment { get; }
 
-	    public LineEventArgs(IDocument document, LineSegment lineSegment)
-		{
-			this.Document = document;
-			this.LineSegment = lineSegment;
-		}
-		
-		public override string ToString()
-		{
-			return string.Format("[LineEventArgs Document={0} LineSegment={1}]", Document, LineSegment);
-		}
-	}
-	
-	public class LineLengthChangeEventArgs : LineEventArgs
-	{
-	    public int LengthDelta { get; }
+        public LineEventArgs(IDocument document, LineSegment lineSegment)
+        {
+            this.Document = document;
+            this.LineSegment = lineSegment;
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("[LineEventArgs Document={0} LineSegment={1}]", Document, LineSegment);
+        }
+    }
+    
+    public class LineLengthChangeEventArgs : LineEventArgs
+    {
+        public int LengthDelta { get; }
 
-	    public LineLengthChangeEventArgs(IDocument document, LineSegment lineSegment, int moved)
-			: base(document, lineSegment)
-		{
-			LengthDelta = moved;
-		}
-		
-		public override string ToString()
-		{
-			return string.Format("[LineLengthEventArgs Document={0} LineSegment={1} LengthDelta={2}]", Document, LineSegment, LengthDelta);
-		}
-	}
+        public LineLengthChangeEventArgs(IDocument document, LineSegment lineSegment, int moved)
+            : base(document, lineSegment)
+        {
+            LengthDelta = moved;
+        }
+        
+        public override string ToString()
+        {
+            return string.Format("[LineLengthEventArgs Document={0} LineSegment={1} LengthDelta={2}]", Document, LineSegment, LengthDelta);
+        }
+    }
 }

@@ -11,17 +11,17 @@ using System.Drawing;
 
 namespace ICSharpCode.TextEditor.Document
 {
-	public enum TextMarkerType
-	{
-		Invisible,
-		SolidBlock,
-		Underlined,
-		WaveLine
-	}
-	
-	/// <summary>
-	/// Marks a part of a document.
-	/// </summary>
+    public enum TextMarkerType
+    {
+        Invisible,
+        SolidBlock,
+        Underlined,
+        WaveLine
+    }
+    
+    /// <summary>
+    /// Marks a part of a document.
+    /// </summary>
     public class TextMarker : ISegment
     {
         [CLSCompliant(false)]
@@ -43,7 +43,7 @@ namespace ICSharpCode.TextEditor.Document
         }
         #endregion
         
-	    public override string ToString()
+        public override string ToString()
         {
             return String.Format("[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
                                  offset,
@@ -60,39 +60,39 @@ namespace ICSharpCode.TextEditor.Document
         public bool OverrideForeColor { get; }
 
         /// <summary>
-		/// Marks the text segment as read-only.
-		/// </summary>
-		public bool IsReadOnly { get; set; }
-		
-		public string ToolTip { get; set; } = null;
+        /// Marks the text segment as read-only.
+        /// </summary>
+        public bool IsReadOnly { get; set; }
+        
+        public string ToolTip { get; set; } = null;
 
         /// <summary>
-		/// Gets the last offset that is inside the marker region.
-		/// </summary>
-		public int EndOffset => offset + length - 1;
+        /// Gets the last offset that is inside the marker region.
+        /// </summary>
+        public int EndOffset => offset + length - 1;
 
         public TextMarker(int offset, int length, TextMarkerType textMarkerType) : this(offset, length, textMarkerType, Color.Red)
-		{
-		}
-		
-		public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color)
-		{
-			if (length < 1) length = 1;
-			this.offset          = offset;
-			this.length          = length;
-			this.TextMarkerType  = textMarkerType;
-			this.Color           = color;
-		}
-		
-		public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
-		{
-			if (length < 1) length = 1;
-			this.offset          = offset;
-			this.length          = length;
-			this.TextMarkerType  = textMarkerType;
-			this.Color           = color;
-			this.ForeColor       = foreColor;
-			OverrideForeColor = true;
-		}
+        {
+        }
+        
+        public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color)
+        {
+            if (length < 1) length = 1;
+            this.offset          = offset;
+            this.length          = length;
+            this.TextMarkerType  = textMarkerType;
+            this.Color           = color;
+        }
+        
+        public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
+        {
+            if (length < 1) length = 1;
+            this.offset          = offset;
+            this.length          = length;
+            this.TextMarkerType  = textMarkerType;
+            this.Color           = color;
+            this.ForeColor       = foreColor;
+            OverrideForeColor = true;
+        }
     }
 }

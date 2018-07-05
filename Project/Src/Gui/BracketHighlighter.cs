@@ -11,59 +11,59 @@ using ICSharpCode.TextEditor.Document;
 
 namespace ICSharpCode.TextEditor
 {
-	public class Highlight
-	{
-		public TextLocation OpenBrace { get; set; }
-		public TextLocation CloseBrace { get; set; }
-		
-		public Highlight(TextLocation openBrace, TextLocation closeBrace)
-		{
-			OpenBrace = openBrace;
-			CloseBrace = closeBrace;
-		}
-	}
-	
-	public class BracketHighlightingSheme
-	{
-	    public char OpenTag { get; set; }
+    public class Highlight
+    {
+        public TextLocation OpenBrace { get; set; }
+        public TextLocation CloseBrace { get; set; }
+        
+        public Highlight(TextLocation openBrace, TextLocation closeBrace)
+        {
+            OpenBrace = openBrace;
+            CloseBrace = closeBrace;
+        }
+    }
+    
+    public class BracketHighlightingSheme
+    {
+        public char OpenTag { get; set; }
 
-	    public char ClosingTag { get; set; }
+        public char ClosingTag { get; set; }
 
-	    public BracketHighlightingSheme(char opentag, char closingtag)
-		{
-			this.OpenTag    = opentag;
-			this.ClosingTag = closingtag;
-		}
-		
-		public Highlight GetHighlight(IDocument document, int offset)
-		{
-			int searchOffset;
-			if (document.TextEditorProperties.BracketMatchingStyle == BracketMatchingStyle.After) {
-				searchOffset = offset;
-			} else {
-				searchOffset = offset + 1;
-			}
-			char word = document.GetCharAt(Math.Max(0, Math.Min(document.TextLength - 1, searchOffset)));
-			
-			TextLocation endP = document.OffsetToPosition(searchOffset);
-			if (word == OpenTag) {
-				if (searchOffset < document.TextLength) {
-					int bracketOffset = TextUtilities.SearchBracketForward(document, searchOffset + 1, OpenTag, ClosingTag);
-					if (bracketOffset >= 0) {
-						TextLocation p = document.OffsetToPosition(bracketOffset);
-						return new Highlight(p, endP);
-					}
-				}
-			} else if (word == ClosingTag) {
-				if (searchOffset > 0) {
-					int bracketOffset = TextUtilities.SearchBracketBackward(document, searchOffset - 1, OpenTag, ClosingTag);
-					if (bracketOffset >= 0) {
-						TextLocation p = document.OffsetToPosition(bracketOffset);
-						return new Highlight(p, endP);
-					}
-				}
-			}
-			return null;
-		}
-	}
+        public BracketHighlightingSheme(char opentag, char closingtag)
+        {
+            this.OpenTag    = opentag;
+            this.ClosingTag = closingtag;
+        }
+        
+        public Highlight GetHighlight(IDocument document, int offset)
+        {
+            int searchOffset;
+            if (document.TextEditorProperties.BracketMatchingStyle == BracketMatchingStyle.After) {
+                searchOffset = offset;
+            } else {
+                searchOffset = offset + 1;
+            }
+            char word = document.GetCharAt(Math.Max(0, Math.Min(document.TextLength - 1, searchOffset)));
+            
+            TextLocation endP = document.OffsetToPosition(searchOffset);
+            if (word == OpenTag) {
+                if (searchOffset < document.TextLength) {
+                    int bracketOffset = TextUtilities.SearchBracketForward(document, searchOffset + 1, OpenTag, ClosingTag);
+                    if (bracketOffset >= 0) {
+                        TextLocation p = document.OffsetToPosition(bracketOffset);
+                        return new Highlight(p, endP);
+                    }
+                }
+            } else if (word == ClosingTag) {
+                if (searchOffset > 0) {
+                    int bracketOffset = TextUtilities.SearchBracketBackward(document, searchOffset - 1, OpenTag, ClosingTag);
+                    if (bracketOffset >= 0) {
+                        TextLocation p = document.OffsetToPosition(bracketOffset);
+                        return new Highlight(p, endP);
+                    }
+                }
+            }
+            return null;
+        }
+    }
 }

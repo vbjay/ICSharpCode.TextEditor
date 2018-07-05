@@ -11,86 +11,86 @@ using System.Text;
 
 namespace ICSharpCode.TextEditor.Document
 {
-	public enum BracketMatchingStyle {
-		Before,
-		After
-	}
-	
-	public class DefaultTextEditorProperties : ITextEditorProperties
-	{
-	    private static Font DefaultFont;
-		
-		public DefaultTextEditorProperties()
-		{
-			if (DefaultFont == null) {
-				DefaultFont = new Font("Courier New", 10);
-			}
-			FontContainer = new FontContainer(DefaultFont);
-		}
+    public enum BracketMatchingStyle {
+        Before,
+        After
+    }
+    
+    public class DefaultTextEditorProperties : ITextEditorProperties
+    {
+        private static Font DefaultFont;
+        
+        public DefaultTextEditorProperties()
+        {
+            if (DefaultFont == null) {
+                DefaultFont = new Font("Courier New", 10);
+            }
+            FontContainer = new FontContainer(DefaultFont);
+        }
 
-	    public int TabIndent { get; set; } = 4;
+        public int TabIndent { get; set; } = 4;
 
-	    public int IndentationSize { get; set; } = 4;
+        public int IndentationSize { get; set; } = 4;
 
-	    public IndentStyle IndentStyle { get; set; } = IndentStyle.Smart;
+        public IndentStyle IndentStyle { get; set; } = IndentStyle.Smart;
 
-	    public bool CaretLine { get; set; } = false;
+        public bool CaretLine { get; set; } = false;
 
-	    public DocumentSelectionMode DocumentSelectionMode { get; set; } = DocumentSelectionMode.Normal;
+        public DocumentSelectionMode DocumentSelectionMode { get; set; } = DocumentSelectionMode.Normal;
 
-	    public bool AllowCaretBeyondEOL { get; set; } = false;
+        public bool AllowCaretBeyondEOL { get; set; } = false;
 
-	    public bool ShowMatchingBracket { get; set; } = true;
+        public bool ShowMatchingBracket { get; set; } = true;
 
-	    public bool ShowLineNumbers { get; set; } = true;
+        public bool ShowLineNumbers { get; set; } = true;
 
-	    public bool ShowSpaces { get; set; } = false;
+        public bool ShowSpaces { get; set; } = false;
 
-	    public bool ShowTabs { get; set; } = false;
+        public bool ShowTabs { get; set; } = false;
 
-	    public bool ShowEOLMarker { get; set; } = false;
+        public bool ShowEOLMarker { get; set; } = false;
 
-	    public bool ShowInvalidLines { get; set; } = false;
+        public bool ShowInvalidLines { get; set; } = false;
 
-	    public bool IsIconBarVisible { get; set; } = false;
+        public bool IsIconBarVisible { get; set; } = false;
 
-	    public bool EnableFolding { get; set; } = true;
+        public bool EnableFolding { get; set; } = true;
 
-	    public bool ShowHorizontalRuler { get; set; } = false;
+        public bool ShowHorizontalRuler { get; set; } = false;
 
-	    public bool ShowVerticalRuler { get; set; } = true;
+        public bool ShowVerticalRuler { get; set; } = true;
 
-	    public bool ConvertTabsToSpaces { get; set; } = false;
+        public bool ConvertTabsToSpaces { get; set; } = false;
 
-	    public System.Drawing.Text.TextRenderingHint TextRenderingHint { get; set; } = System.Drawing.Text.TextRenderingHint.SystemDefault;
+        public System.Drawing.Text.TextRenderingHint TextRenderingHint { get; set; } = System.Drawing.Text.TextRenderingHint.SystemDefault;
 
-	    public bool MouseWheelScrollDown { get; set; } = true;
+        public bool MouseWheelScrollDown { get; set; } = true;
 
-	    public bool MouseWheelTextZoom { get; set; } = true;
+        public bool MouseWheelTextZoom { get; set; } = true;
 
-	    public bool HideMouseCursor { get; set; } = false;
+        public bool HideMouseCursor { get; set; } = false;
 
-	    public bool CutCopyWholeLine { get; set; } = true;
+        public bool CutCopyWholeLine { get; set; } = true;
 
-	    public Encoding Encoding { get; set; } = Encoding.UTF8;
+        public Encoding Encoding { get; set; } = Encoding.UTF8;
 
-	    public int VerticalRulerRow { get; set; } = 80;
+        public int VerticalRulerRow { get; set; } = 80;
 
-	    public LineViewerStyle LineViewerStyle { get; set; } = LineViewerStyle.None;
+        public LineViewerStyle LineViewerStyle { get; set; } = LineViewerStyle.None;
 
-	    public string LineTerminator { get; set; } = "\r\n";
+        public string LineTerminator { get; set; } = "\r\n";
 
-	    public bool AutoInsertCurlyBracket { get; set; } = true;
+        public bool AutoInsertCurlyBracket { get; set; } = true;
 
-	    public Font Font {
-			get => FontContainer.DefaultFont;
-	        set => FontContainer.DefaultFont = value;
-	    }
-		
-		public FontContainer FontContainer { get; }
+        public Font Font {
+            get => FontContainer.DefaultFont;
+            set => FontContainer.DefaultFont = value;
+        }
+        
+        public FontContainer FontContainer { get; }
 
-	    public BracketMatchingStyle  BracketMatchingStyle { get; set; } = BracketMatchingStyle.After;
+        public BracketMatchingStyle  BracketMatchingStyle { get; set; } = BracketMatchingStyle.After;
 
-	    public bool SupportReadOnlySegments { get; set; } = false;
-	}
+        public bool SupportReadOnlySegments { get; set; } = false;
+    }
 }
