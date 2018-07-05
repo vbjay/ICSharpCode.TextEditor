@@ -14,49 +14,64 @@ namespace ICSharpCode.TextEditor.Tests
     public class DocumentAggregatorTests
     {
         [Test]
-        public void TestDocumentGenerationTest()
+        public void TestDocumentBug1Test()
         {
-            IDocument document = new DocumentFactory().CreateDocument();
+            var document = new DocumentFactory().CreateDocument();
+
+            var top = "1234567890";
+            document.TextContent = top;
+
+            Assert.AreEqual(document.GetLineSegment(lineNumber: 0).Length, document.TextLength);
+
+            document.Remove(offset: 0, length: document.TextLength);
+
+            var line = document.GetLineSegment(lineNumber: 0);
+            Assert.AreEqual(expected: 0, actual: line.Offset);
+            Assert.AreEqual(expected: 0, actual: line.Length);
+            Assert.AreEqual(expected: 0, actual: document.TextLength);
+            Assert.AreEqual(expected: 1, actual: document.TotalNumberOfLines);
         }
 
         [Test]
-        public void TestDocumentStoreTest()
+        public void TestDocumentBug2Test()
         {
-            IDocument document = new DocumentFactory().CreateDocument();
+            var document = new DocumentFactory().CreateDocument();
 
-            string testText = "1234567890\n" +
-            "12345678\n" +
-            "1234567\n" +
-            "123456\n" +
-            "12345\n" +
-            "1234\n" +
-            "123\n" +
-            "12\n" +
-            "1\n" +
-            "\n";
-            document.TextContent = testText;
+            var top = "123\n456\n789\n0";
+            var testText = "Hello World!";
 
-            Assert.AreEqual(testText, document.TextContent);
-            Assert.AreEqual(11, document.TotalNumberOfLines);
-            Assert.AreEqual(testText.Length, document.TextLength);
+            document.TextContent = top;
+
+            document.Insert(top.Length, testText);
+
+            var line = document.GetLineSegment(document.TotalNumberOfLines - 1);
+
+            Assert.AreEqual(top.Length - 1, line.Offset);
+            Assert.AreEqual(testText.Length + 1, line.Length);
+        }
+
+        [Test]
+        public void TestDocumentGenerationTest()
+        {
+            var document = new DocumentFactory().CreateDocument();
         }
 
         [Test]
         public void TestDocumentInsertTest()
         {
-            IDocument document = new DocumentFactory().CreateDocument();
+            var document = new DocumentFactory().CreateDocument();
 
-            string top      = "1234567890\n";
-            string testText =
-            "12345678\n" +
-            "1234567\n" +
-            "123456\n" +
-            "12345\n" +
-            "1234\n" +
-            "123\n" +
-            "12\n" +
-            "1\n" +
-            "\n";
+            var top = "1234567890\n";
+            var testText =
+                "12345678\n" +
+                "1234567\n" +
+                "123456\n" +
+                "12345\n" +
+                "1234\n" +
+                "123\n" +
+                "12\n" +
+                "1\n" +
+                "\n";
 
             document.TextContent = top;
             document.Insert(top.Length, testText);
@@ -66,66 +81,51 @@ namespace ICSharpCode.TextEditor.Tests
         [Test]
         public void TestDocumentRemoveStoreTest()
         {
-            IDocument document = new DocumentFactory().CreateDocument();
+            var document = new DocumentFactory().CreateDocument();
 
-            string top      = "1234567890\n";
-            string testText =
-            "12345678\n" +
-            "1234567\n" +
-            "123456\n" +
-            "12345\n" +
-            "1234\n" +
-            "123\n" +
-            "12\n" +
-            "1\n" +
-            "\n";
+            var top = "1234567890\n";
+            var testText =
+                "12345678\n" +
+                "1234567\n" +
+                "123456\n" +
+                "12345\n" +
+                "1234\n" +
+                "123\n" +
+                "12\n" +
+                "1\n" +
+                "\n";
             document.TextContent = top + testText;
-            document.Remove(0, top.Length);
+            document.Remove(offset: 0, length: top.Length);
             Assert.AreEqual(document.TextContent, testText);
 
-            document.Remove(0, document.TextLength);
-            LineSegment line = document.GetLineSegment(0);
-            Assert.AreEqual(0, line.Offset);
-            Assert.AreEqual(0, line.Length);
-            Assert.AreEqual(0, document.TextLength);
-            Assert.AreEqual(1, document.TotalNumberOfLines);
+            document.Remove(offset: 0, length: document.TextLength);
+            var line = document.GetLineSegment(lineNumber: 0);
+            Assert.AreEqual(expected: 0, actual: line.Offset);
+            Assert.AreEqual(expected: 0, actual: line.Length);
+            Assert.AreEqual(expected: 0, actual: document.TextLength);
+            Assert.AreEqual(expected: 1, actual: document.TotalNumberOfLines);
         }
 
         [Test]
-        public void TestDocumentBug1Test()
+        public void TestDocumentStoreTest()
         {
-            IDocument document = new DocumentFactory().CreateDocument();
+            var document = new DocumentFactory().CreateDocument();
 
-            string top      = "1234567890";
-            document.TextContent = top;
+            var testText = "1234567890\n" +
+                           "12345678\n" +
+                           "1234567\n" +
+                           "123456\n" +
+                           "12345\n" +
+                           "1234\n" +
+                           "123\n" +
+                           "12\n" +
+                           "1\n" +
+                           "\n";
+            document.TextContent = testText;
 
-            Assert.AreEqual(document.GetLineSegment(0).Length, document.TextLength);
-
-            document.Remove(0, document.TextLength);
-
-            LineSegment line = document.GetLineSegment(0);
-            Assert.AreEqual(0, line.Offset);
-            Assert.AreEqual(0, line.Length);
-            Assert.AreEqual(0, document.TextLength);
-            Assert.AreEqual(1, document.TotalNumberOfLines);
-        }
-
-        [Test]
-        public void TestDocumentBug2Test()
-        {
-            IDocument document = new DocumentFactory().CreateDocument();
-
-            string top      = "123\n456\n789\n0";
-            string testText = "Hello World!";
-
-            document.TextContent = top;
-
-            document.Insert(top.Length, testText);
-
-            LineSegment line = document.GetLineSegment(document.TotalNumberOfLines - 1);
-
-            Assert.AreEqual(top.Length - 1, line.Offset);
-            Assert.AreEqual(testText.Length + 1, line.Length);
+            Assert.AreEqual(testText, document.TextContent);
+            Assert.AreEqual(expected: 11, actual: document.TotalNumberOfLines);
+            Assert.AreEqual(testText.Length, document.TextLength);
         }
 
 //        [Test]

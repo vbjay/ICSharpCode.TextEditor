@@ -31,8 +31,9 @@ namespace ICSharpCode.TextEditor.Actions
 
         public override void Execute(TextArea textArea)
         {
-            Bookmark mark = textArea.Document.BookmarkManager.GetPrevMark(textArea.Caret.Line, predicate);
-            if (mark != null) {
+            var mark = textArea.Document.BookmarkManager.GetPrevMark(textArea.Caret.Line, predicate);
+            if (mark != null)
+            {
                 textArea.Caret.Position = mark.Location;
                 textArea.SelectionManager.ClearSelection();
                 textArea.SetDesiredColumn();
@@ -51,8 +52,9 @@ namespace ICSharpCode.TextEditor.Actions
 
         public override void Execute(TextArea textArea)
         {
-            Bookmark mark = textArea.Document.BookmarkManager.GetNextMark(textArea.Caret.Line, predicate);
-            if (mark != null) {
+            var mark = textArea.Document.BookmarkManager.GetNextMark(textArea.Caret.Line, predicate);
+            if (mark != null)
+            {
                 textArea.Caret.Position = mark.Location;
                 textArea.SelectionManager.ClearSelection();
                 textArea.SetDesiredColumn();

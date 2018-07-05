@@ -5,43 +5,40 @@
 //     <version>$Revision$</version>
 // </file>
 
-using System;
 using System.Xml;
 
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// Used for mark next token
+    ///     Used for mark next token
     /// </summary>
     public class NextMarker
     {
-        /// <value>
-        /// String value to indicate to mark next token
-        /// </value>
-        public string What { get; }
-
-        /// <value>
-        /// Color for marking next token
-        /// </value>
-        public HighlightColor Color { get; }
-
-        /// <value>
-        /// If true the indication text will be marked with the same color
-        /// too
-        /// </value>
-        public bool MarkMarker { get; }
-
         /// <summary>
-        /// Creates a new instance of <see cref="NextMarker"/>
+        ///     Creates a new instance of <see cref="NextMarker" />
         /// </summary>
         public NextMarker(XmlElement mark)
         {
             Color = new HighlightColor(mark);
-            What  = mark.InnerText;
-            if (mark.Attributes["markmarker"] != null) {
+            What = mark.InnerText;
+            if (mark.Attributes["markmarker"] != null)
                 MarkMarker = bool.Parse(mark.Attributes["markmarker"].InnerText);
-            }
         }
-    }
 
+        /// <value>
+        ///     String value to indicate to mark next token
+        /// </value>
+        public string What { get; }
+
+        /// <value>
+        ///     Color for marking next token
+        /// </value>
+        public HighlightColor Color { get; }
+
+        /// <value>
+        ///     If true the indication text will be marked with the same color
+        ///     too
+        /// </value>
+        public bool MarkMarker { get; }
+    }
 }

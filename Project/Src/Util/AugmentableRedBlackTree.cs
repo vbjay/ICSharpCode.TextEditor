@@ -15,27 +15,31 @@ namespace ICSharpCode.TextEditor.Util
 {
     internal sealed class RedBlackTreeNode<T>
     {
+        internal bool color;
         internal RedBlackTreeNode<T> left, right, parent;
         internal T val;
-        internal bool color;
 
         internal RedBlackTreeNode(T val)
         {
             this.val = val;
         }
 
-        internal RedBlackTreeNode<T> LeftMost {
-            get {
-                RedBlackTreeNode<T> node = this;
+        internal RedBlackTreeNode<T> LeftMost
+        {
+            get
+            {
+                var node = this;
                 while (node.left != null)
                     node = node.left;
                 return node;
             }
         }
 
-        internal RedBlackTreeNode<T> RightMost {
-            get {
-                RedBlackTreeNode<T> node = this;
+        internal RedBlackTreeNode<T> RightMost
+        {
+            get
+            {
+                var node = this;
                 while (node.right != null)
                     node = node.right;
                 return node;
@@ -53,7 +57,7 @@ namespace ICSharpCode.TextEditor.Util
     }
 
     /// <summary>
-    /// Description of RedBlackTree.
+    ///     Description of RedBlackTree.
     /// </summary>
     internal sealed class AugmentableRedBlackTree<T, Host> : ICollection<T> where Host : IRedBlackTreeHost<T>
     {
@@ -75,20 +79,20 @@ namespace ICSharpCode.TextEditor.Util
         }
 
         #region Debugging code
-        #if DEBUG
+
+#if DEBUG
         /// <summary>
-        /// Check tree for consistency and being balanced.
+        ///     Check tree for consistency and being balanced.
         /// </summary>
         [Conditional("DATACONSISTENCYTEST")]
         private void CheckProperties()
         {
-            int blackCount = -1;
-            CheckNodeProperties(root, null, RED, 0, ref blackCount);
+            var blackCount = -1;
+            CheckNodeProperties(root, parentNode: null, RED, blackCount: 0, ref blackCount);
 
-            int nodeCount = 0;
-            foreach (T val in this) {
+            var nodeCount = 0;
+            foreach (var val in this)
                 nodeCount++;
-            }
             Debug.Assert(Count == nodeCount);
         }
 
@@ -105,27 +109,27 @@ namespace ICSharpCode.TextEditor.Util
 
             Debug.Assert(node.parent == parentNode);
 
-            if (parentColor == RED) {
+            if (parentColor == RED)
                 Debug.Assert(node.color == BLACK);
-            }
-            if (node.color == BLACK) {
+            if (node.color == BLACK)
                 blackCount++;
-            }
-            if (node.left == null && node.right == null) {
+            if (node.left == null && node.right == null)
+            {
                 // node is a leaf node:
                 if (expectedBlackCount == -1)
                     expectedBlackCount = blackCount;
                 else
                     Debug.Assert(expectedBlackCount == blackCount);
             }
+
             CheckNodeProperties(node.left, node, node.color, blackCount, ref expectedBlackCount);
             CheckNodeProperties(node.right, node, node.color, blackCount, ref expectedBlackCount);
         }
 
         public string GetTreeAsString()
         {
-            StringBuilder b = new StringBuilder();
-            AppendTreeToString(root, b, 0);
+            var b = new StringBuilder();
+            AppendTreeToString(root, b, indent: 0);
             return b.ToString();
         }
 
@@ -137,54 +141,67 @@ namespace ICSharpCode.TextEditor.Util
                 b.Append("BLACK ");
             b.AppendLine(node.val.ToString());
             indent += 2;
-            if (node.left != null) {
-                b.Append(' ', indent);
+            if (node.left != null)
+            {
+                b.Append(value: ' ', indent);
                 b.Append("L: ");
                 AppendTreeToString(node.left, b, indent);
             }
-            if (node.right != null) {
-                b.Append(' ', indent);
+
+            if (node.right != null)
+            {
+                b.Append(value: ' ', indent);
                 b.Append("R: ");
                 AppendTreeToString(node.right, b, indent);
             }
         }
-        #endif
+#endif
+
         #endregion
 
         #region Add
+
         public void Add(T item)
         {
             AddInternal(new RedBlackTreeNode<T>(item));
-            #if DEBUG
+#if DEBUG
             CheckProperties();
-            #endif
+#endif
         }
 
         private void AddInternal(RedBlackTreeNode<T> newNode)
         {
             Debug.Assert(newNode.color == BLACK);
-            if (root == null) {
+            if (root == null)
+            {
                 Count = 1;
                 root = newNode;
                 return;
             }
+
             // Insert into the tree
-            RedBlackTreeNode<T> parentNode = root;
-            while (true) {
-                if (host.Compare(newNode.val, parentNode.val) <= 0) {
-                    if (parentNode.left == null) {
+            var parentNode = root;
+            while (true)
+                if (host.Compare(newNode.val, parentNode.val) <= 0)
+                {
+                    if (parentNode.left == null)
+                    {
                         InsertAsLeft(parentNode, newNode);
                         return;
                     }
+
                     parentNode = parentNode.left;
-                } else {
-                    if (parentNode.right == null) {
+                }
+                else
+                {
+                    if (parentNode.right == null)
+                    {
                         InsertAsRight(parentNode, newNode);
                         return;
                     }
+
                     parentNode = parentNode.right;
                 }
-            }
         }
 
         internal void InsertAsLeft(RedBlackTreeNode<T> parentNode, RedBlackTreeNode<T> newNode)
@@ -216,41 +233,45 @@ namespace ICSharpCode.TextEditor.Util
             Debug.Assert(node.left == null || node.left.color == BLACK);
             Debug.Assert(node.right == null || node.right.color == BLACK);
 
-            RedBlackTreeNode<T> parentNode = node.parent;
-            if (parentNode == null) {
+            var parentNode = node.parent;
+            if (parentNode == null)
+            {
                 // we inserted in the root -> the node must be black
                 // since this is a root node, making the node black increments the number of black nodes
                 // on all paths by one, so it is still the same for all paths.
                 node.color = BLACK;
                 return;
             }
-            if (parentNode.color == BLACK) {
-                // if the parent node where we inserted was black, our red node is placed correctly.
-                // since we inserted a red node, the number of black nodes on each path is unchanged
-                // -> the tree is still balanced
+
+            if (parentNode.color == BLACK)
                 return;
-            }
             // parentNode is red, so there is a conflict here!
 
             // because the root is black, parentNode is not the root -> there is a grandparent node
-            RedBlackTreeNode<T> grandparentNode = parentNode.parent;
-            RedBlackTreeNode<T> uncleNode = Sibling(parentNode);
-            if (uncleNode != null && uncleNode.color == RED) {
+            var grandparentNode = parentNode.parent;
+            var uncleNode = Sibling(parentNode);
+            if (uncleNode != null && uncleNode.color == RED)
+            {
                 parentNode.color = BLACK;
                 uncleNode.color = BLACK;
                 grandparentNode.color = RED;
                 FixTreeOnInsert(grandparentNode);
                 return;
             }
+
             // now we know: parent is red but uncle is black
             // First rotation:
-            if (node == parentNode.right && parentNode == grandparentNode.left) {
+            if (node == parentNode.right && parentNode == grandparentNode.left)
+            {
                 RotateLeft(parentNode);
                 node = node.left;
-            } else if (node == parentNode.left && parentNode == grandparentNode.right) {
+            }
+            else if (node == parentNode.left && parentNode == grandparentNode.right)
+            {
                 RotateRight(parentNode);
                 node = node.right;
             }
+
             // because node might have changed, reassign variables:
             parentNode = node.parent;
             grandparentNode = parentNode.parent;
@@ -259,9 +280,12 @@ namespace ICSharpCode.TextEditor.Util
             parentNode.color = BLACK;
             grandparentNode.color = RED;
             // Second rotation:
-            if (node == parentNode.left && parentNode == grandparentNode.left) {
+            if (node == parentNode.left && parentNode == grandparentNode.left)
+            {
                 RotateRight(grandparentNode);
-            } else {
+            }
+            else
+            {
                 // because of the first rotation, this is guaranteed:
                 Debug.Assert(node == parentNode.right && parentNode == grandparentNode.right);
                 RotateLeft(grandparentNode);
@@ -270,25 +294,28 @@ namespace ICSharpCode.TextEditor.Util
 
         private void ReplaceNode(RedBlackTreeNode<T> replacedNode, RedBlackTreeNode<T> newNode)
         {
-            if (replacedNode.parent == null) {
+            if (replacedNode.parent == null)
+            {
                 Debug.Assert(replacedNode == root);
                 root = newNode;
-            } else {
+            }
+            else
+            {
                 if (replacedNode.parent.left == replacedNode)
                     replacedNode.parent.left = newNode;
                 else
                     replacedNode.parent.right = newNode;
             }
-            if (newNode != null) {
+
+            if (newNode != null)
                 newNode.parent = replacedNode.parent;
-            }
             replacedNode.parent = null;
         }
 
         private void RotateLeft(RedBlackTreeNode<T> p)
         {
             // let q be p's right child
-            RedBlackTreeNode<T> q = p.right;
+            var q = p.right;
             Debug.Assert(q != null);
             Debug.Assert(q.parent == p);
             // set q to be the new root
@@ -306,7 +333,7 @@ namespace ICSharpCode.TextEditor.Util
         private void RotateRight(RedBlackTreeNode<T> p)
         {
             // let q be p's left child
-            RedBlackTreeNode<T> q = p.left;
+            var q = p.left;
             Debug.Assert(q != null);
             Debug.Assert(q.parent == p);
             // set q to be the new root
@@ -327,12 +354,14 @@ namespace ICSharpCode.TextEditor.Util
                 return node.parent.right;
             return node.parent.left;
         }
+
         #endregion
 
         #region Remove
+
         public void RemoveAt(RedBlackTreeIterator<T> iterator)
         {
-            RedBlackTreeNode<T> node = iterator.node;
+            var node = iterator.node;
             if (node == null)
                 throw new ArgumentException("Invalid iterator");
             while (node.parent != null)
@@ -340,17 +369,18 @@ namespace ICSharpCode.TextEditor.Util
             if (node != root)
                 throw new ArgumentException("Iterator does not belong to this tree");
             RemoveNode(iterator.node);
-            #if DEBUG
+#if DEBUG
             CheckProperties();
-            #endif
+#endif
         }
 
         internal void RemoveNode(RedBlackTreeNode<T> removedNode)
         {
-            if (removedNode.left != null && removedNode.right != null) {
+            if (removedNode.left != null && removedNode.right != null)
+            {
                 // replace removedNode with it's in-order successor
 
-                RedBlackTreeNode<T> leftMost = removedNode.right.LeftMost;
+                var leftMost = removedNode.right.LeftMost;
                 RemoveNode(leftMost); // remove leftMost from its current location
 
                 // and overwrite the removedNode with it
@@ -370,16 +400,16 @@ namespace ICSharpCode.TextEditor.Util
 
             // now either removedNode.left or removedNode.right is null
             // get the remaining child
-            RedBlackTreeNode<T> parentNode = removedNode.parent;
-            RedBlackTreeNode<T> childNode = removedNode.left ?? removedNode.right;
+            var parentNode = removedNode.parent;
+            var childNode = removedNode.left ?? removedNode.right;
             ReplaceNode(removedNode, childNode);
             if (parentNode != null) host.UpdateAfterChildrenChange(parentNode);
-            if (removedNode.color == BLACK) {
-                if (childNode != null && childNode.color == RED) {
+            if (removedNode.color == BLACK)
+            {
+                if (childNode != null && childNode.color == RED)
                     childNode.color = BLACK;
-                } else {
+                else
                     FixTreeOnDelete(childNode, parentNode);
-                }
             }
         }
 
@@ -406,15 +436,15 @@ namespace ICSharpCode.TextEditor.Util
                 return;
 
             // warning: node may be null
-            RedBlackTreeNode<T> sibling = Sibling(node, parentNode);
-            if (sibling.color == RED) {
+            var sibling = Sibling(node, parentNode);
+            if (sibling.color == RED)
+            {
                 parentNode.color = RED;
                 sibling.color = BLACK;
-                if (node == parentNode.left) {
+                if (node == parentNode.left)
                     RotateLeft(parentNode);
-                } else {
+                else
                     RotateRight(parentNode);
-                }
 
                 sibling = Sibling(node, parentNode); // update value of sibling after rotation
             }
@@ -457,73 +487,87 @@ namespace ICSharpCode.TextEditor.Util
                 sibling.right.color = BLACK;
                 RotateLeft(sibling);
             }
+
             sibling = Sibling(node, parentNode); // update value of sibling after rotation
 
             sibling.color = parentNode.color;
             parentNode.color = BLACK;
-            if (node == parentNode.left) {
-                if (sibling.right != null) {
+            if (node == parentNode.left)
+            {
+                if (sibling.right != null)
+                {
                     Debug.Assert(sibling.right.color == RED);
                     sibling.right.color = BLACK;
                 }
+
                 RotateLeft(parentNode);
-            } else {
-                if (sibling.left != null) {
+            }
+            else
+            {
+                if (sibling.left != null)
+                {
                     Debug.Assert(sibling.left.color == RED);
                     sibling.left.color = BLACK;
                 }
+
                 RotateRight(parentNode);
             }
         }
+
         #endregion
 
         #region Find/LowerBound/UpperBound/GetEnumerator
+
         /// <summary>
-        /// Returns the iterator pointing to the specified item, or an iterator in End state if the item is not found.
+        ///     Returns the iterator pointing to the specified item, or an iterator in End state if the item is not found.
         /// </summary>
         public RedBlackTreeIterator<T> Find(T item)
         {
-            RedBlackTreeIterator<T> it = LowerBound(item);
-            while (it.IsValid && host.Compare(it.Current, item) == 0) {
+            var it = LowerBound(item);
+            while (it.IsValid && host.Compare(it.Current, item) == 0)
+            {
                 if (host.Equals(it.Current, item))
                     return it;
                 it.MoveNext();
             }
+
             return default;
         }
 
         /// <summary>
-        /// Returns the iterator pointing to the first item greater or equal to <paramref name="item"/>.
+        ///     Returns the iterator pointing to the first item greater or equal to <paramref name="item" />.
         /// </summary>
         public RedBlackTreeIterator<T> LowerBound(T item)
         {
-            RedBlackTreeNode<T> node = root;
+            var node = root;
             RedBlackTreeNode<T> resultNode = null;
-            while (node != null) {
-                if (host.Compare(node.val, item) < 0) {
+            while (node != null)
+                if (host.Compare(node.val, item) < 0)
+                {
                     node = node.right;
-                } else {
+                }
+                else
+                {
                     resultNode = node;
                     node = node.left;
                 }
-            }
+
             return new RedBlackTreeIterator<T>(resultNode);
         }
 
         /// <summary>
-        /// Returns the iterator pointing to the first item greater than <paramref name="item"/>.
+        ///     Returns the iterator pointing to the first item greater than <paramref name="item" />.
         /// </summary>
         public RedBlackTreeIterator<T> UpperBound(T item)
         {
-            RedBlackTreeIterator<T> it = LowerBound(item);
-            while (it.IsValid && host.Compare(it.Current, item) == 0) {
+            var it = LowerBound(item);
+            while (it.IsValid && host.Compare(it.Current, item) == 0)
                 it.MoveNext();
-            }
             return it;
         }
 
         /// <summary>
-        /// Gets a tree iterator that starts on the first node.
+        ///     Gets a tree iterator that starts on the first node.
         /// </summary>
         public RedBlackTreeIterator<T> Begin()
         {
@@ -532,18 +576,20 @@ namespace ICSharpCode.TextEditor.Util
         }
 
         /// <summary>
-        /// Gets a tree iterator that starts one node before the first node.
+        ///     Gets a tree iterator that starts one node before the first node.
         /// </summary>
         public RedBlackTreeIterator<T> GetEnumerator()
         {
             if (root == null) return default;
-            RedBlackTreeNode<T> dummyNode = new RedBlackTreeNode<T>(default);
+            var dummyNode = new RedBlackTreeNode<T>(val: default);
             dummyNode.right = root;
             return new RedBlackTreeIterator<T>(dummyNode);
         }
+
         #endregion
 
         #region ICollection members
+
         public bool Contains(T item)
         {
             return Find(item).IsValid;
@@ -551,10 +597,9 @@ namespace ICSharpCode.TextEditor.Util
 
         public bool Remove(T item)
         {
-            RedBlackTreeIterator<T> it = Find(item);
-            if (!it.IsValid) {
+            var it = Find(item);
+            if (!it.IsValid)
                 return false;
-            }
 
             RemoveAt(it);
             return true;
@@ -575,10 +620,10 @@ namespace ICSharpCode.TextEditor.Util
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null) throw new ArgumentNullException("array");
-            foreach (T val in this) {
+            foreach (var val in this)
                 array[arrayIndex++] = val;
-            }
         }
+
         #endregion
     }
 }

@@ -13,94 +13,102 @@ using ICSharpCode.TextEditor.Undo;
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// Describes the caret marker
+    ///     Describes the caret marker
     /// </summary>
-    public enum LineViewerStyle {
+    public enum LineViewerStyle
+    {
         /// <summary>
-        /// No line viewer will be displayed
+        ///     No line viewer will be displayed
         /// </summary>
         None,
 
         /// <summary>
-        /// The row in which the caret is will be marked
+        ///     The row in which the caret is will be marked
         /// </summary>
         FullRow
     }
 
     /// <summary>
-    /// Describes the indent style
+    ///     Describes the indent style
     /// </summary>
-    public enum IndentStyle {
+    public enum IndentStyle
+    {
         /// <summary>
-        /// No indentation occurs
+        ///     No indentation occurs
         /// </summary>
         None,
 
         /// <summary>
-        /// The indentation from the line above will be
-        /// taken to indent the curent line
+        ///     The indentation from the line above will be
+        ///     taken to indent the curent line
         /// </summary>
         Auto,
 
         /// <summary>
-        /// Inteligent, context sensitive indentation will occur
+        ///     Inteligent, context sensitive indentation will occur
         /// </summary>
         Smart
     }
 
     /// <summary>
-    /// Describes the bracket highlighting style
+    ///     Describes the bracket highlighting style
     /// </summary>
-    public enum BracketHighlightingStyle {
-
+    public enum BracketHighlightingStyle
+    {
         /// <summary>
-        /// Brackets won't be highlighted
+        ///     Brackets won't be highlighted
         /// </summary>
         None,
 
         /// <summary>
-        /// Brackets will be highlighted if the caret is on the bracket
+        ///     Brackets will be highlighted if the caret is on the bracket
         /// </summary>
         OnBracket,
 
         /// <summary>
-        /// Brackets will be highlighted if the caret is after the bracket
+        ///     Brackets will be highlighted if the caret is after the bracket
         /// </summary>
         AfterBracket
     }
 
     /// <summary>
-    /// Describes the selection mode of the text area
+    ///     Describes the selection mode of the text area
     /// </summary>
-    public enum DocumentSelectionMode {
+    public enum DocumentSelectionMode
+    {
         /// <summary>
-        /// The 'normal' selection mode.
+        ///     The 'normal' selection mode.
         /// </summary>
         Normal,
 
         /// <summary>
-        /// Selections will be added to the current selection or new
-        /// ones will be created (multi-select mode)
+        ///     Selections will be added to the current selection or new
+        ///     ones will be created (multi-select mode)
         /// </summary>
         Additive
     }
 
     /// <summary>
-    /// The default <see cref="IDocument"/> implementation.
+    ///     The default <see cref="IDocument" /> implementation.
     /// </summary>
     internal sealed class DefaultDocument : IDocument
     {
         public LineManager LineManager { get; set; }
 
-        public event EventHandler<LineLengthChangeEventArgs> LineLengthChanged {
+        public event EventHandler<LineLengthChangeEventArgs> LineLengthChanged
+        {
             add => LineManager.LineLengthChanged += value;
             remove => LineManager.LineLengthChanged -= value;
         }
-        public event EventHandler<LineCountChangeEventArgs> LineCountChanged {
+
+        public event EventHandler<LineCountChangeEventArgs> LineCountChanged
+        {
             add => LineManager.LineCountChanged += value;
             remove => LineManager.LineCountChanged -= value;
         }
-        public event EventHandler<LineEventArgs> LineDeleted {
+
+        public event EventHandler<LineEventArgs> LineDeleted
+        {
             add => LineManager.LineDeleted += value;
             remove => LineManager.LineDeleted -= value;
         }
@@ -121,7 +129,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public FoldingManager FoldingManager { get; set; }
 
-        public IHighlightingStrategy HighlightingStrategy {
+        public IHighlightingStrategy HighlightingStrategy
+        {
             get => LineManager.HighlightingStrategy;
             set => LineManager.HighlightingStrategy = value;
         }
@@ -130,41 +139,41 @@ namespace ICSharpCode.TextEditor.Document
 
         public BookmarkManager BookmarkManager { get; set; }
 
-        public string TextContent {
-            get => GetText(0, TextBufferStrategy.Length);
-            set {
+        public string TextContent
+        {
+            get => GetText(offset: 0, TextBufferStrategy.Length);
+            set
+            {
                 Debug.Assert(TextBufferStrategy != null);
                 Debug.Assert(LineManager != null);
-                OnDocumentAboutToBeChanged(new DocumentEventArgs(this, 0, 0, value));
+                OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset: 0, length: 0, value));
                 TextBufferStrategy.SetContent(value);
                 LineManager.SetContent(value);
                 UndoStack.ClearAll();
 
-                OnDocumentChanged(new DocumentEventArgs(this, 0, 0, value));
+                OnDocumentChanged(new DocumentEventArgs(this, offset: 0, length: 0, value));
                 OnTextContentChanged(EventArgs.Empty);
             }
         }
 
         public void Insert(int offset, string text)
         {
-            if (ReadOnly) {
+            if (ReadOnly)
                 return;
-            }
-            OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, -1, text));
+            OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, length: -1, text));
 
             TextBufferStrategy.Insert(offset, text);
             LineManager.Insert(offset, text);
 
             UndoStack.Push(new UndoableInsert(this, offset, text));
 
-            OnDocumentChanged(new DocumentEventArgs(this, offset, -1, text));
+            OnDocumentChanged(new DocumentEventArgs(this, offset, length: -1, text));
         }
 
         public void Remove(int offset, int length)
         {
-            if (ReadOnly) {
+            if (ReadOnly)
                 return;
-            }
             OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, length));
             UndoStack.Push(new UndoableDelete(this, offset, GetText(offset, length)));
 
@@ -176,9 +185,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public void Replace(int offset, int length, string text)
         {
-            if (ReadOnly) {
+            if (ReadOnly)
                 return;
-            }
             OnDocumentAboutToBeChanged(new DocumentEventArgs(this, offset, length, text));
             UndoStack.Push(new UndoableReplace(this, offset, GetText(offset, length), text));
 
@@ -195,11 +203,12 @@ namespace ICSharpCode.TextEditor.Document
 
         public string GetText(int offset, int length)
         {
-            #if DEBUG
+#if DEBUG
             if (length < 0) throw new ArgumentOutOfRangeException("length", length, "length < 0");
-            #endif
+#endif
             return TextBufferStrategy.GetText(offset, length);
         }
+
         public string GetText(ISegment segment)
         {
             return GetText(segment.Offset, segment.Length);
@@ -254,35 +263,38 @@ namespace ICSharpCode.TextEditor.Document
 
         public TextLocation OffsetToPosition(int offset)
         {
-            int lineNr = GetLineNumberForOffset(offset);
-            LineSegment line = GetLineSegment(lineNr);
+            var lineNr = GetLineNumberForOffset(offset);
+            var line = GetLineSegment(lineNr);
             return new TextLocation(offset - line.Offset, lineNr);
         }
 
         public int PositionToOffset(TextLocation p)
         {
-            if (p.Y >= TotalNumberOfLines) {
+            if (p.Y >= TotalNumberOfLines)
                 return 0;
-            }
-            LineSegment line = GetLineSegment(p.Y);
+            var line = GetLineSegment(p.Y);
             return Math.Min(TextLength, line.Offset + Math.Min(line.Length, p.X));
         }
 
         public void UpdateSegmentListOnDocumentChange<T>(List<T> list, DocumentEventArgs e) where T : ISegment
         {
-            int removedCharacters = e.Length > 0 ? e.Length : 0;
-            int insertedCharacters = e.Text != null ? e.Text.Length : 0;
-            for (int i = 0; i < list.Count; ++i) {
+            var removedCharacters = e.Length > 0 ? e.Length : 0;
+            var insertedCharacters = e.Text != null ? e.Text.Length : 0;
+            for (var i = 0; i < list.Count; ++i)
+            {
                 ISegment s = list[i];
-                int segmentStart = s.Offset;
-                int segmentEnd = s.Offset + s.Length;
+                var segmentStart = s.Offset;
+                var segmentEnd = s.Offset + s.Length;
 
-                if (e.Offset <= segmentStart) {
+                if (e.Offset <= segmentStart)
+                {
                     segmentStart -= removedCharacters;
                     if (segmentStart < e.Offset)
                         segmentStart = e.Offset;
                 }
-                if (e.Offset < segmentEnd) {
+
+                if (e.Offset < segmentEnd)
+                {
                     segmentEnd -= removedCharacters;
                     if (segmentEnd < e.Offset)
                         segmentEnd = e.Offset;
@@ -290,7 +302,8 @@ namespace ICSharpCode.TextEditor.Document
 
                 Debug.Assert(segmentStart <= segmentEnd);
 
-                if (segmentStart == segmentEnd) {
+                if (segmentStart == segmentEnd)
+                {
                     list.RemoveAt(i);
                     --i;
                     continue;
@@ -308,6 +321,30 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
+        public event DocumentEventHandler DocumentAboutToBeChanged;
+        public event DocumentEventHandler DocumentChanged;
+
+        // UPDATE STUFF
+
+        public List<TextAreaUpdate> UpdateQueue { get; } = new List<TextAreaUpdate>();
+
+        public void RequestUpdate(TextAreaUpdate update)
+        {
+            if (UpdateQueue.Count == 1 && UpdateQueue[index: 0].TextAreaUpdateType == TextAreaUpdateType.WholeTextArea)
+                return;
+            if (update.TextAreaUpdateType == TextAreaUpdateType.WholeTextArea)
+                UpdateQueue.Clear();
+            UpdateQueue.Add(update);
+        }
+
+        public void CommitUpdate()
+        {
+            UpdateCommited?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler UpdateCommited;
+        public event EventHandler TextContentChanged;
+
         private void OnDocumentAboutToBeChanged(DocumentEventArgs e)
         {
             DocumentAboutToBeChanged?.Invoke(this, e);
@@ -318,38 +355,10 @@ namespace ICSharpCode.TextEditor.Document
             DocumentChanged?.Invoke(this, e);
         }
 
-        public event DocumentEventHandler DocumentAboutToBeChanged;
-        public event DocumentEventHandler DocumentChanged;
-
-        // UPDATE STUFF
-
-        public List<TextAreaUpdate> UpdateQueue { get; } = new List<TextAreaUpdate>();
-
-        public void RequestUpdate(TextAreaUpdate update)
-        {
-            if (UpdateQueue.Count == 1 && UpdateQueue[0].TextAreaUpdateType == TextAreaUpdateType.WholeTextArea) {
-                // if we're going to update the whole text area, we don't need to store detail updates
-                return;
-            }
-            if (update.TextAreaUpdateType == TextAreaUpdateType.WholeTextArea) {
-                // if we're going to update the whole text area, we don't need to store detail updates
-                UpdateQueue.Clear();
-            }
-            UpdateQueue.Add(update);
-        }
-
-        public void CommitUpdate()
-        {
-            UpdateCommited?.Invoke(this, EventArgs.Empty);
-        }
-
         private void OnTextContentChanged(EventArgs e)
         {
             TextContentChanged?.Invoke(this, e);
         }
-
-        public event EventHandler UpdateCommited;
-        public event EventHandler TextContentChanged;
 
         [Conditional("DEBUG")]
         internal static void ValidatePosition(IDocument document, TextLocation position)

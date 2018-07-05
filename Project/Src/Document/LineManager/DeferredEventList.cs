@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// A list of events that are fired after the line manager has finished working.
+    ///     A list of events that are fired after the line manager has finished working.
     /// </summary>
     internal struct DeferredEventList
     {
@@ -34,11 +34,9 @@ namespace ICSharpCode.TextEditor.Document
         public void RaiseEvents()
         {
             // removedLines is raised by the LineManager
-            if (textAnchor != null) {
-                foreach (TextAnchor a in textAnchor) {
+            if (textAnchor != null)
+                foreach (var a in textAnchor)
                     a.RaiseDeleted();
-                }
-            }
         }
     }
 }

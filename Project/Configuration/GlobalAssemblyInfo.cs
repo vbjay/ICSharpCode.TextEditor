@@ -18,7 +18,7 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 
-[assembly: ComVisible(false)]
+[assembly: ComVisible(visibility: false)]
 [assembly: AssemblyCompany("ic#code")]
 [assembly: AssemblyProduct("SharpDevelop")]
 [assembly: AssemblyCopyright("2000-2010 AlphaSierraPapa")]

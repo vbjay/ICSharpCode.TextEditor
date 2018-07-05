@@ -13,19 +13,25 @@ using ICSharpCode.TextEditor.Document;
 namespace ICSharpCode.TextEditor
 {
     public delegate void MarginMouseEventHandler(AbstractMargin sender, Point mousepos, MouseButtons mouseButtons);
+
     public delegate void MarginPaintEventHandler(AbstractMargin sender, Graphics g, Rectangle rect);
 
     /// <summary>
-    /// This class views the line numbers and folding markers.
+    ///     This class views the line numbers and folding markers.
     /// </summary>
     public abstract class AbstractMargin
     {
-        [CLSCompliant(false)]
-        protected Rectangle drawingPosition = new Rectangle(0, 0, 0, 0);
-        [CLSCompliant(false)]
-        protected TextArea textArea;
+        [CLSCompliant(isCompliant: false)] protected Rectangle drawingPosition = new Rectangle(x: 0, y: 0, width: 0, height: 0);
 
-        public Rectangle DrawingPosition {
+        [CLSCompliant(isCompliant: false)] protected TextArea textArea;
+
+        protected AbstractMargin(TextArea textArea)
+        {
+            this.textArea = textArea;
+        }
+
+        public Rectangle DrawingPosition
+        {
             get => drawingPosition;
             set => drawingPosition = value;
         }
@@ -38,23 +44,20 @@ namespace ICSharpCode.TextEditor
 
         public virtual Cursor Cursor { get; set; } = Cursors.Default;
 
-        public virtual Size Size => new Size(-1, -1);
+        public virtual Size Size => new Size(width: -1, height: -1);
 
         public virtual bool IsVisible => true;
-
-        protected AbstractMargin(TextArea textArea)
-        {
-            this.textArea = textArea;
-        }
 
         public virtual void HandleMouseDown(Point mousepos, MouseButtons mouseButtons)
         {
             MouseDown?.Invoke(this, mousepos, mouseButtons);
         }
+
         public virtual void HandleMouseMove(Point mousepos, MouseButtons mouseButtons)
         {
             MouseMove?.Invoke(this, mousepos, mouseButtons);
         }
+
         public virtual void HandleMouseLeave(EventArgs e)
         {
             MouseLeave?.Invoke(this, e);
@@ -68,6 +71,6 @@ namespace ICSharpCode.TextEditor
         public event MarginPaintEventHandler Painted;
         public event MarginMouseEventHandler MouseDown;
         public event MarginMouseEventHandler MouseMove;
-        public event EventHandler            MouseLeave;
+        public event EventHandler MouseLeave;
     }
 }

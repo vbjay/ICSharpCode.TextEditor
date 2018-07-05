@@ -11,8 +11,8 @@ using System.Drawing;
 namespace ICSharpCode.TextEditor
 {
     /// <summary>
-    /// Contains brushes/pens for the text editor to speed up drawing. Re-Creation of brushes and pens
-    /// seems too costly.
+    ///     Contains brushes/pens for the text editor to speed up drawing. Re-Creation of brushes and pens
+    ///     seems too costly.
     /// </summary>
     public class BrushRegistry
     {
@@ -20,41 +20,50 @@ namespace ICSharpCode.TextEditor
         private static readonly Dictionary<Color, Pen> pens = new Dictionary<Color, Pen>();
         private static readonly Dictionary<Color, Pen> dotPens = new Dictionary<Color, Pen>();
 
+        private static readonly float[] dotPattern = {1, 1, 1, 1};
+
         public static Brush GetBrush(Color color)
         {
-            lock (brushes) {
+            lock (brushes)
+            {
                 Brush brush;
-                if (!brushes.TryGetValue(color, out brush)) {
+                if (!brushes.TryGetValue(color, out brush))
+                {
                     brush = new SolidBrush(color);
                     brushes.Add(color, brush);
                 }
+
                 return brush;
             }
         }
 
         public static Pen GetPen(Color color)
         {
-            lock (pens) {
+            lock (pens)
+            {
                 Pen pen;
-                if (!pens.TryGetValue(color, out pen)) {
+                if (!pens.TryGetValue(color, out pen))
+                {
                     pen = new Pen(color);
                     pens.Add(color, pen);
                 }
+
                 return pen;
             }
         }
 
-        private static readonly float[] dotPattern = { 1, 1, 1, 1 };
-
         public static Pen GetDotPen(Color color)
         {
-            lock (dotPens) {
+            lock (dotPens)
+            {
                 Pen pen;
-                if (!dotPens.TryGetValue(color, out pen)) {
+                if (!dotPens.TryGetValue(color, out pen))
+                {
                     pen = new Pen(color);
                     pen.DashPattern = dotPattern;
                     dotPens.Add(color, pen);
                 }
+
                 return pen;
             }
         }

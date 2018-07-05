@@ -13,6 +13,15 @@ namespace ICSharpCode.TextEditor
 
     public class ToolTipRequestEventArgs
     {
+        internal string toolTipText;
+
+        public ToolTipRequestEventArgs(Point mousePosition, TextLocation logicalPosition, bool inDocument)
+        {
+            MousePosition = mousePosition;
+            LogicalPosition = logicalPosition;
+            InDocument = inDocument;
+        }
+
         public Point MousePosition { get; }
 
         public TextLocation LogicalPosition { get; }
@@ -20,22 +29,13 @@ namespace ICSharpCode.TextEditor
         public bool InDocument { get; }
 
         /// <summary>
-        /// Gets if some client handling the event has already shown a tool tip.
+        ///     Gets if some client handling the event has already shown a tool tip.
         /// </summary>
         public bool ToolTipShown => toolTipText != null;
-
-        internal string toolTipText;
 
         public void ShowToolTip(string text)
         {
             toolTipText = text;
-        }
-
-        public ToolTipRequestEventArgs(Point mousePosition, TextLocation logicalPosition, bool inDocument)
-        {
-            MousePosition = mousePosition;
-            LogicalPosition = logicalPosition;
-            InDocument = inDocument;
         }
     }
 }

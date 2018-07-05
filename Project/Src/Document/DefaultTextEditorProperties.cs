@@ -11,7 +11,8 @@ using System.Text;
 
 namespace ICSharpCode.TextEditor.Document
 {
-    public enum BracketMatchingStyle {
+    public enum BracketMatchingStyle
+    {
         Before,
         After
     }
@@ -22,9 +23,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public DefaultTextEditorProperties()
         {
-            if (DefaultFont == null) {
-                DefaultFont = new Font("Courier New", 10);
-            }
+            if (DefaultFont == null)
+                DefaultFont = new Font("Courier New", emSize: 10);
             FontContainer = new FontContainer(DefaultFont);
         }
 
@@ -82,14 +82,15 @@ namespace ICSharpCode.TextEditor.Document
 
         public bool AutoInsertCurlyBracket { get; set; } = true;
 
-        public Font Font {
+        public Font Font
+        {
             get => FontContainer.DefaultFont;
             set => FontContainer.DefaultFont = value;
         }
 
         public FontContainer FontContainer { get; }
 
-        public BracketMatchingStyle  BracketMatchingStyle { get; set; } = BracketMatchingStyle.After;
+        public BracketMatchingStyle BracketMatchingStyle { get; set; } = BracketMatchingStyle.After;
 
         public bool SupportReadOnlySegments { get; set; } = false;
     }

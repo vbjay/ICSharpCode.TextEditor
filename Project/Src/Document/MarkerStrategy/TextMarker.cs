@@ -19,35 +19,36 @@ namespace ICSharpCode.TextEditor.Document
     }
 
     /// <summary>
-    /// Marks a part of a document.
+    ///     Marks a part of a document.
     /// </summary>
     public class TextMarker : ISegment
     {
-        [CLSCompliant(false)]
-        protected int offset = -1;
-        [CLSCompliant(false)]
-        protected int length = -1;
+        [CLSCompliant(isCompliant: false)] protected int length = -1;
 
-        #region ICSharpCode.TextEditor.Document.ISegment interface implementation
-        public int Offset
+        [CLSCompliant(isCompliant: false)] protected int offset = -1;
+
+        public TextMarker(int offset, int length, TextMarkerType textMarkerType) : this(offset, length, textMarkerType, Color.Red)
         {
-            get => offset;
-            set => offset = value;
         }
 
-        public int Length
+        public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color)
         {
-            get => length;
-            set => length = value;
+            if (length < 1) length = 1;
+            this.offset = offset;
+            this.length = length;
+            TextMarkerType = textMarkerType;
+            Color = color;
         }
-        #endregion
 
-        public override string ToString()
+        public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
         {
-            return string.Format("[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
-                                 offset,
-                                 length,
-                                 TextMarkerType);
+            if (length < 1) length = 1;
+            this.offset = offset;
+            this.length = length;
+            TextMarkerType = textMarkerType;
+            Color = color;
+            ForeColor = foreColor;
+            OverrideForeColor = true;
         }
 
         public TextMarkerType TextMarkerType { get; }
@@ -59,39 +60,40 @@ namespace ICSharpCode.TextEditor.Document
         public bool OverrideForeColor { get; }
 
         /// <summary>
-        /// Marks the text segment as read-only.
+        ///     Marks the text segment as read-only.
         /// </summary>
         public bool IsReadOnly { get; set; }
 
         public string ToolTip { get; set; } = null;
 
         /// <summary>
-        /// Gets the last offset that is inside the marker region.
+        ///     Gets the last offset that is inside the marker region.
         /// </summary>
         public int EndOffset => offset + length - 1;
 
-        public TextMarker(int offset, int length, TextMarkerType textMarkerType) : this(offset, length, textMarkerType, Color.Red)
+        public override string ToString()
         {
+            return string.Format(
+                "[TextMarker: Offset = {0}, Length = {1}, Type = {2}]",
+                offset,
+                length,
+                TextMarkerType);
         }
 
-        public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color)
+        #region ICSharpCode.TextEditor.Document.ISegment interface implementation
+
+        public int Offset
         {
-            if (length < 1) length = 1;
-            this.offset          = offset;
-            this.length          = length;
-            TextMarkerType  = textMarkerType;
-            Color           = color;
+            get => offset;
+            set => offset = value;
         }
 
-        public TextMarker(int offset, int length, TextMarkerType textMarkerType, Color color, Color foreColor)
+        public int Length
         {
-            if (length < 1) length = 1;
-            this.offset          = offset;
-            this.length          = length;
-            TextMarkerType  = textMarkerType;
-            Color           = color;
-            ForeColor       = foreColor;
-            OverrideForeColor = true;
+            get => length;
+            set => length = value;
         }
+
+        #endregion
     }
 }

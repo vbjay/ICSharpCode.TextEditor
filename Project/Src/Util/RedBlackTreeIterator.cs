@@ -22,7 +22,8 @@ namespace ICSharpCode.TextEditor.Util
 
         public bool IsValid => node != null;
 
-        public T Current {
+        public T Current
+        {
             get
             {
                 if (node != null)
@@ -46,16 +47,21 @@ namespace ICSharpCode.TextEditor.Util
         {
             if (node == null)
                 return false;
-            if (node.right != null) {
+            if (node.right != null)
+            {
                 node = node.right.LeftMost;
-            } else {
+            }
+            else
+            {
                 RedBlackTreeNode<T> oldNode;
-                do {
+                do
+                {
                     oldNode = node;
                     node = node.parent;
                     // we are on the way up from the right part, don't output node again
                 } while (node != null && node.right == oldNode);
             }
+
             return node != null;
         }
 
@@ -63,16 +69,21 @@ namespace ICSharpCode.TextEditor.Util
         {
             if (node == null)
                 return false;
-            if (node.left != null) {
+            if (node.left != null)
+            {
                 node = node.left.RightMost;
-            } else {
+            }
+            else
+            {
                 RedBlackTreeNode<T> oldNode;
-                do {
+                do
+                {
                     oldNode = node;
                     node = node.parent;
                     // we are on the way up from the left part, don't output node again
                 } while (node != null && node.left == oldNode);
             }
+
             return node != null;
         }
     }

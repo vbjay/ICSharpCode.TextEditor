@@ -9,7 +9,7 @@ namespace ICSharpCode.TextEditor.Sample
         private static void Main()
         {
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(defaultValue: false);
             Application.Run(new SampleForm());
         }
     }

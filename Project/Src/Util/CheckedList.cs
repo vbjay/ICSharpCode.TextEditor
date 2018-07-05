@@ -13,16 +13,18 @@ using System.Threading;
 namespace ICSharpCode.TextEditor.Util
 {
     /// <summary>
-    /// A IList{T} that checks that it is only accessed on the thread that created it, and that
-    /// it is not modified while an enumerator is running.
+    ///     A IList{T} that checks that it is only accessed on the thread that created it, and that
+    ///     it is not modified while an enumerator is running.
     /// </summary>
     internal sealed class CheckedList<T> : IList<T>
     {
-        private readonly int threadID;
         private readonly IList<T> baseList;
+        private readonly int threadID;
         private int enumeratorCount;
 
-        public CheckedList() : this(new List<T>()) {}
+        public CheckedList() : this(new List<T>())
+        {
+        }
 
         public CheckedList(IList<T> baseList)
         {
@@ -32,40 +34,33 @@ namespace ICSharpCode.TextEditor.Util
             threadID = Thread.CurrentThread.ManagedThreadId;
         }
 
-        private void CheckRead()
+        public T this[int index]
         {
-            if (Thread.CurrentThread.ManagedThreadId != threadID)
-                throw new InvalidOperationException("CheckList cannot be accessed from this thread!");
-        }
-
-        private void CheckWrite()
-        {
-            if (Thread.CurrentThread.ManagedThreadId != threadID)
-                throw new InvalidOperationException("CheckList cannot be accessed from this thread!");
-            if (enumeratorCount != 0)
-                throw new InvalidOperationException("CheckList cannot be written to while enumerators are active!");
-        }
-
-        public T this[int index] {
-            get {
+            get
+            {
                 CheckRead();
                 return baseList[index];
             }
-            set {
+            set
+            {
                 CheckWrite();
                 baseList[index] = value;
             }
         }
 
-        public int Count {
-            get {
+        public int Count
+        {
+            get
+            {
                 CheckRead();
                 return baseList.Count;
             }
         }
 
-        public bool IsReadOnly {
-            get {
+        public bool IsReadOnly
+        {
+            get
+            {
                 CheckRead();
                 return baseList.IsReadOnly;
             }
@@ -131,16 +126,34 @@ namespace ICSharpCode.TextEditor.Util
             return Enumerate();
         }
 
+        private void CheckRead()
+        {
+            if (Thread.CurrentThread.ManagedThreadId != threadID)
+                throw new InvalidOperationException("CheckList cannot be accessed from this thread!");
+        }
+
+        private void CheckWrite()
+        {
+            if (Thread.CurrentThread.ManagedThreadId != threadID)
+                throw new InvalidOperationException("CheckList cannot be accessed from this thread!");
+            if (enumeratorCount != 0)
+                throw new InvalidOperationException("CheckList cannot be written to while enumerators are active!");
+        }
+
         private IEnumerator<T> Enumerate()
         {
             CheckRead();
-            try {
+            try
+            {
                 enumeratorCount++;
-                foreach (T val in baseList) {
+                foreach (var val in baseList)
+                {
                     yield return val;
                     CheckRead();
                 }
-            } finally {
+            }
+            finally
+            {
                 enumeratorCount--;
                 CheckRead();
             }

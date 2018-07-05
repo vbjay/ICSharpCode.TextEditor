@@ -11,58 +11,59 @@ using System.Collections.Generic;
 namespace ICSharpCode.TextEditor.Undo
 {
     /// <summary>
-    /// This class implements an undo stack
+    ///     This class implements an undo stack
     /// </summary>
     public class UndoStack
     {
-        private readonly Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
         private readonly Stack<IUndoableOperation> redostack = new Stack<IUndoableOperation>();
+        private readonly Stack<IUndoableOperation> undostack = new Stack<IUndoableOperation>();
+
+        /// <summary>
+        ///     Gets/Sets if changes to the document are protocolled by the undo stack.
+        ///     Used internally to disable the undo stack temporarily while undoing an action.
+        /// </summary>
+        internal bool AcceptChanges = true;
+
+        private int actionCountInUndoGroup;
 
         public TextEditorControlBase TextEditorControl = null;
+
+        private int undoGroupDepth;
+
+        /// <summary>
+        ///     Gets if there are actions on the undo stack.
+        /// </summary>
+        public bool CanUndo => undostack.Count > 0;
+
+        /// <summary>
+        ///     Gets if there are actions on the redo stack.
+        /// </summary>
+        public bool CanRedo => redostack.Count > 0;
+
+        /// <summary>
+        ///     Gets the number of actions on the undo stack.
+        /// </summary>
+        public int UndoItemCount => undostack.Count;
+
+        /// <summary>
+        ///     Gets the number of actions on the redo stack.
+        /// </summary>
+        public int RedoItemCount => redostack.Count;
 
         /// <summary>
         /// </summary>
         public event EventHandler ActionUndone;
+
         /// <summary>
         /// </summary>
         public event EventHandler ActionRedone;
 
         public event OperationEventHandler OperationPushed;
 
-        /// <summary>
-        /// Gets/Sets if changes to the document are protocolled by the undo stack.
-        /// Used internally to disable the undo stack temporarily while undoing an action.
-        /// </summary>
-        internal bool AcceptChanges = true;
-
-        /// <summary>
-        /// Gets if there are actions on the undo stack.
-        /// </summary>
-        public bool CanUndo => undostack.Count > 0;
-
-        /// <summary>
-        /// Gets if there are actions on the redo stack.
-        /// </summary>
-        public bool CanRedo => redostack.Count > 0;
-
-        /// <summary>
-        /// Gets the number of actions on the undo stack.
-        /// </summary>
-        public int UndoItemCount => undostack.Count;
-
-        /// <summary>
-        /// Gets the number of actions on the redo stack.
-        /// </summary>
-        public int RedoItemCount => redostack.Count;
-
-        private int undoGroupDepth;
-        private int actionCountInUndoGroup;
-
         public void StartUndoGroup()
         {
-            if (undoGroupDepth == 0) {
+            if (undoGroupDepth == 0)
                 actionCountInUndoGroup = 0;
-            }
             undoGroupDepth++;
             //Util.LoggingService.Debug("Open undo group (new depth=" + undoGroupDepth + ")");
         }
@@ -73,8 +74,9 @@ namespace ICSharpCode.TextEditor.Undo
                 throw new InvalidOperationException("There are no open undo groups");
             undoGroupDepth--;
             //Util.LoggingService.Debug("Close undo group (new depth=" + undoGroupDepth + ")");
-            if (undoGroupDepth == 0 && actionCountInUndoGroup > 1) {
-                UndoQueue op = new UndoQueue(undostack, actionCountInUndoGroup);
+            if (undoGroupDepth == 0 && actionCountInUndoGroup > 1)
+            {
+                var op = new UndoQueue(undostack, actionCountInUndoGroup);
                 undostack.Push(op);
                 OperationPushed?.Invoke(this, new OperationEventArgs(op));
             }
@@ -82,20 +84,22 @@ namespace ICSharpCode.TextEditor.Undo
 
         public void AssertNoUndoGroupOpen()
         {
-            if (undoGroupDepth != 0) {
+            if (undoGroupDepth != 0)
+            {
                 undoGroupDepth = 0;
                 throw new InvalidOperationException("No undo group should be open at this point");
             }
         }
 
         /// <summary>
-        /// Call this method to undo the last operation on the stack
+        ///     Call this method to undo the last operation on the stack
         /// </summary>
         public void Undo()
         {
             AssertNoUndoGroupOpen();
-            if (undostack.Count > 0) {
-                IUndoableOperation uedit = undostack.Pop();
+            if (undostack.Count > 0)
+            {
+                var uedit = undostack.Pop();
                 redostack.Push(uedit);
                 uedit.Undo();
                 OnActionUndone();
@@ -103,13 +107,14 @@ namespace ICSharpCode.TextEditor.Undo
         }
 
         /// <summary>
-        /// Call this method to redo the last undone operation
+        ///     Call this method to redo the last undone operation
         /// </summary>
         public void Redo()
         {
             AssertNoUndoGroupOpen();
-            if (redostack.Count > 0) {
-                IUndoableOperation uedit = redostack.Pop();
+            if (redostack.Count > 0)
+            {
+                var uedit = redostack.Pop();
                 undostack.Push(uedit);
                 uedit.Redo();
                 OnActionRedone();
@@ -117,30 +122,32 @@ namespace ICSharpCode.TextEditor.Undo
         }
 
         /// <summary>
-        /// Call this method to push an UndoableOperation on the undostack, the redostack
-        /// will be cleared, if you use this method.
+        ///     Call this method to push an UndoableOperation on the undostack, the redostack
+        ///     will be cleared, if you use this method.
         /// </summary>
         public void Push(IUndoableOperation operation)
         {
-            if (operation == null) {
+            if (operation == null)
                 throw new ArgumentNullException("operation");
-            }
 
-            if (AcceptChanges) {
+            if (AcceptChanges)
+            {
                 StartUndoGroup();
                 undostack.Push(operation);
                 actionCountInUndoGroup++;
-                if (TextEditorControl != null) {
+                if (TextEditorControl != null)
+                {
                     undostack.Push(new UndoableSetCaretPosition(this, TextEditorControl.ActiveTextAreaControl.Caret.Position));
                     actionCountInUndoGroup++;
                 }
+
                 EndUndoGroup();
                 ClearRedoStack();
             }
         }
 
         /// <summary>
-        /// Call this method, if you want to clear the redo stack
+        ///     Call this method, if you want to clear the redo stack
         /// </summary>
         public void ClearRedoStack()
         {
@@ -148,7 +155,7 @@ namespace ICSharpCode.TextEditor.Undo
         }
 
         /// <summary>
-        /// Clears both the undo and redo stack.
+        ///     Clears both the undo and redo stack.
         /// </summary>
         public void ClearAll()
         {
@@ -162,20 +169,20 @@ namespace ICSharpCode.TextEditor.Undo
         /// </summary>
         protected void OnActionUndone()
         {
-            ActionUndone?.Invoke(null, null);
+            ActionUndone?.Invoke(sender: null, e: null);
         }
 
         /// <summary>
         /// </summary>
         protected void OnActionRedone()
         {
-            ActionRedone?.Invoke(null, null);
+            ActionRedone?.Invoke(sender: null, e: null);
         }
 
         private class UndoableSetCaretPosition : IUndoableOperation
         {
-            private readonly UndoStack stack;
             private readonly TextLocation pos;
+            private readonly UndoStack stack;
             private TextLocation redoPos;
 
             public UndoableSetCaretPosition(UndoStack stack, TextLocation pos)

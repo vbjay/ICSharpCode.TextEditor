@@ -11,11 +11,18 @@ using System.Collections.Generic;
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// Manages the list of markers and provides ways to retrieve markers for specific positions.
+    ///     Manages the list of markers and provides ways to retrieve markers for specific positions.
     /// </summary>
     public sealed class MarkerStrategy
     {
+        private readonly Dictionary<int, List<TextMarker>> markersTable = new Dictionary<int, List<TextMarker>>();
         private readonly List<TextMarker> textMarker = new List<TextMarker>();
+
+        public MarkerStrategy(IDocument document)
+        {
+            Document = document;
+            document.DocumentChanged += DocumentChanged;
+        }
 
         public IDocument Document { get; }
 
@@ -45,38 +52,34 @@ namespace ICSharpCode.TextEditor.Document
             textMarker.RemoveAll(match);
         }
 
-        public MarkerStrategy(IDocument document)
-        {
-            Document = document;
-            document.DocumentChanged += DocumentChanged;
-        }
-
-        private readonly Dictionary<int, List<TextMarker>> markersTable = new Dictionary<int, List<TextMarker>>();
-
         public List<TextMarker> GetMarkers(int offset)
         {
-            if (!markersTable.ContainsKey(offset)) {
-                List<TextMarker> markers = new List<TextMarker>();
-                for (int i = 0; i < textMarker.Count; ++i) {
-                    TextMarker marker = textMarker[i];
-                    if (marker.Offset <= offset && offset <= marker.EndOffset) {
+            if (!markersTable.ContainsKey(offset))
+            {
+                var markers = new List<TextMarker>();
+                for (var i = 0; i < textMarker.Count; ++i)
+                {
+                    var marker = textMarker[i];
+                    if (marker.Offset <= offset && offset <= marker.EndOffset)
                         markers.Add(marker);
-                    }
                 }
+
                 markersTable[offset] = markers;
             }
+
             return markersTable[offset];
         }
 
         public List<TextMarker> GetMarkers(int offset, int length)
         {
-            int endOffset = offset + length - 1;
-            List<TextMarker> markers = new List<TextMarker>();
-            for (int i = 0; i < textMarker.Count; ++i) {
-                TextMarker marker = textMarker[i];
-                int markerOffset = marker.Offset;
-                int markerEndOffset = marker.EndOffset;
-                if (// start in marker region
+            var endOffset = offset + length - 1;
+            var markers = new List<TextMarker>();
+            for (var i = 0; i < textMarker.Count; ++i)
+            {
+                var marker = textMarker[i];
+                var markerOffset = marker.Offset;
+                var markerEndOffset = marker.EndOffset;
+                if ( // start in marker region
                     markerOffset <= offset && offset <= markerEndOffset ||
                     // end in marker region
                     markerOffset <= endOffset && endOffset <= markerEndOffset ||
@@ -84,20 +87,18 @@ namespace ICSharpCode.TextEditor.Document
                     offset <= markerOffset && markerOffset <= endOffset ||
                     // marker end in region
                     offset <= markerEndOffset && markerEndOffset <= endOffset
-                   )
-                {
+                )
                     markers.Add(marker);
-                }
             }
+
             return markers;
         }
 
         public List<TextMarker> GetMarkers(TextLocation position)
         {
-            if (position.Y >= Document.TotalNumberOfLines || position.Y < 0) {
+            if (position.Y >= Document.TotalNumberOfLines || position.Y < 0)
                 return new List<TextMarker>();
-            }
-            LineSegment segment = Document.GetLineSegment(position.Y);
+            var segment = Document.GetLineSegment(position.Y);
             return GetMarkers(segment.Offset + position.X);
         }
 

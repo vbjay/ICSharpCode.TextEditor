@@ -13,68 +13,83 @@ using System.Text;
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// This class manages the selections in a document.
+    ///     This class manages the selections in a document.
     /// </summary>
     public class SelectionManager : IDisposable
     {
+        private readonly TextArea textArea;
+
+        private IDocument document;
+        internal SelectFrom selectFrom = new SelectFrom();
+
+        internal List<ISelection> selectionCollection = new List<ISelection>();
         private TextLocation selectionStart;
 
-        internal TextLocation SelectionStart {
+        /// <summary>
+        ///     Creates a new instance of <see cref="SelectionManager" />
+        /// </summary>
+        public SelectionManager(IDocument document)
+        {
+            this.document = document;
+            document.DocumentChanged += DocumentChanged;
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="SelectionManager" />
+        /// </summary>
+        public SelectionManager(IDocument document, TextArea textArea)
+        {
+            this.document = document;
+            this.textArea = textArea;
+            document.DocumentChanged += DocumentChanged;
+        }
+
+        internal TextLocation SelectionStart
+        {
             get => selectionStart;
-            set {
+            set
+            {
                 DefaultDocument.ValidatePosition(document, value);
                 selectionStart = value;
             }
         }
 
-        private IDocument document;
-        private readonly TextArea textArea;
-        internal SelectFrom selectFrom = new SelectFrom();
-
-        internal List<ISelection> selectionCollection = new List<ISelection>();
-
         /// <value>
-        /// A collection containing all selections.
+        ///     A collection containing all selections.
         /// </value>
         public List<ISelection> SelectionCollection => selectionCollection;
 
         /// <value>
-        /// true if the <see cref="SelectionCollection"/> is not empty, false otherwise.
+        ///     true if the <see cref="SelectionCollection" /> is not empty, false otherwise.
         /// </value>
         public bool HasSomethingSelected => selectionCollection.Count > 0;
 
-        public bool SelectionIsReadonly {
-            get {
+        public bool SelectionIsReadonly
+        {
+            get
+            {
                 if (document.ReadOnly)
                     return true;
-                foreach (ISelection sel in selectionCollection) {
+                foreach (var sel in selectionCollection)
                     if (SelectionIsReadOnly(document, sel))
                         return true;
-                }
                 return false;
             }
         }
 
-        internal static bool SelectionIsReadOnly(IDocument document, ISelection sel)
-        {
-            if (document.TextEditorProperties.SupportReadOnlySegments)
-                return document.MarkerStrategy.GetMarkers(sel.Offset, sel.Length).Exists(m=>m.IsReadOnly);
-            return false;
-        }
-
         /// <value>
-        /// The text that is currently selected.
+        ///     The text that is currently selected.
         /// </value>
-        public string SelectedText {
-            get {
-                StringBuilder builder = new StringBuilder();
+        public string SelectedText
+        {
+            get
+            {
+                var builder = new StringBuilder();
 
 //                PriorityQueue queue = new PriorityQueue();
 
-                foreach (ISelection s in selectionCollection) {
-                    builder.Append(s.SelectedText);
+                foreach (var s in selectionCollection) builder.Append(s.SelectedText);
 //                    queue.Insert(-s.Offset, s);
-                }
 
 //                while (queue.Count > 0) {
 //                    ISelection s = ((ISelection)queue.Remove());
@@ -85,65 +100,58 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="SelectionManager"/>
-        /// </summary>
-        public SelectionManager(IDocument document)
-        {
-            this.document = document;
-            document.DocumentChanged += DocumentChanged;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="SelectionManager"/>
-        /// </summary>
-        public SelectionManager(IDocument document, TextArea textArea)
-        {
-            this.document = document;
-            this.textArea = textArea;
-            document.DocumentChanged += DocumentChanged;
-        }
-
         public void Dispose()
         {
-            if (document != null) {
+            if (document != null)
+            {
                 document.DocumentChanged -= DocumentChanged;
                 document = null;
             }
         }
 
+        internal static bool SelectionIsReadOnly(IDocument document, ISelection sel)
+        {
+            if (document.TextEditorProperties.SupportReadOnlySegments)
+                return document.MarkerStrategy.GetMarkers(sel.Offset, sel.Length).Exists(m => m.IsReadOnly);
+            return false;
+        }
+
         private void DocumentChanged(object sender, DocumentEventArgs e)
         {
-            if (e.Text == null) {
+            if (e.Text == null)
+            {
                 Remove(e.Offset, e.Length);
-            } else {
-                if (e.Length < 0) {
+            }
+            else
+            {
+                if (e.Length < 0)
                     Insert(e.Offset, e.Text);
-                } else {
+                else
                     Replace(e.Offset, e.Length, e.Text);
-                }
             }
         }
 
         /// <remarks>
-        /// Clears the selection and sets a new selection
-        /// using the given <see cref="ISelection"/> object.
+        ///     Clears the selection and sets a new selection
+        ///     using the given <see cref="ISelection" /> object.
         /// </remarks>
         public void SetSelection(ISelection selection)
         {
 //            autoClearSelection = false;
-            if (selection != null) {
+            if (selection != null)
+            {
                 if (SelectionCollection.Count == 1 &&
-                    selection.StartPosition == SelectionCollection[0].StartPosition &&
-                    selection.EndPosition == SelectionCollection[0].EndPosition ) {
+                    selection.StartPosition == SelectionCollection[index: 0].StartPosition &&
+                    selection.EndPosition == SelectionCollection[index: 0].EndPosition)
                     return;
-                }
                 ClearWithoutUpdate();
                 selectionCollection.Add(selection);
                 document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.LinesBetween, selection.StartPosition.Y, selection.EndPosition.Y));
                 document.CommitUpdate();
                 OnSelectionChanged(EventArgs.Empty);
-            } else {
+            }
+            else
+            {
                 ClearSelection();
             }
         }
@@ -164,25 +172,25 @@ namespace ICSharpCode.TextEditor.Document
             // and newposition is where it has ended up from a click (both zero based)
 
             if (oldPosition == newPosition)
-            {
                 return;
-            }
 
             TextLocation min;
             TextLocation max;
-            int oldnewX = newPosition.X;
-            bool  oldIsGreater = GreaterEqPos(oldPosition, newPosition);
-            if (oldIsGreater) {
+            var oldnewX = newPosition.X;
+            var oldIsGreater = GreaterEqPos(oldPosition, newPosition);
+            if (oldIsGreater)
+            {
                 min = newPosition;
                 max = oldPosition;
-            } else {
+            }
+            else
+            {
                 min = oldPosition;
                 max = newPosition;
             }
 
-            if (min == max) {
+            if (min == max)
                 return;
-            }
 
             if (!HasSomethingSelected)
             {
@@ -193,37 +201,36 @@ namespace ICSharpCode.TextEditor.Document
                 return;
             }
 
-            ISelection selection = selectionCollection[0];
+            var selection = selectionCollection[index: 0];
 
-            if (min == max) {
-                //selection.StartPosition = newPosition;
+            if (min == max)
                 return;
-            }
 
             // changed selection via gutter
             if (selectFrom.where == WhereFrom.Gutter)
-            {
-                // selection new position is always at the left edge for gutter selections
                 newPosition.X = 0;
-            }
 
             if (GreaterEqPos(newPosition, SelectionStart)) // selecting forward
             {
                 selection.StartPosition = SelectionStart;
                 // this handles last line selection
-                if (selectFrom.where == WhereFrom.Gutter ) //&& newPosition.Y != oldPosition.Y)
+                if (selectFrom.where == WhereFrom.Gutter) //&& newPosition.Y != oldPosition.Y)
+                {
                     selection.EndPosition = new TextLocation(textArea.Caret.Column, textArea.Caret.Line);
-                else {
+                }
+                else
+                {
                     newPosition.X = oldnewX;
                     selection.EndPosition = newPosition;
                 }
-            } else { // selecting back
+            }
+            else
+            {
+                // selecting back
                 if (selectFrom.where == WhereFrom.Gutter && selectFrom.first == WhereFrom.Gutter)
-                { // gutter selection
                     selection.EndPosition = NextValidPosition(SelectionStart.Y);
-                } else { // internal text selection
+                else
                     selection.EndPosition = SelectionStart; //selection.StartPosition;
-                }
                 selection.StartPosition = newPosition;
             }
 
@@ -239,21 +246,23 @@ namespace ICSharpCode.TextEditor.Document
         public TextLocation NextValidPosition(int line)
         {
             if (line < document.TotalNumberOfLines - 1)
-                return new TextLocation(0, line + 1);
+                return new TextLocation(column: 0, line + 1);
             return new TextLocation(document.GetLineSegment(document.TotalNumberOfLines - 1).Length + 1, line);
         }
 
         private void ClearWithoutUpdate()
         {
-            while (selectionCollection.Count > 0) {
-                ISelection selection = selectionCollection[selectionCollection.Count - 1];
+            while (selectionCollection.Count > 0)
+            {
+                var selection = selectionCollection[selectionCollection.Count - 1];
                 selectionCollection.RemoveAt(selectionCollection.Count - 1);
                 document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.LinesBetween, selection.StartPosition.Y, selection.EndPosition.Y));
                 OnSelectionChanged(EventArgs.Empty);
             }
         }
+
         /// <remarks>
-        /// Clears the selection.
+        ///     Clears the selection.
         /// </remarks>
         public void ClearSelection()
         {
@@ -262,15 +271,15 @@ namespace ICSharpCode.TextEditor.Document
             // this is the most logical place to reset selection starting
             // positions because it is always called before a new selection
             selectFrom.first = selectFrom.where;
-            TextLocation newSelectionStart = textArea.TextView.GetLogicalPosition(mousepos.X - textArea.TextView.DrawingPosition.X, mousepos.Y - textArea.TextView.DrawingPosition.Y);
-            if (selectFrom.where == WhereFrom.Gutter) {
+            var newSelectionStart = textArea.TextView.GetLogicalPosition(mousepos.X - textArea.TextView.DrawingPosition.X, mousepos.Y - textArea.TextView.DrawingPosition.Y);
+            if (selectFrom.where == WhereFrom.Gutter)
                 newSelectionStart.X = 0;
-//                selectionStart.Y = -1;
+            if (newSelectionStart.Line >= document.TotalNumberOfLines)
+            {
+                newSelectionStart.Line = document.TotalNumberOfLines - 1;
+                newSelectionStart.Column = document.GetLineSegment(document.TotalNumberOfLines - 1).Length;
             }
-            if (newSelectionStart.Line >= document.TotalNumberOfLines) {
-                newSelectionStart.Line = document.TotalNumberOfLines-1;
-                newSelectionStart.Column = document.GetLineSegment(document.TotalNumberOfLines-1).Length;
-            }
+
             SelectionStart = newSelectionStart;
 
             ClearWithoutUpdate();
@@ -278,61 +287,67 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <remarks>
-        /// Removes the selected text from the buffer and clears
-        /// the selection.
+        ///     Removes the selected text from the buffer and clears
+        ///     the selection.
         /// </remarks>
         public void RemoveSelectedText()
         {
-            if (SelectionIsReadonly) {
+            if (SelectionIsReadonly)
+            {
                 ClearSelection();
                 return;
             }
-            List<int> lines = new List<int>();
-            int offset = -1;
-            bool oneLine = true;
+
+            var lines = new List<int>();
+            var offset = -1;
+            var oneLine = true;
 //            PriorityQueue queue = new PriorityQueue();
-            foreach (ISelection s in selectionCollection) {
+            foreach (var s in selectionCollection)
+            {
 //                ISelection s = ((ISelection)queue.Remove());
-                if (oneLine) {
-                    int lineBegin = s.StartPosition.Y;
-                    if (lineBegin != s.EndPosition.Y) {
+                if (oneLine)
+                {
+                    var lineBegin = s.StartPosition.Y;
+                    if (lineBegin != s.EndPosition.Y)
                         oneLine = false;
-                    } else {
+                    else
                         lines.Add(lineBegin);
-                    }
                 }
+
                 offset = s.Offset;
                 document.Remove(s.Offset, s.Length);
 
 //                queue.Insert(-s.Offset, s);
             }
+
             ClearSelection();
-            if (offset >= 0) {
+            if (offset >= 0)
+            {
                 //             TODO:
 //                document.Caret.Offset = offset;
             }
-            if (offset != -1) {
-                if (oneLine) {
-                    foreach (int i in lines) {
+
+            if (offset != -1)
+            {
+                if (oneLine)
+                    foreach (var i in lines)
                         document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, i));
-                    }
-                } else {
+                else
                     document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-                }
                 document.CommitUpdate();
             }
         }
 
         private bool SelectionsOverlap(ISelection s1, ISelection s2)
         {
-            return (s1.Offset <= s2.Offset && s2.Offset <= s1.Offset + s1.Length)                         ||
-                (s1.Offset <= s2.Offset + s2.Length && s2.Offset + s2.Length <= s1.Offset + s1.Length) ||
-                (s1.Offset >= s2.Offset && s1.Offset + s1.Length <= s2.Offset + s2.Length);
+            return s1.Offset <= s2.Offset && s2.Offset <= s1.Offset + s1.Length ||
+                   s1.Offset <= s2.Offset + s2.Length && s2.Offset + s2.Length <= s1.Offset + s1.Length ||
+                   s1.Offset >= s2.Offset && s1.Offset + s1.Length <= s2.Offset + s2.Length;
         }
 
         /// <remarks>
-        /// Returns true if the given offset points to a section which is
-        /// selected.
+        ///     Returns true if the given offset points to a section which is
+        ///     selected.
         /// </remarks>
         public bool IsSelected(int offset)
         {
@@ -340,24 +355,22 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <remarks>
-        /// Returns a <see cref="ISelection"/> object giving the selection in which
-        /// the offset points to.
+        ///     Returns a <see cref="ISelection" /> object giving the selection in which
+        ///     the offset points to.
         /// </remarks>
         /// <returns>
-        /// <code>null</code> if the offset doesn't point to a selection
+        ///     <code>null</code> if the offset doesn't point to a selection
         /// </returns>
         public ISelection GetSelectionAt(int offset)
         {
-            foreach (ISelection s in selectionCollection) {
-                if (s.ContainsOffset(offset)) {
+            foreach (var s in selectionCollection)
+                if (s.ContainsOffset(offset))
                     return s;
-                }
-            }
             return null;
         }
 
         /// <remarks>
-        /// Used internally, do not call.
+        ///     Used internally, do not call.
         /// </remarks>
         internal void Insert(int offset, string text)
         {
@@ -371,7 +384,7 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <remarks>
-        /// Used internally, do not call.
+        ///     Used internally, do not call.
         /// </remarks>
         internal void Remove(int offset, int length)
         {
@@ -385,7 +398,7 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <remarks>
-        /// Used internally, do not call.
+        ///     Used internally, do not call.
         /// </remarks>
         internal void Replace(int offset, int length, string text)
         {
@@ -400,23 +413,25 @@ namespace ICSharpCode.TextEditor.Document
 
         public ColumnRange GetSelectionAtLine(int lineNumber)
         {
-            foreach (ISelection selection in selectionCollection) {
-                int startLine = selection.StartPosition.Y;
-                int endLine   = selection.EndPosition.Y;
-                if (startLine < lineNumber && lineNumber < endLine) {
+            foreach (var selection in selectionCollection)
+            {
+                var startLine = selection.StartPosition.Y;
+                var endLine = selection.EndPosition.Y;
+                if (startLine < lineNumber && lineNumber < endLine)
                     return ColumnRange.WholeColumn;
-                }
 
-                if (startLine == lineNumber) {
-                    LineSegment line = document.GetLineSegment(startLine);
-                    int startColumn = selection.StartPosition.X;
-                    int endColumn   = endLine == lineNumber ? selection.EndPosition.X : line.Length + 1;
+                if (startLine == lineNumber)
+                {
+                    var line = document.GetLineSegment(startLine);
+                    var startColumn = selection.StartPosition.X;
+                    var endColumn = endLine == lineNumber ? selection.EndPosition.X : line.Length + 1;
                     return new ColumnRange(startColumn, endColumn);
                 }
 
-                if (endLine == lineNumber) {
-                    int endColumn   = selection.EndPosition.X;
-                    return new ColumnRange(0, endColumn);
+                if (endLine == lineNumber)
+                {
+                    var endColumn = selection.EndPosition.X;
+                    return new ColumnRange(startColumn: 0, endColumn);
                 }
             }
 
@@ -427,6 +442,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             OnSelectionChanged(EventArgs.Empty);
         }
+
         protected virtual void OnSelectionChanged(EventArgs e)
         {
             SelectionChanged?.Invoke(this, e);
@@ -436,13 +452,15 @@ namespace ICSharpCode.TextEditor.Document
     }
 
     // selection initiated from...
-    internal class SelectFrom {
-        public int where = WhereFrom.None; // last selection initiator
+    internal class SelectFrom
+    {
         public int first = WhereFrom.None; // first selection initiator
+        public int where = WhereFrom.None; // last selection initiator
     }
 
     // selection initiated from type...
-    internal class WhereFrom {
+    internal class WhereFrom
+    {
         public const int None = 0;
         public const int Gutter = 1;
         public const int TArea = 2;

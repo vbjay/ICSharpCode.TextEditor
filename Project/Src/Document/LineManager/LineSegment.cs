@@ -17,18 +17,6 @@ namespace ICSharpCode.TextEditor.Document
     {
         internal LineSegmentTree.Enumerator treeEntry;
 
-        public TextWord GetWord(int column)
-        {
-            int curColumn = 0;
-            foreach (TextWord word in Words) {
-                if (column < curColumn + word.Length) {
-                    return word;
-                }
-                curColumn += word.Length;
-            }
-            return null;
-        }
-
         public bool IsDeleted => !treeEntry.IsValid;
 
         public int LineNumber => treeEntry.CurrentIndex;
@@ -37,15 +25,6 @@ namespace ICSharpCode.TextEditor.Document
 
         public int Length => TotalLength - DelimiterLength;
 
-        int ISegment.Offset {
-            get => Offset;
-            set => throw new NotSupportedException();
-        }
-        int ISegment.Length {
-            get => Length;
-            set => throw new NotSupportedException();
-        }
-
         public int TotalLength { get; internal set; }
 
         public int DelimiterLength { get; internal set; }
@@ -53,30 +32,57 @@ namespace ICSharpCode.TextEditor.Document
         // highlighting information
         public List<TextWord> Words { get; set; }
 
+        public SpanStack HighlightSpanStack { get; set; }
+
+        int ISegment.Offset
+        {
+            get => Offset;
+            set => throw new NotSupportedException();
+        }
+
+        int ISegment.Length
+        {
+            get => Length;
+            set => throw new NotSupportedException();
+        }
+
+        public TextWord GetWord(int column)
+        {
+            var curColumn = 0;
+            foreach (var word in Words)
+            {
+                if (column < curColumn + word.Length)
+                    return word;
+                curColumn += word.Length;
+            }
+
+            return null;
+        }
+
         public HighlightColor GetColorForPosition(int x)
         {
-            if (Words != null) {
-                int xPos = 0;
-                foreach (TextWord word in Words) {
-                    if (x < xPos + word.Length) {
+            if (Words != null)
+            {
+                var xPos = 0;
+                foreach (var word in Words)
+                {
+                    if (x < xPos + word.Length)
                         return word.SyntaxColor;
-                    }
                     xPos += word.Length;
                 }
             }
-            return new HighlightColor(Color.Black, false, false);
+
+            return new HighlightColor(Color.Black, bold: false, italic: false);
         }
 
-        public SpanStack HighlightSpanStack { get; set; }
-
         /// <summary>
-        /// Converts a <see cref="LineSegment"/> instance to string (for debug purposes)
+        ///     Converts a <see cref="LineSegment" /> instance to string (for debug purposes)
         /// </summary>
         public override string ToString()
         {
             if (IsDeleted)
                 return "[LineSegment: (deleted) Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
-            return "[LineSegment: LineNumber=" + LineNumber + ", Offset = "+ Offset +", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
+            return "[LineSegment: LineNumber=" + LineNumber + ", Offset = " + Offset + ", Length = " + Length + ", TotalLength = " + TotalLength + ", DelimiterLength = " + DelimiterLength + "]";
         }
 
         #region Anchor management
@@ -87,7 +93,7 @@ namespace ICSharpCode.TextEditor.Document
         {
             if (column < 0 || column > Length)
                 throw new ArgumentOutOfRangeException("column");
-            TextAnchor anchor = new TextAnchor(this, column);
+            var anchor = new TextAnchor(this, column);
             AddAnchor(anchor);
             return anchor;
         }
@@ -103,22 +109,22 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <summary>
-        /// Is called when the LineSegment is deleted.
+        ///     Is called when the LineSegment is deleted.
         /// </summary>
         internal void Deleted(ref DeferredEventList deferredEventList)
         {
             //Console.WriteLine("Deleted");
             treeEntry = LineSegmentTree.Enumerator.Invalid;
-            if (anchors != null) {
-                foreach (TextAnchor a in anchors) {
+            if (anchors != null)
+            {
+                foreach (var a in anchors)
                     a.Delete(ref deferredEventList);
-                }
                 anchors = null;
             }
         }
 
         /// <summary>
-        /// Is called when a part of the line is removed.
+        ///     Is called when a part of the line is removed.
         /// </summary>
         internal void RemovedLinePart(ref DeferredEventList deferredEventList, int startColumn, int length)
         {
@@ -127,30 +133,33 @@ namespace ICSharpCode.TextEditor.Document
             Debug.Assert(length > 0);
 
             //Console.WriteLine("RemovedLinePart " + startColumn + ", " + length);
-            if (anchors != null) {
+            if (anchors != null)
+            {
                 List<TextAnchor> deletedAnchors = null;
-                foreach (TextAnchor a in anchors) {
-                    if (a.ColumnNumber > startColumn) {
-                        if (a.ColumnNumber >= startColumn + length) {
+                foreach (var a in anchors)
+                    if (a.ColumnNumber > startColumn)
+                    {
+                        if (a.ColumnNumber >= startColumn + length)
+                        {
                             a.ColumnNumber -= length;
-                        } else {
+                        }
+                        else
+                        {
                             if (deletedAnchors == null)
                                 deletedAnchors = new List<TextAnchor>();
                             a.Delete(ref deferredEventList);
                             deletedAnchors.Add(a);
                         }
                     }
-                }
-                if (deletedAnchors != null) {
-                    foreach (TextAnchor a in deletedAnchors) {
+
+                if (deletedAnchors != null)
+                    foreach (var a in deletedAnchors)
                         anchors.Remove(a);
-                    }
-                }
             }
         }
 
         /// <summary>
-        /// Is called when a part of the line is inserted.
+        ///     Is called when a part of the line is inserted.
         /// </summary>
         internal void InsertedLinePart(int startColumn, int length)
         {
@@ -159,49 +168,48 @@ namespace ICSharpCode.TextEditor.Document
             Debug.Assert(length > 0);
 
             //Console.WriteLine("InsertedLinePart " + startColumn + ", " + length);
-            if (anchors != null) {
-                foreach (TextAnchor a in anchors) {
+            if (anchors != null)
+                foreach (var a in anchors)
                     if (a.MovementType == AnchorMovementType.BeforeInsertion
                         ? a.ColumnNumber > startColumn
                         : a.ColumnNumber >= startColumn)
-                    {
                         a.ColumnNumber += length;
-                    }
-                }
-            }
         }
 
         /// <summary>
-        /// Is called after another line's content is appended to this line because the newline in between
-        /// was deleted.
-        /// The DefaultLineManager will call Deleted() on the deletedLine after the MergedWith call.
-        ///
-        /// firstLineLength: the length of the line before the merge.
+        ///     Is called after another line's content is appended to this line because the newline in between
+        ///     was deleted.
+        ///     The DefaultLineManager will call Deleted() on the deletedLine after the MergedWith call.
+        ///     firstLineLength: the length of the line before the merge.
         /// </summary>
         internal void MergedWith(LineSegment deletedLine, int firstLineLength)
         {
             //Console.WriteLine("MergedWith");
 
-            if (deletedLine.anchors != null) {
-                foreach (TextAnchor a in deletedLine.anchors) {
+            if (deletedLine.anchors != null)
+            {
+                foreach (var a in deletedLine.anchors)
+                {
                     a.Line = this;
                     AddAnchor(a);
                     a.ColumnNumber += firstLineLength;
                 }
+
                 deletedLine.anchors = null;
             }
         }
 
         /// <summary>
-        /// Is called after a newline was inserted into this line, splitting it into this and followingLine.
+        ///     Is called after a newline was inserted into this line, splitting it into this and followingLine.
         /// </summary>
         internal void SplitTo(LineSegment followingLine)
         {
             //Console.WriteLine("SplitTo");
 
-            if (anchors != null) {
+            if (anchors != null)
+            {
                 List<TextAnchor> movedAnchors = null;
-                foreach (TextAnchor a in anchors) {
+                foreach (var a in anchors)
                     if (a.MovementType == AnchorMovementType.BeforeInsertion
                         ? a.ColumnNumber > Length
                         : a.ColumnNumber >= Length)
@@ -214,14 +222,13 @@ namespace ICSharpCode.TextEditor.Document
                             movedAnchors = new List<TextAnchor>();
                         movedAnchors.Add(a);
                     }
-                }
-                if (movedAnchors != null) {
-                    foreach (TextAnchor a in movedAnchors) {
+
+                if (movedAnchors != null)
+                    foreach (var a in movedAnchors)
                         anchors.Remove(a);
-                    }
-                }
             }
         }
+
         #endregion
     }
 }

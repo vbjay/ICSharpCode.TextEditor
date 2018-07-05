@@ -24,20 +24,24 @@ namespace ICSharpCode.TextEditor
             textArea.AllowDrop = true;
 
             textArea.DragEnter += MakeDragEventHandler(OnDragEnter);
-            textArea.DragDrop  += MakeDragEventHandler(OnDragDrop);
-            textArea.DragOver  += MakeDragEventHandler(OnDragOver);
+            textArea.DragDrop += MakeDragEventHandler(OnDragDrop);
+            textArea.DragOver += MakeDragEventHandler(OnDragOver);
         }
 
         /// <summary>
-        /// Create a drag'n'drop event handler.
-        /// Windows Forms swallows unhandled exceptions during drag'n'drop, so we report them here.
+        ///     Create a drag'n'drop event handler.
+        ///     Windows Forms swallows unhandled exceptions during drag'n'drop, so we report them here.
         /// </summary>
         private static DragEventHandler MakeDragEventHandler(DragEventHandler h)
         {
-            return (sender, e) => {
-                try {
+            return (sender, e) =>
+            {
+                try
+                {
                     h(sender, e);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     OnDragDropException(ex);
                 }
             };
@@ -46,72 +50,71 @@ namespace ICSharpCode.TextEditor
         private static DragDropEffects GetDragDropEffect(DragEventArgs e)
         {
             if ((e.AllowedEffect & DragDropEffects.Move) > 0 &&
-                (e.AllowedEffect & DragDropEffects.Copy) > 0) {
+                (e.AllowedEffect & DragDropEffects.Copy) > 0)
                 return (e.KeyState & 8) > 0 ? DragDropEffects.Copy : DragDropEffects.Move;
-            }
 
-            if ((e.AllowedEffect & DragDropEffects.Move) > 0) {
+            if ((e.AllowedEffect & DragDropEffects.Move) > 0)
                 return DragDropEffects.Move;
-            }
 
-            if ((e.AllowedEffect & DragDropEffects.Copy) > 0) {
+            if ((e.AllowedEffect & DragDropEffects.Copy) > 0)
                 return DragDropEffects.Copy;
-            }
             return DragDropEffects.None;
         }
 
         protected void OnDragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(string))) {
+            if (e.Data.GetDataPresent(typeof(string)))
                 e.Effect = GetDragDropEffect(e);
-            }
         }
 
         private void InsertString(int offset, string str)
         {
             textArea.Document.Insert(offset, str);
 
-            textArea.SelectionManager.SetSelection(new DefaultSelection(textArea.Document,
-                                                                        textArea.Document.OffsetToPosition(offset),
-                                                                        textArea.Document.OffsetToPosition(offset + str.Length)));
+            textArea.SelectionManager.SetSelection(
+                new DefaultSelection(
+                    textArea.Document,
+                    textArea.Document.OffsetToPosition(offset),
+                    textArea.Document.OffsetToPosition(offset + str.Length)));
             textArea.Caret.Position = textArea.Document.OffsetToPosition(offset + str.Length);
             textArea.Refresh();
         }
 
         protected void OnDragDrop(object sender, DragEventArgs e)
         {
-            Point p = textArea.PointToClient(new Point(e.X, e.Y));
+            var p = textArea.PointToClient(new Point(e.X, e.Y));
 
-            if (e.Data.GetDataPresent(typeof(string))) {
+            if (e.Data.GetDataPresent(typeof(string)))
+            {
                 textArea.BeginUpdate();
                 textArea.Document.UndoStack.StartUndoGroup();
-                try {
-                    int offset = textArea.Caret.Offset;
-                    if (textArea.IsReadOnly(offset)) {
-                        // prevent dragging text into readonly section
+                try
+                {
+                    var offset = textArea.Caret.Offset;
+                    if (textArea.IsReadOnly(offset))
                         return;
-                    }
-                    if (e.Data.GetDataPresent(typeof(DefaultSelection))) {
-                        ISelection sel = (ISelection)e.Data.GetData(typeof(DefaultSelection));
-                        if (sel.ContainsPosition(textArea.Caret.Position)) {
+                    if (e.Data.GetDataPresent(typeof(DefaultSelection)))
+                    {
+                        var sel = (ISelection)e.Data.GetData(typeof(DefaultSelection));
+                        if (sel.ContainsPosition(textArea.Caret.Position))
                             return;
-                        }
-                        if (GetDragDropEffect(e) == DragDropEffects.Move) {
-                            if (SelectionManager.SelectionIsReadOnly(textArea.Document, sel)) {
-                                // prevent dragging text out of readonly section
+                        if (GetDragDropEffect(e) == DragDropEffects.Move)
+                        {
+                            if (SelectionManager.SelectionIsReadOnly(textArea.Document, sel))
                                 return;
-                            }
-                            int len = sel.Length;
+                            var len = sel.Length;
                             textArea.Document.Remove(sel.Offset, len);
-                            if (sel.Offset < offset) {
+                            if (sel.Offset < offset)
                                 offset -= len;
-                            }
                         }
                     }
+
                     textArea.SelectionManager.ClearSelection();
                     InsertString(offset, (string)e.Data.GetData(typeof(string)));
                     textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-                } finally {
+                }
+                finally
+                {
                     textArea.Document.UndoStack.EndUndoGroup();
                     textArea.EndUpdate();
                 }
@@ -120,25 +123,27 @@ namespace ICSharpCode.TextEditor
 
         protected void OnDragOver(object sender, DragEventArgs e)
         {
-            if (!textArea.Focused) {
+            if (!textArea.Focused)
                 textArea.Focus();
-            }
 
-            Point p = textArea.PointToClient(new Point(e.X, e.Y));
+            var p = textArea.PointToClient(new Point(e.X, e.Y));
 
-            if (textArea.TextView.DrawingPosition.Contains(p.X, p.Y)) {
-                TextLocation realmousepos= textArea.TextView.GetLogicalPosition(p.X - textArea.TextView.DrawingPosition.X,
-                                                                                p.Y - textArea.TextView.DrawingPosition.Y);
-                int lineNr = Math.Min(textArea.Document.TotalNumberOfLines - 1, Math.Max(0, realmousepos.Y));
+            if (textArea.TextView.DrawingPosition.Contains(p.X, p.Y))
+            {
+                var realmousepos = textArea.TextView.GetLogicalPosition(
+                    p.X - textArea.TextView.DrawingPosition.X,
+                    p.Y - textArea.TextView.DrawingPosition.Y);
+                var lineNr = Math.Min(textArea.Document.TotalNumberOfLines - 1, Math.Max(val1: 0, realmousepos.Y));
 
                 textArea.Caret.Position = new TextLocation(realmousepos.X, lineNr);
                 textArea.SetDesiredColumn();
-                if (e.Data.GetDataPresent(typeof(string)) && !textArea.IsReadOnly(textArea.Caret.Offset)) {
+                if (e.Data.GetDataPresent(typeof(string)) && !textArea.IsReadOnly(textArea.Caret.Offset))
                     e.Effect = GetDragDropEffect(e);
-                } else {
+                else
                     e.Effect = DragDropEffects.None;
-                }
-            } else {
+            }
+            else
+            {
                 e.Effect = DragDropEffects.None;
             }
         }

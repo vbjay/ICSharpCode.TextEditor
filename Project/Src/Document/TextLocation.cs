@@ -10,15 +10,15 @@ using System;
 namespace ICSharpCode.TextEditor
 {
     /// <summary>
-    /// A line/column position.
-    /// Text editor lines/columns are counting from zero.
+    ///     A line/column position.
+    ///     Text editor lines/columns are counting from zero.
     /// </summary>
     public struct TextLocation : IComparable<TextLocation>, IEquatable<TextLocation>
     {
         /// <summary>
-        /// Represents no text location (-1, -1).
+        ///     Represents no text location (-1, -1).
         /// </summary>
-        public static readonly TextLocation Empty = new TextLocation(-1, -1);
+        public static readonly TextLocation Empty = new TextLocation(column: -1, line: -1);
 
         public TextLocation(int column, int line)
         {
@@ -30,12 +30,14 @@ namespace ICSharpCode.TextEditor
 
         public int Y { get; set; }
 
-        public int Line {
+        public int Line
+        {
             get => Y;
             set => Y = value;
         }
 
-        public int Column {
+        public int Column
+        {
             get => X;
             set => X = value;
         }
@@ -49,7 +51,7 @@ namespace ICSharpCode.TextEditor
 
         public override int GetHashCode()
         {
-            return unchecked (87 * X.GetHashCode() ^ Y.GetHashCode());
+            return unchecked((87*X.GetHashCode()) ^ Y.GetHashCode());
         }
 
         public override bool Equals(object obj)

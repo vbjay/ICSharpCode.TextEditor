@@ -12,28 +12,33 @@ using System.Collections.Generic;
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// A stack of Span instances. Works like Stack&lt;Span&gt;, but can be cloned quickly
-    /// because it is implemented as linked list.
+    ///     A stack of Span instances. Works like Stack&lt;Span&gt;, but can be cloned quickly
+    ///     because it is implemented as linked list.
     /// </summary>
     public sealed class SpanStack : ICloneable, IEnumerable<Span>
     {
-        internal sealed class StackNode
-        {
-            public readonly StackNode Previous;
-            public readonly Span Data;
+        private StackNode top;
 
-            public StackNode(StackNode previous, Span data)
-            {
-                Previous = previous;
-                Data = data;
-            }
+        public bool IsEmpty => top == null;
+
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
 
-        private StackNode top;
+        IEnumerator<Span> IEnumerable<Span>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         public Span Pop()
         {
-            Span s = top.Data;
+            var s = top.Data;
             top = top.Previous;
             return s;
         }
@@ -48,30 +53,28 @@ namespace ICSharpCode.TextEditor.Document
             top = new StackNode(top, s);
         }
 
-        public bool IsEmpty => top == null;
-
         public SpanStack Clone()
         {
-            SpanStack n = new SpanStack();
+            var n = new SpanStack();
             n.top = top;
             return n;
-        }
-        object ICloneable.Clone()
-        {
-            return Clone();
         }
 
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(new StackNode(top, null));
+            return new Enumerator(new StackNode(top, data: null));
         }
-        IEnumerator<Span> IEnumerable<Span>.GetEnumerator()
+
+        internal sealed class StackNode
         {
-            return GetEnumerator();
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            public readonly Span Data;
+            public readonly StackNode Previous;
+
+            public StackNode(StackNode previous, Span data)
+            {
+                Previous = previous;
+                Data = data;
+            }
         }
 
         public struct Enumerator : IEnumerator<Span>

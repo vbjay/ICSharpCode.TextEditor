@@ -12,15 +12,15 @@ namespace ICSharpCode.TextEditor.Document
     public delegate void BookmarkEventHandler(object sender, BookmarkEventArgs e);
 
     /// <summary>
-    /// Description of BookmarkEventHandler.
+    ///     Description of BookmarkEventHandler.
     /// </summary>
     public class BookmarkEventArgs : EventArgs
     {
-        public Bookmark Bookmark { get; }
-
         public BookmarkEventArgs(Bookmark bookmark)
         {
             Bookmark = bookmark;
         }
+
+        public Bookmark Bookmark { get; }
     }
 }

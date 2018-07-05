@@ -13,12 +13,18 @@ namespace ICSharpCode.TextEditor.Util
 {
     internal abstract class TipSection
     {
-        private SizeF    tipRequiredSize;
+        private SizeF tipRequiredSize;
 
         protected TipSection(Graphics graphics)
         {
             Graphics = graphics;
         }
+
+        protected Graphics Graphics { get; }
+
+        protected SizeF AllocatedSize { get; private set; }
+
+        protected SizeF MaximumSize { get; private set; }
 
         public abstract void Draw(PointF location);
 
@@ -29,41 +35,36 @@ namespace ICSharpCode.TextEditor.Util
 
         public void SetAllocatedSize(SizeF allocatedSize)
         {
-            Debug.Assert(allocatedSize.Width >= tipRequiredSize.Width &&
-                         allocatedSize.Height >= tipRequiredSize.Height);
+            Debug.Assert(
+                allocatedSize.Width >= tipRequiredSize.Width &&
+                allocatedSize.Height >= tipRequiredSize.Height);
 
-            AllocatedSize = allocatedSize; OnAllocatedSizeChanged();
+            AllocatedSize = allocatedSize;
+            OnAllocatedSizeChanged();
         }
 
         public void SetMaximumSize(SizeF maximumSize)
         {
-            MaximumSize = maximumSize; OnMaximumSizeChanged();
+            MaximumSize = maximumSize;
+            OnMaximumSizeChanged();
         }
 
         protected virtual void OnAllocatedSizeChanged()
         {
-
         }
 
         protected virtual void OnMaximumSizeChanged()
         {
-
         }
 
         protected void SetRequiredSize(SizeF requiredSize)
         {
-            requiredSize.Width  = Math.Max(0, requiredSize.Width);
-            requiredSize.Height = Math.Max(0, requiredSize.Height);
-            requiredSize.Width  = Math.Min(MaximumSize.Width, requiredSize.Width);
+            requiredSize.Width = Math.Max(val1: 0, requiredSize.Width);
+            requiredSize.Height = Math.Max(val1: 0, requiredSize.Height);
+            requiredSize.Width = Math.Min(MaximumSize.Width, requiredSize.Width);
             requiredSize.Height = Math.Min(MaximumSize.Height, requiredSize.Height);
 
             tipRequiredSize = requiredSize;
         }
-
-        protected Graphics Graphics { get; }
-
-        protected SizeF AllocatedSize { get; private set; }
-
-        protected SizeF MaximumSize { get; private set; }
     }
 }

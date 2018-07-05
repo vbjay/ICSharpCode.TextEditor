@@ -12,36 +12,35 @@ using ICSharpCode.TextEditor.Document;
 namespace ICSharpCode.TextEditor.Undo
 {
     /// <summary>
-    /// This class is for the undo of Document insert operations
+    ///     This class is for the undo of Document insert operations
     /// </summary>
     public class UndoableInsert : IUndoableOperation
     {
         private readonly IDocument document;
+
 //        int      oldCaretPos;
-        private readonly int      offset;
-        private readonly string   text;
+        private readonly int offset;
+        private readonly string text;
 
         /// <summary>
-        /// Creates a new instance of <see cref="UndoableInsert"/>
+        ///     Creates a new instance of <see cref="UndoableInsert" />
         /// </summary>
         public UndoableInsert(IDocument document, int offset, string text)
         {
-            if (document == null) {
+            if (document == null)
                 throw new ArgumentNullException("document");
-            }
-            if (offset < 0 || offset > document.TextLength) {
+            if (offset < 0 || offset > document.TextLength)
                 throw new ArgumentOutOfRangeException("offset");
-            }
 
             Debug.Assert(text != null, "text can't be null");
 //            oldCaretPos   = document.Caret.Offset;
             this.document = document;
-            this.offset   = offset;
-            this.text     = text;
+            this.offset = offset;
+            this.text = text;
         }
 
         /// <remarks>
-        /// Undo last operation
+        ///     Undo last operation
         /// </remarks>
         public void Undo()
         {
@@ -56,7 +55,7 @@ namespace ICSharpCode.TextEditor.Undo
         }
 
         /// <remarks>
-        /// Redo last undone operation
+        ///     Redo last undone operation
         /// </remarks>
         public void Redo()
         {

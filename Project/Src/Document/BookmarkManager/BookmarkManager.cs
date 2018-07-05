@@ -18,25 +18,25 @@ namespace ICSharpCode.TextEditor.Document
     }
 
     /// <summary>
-    /// This class handles the bookmarks for a buffer
+    ///     This class handles the bookmarks for a buffer
     /// </summary>
     public class BookmarkManager
     {
 #if DEBUG
         private readonly IList<Bookmark> bookmark = new CheckedList<Bookmark>();
-        #else
+#else
         List<Bookmark> bookmark = new List<Bookmark>();
         #endif
 
         /// <value>
-        /// Contains all bookmarks
+        ///     Contains all bookmarks
         /// </value>
         public ReadOnlyCollection<Bookmark> Marks => new ReadOnlyCollection<Bookmark>(bookmark);
 
         public IDocument Document { get; }
 
         /// <summary>
-        /// Creates a new instance of <see cref="BookmarkManager"/>
+        ///     Creates a new instance of <see cref="BookmarkManager" />
         /// </summary>
         internal BookmarkManager(IDocument document, LineManager lineTracker)
         {
@@ -44,29 +44,30 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <summary>
-        /// Gets/Sets the bookmark factory used to create bookmarks for "ToggleMarkAt".
+        ///     Gets/Sets the bookmark factory used to create bookmarks for "ToggleMarkAt".
         /// </summary>
-        public IBookmarkFactory Factory { get; set;}
+        public IBookmarkFactory Factory { get; set; }
 
         /// <summary>
-        /// Sets the mark at the line <code>location.Line</code> if it is not set, if the
-        /// line is already marked the mark is cleared.
+        ///     Sets the mark at the line <code>location.Line</code> if it is not set, if the
+        ///     line is already marked the mark is cleared.
         /// </summary>
         public void ToggleMarkAt(TextLocation location)
         {
             Bookmark newMark;
-            if (Factory != null) {
+            if (Factory != null)
                 newMark = Factory.CreateBookmark(Document, location);
-            } else {
+            else
                 newMark = new Bookmark(Document, location);
-            }
 
-            Type newMarkType = newMark.GetType();
+            var newMarkType = newMark.GetType();
 
-            for (int i = 0; i < bookmark.Count; ++i) {
-                Bookmark mark = bookmark[i];
+            for (var i = 0; i < bookmark.Count; ++i)
+            {
+                var mark = bookmark[i];
 
-                if (mark.LineNumber == location.Line && mark.CanToggle && mark.GetType() == newMarkType) {
+                if (mark.LineNumber == location.Line && mark.CanToggle && mark.GetType() == newMarkType)
+                {
                     bookmark.RemoveAt(i);
                     OnRemoved(new BookmarkEventArgs(mark));
                     return;
@@ -91,9 +92,11 @@ namespace ICSharpCode.TextEditor.Document
 
         public void RemoveMarks(Predicate<Bookmark> predicate)
         {
-            for (int i = 0; i < bookmark.Count; ++i) {
-                Bookmark bm = bookmark[i];
-                if (predicate(bm)) {
+            for (var i = 0; i < bookmark.Count; ++i)
+            {
+                var bm = bookmark[i];
+                if (predicate(bm))
+                {
                     bookmark.RemoveAt(i--);
                     OnRemoved(new BookmarkEventArgs(bm));
                 }
@@ -101,60 +104,51 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <returns>
-        /// true, if a mark at mark exists, otherwise false
+        ///     true, if a mark at mark exists, otherwise false
         /// </returns>
         public bool IsMarked(int lineNr)
         {
-            for (int i = 0; i < bookmark.Count; ++i) {
-                if (bookmark[i].LineNumber == lineNr) {
+            for (var i = 0; i < bookmark.Count; ++i)
+                if (bookmark[i].LineNumber == lineNr)
                     return true;
-                }
-            }
             return false;
         }
 
         /// <remarks>
-        /// Clears all bookmark
+        ///     Clears all bookmark
         /// </remarks>
         public void Clear()
         {
-            foreach (Bookmark mark in bookmark) {
+            foreach (var mark in bookmark)
                 OnRemoved(new BookmarkEventArgs(mark));
-            }
             bookmark.Clear();
         }
 
         /// <value>
-        /// The lowest mark, if no marks exists it returns -1
+        ///     The lowest mark, if no marks exists it returns -1
         /// </value>
         public Bookmark GetFirstMark(Predicate<Bookmark> predicate)
         {
-            if (bookmark.Count < 1) {
+            if (bookmark.Count < 1)
                 return null;
-            }
             Bookmark first = null;
-            for (int i = 0; i < bookmark.Count; ++i) {
-                if (predicate(bookmark[i]) && bookmark[i].IsEnabled && (first == null || bookmark[i].LineNumber < first.LineNumber)) {
+            for (var i = 0; i < bookmark.Count; ++i)
+                if (predicate(bookmark[i]) && bookmark[i].IsEnabled && (first == null || bookmark[i].LineNumber < first.LineNumber))
                     first = bookmark[i];
-                }
-            }
             return first;
         }
 
         /// <value>
-        /// The highest mark, if no marks exists it returns -1
+        ///     The highest mark, if no marks exists it returns -1
         /// </value>
         public Bookmark GetLastMark(Predicate<Bookmark> predicate)
         {
-            if (bookmark.Count < 1) {
+            if (bookmark.Count < 1)
                 return null;
-            }
             Bookmark last = null;
-            for (int i = 0; i < bookmark.Count; ++i) {
-                if (predicate(bookmark[i]) && bookmark[i].IsEnabled && (last == null || bookmark[i].LineNumber > last.LineNumber)) {
+            for (var i = 0; i < bookmark.Count; ++i)
+                if (predicate(bookmark[i]) && bookmark[i].IsEnabled && (last == null || bookmark[i].LineNumber > last.LineNumber))
                     last = bookmark[i];
-                }
-            }
             return last;
         }
 
@@ -162,31 +156,28 @@ namespace ICSharpCode.TextEditor.Document
         {
             return true;
         }
+
         public Bookmark GetNextMark(int curLineNr)
         {
             return GetNextMark(curLineNr, AcceptAnyMarkPredicate);
         }
 
         /// <remarks>
-        /// returns first mark higher than <code>lineNr</code>
+        ///     returns first mark higher than <code>lineNr</code>
         /// </remarks>
         /// <returns>
-        /// returns the next mark > cur, if it not exists it returns FirstMark()
+        ///     returns the next mark > cur, if it not exists it returns FirstMark()
         /// </returns>
         public Bookmark GetNextMark(int curLineNr, Predicate<Bookmark> predicate)
         {
-            if (bookmark.Count == 0) {
+            if (bookmark.Count == 0)
                 return null;
-            }
 
-            Bookmark next = GetFirstMark(predicate);
-            foreach (Bookmark mark in bookmark) {
-                if (predicate(mark) && mark.IsEnabled && mark.LineNumber > curLineNr) {
-                    if (mark.LineNumber < next.LineNumber || next.LineNumber <= curLineNr) {
+            var next = GetFirstMark(predicate);
+            foreach (var mark in bookmark)
+                if (predicate(mark) && mark.IsEnabled && mark.LineNumber > curLineNr)
+                    if (mark.LineNumber < next.LineNumber || next.LineNumber <= curLineNr)
                         next = mark;
-                    }
-                }
-            }
             return next;
         }
 
@@ -194,27 +185,24 @@ namespace ICSharpCode.TextEditor.Document
         {
             return GetPrevMark(curLineNr, AcceptAnyMarkPredicate);
         }
+
         /// <remarks>
-        /// returns first mark lower than <code>lineNr</code>
+        ///     returns first mark lower than <code>lineNr</code>
         /// </remarks>
         /// <returns>
-        /// returns the next mark lower than cur, if it not exists it returns LastMark()
+        ///     returns the next mark lower than cur, if it not exists it returns LastMark()
         /// </returns>
         public Bookmark GetPrevMark(int curLineNr, Predicate<Bookmark> predicate)
         {
-            if (bookmark.Count == 0) {
+            if (bookmark.Count == 0)
                 return null;
-            }
 
-            Bookmark prev = GetLastMark(predicate);
+            var prev = GetLastMark(predicate);
 
-            foreach (Bookmark mark in bookmark) {
-                if (predicate(mark) && mark.IsEnabled && mark.LineNumber < curLineNr) {
-                    if (mark.LineNumber > prev.LineNumber || prev.LineNumber >= curLineNr) {
+            foreach (var mark in bookmark)
+                if (predicate(mark) && mark.IsEnabled && mark.LineNumber < curLineNr)
+                    if (mark.LineNumber > prev.LineNumber || prev.LineNumber >= curLineNr)
                         prev = mark;
-                    }
-                }
-            }
             return prev;
         }
 

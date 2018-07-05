@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace ICSharpCode.TextEditor.Util
 {
     /// <summary>
-    /// Accumulates mouse wheel deltas and reports the actual number of lines to scroll.
+    ///     Accumulates mouse wheel deltas and reports the actual number of lines to scroll.
     /// </summary>
     internal class MouseWheelHandler
     {
@@ -26,10 +26,10 @@ namespace ICSharpCode.TextEditor.Util
             // accumulate the delta to support high-resolution mice
             mouseWheelDelta += e.Delta;
 
-            int linesPerClick = Math.Max(SystemInformation.MouseWheelScrollLines, 1);
+            var linesPerClick = Math.Max(SystemInformation.MouseWheelScrollLines, val2: 1);
 
-            int scrollDistance = mouseWheelDelta * linesPerClick / WHEEL_DELTA;
-            mouseWheelDelta %= Math.Max(1, WHEEL_DELTA / linesPerClick);
+            var scrollDistance = mouseWheelDelta*linesPerClick/WHEEL_DELTA;
+            mouseWheelDelta %= Math.Max(val1: 1, WHEEL_DELTA/linesPerClick);
             return scrollDistance;
         }
     }

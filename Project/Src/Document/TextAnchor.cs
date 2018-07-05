@@ -12,32 +12,37 @@ namespace ICSharpCode.TextEditor.Document
     public enum AnchorMovementType
     {
         /// <summary>
-        /// Behaves like a start marker - when text is inserted at the anchor position, the anchor will stay
-        /// before the inserted text.
+        ///     Behaves like a start marker - when text is inserted at the anchor position, the anchor will stay
+        ///     before the inserted text.
         /// </summary>
         BeforeInsertion,
+
         /// <summary>
-        /// Behave like an end marker - when text is insered at the anchor position, the anchor will move
-        /// after the inserted text.
+        ///     Behave like an end marker - when text is insered at the anchor position, the anchor will move
+        ///     after the inserted text.
         /// </summary>
         AfterInsertion
     }
 
     /// <summary>
-    /// An anchor that can be put into a document and moves around when the document is changed.
+    ///     An anchor that can be put into a document and moves around when the document is changed.
     /// </summary>
     public sealed class TextAnchor
     {
-        private static Exception AnchorDeletedError()
-        {
-            return new InvalidOperationException("The text containing the anchor was deleted");
-        }
-
-        private LineSegment lineSegment;
         private int columnNumber;
 
-        public LineSegment Line {
-            get {
+        private LineSegment lineSegment;
+
+        internal TextAnchor(LineSegment lineSegment, int columnNumber)
+        {
+            this.lineSegment = lineSegment;
+            this.columnNumber = columnNumber;
+        }
+
+        public LineSegment Line
+        {
+            get
+            {
                 if (lineSegment == null) throw AnchorDeletedError();
                 return lineSegment;
             }
@@ -48,8 +53,10 @@ namespace ICSharpCode.TextEditor.Document
 
         public int LineNumber => Line.LineNumber;
 
-        public int ColumnNumber {
-            get {
+        public int ColumnNumber
+        {
+            get
+            {
                 if (lineSegment == null) throw AnchorDeletedError();
                 return columnNumber;
             }
@@ -61,9 +68,14 @@ namespace ICSharpCode.TextEditor.Document
         public int Offset => Line.Offset + columnNumber;
 
         /// <summary>
-        /// Controls how the anchor moves.
+        ///     Controls how the anchor moves.
         /// </summary>
         public AnchorMovementType MovementType { get; set; }
+
+        private static Exception AnchorDeletedError()
+        {
+            return new InvalidOperationException("The text containing the anchor was deleted");
+        }
 
         public event EventHandler Deleted;
 
@@ -78,12 +90,6 @@ namespace ICSharpCode.TextEditor.Document
         internal void RaiseDeleted()
         {
             Deleted?.Invoke(this, EventArgs.Empty);
-        }
-
-        internal TextAnchor(LineSegment lineSegment, int columnNumber)
-        {
-            this.lineSegment = lineSegment;
-            this.columnNumber = columnNumber;
         }
 
         public override string ToString()

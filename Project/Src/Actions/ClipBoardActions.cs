@@ -11,10 +11,9 @@ namespace ICSharpCode.TextEditor.Actions
     {
         public override void Execute(TextArea textArea)
         {
-            if (textArea.Document.ReadOnly) {
+            if (textArea.Document.ReadOnly)
                 return;
-            }
-            textArea.ClipboardHandler.Cut(null, null);
+            textArea.ClipboardHandler.Cut(sender: null, e: null);
         }
     }
 
@@ -23,7 +22,7 @@ namespace ICSharpCode.TextEditor.Actions
         public override void Execute(TextArea textArea)
         {
             textArea.AutoClearSelection = false;
-            textArea.ClipboardHandler.Copy(null, null);
+            textArea.ClipboardHandler.Copy(sender: null, e: null);
         }
     }
 
@@ -31,10 +30,9 @@ namespace ICSharpCode.TextEditor.Actions
     {
         public override void Execute(TextArea textArea)
         {
-            if (textArea.Document.ReadOnly) {
+            if (textArea.Document.ReadOnly)
                 return;
-            }
-            textArea.ClipboardHandler.Paste(null, null);
+            textArea.ClipboardHandler.Paste(sender: null, e: null);
         }
     }
 }

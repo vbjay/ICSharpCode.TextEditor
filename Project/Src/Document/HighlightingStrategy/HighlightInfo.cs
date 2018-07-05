@@ -10,13 +10,13 @@ namespace ICSharpCode.TextEditor.Document
     public class HighlightInfo
     {
         public bool BlockSpanOn;
-        public bool Span;
         public Span CurSpan;
+        public bool Span;
 
         public HighlightInfo(Span curSpan, bool span, bool blockSpanOn)
         {
-            CurSpan     = curSpan;
-            Span        = span;
+            CurSpan = curSpan;
+            Span = span;
             BlockSpanOn = blockSpanOn;
         }
     }

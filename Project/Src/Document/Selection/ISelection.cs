@@ -8,52 +8,34 @@
 namespace ICSharpCode.TextEditor.Document
 {
     /// <summary>
-    /// An interface representing a portion of the current selection.
+    ///     An interface representing a portion of the current selection.
     /// </summary>
     public interface ISelection
     {
-        TextLocation StartPosition {
-            get;
-            set;
-        }
+        TextLocation StartPosition { get; set; }
 
-        TextLocation EndPosition {
-            get;
-            set;
-        }
+        TextLocation EndPosition { get; set; }
 
-        int Offset {
-            get;
-        }
+        int Offset { get; }
 
-        int EndOffset {
-            get;
-        }
+        int EndOffset { get; }
 
-        int Length {
-            get;
-        }
+        int Length { get; }
 
         /// <value>
-        /// Returns true, if the selection is rectangular
+        ///     Returns true, if the selection is rectangular
         /// </value>
-        bool IsRectangularSelection {
-            get;
-        }
+        bool IsRectangularSelection { get; }
 
         /// <value>
-        /// Returns true, if the selection is empty
+        ///     Returns true, if the selection is empty
         /// </value>
-        bool IsEmpty {
-            get;
-        }
+        bool IsEmpty { get; }
 
         /// <value>
-        /// The text which is selected by this selection.
+        ///     The text which is selected by this selection.
         /// </value>
-        string SelectedText {
-            get;
-        }
+        string SelectedText { get; }
 
         bool ContainsOffset(int offset);
 

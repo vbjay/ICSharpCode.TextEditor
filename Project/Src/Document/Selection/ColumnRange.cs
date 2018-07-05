@@ -5,25 +5,22 @@
 //     <version>$Revision$</version>
 // </file>
 
-using System;
-
 namespace ICSharpCode.TextEditor.Document
 {
     public class ColumnRange
     {
-        public static readonly ColumnRange NoColumn    = new ColumnRange(-2, -2);
-        public static readonly ColumnRange WholeColumn = new ColumnRange(-1, -1);
-
-        public int StartColumn { get; set; }
-
-        public int EndColumn { get; set; }
+        public static readonly ColumnRange NoColumn = new ColumnRange(startColumn: -2, endColumn: -2);
+        public static readonly ColumnRange WholeColumn = new ColumnRange(startColumn: -1, endColumn: -1);
 
         public ColumnRange(int startColumn, int endColumn)
         {
             StartColumn = startColumn;
             EndColumn = endColumn;
-
         }
+
+        public int StartColumn { get; set; }
+
+        public int EndColumn { get; set; }
 
         public override int GetHashCode()
         {
@@ -32,11 +29,9 @@ namespace ICSharpCode.TextEditor.Document
 
         public override bool Equals(object obj)
         {
-            if (obj is ColumnRange range) {
+            if (obj is ColumnRange range)
                 return range.StartColumn == StartColumn &&
                        range.EndColumn == EndColumn;
-
-            }
             return false;
         }
 
@@ -44,6 +39,5 @@ namespace ICSharpCode.TextEditor.Document
         {
             return string.Format("[ColumnRange: StartColumn={0}, EndColumn={1}]", StartColumn, EndColumn);
         }
-
     }
 }

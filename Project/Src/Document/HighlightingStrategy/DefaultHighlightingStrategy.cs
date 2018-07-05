@@ -14,13 +14,178 @@ namespace ICSharpCode.TextEditor.Document
 {
     public class DefaultHighlightingStrategy : IHighlightingStrategyUsingRuleSets
     {
-        private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
+        protected HighlightRuleSet activeRuleSet;
+        protected Span activeSpan;
+        protected int currentLength;
+
+        // Line state variable
+        protected LineSegment currentLine;
+        protected int currentLineNumber;
+
+        // Line scanning state variables
+        protected int currentOffset;
+
+        // Span stack state variable
+        protected SpanStack currentSpanStack;
 
         private HighlightRuleSet defaultRuleSet;
+        private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
+
+        // Span state variables
+        protected bool inSpan;
+
+        public DefaultHighlightingStrategy() : this("Default")
+        {
+        }
+
+        public DefaultHighlightingStrategy(string name)
+        {
+            Name = name;
+
+            DigitColor = new HighlightColor(SystemColors.WindowText, bold: false, italic: false);
+            DefaultTextColor = new HighlightColor(SystemColors.WindowText, bold: false, italic: false);
+
+            // set small 'default color environment'
+            environmentColors["Default"] = new HighlightBackground("WindowText", "Window", bold: false, italic: false);
+            environmentColors["Selection"] = new HighlightColor("HighlightText", "Highlight", bold: false, italic: false);
+            environmentColors["VRuler"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
+            environmentColors["InvalidLines"] = new HighlightColor(Color.Red, bold: false, italic: false);
+            environmentColors["CaretMarker"] = new HighlightColor(Color.Yellow, bold: false, italic: false);
+            environmentColors["CaretLine"] = new HighlightBackground("ControlLight", "Window", bold: false, italic: false);
+            environmentColors["LineNumbers"] = new HighlightBackground("ControlDark", "Window", bold: false, italic: false);
+
+            environmentColors["FoldLine"] = new HighlightColor("ControlDark", bold: false, italic: false);
+            environmentColors["FoldMarker"] = new HighlightColor("WindowText", "Window", bold: false, italic: false);
+            environmentColors["SelectedFoldLine"] = new HighlightColor("WindowText", bold: false, italic: false);
+            environmentColors["EOLMarkers"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
+            environmentColors["SpaceMarkers"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
+            environmentColors["TabMarkers"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
+        }
 
         public HighlightColor DigitColor { get; set; }
 
         public IEnumerable<KeyValuePair<string, HighlightColor>> EnvironmentColors => environmentColors;
+
+        public List<HighlightRuleSet> Rules { get; private set; } = new List<HighlightRuleSet>();
+
+//        internal void SetDefaultColor(HighlightBackground color)
+//        {
+//            return (HighlightColor)environmentColors[name];
+//            defaultColor = color;
+//        }
+
+        public HighlightColor DefaultTextColor { get; private set; }
+
+        public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
+
+        public string Name { get; private set; }
+
+        public string[] Extensions { set; get; }
+
+        public HighlightColor GetColorFor(string name)
+        {
+            HighlightColor color;
+            if (environmentColors.TryGetValue(name, out color))
+                return color;
+            return DefaultTextColor;
+        }
+
+        public HighlightColor GetColor(IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)
+        {
+            return GetColor(defaultRuleSet, document, currentSegment, currentOffset, currentLength);
+        }
+
+        public HighlightRuleSet GetRuleSet(Span aSpan)
+        {
+            if (aSpan == null)
+                return defaultRuleSet;
+
+            if (aSpan.RuleSet != null)
+            {
+                if (aSpan.RuleSet.Reference != null)
+                    return aSpan.RuleSet.Highlighter.GetRuleSet(span: null);
+
+                return aSpan.RuleSet;
+            }
+
+            return null;
+        }
+
+        public virtual void MarkTokens(IDocument document)
+        {
+            if (Rules.Count == 0)
+                return;
+
+            var lineNumber = 0;
+
+            while (lineNumber < document.TotalNumberOfLines)
+            {
+                var previousLine = lineNumber > 0 ? document.GetLineSegment(lineNumber - 1) : null;
+                if (lineNumber >= document.LineSegmentCollection.Count)
+                    break; // then the last line is not in the collection :)
+
+                currentSpanStack = previousLine != null && previousLine.HighlightSpanStack != null ? previousLine.HighlightSpanStack.Clone() : null;
+
+                if (currentSpanStack != null)
+                {
+                    while (!currentSpanStack.IsEmpty && currentSpanStack.Peek().StopEOL)
+                        currentSpanStack.Pop();
+                    if (currentSpanStack.IsEmpty) currentSpanStack = null;
+                }
+
+                currentLine = document.LineSegmentCollection[lineNumber];
+
+                if (currentLine.Length == -1)
+                    return;
+
+                currentLineNumber = lineNumber;
+                var words = ParseLine(document);
+                // Alex: clear old words
+                currentLine.Words?.Clear();
+                currentLine.Words = words;
+                currentLine.HighlightSpanStack = currentSpanStack == null || currentSpanStack.IsEmpty ? null : currentSpanStack;
+
+                ++lineNumber;
+            }
+
+            document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+            document.CommitUpdate();
+            currentLine = null;
+        }
+
+        public virtual void MarkTokens(IDocument document, List<LineSegment> inputLines)
+        {
+            if (Rules.Count == 0)
+                return;
+
+            var processedLines = new Dictionary<LineSegment, bool>();
+
+            var spanChanged = false;
+            var documentLineSegmentCount = document.LineSegmentCollection.Count;
+
+            foreach (var lineToProcess in inputLines)
+                if (!processedLines.ContainsKey(lineToProcess))
+                {
+                    var lineNumber = lineToProcess.LineNumber;
+                    var processNextLine = true;
+
+                    if (lineNumber != -1)
+                        while (processNextLine && lineNumber < documentLineSegmentCount)
+                        {
+                            processNextLine = MarkTokensInLine(document, lineNumber, ref spanChanged);
+                            processedLines[currentLine] = true;
+                            ++lineNumber;
+                        }
+                }
+
+            if (spanChanged || inputLines.Count > 20)
+                document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+            else
+                foreach (var lineToProcess in inputLines)
+                    document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, lineToProcess.LineNumber));
+            document.CommitUpdate();
+            currentLine = null;
+        }
 
         protected void ImportSettingsFrom(DefaultHighlightingStrategy source)
         {
@@ -36,61 +201,21 @@ namespace ICSharpCode.TextEditor.Document
             DefaultTextColor = source.DefaultTextColor;
         }
 
-        public DefaultHighlightingStrategy() : this("Default")
-        {
-        }
-
-        public DefaultHighlightingStrategy(string name)
-        {
-            Name = name;
-
-            DigitColor       = new HighlightColor(SystemColors.WindowText, false, false);
-            DefaultTextColor = new HighlightColor(SystemColors.WindowText, false, false);
-
-            // set small 'default color environment'
-            environmentColors["Default"]          = new HighlightBackground("WindowText", "Window", false, false);
-            environmentColors["Selection"]        = new HighlightColor("HighlightText", "Highlight", false, false);
-            environmentColors["VRuler"]           = new HighlightColor("ControlLight", "Window", false, false);
-            environmentColors["InvalidLines"]     = new HighlightColor(Color.Red, false, false);
-            environmentColors["CaretMarker"]      = new HighlightColor(Color.Yellow, false, false);
-            environmentColors["CaretLine"] = new HighlightBackground("ControlLight", "Window", false, false);
-            environmentColors["LineNumbers"] = new HighlightBackground("ControlDark", "Window", false, false);
-
-            environmentColors["FoldLine"]         = new HighlightColor("ControlDark", false, false);
-            environmentColors["FoldMarker"]       = new HighlightColor("WindowText", "Window", false, false);
-            environmentColors["SelectedFoldLine"] = new HighlightColor("WindowText", false, false);
-            environmentColors["EOLMarkers"]       = new HighlightColor("ControlLight", "Window", false, false);
-            environmentColors["SpaceMarkers"]     = new HighlightColor("ControlLight", "Window", false, false);
-            environmentColors["TabMarkers"]       = new HighlightColor("ControlLight", "Window", false, false);
-
-        }
-
-        public Dictionary<string, string> Properties { get; private set; } = new Dictionary<string, string>();
-
-        public string Name { get; private set; }
-
-        public string[] Extensions { set; get; }
-
-        public List<HighlightRuleSet> Rules { get; private set; } = new List<HighlightRuleSet>();
-
         public HighlightRuleSet FindHighlightRuleSet(string name)
         {
-            foreach(HighlightRuleSet ruleSet in Rules) {
-                if (ruleSet.Name == name) {
+            foreach (var ruleSet in Rules)
+                if (ruleSet.Name == name)
                     return ruleSet;
-                }
-            }
             return null;
         }
 
         public void AddRuleSet(HighlightRuleSet aRuleSet)
         {
-            HighlightRuleSet existing = FindHighlightRuleSet(aRuleSet.Name);
-            if (existing != null) {
+            var existing = FindHighlightRuleSet(aRuleSet.Name);
+            if (existing != null)
                 existing.MergeFrom(aRuleSet);
-            } else {
+            else
                 Rules.Add(aRuleSet);
-            }
         }
 
         public void ResolveReferences()
@@ -103,42 +228,47 @@ namespace ICSharpCode.TextEditor.Document
 
         private void ResolveRuleSetReferences()
         {
-            foreach (HighlightRuleSet ruleSet in Rules) {
-                if (ruleSet.Name == null) {
+            foreach (var ruleSet in Rules)
+            {
+                if (ruleSet.Name == null)
                     defaultRuleSet = ruleSet;
-                }
 
-                foreach (Span aSpan in ruleSet.Spans) {
-                    if (aSpan.Rule != null) {
-                        bool found = false;
-                        foreach (HighlightRuleSet refSet in Rules) {
-                            if (refSet.Name == aSpan.Rule) {
+                foreach (Span aSpan in ruleSet.Spans)
+                    if (aSpan.Rule != null)
+                    {
+                        var found = false;
+                        foreach (var refSet in Rules)
+                            if (refSet.Name == aSpan.Rule)
+                            {
                                 found = true;
                                 aSpan.RuleSet = refSet;
                                 break;
                             }
-                        }
-                        if (!found) {
+
+                        if (!found)
+                        {
                             aSpan.RuleSet = null;
                             throw new HighlightingDefinitionInvalidException("The RuleSet " + aSpan.Rule + " could not be found in mode definition " + Name);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         aSpan.RuleSet = null;
                     }
-                }
             }
 
-            if (defaultRuleSet == null) {
+            if (defaultRuleSet == null)
                 throw new HighlightingDefinitionInvalidException("No default RuleSet is defined for mode definition " + Name);
-            }
         }
 
         private void ResolveExternalReferences()
         {
-            foreach (HighlightRuleSet ruleSet in Rules) {
+            foreach (var ruleSet in Rules)
+            {
                 ruleSet.Highlighter = this;
-                if (ruleSet.Reference != null) {
-                    IHighlightingStrategy highlighter = HighlightingManager.Manager.FindHighlighter (ruleSet.Reference);
+                if (ruleSet.Reference != null)
+                {
+                    var highlighter = HighlightingManager.Manager.FindHighlighter(ruleSet.Reference);
 
                     if (highlighter == null)
                         throw new HighlightingDefinitionInvalidException("The mode defintion " + ruleSet.Reference + " which is refered from the " + Name + " mode definition could not be found");
@@ -150,14 +280,6 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
-//        internal void SetDefaultColor(HighlightBackground color)
-//        {
-//            return (HighlightColor)environmentColors[name];
-//            defaultColor = color;
-//        }
-
-        public HighlightColor DefaultTextColor { get; private set; }
-
         public void SetColorFor(string name, HighlightColor color)
         {
             if (name == "Default")
@@ -165,275 +287,155 @@ namespace ICSharpCode.TextEditor.Document
             environmentColors[name] = color;
         }
 
-        public HighlightColor GetColorFor(string name)
-        {
-            HighlightColor color;
-            if (environmentColors.TryGetValue(name, out color))
-                return color;
-            return DefaultTextColor;
-        }
-
-        public HighlightColor GetColor(IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)
-        {
-            return GetColor(defaultRuleSet, document, currentSegment, currentOffset, currentLength);
-        }
-
         protected virtual HighlightColor GetColor(HighlightRuleSet ruleSet, IDocument document, LineSegment currentSegment, int currentOffset, int currentLength)
         {
             if (ruleSet != null)
             {
-                if (ruleSet.Reference != null) {
+                if (ruleSet.Reference != null)
                     return ruleSet.Highlighter.GetColor(document, currentSegment, currentOffset, currentLength);
-                }
 
-                return (HighlightColor)ruleSet.KeyWords[document,  currentSegment, currentOffset, currentLength];
-            }
-            return null;
-        }
-
-        public HighlightRuleSet GetRuleSet(Span aSpan)
-        {
-            if (aSpan == null) {
-                return defaultRuleSet;
-            }
-
-            if (aSpan.RuleSet != null)
-            {
-                if (aSpan.RuleSet.Reference != null) {
-                    return aSpan.RuleSet.Highlighter.GetRuleSet(null);
-                }
-
-                return aSpan.RuleSet;
+                return (HighlightColor)ruleSet.KeyWords[document, currentSegment, currentOffset, currentLength];
             }
 
             return null;
-        }
-
-        // Line state variable
-        protected LineSegment currentLine;
-        protected int currentLineNumber;
-
-        // Span stack state variable
-        protected SpanStack currentSpanStack;
-
-        public virtual void MarkTokens(IDocument document)
-        {
-            if (Rules.Count == 0) {
-                return;
-            }
-
-            int lineNumber = 0;
-
-            while (lineNumber < document.TotalNumberOfLines) {
-                LineSegment previousLine = (lineNumber > 0 ? document.GetLineSegment(lineNumber - 1) : null);
-                if (lineNumber >= document.LineSegmentCollection.Count) { // may be, if the last line ends with a delimiter
-                    break;                                                // then the last line is not in the collection :)
-                }
-
-                currentSpanStack = ((previousLine != null && previousLine.HighlightSpanStack != null) ? previousLine.HighlightSpanStack.Clone() : null);
-
-                if (currentSpanStack != null) {
-                    while (!currentSpanStack.IsEmpty && currentSpanStack.Peek().StopEOL)
-                    {
-                        currentSpanStack.Pop();
-                    }
-                    if (currentSpanStack.IsEmpty) currentSpanStack = null;
-                }
-
-                currentLine = document.LineSegmentCollection[lineNumber];
-
-                if (currentLine.Length == -1) { // happens when buffer is empty !
-                    return;
-                }
-
-                currentLineNumber = lineNumber;
-                List<TextWord> words = ParseLine(document);
-                // Alex: clear old words
-                currentLine.Words?.Clear();
-                currentLine.Words = words;
-                currentLine.HighlightSpanStack = (currentSpanStack==null || currentSpanStack.IsEmpty) ? null : currentSpanStack;
-
-                ++lineNumber;
-            }
-            document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-            document.CommitUpdate();
-            currentLine = null;
         }
 
         private bool MarkTokensInLine(IDocument document, int lineNumber, ref bool spanChanged)
         {
             currentLineNumber = lineNumber;
-            bool processNextLine = false;
-            LineSegment previousLine = (lineNumber > 0 ? document.GetLineSegment(lineNumber - 1) : null);
+            var processNextLine = false;
+            var previousLine = lineNumber > 0 ? document.GetLineSegment(lineNumber - 1) : null;
 
-            currentSpanStack = ((previousLine != null && previousLine.HighlightSpanStack != null) ? previousLine.HighlightSpanStack.Clone() : null);
-            if (currentSpanStack != null) {
-                while (!currentSpanStack.IsEmpty && currentSpanStack.Peek().StopEOL) {
+            currentSpanStack = previousLine != null && previousLine.HighlightSpanStack != null ? previousLine.HighlightSpanStack.Clone() : null;
+            if (currentSpanStack != null)
+            {
+                while (!currentSpanStack.IsEmpty && currentSpanStack.Peek().StopEOL)
                     currentSpanStack.Pop();
-                }
-                if (currentSpanStack.IsEmpty) {
+                if (currentSpanStack.IsEmpty)
                     currentSpanStack = null;
-                }
             }
 
             currentLine = document.LineSegmentCollection[lineNumber];
 
-            if (currentLine.Length == -1) { // happens when buffer is empty !
+            if (currentLine.Length == -1)
                 return false;
-            }
 
-            List<TextWord> words = ParseLine(document);
+            var words = ParseLine(document);
 
-            if (currentSpanStack != null && currentSpanStack.IsEmpty) {
+            if (currentSpanStack != null && currentSpanStack.IsEmpty)
                 currentSpanStack = null;
-            }
 
             // Check if the span state has changed, if so we must re-render the next line
             // This check may seem utterly complicated but I didn't want to introduce any function calls
             // or allocations here for perf reasons.
-            if(currentLine.HighlightSpanStack != currentSpanStack) {
-                if (currentLine.HighlightSpanStack == null) {
+            if (currentLine.HighlightSpanStack != currentSpanStack)
+            {
+                if (currentLine.HighlightSpanStack == null)
+                {
                     processNextLine = false;
-                    foreach (Span sp in currentSpanStack) {
-                        if (!sp.StopEOL) {
+                    foreach (var sp in currentSpanStack)
+                        if (!sp.StopEOL)
+                        {
                             spanChanged = true;
                             processNextLine = true;
                             break;
                         }
-                    }
-                } else if (currentSpanStack == null) {
+                }
+                else if (currentSpanStack == null)
+                {
                     processNextLine = false;
-                    foreach (Span sp in currentLine.HighlightSpanStack) {
-                        if (!sp.StopEOL) {
+                    foreach (var sp in currentLine.HighlightSpanStack)
+                        if (!sp.StopEOL)
+                        {
                             spanChanged = true;
                             processNextLine = true;
                             break;
                         }
-                    }
-                } else {
-                    SpanStack.Enumerator e1 = currentSpanStack.GetEnumerator();
-                    SpanStack.Enumerator e2 = currentLine.HighlightSpanStack.GetEnumerator();
-                    bool done = false;
-                    while (!done) {
-                        bool blockSpanIn1 = false;
-                        while (e1.MoveNext()) {
-                            if (!e1.Current.StopEOL) {
+                }
+                else
+                {
+                    var e1 = currentSpanStack.GetEnumerator();
+                    var e2 = currentLine.HighlightSpanStack.GetEnumerator();
+                    var done = false;
+                    while (!done)
+                    {
+                        var blockSpanIn1 = false;
+                        while (e1.MoveNext())
+                            if (!e1.Current.StopEOL)
+                            {
                                 blockSpanIn1 = true;
                                 break;
                             }
-                        }
-                        bool blockSpanIn2 = false;
-                        while (e2.MoveNext()) {
-                            if (!e2.Current.StopEOL) {
+
+                        var blockSpanIn2 = false;
+                        while (e2.MoveNext())
+                            if (!e2.Current.StopEOL)
+                            {
                                 blockSpanIn2 = true;
                                 break;
                             }
-                        }
-                        if (blockSpanIn1 || blockSpanIn2) {
-                            if (blockSpanIn1 && blockSpanIn2) {
-                                if (e1.Current != e2.Current) {
+
+                        if (blockSpanIn1 || blockSpanIn2)
+                        {
+                            if (blockSpanIn1 && blockSpanIn2)
+                            {
+                                if (e1.Current != e2.Current)
+                                {
                                     done = true;
                                     processNextLine = true;
                                     spanChanged = true;
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 spanChanged = true;
                                 done = true;
                                 processNextLine = true;
                             }
-                        } else {
+                        }
+                        else
+                        {
                             done = true;
                             processNextLine = false;
                         }
                     }
                 }
-            } else {
+            }
+            else
+            {
                 processNextLine = false;
             }
 
             //// Alex: remove old words
             currentLine.Words?.Clear();
             currentLine.Words = words;
-            currentLine.HighlightSpanStack = (currentSpanStack != null && !currentSpanStack.IsEmpty) ? currentSpanStack : null;
+            currentLine.HighlightSpanStack = currentSpanStack != null && !currentSpanStack.IsEmpty ? currentSpanStack : null;
 
             return processNextLine;
         }
 
-        public virtual void MarkTokens(IDocument document, List<LineSegment> inputLines)
-        {
-            if (Rules.Count == 0) {
-                return;
-            }
-
-            Dictionary<LineSegment, bool> processedLines = new Dictionary<LineSegment, bool>();
-
-            bool spanChanged = false;
-            int documentLineSegmentCount = document.LineSegmentCollection.Count;
-
-            foreach (LineSegment lineToProcess in inputLines) {
-                if (!processedLines.ContainsKey(lineToProcess)) {
-                    int lineNumber = lineToProcess.LineNumber;
-                    bool processNextLine = true;
-
-                    if (lineNumber != -1) {
-                        while (processNextLine && lineNumber < documentLineSegmentCount) {
-                            processNextLine = MarkTokensInLine(document, lineNumber, ref spanChanged);
-                            processedLines[currentLine] = true;
-                            ++lineNumber;
-                        }
-                    }
-                }
-            }
-
-            if (spanChanged || inputLines.Count > 20) {
-                // if the span was changed (more than inputLines lines had to be reevaluated)
-                // or if there are many lines in inputLines, it's faster to update the whole
-                // text area instead of many small segments
-                document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
-            } else {
-//                document.Caret.ValidateCaretPos();
-//                document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, document.GetLineNumberForOffset(document.Caret.Offset)));
-//
-                foreach (LineSegment lineToProcess in inputLines) {
-                    document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, lineToProcess.LineNumber));
-                }
-
-            }
-            document.CommitUpdate();
-            currentLine = null;
-        }
-
-        // Span state variables
-        protected bool inSpan;
-        protected Span activeSpan;
-        protected HighlightRuleSet activeRuleSet;
-
-        // Line scanning state variables
-        protected int currentOffset;
-        protected int currentLength;
-
         private void UpdateSpanStateVariables()
         {
-            inSpan = (currentSpanStack != null && !currentSpanStack.IsEmpty);
+            inSpan = currentSpanStack != null && !currentSpanStack.IsEmpty;
             activeSpan = inSpan ? currentSpanStack.Peek() : null;
             activeRuleSet = GetRuleSet(activeSpan);
         }
 
         private List<TextWord> ParseLine(IDocument document)
         {
-            List<TextWord> words = new List<TextWord>();
+            var words = new List<TextWord>();
             HighlightColor markNext = null;
 
             currentOffset = 0;
             currentLength = 0;
             UpdateSpanStateVariables();
 
-            int currentLineLength = currentLine.Length;
-            int currentLineOffset = currentLine.Offset;
+            var currentLineLength = currentLine.Length;
+            var currentLineOffset = currentLine.Offset;
 
-            for (int i = 0; i < currentLineLength; ++i)
+            for (var i = 0; i < currentLineLength; ++i)
             {
-                char ch = document.GetCharAt(currentLineOffset + i);
+                var ch = document.GetCharAt(currentLineOffset + i);
                 switch (ch)
                 {
                     case '\n':
@@ -444,56 +446,50 @@ namespace ICSharpCode.TextEditor.Document
                     case ' ':
                         PushCurWord(document, ref markNext, words);
                         if (activeSpan != null && activeSpan.Color.HasBackground)
-                        {
                             words.Add(new TextWord.SpaceTextWord(activeSpan.Color));
-                        }
                         else
-                        {
                             words.Add(TextWord.Space);
-                        }
                         ++currentOffset;
                         continue;
                     case '\t':
                         PushCurWord(document, ref markNext, words);
                         if (activeSpan != null && activeSpan.Color.HasBackground)
-                        {
                             words.Add(new TextWord.TabTextWord(activeSpan.Color));
-                        }
                         else
-                        {
                             words.Add(TextWord.Tab);
-                        }
                         ++currentOffset;
                         continue;
                 }
+
                 // handle escape characters
-                char escapeCharacter = '\0';
-                if (activeSpan != null && activeSpan.EscapeCharacter != '\0') {
+                var escapeCharacter = '\0';
+                if (activeSpan != null && activeSpan.EscapeCharacter != '\0')
                     escapeCharacter = activeSpan.EscapeCharacter;
-                } else if (activeRuleSet != null) {
+                else if (activeRuleSet != null)
                     escapeCharacter = activeRuleSet.EscapeCharacter;
-                }
-                if (escapeCharacter != '\0' && escapeCharacter == ch) {
+                if (escapeCharacter != '\0' && escapeCharacter == ch)
+                {
                     // we found the escape character
                     if (activeSpan != null && activeSpan.End != null && activeSpan.End.Length == 1
                         && escapeCharacter == activeSpan.End[0])
                     {
                         // the escape character is a end-doubling escape character
                         // it may count as escape only when the next character is the escape, too
-                        if (i + 1 < currentLineLength) {
-                            if (document.GetCharAt(currentLineOffset + i + 1) == escapeCharacter) {
+                        if (i + 1 < currentLineLength)
+                            if (document.GetCharAt(currentLineOffset + i + 1) == escapeCharacter)
+                            {
                                 currentLength += 2;
                                 PushCurWord(document, ref markNext, words);
                                 ++i;
                                 continue;
                             }
-                        }
-                    } else {
+                    }
+                    else
+                    {
                         // this is a normal \-style escape
                         ++currentLength;
-                        if (i + 1 < currentLineLength) {
+                        if (i + 1 < currentLineLength)
                             ++currentLength;
-                        }
                         PushCurWord(document, ref markNext, words);
                         ++i;
                         continue;
@@ -501,91 +497,113 @@ namespace ICSharpCode.TextEditor.Document
                 }
 
                 // highlight digits
-                if (!inSpan && (char.IsDigit(ch) || (ch == '.' && i + 1 < currentLineLength && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1)))) && currentLength == 0) {
-                    bool ishex = false;
-                    bool isfloatingpoint = false;
+                if (!inSpan && (char.IsDigit(ch) || ch == '.' && i + 1 < currentLineLength && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1))) && currentLength == 0)
+                {
+                    var ishex = false;
+                    var isfloatingpoint = false;
 
-                    if (ch == '0' && i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'X') { // hex digits
+                    if (ch == '0' && i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'X')
+                    {
+                        // hex digits
                         const string hex = "0123456789ABCDEF";
                         ++currentLength;
                         ++i; // skip 'x'
                         ++currentLength;
                         ishex = true;
-                        while (i + 1 < currentLineLength && hex.IndexOf(char.ToUpper(document.GetCharAt(currentLineOffset + i + 1))) != -1) {
-                            ++i;
-                            ++currentLength;
-                        }
-                    } else {
-                        ++currentLength;
-                        while (i + 1 < currentLineLength && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1))) {
+                        while (i + 1 < currentLineLength && hex.IndexOf(char.ToUpper(document.GetCharAt(currentLineOffset + i + 1))) != -1)
+                        {
                             ++i;
                             ++currentLength;
                         }
                     }
-                    if (!ishex && i + 1 < currentLineLength && document.GetCharAt(currentLineOffset + i + 1) == '.') {
-                        isfloatingpoint = true;
-                        ++i;
+                    else
+                    {
                         ++currentLength;
-                        while (i + 1 < currentLineLength && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1))) {
+                        while (i + 1 < currentLineLength && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1)))
+                        {
                             ++i;
                             ++currentLength;
                         }
                     }
 
-                    if (i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'E') {
+                    if (!ishex && i + 1 < currentLineLength && document.GetCharAt(currentLineOffset + i + 1) == '.')
+                    {
                         isfloatingpoint = true;
                         ++i;
                         ++currentLength;
-                        if (i + 1 < currentLineLength && (document.GetCharAt(currentLineOffset + i + 1) == '+' || document.GetCharAt(currentLine.Offset + i + 1) == '-')) {
-                            ++i;
-                            ++currentLength;
-                        }
-                        while (i + 1 < currentLine.Length && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1))) {
+                        while (i + 1 < currentLineLength && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1)))
+                        {
                             ++i;
                             ++currentLength;
                         }
                     }
 
-                    if (i + 1 < currentLine.Length) {
-                        char nextch = char.ToUpper(document.GetCharAt(currentLineOffset + i + 1));
-                        if (nextch == 'F' || nextch == 'M' || nextch == 'D') {
+                    if (i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'E')
+                    {
+                        isfloatingpoint = true;
+                        ++i;
+                        ++currentLength;
+                        if (i + 1 < currentLineLength && (document.GetCharAt(currentLineOffset + i + 1) == '+' || document.GetCharAt(currentLine.Offset + i + 1) == '-'))
+                        {
+                            ++i;
+                            ++currentLength;
+                        }
+
+                        while (i + 1 < currentLine.Length && char.IsDigit(document.GetCharAt(currentLineOffset + i + 1)))
+                        {
+                            ++i;
+                            ++currentLength;
+                        }
+                    }
+
+                    if (i + 1 < currentLine.Length)
+                    {
+                        var nextch = char.ToUpper(document.GetCharAt(currentLineOffset + i + 1));
+                        if (nextch == 'F' || nextch == 'M' || nextch == 'D')
+                        {
                             isfloatingpoint = true;
                             ++i;
                             ++currentLength;
                         }
                     }
 
-                    if (!isfloatingpoint) {
-                        bool isunsigned = false;
-                        if (i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'U') {
+                    if (!isfloatingpoint)
+                    {
+                        var isunsigned = false;
+                        if (i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'U')
+                        {
                             ++i;
                             ++currentLength;
                             isunsigned = true;
                         }
-                        if (i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'L') {
+
+                        if (i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'L')
+                        {
                             ++i;
                             ++currentLength;
-                            if (!isunsigned && i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'U') {
+                            if (!isunsigned && i + 1 < currentLineLength && char.ToUpper(document.GetCharAt(currentLineOffset + i + 1)) == 'U')
+                            {
                                 ++i;
                                 ++currentLength;
                             }
                         }
                     }
 
-                    words.Add(new TextWord(document, currentLine, currentOffset, currentLength, DigitColor, false));
+                    words.Add(new TextWord(document, currentLine, currentOffset, currentLength, DigitColor, hasDefaultColor: false));
                     currentOffset += currentLength;
                     currentLength = 0;
                     continue;
                 }
 
                 // Check for SPAN ENDs
-                if (inSpan) {
-                    if (activeSpan.End != null && activeSpan.End.Length > 0) {
-                        if (MatchExpr(currentLine, activeSpan.End, i, document, activeSpan.IgnoreCase)) {
+                if (inSpan)
+                    if (activeSpan.End != null && activeSpan.End.Length > 0)
+                        if (MatchExpr(currentLine, activeSpan.End, i, document, activeSpan.IgnoreCase))
+                        {
                             PushCurWord(document, ref markNext, words);
-                            string regex = GetRegString(currentLine, activeSpan.End, i, document);
+                            var regex = GetRegString(currentLine, activeSpan.End, i, document);
                             currentLength += regex.Length;
-                            words.Add(new TextWord(document, currentLine, currentOffset, currentLength, activeSpan.EndColor, false));
+                            words.Add(new TextWord(document, currentLine, currentOffset, currentLength, activeSpan.EndColor, hasDefaultColor: false));
                             currentOffset += currentLength;
                             currentLength = 0;
                             i += regex.Length - 1;
@@ -593,11 +611,10 @@ namespace ICSharpCode.TextEditor.Document
                             UpdateSpanStateVariables();
                             continue;
                         }
-                    }
-                }
 
                 // check for SPAN BEGIN
-                if (activeRuleSet != null) {
+                if (activeRuleSet != null)
+                {
                     Span mySpan = null;
                     foreach (Span span in activeRuleSet.Spans)
                     {
@@ -606,22 +623,23 @@ namespace ICSharpCode.TextEditor.Document
                         if (span.IsBeginStartOfLine.HasValue &&
                             span.IsBeginStartOfLine.Value !=
                             (currentLength == 0 && words.TrueForAll(
-                                delegate(TextWord textWord) { return textWord.Type != TextWordType.Word; })))
+                                 delegate(TextWord textWord) { return textWord.Type != TextWordType.Word; })))
                             continue;
                         if (!MatchExpr(currentLine, span.Begin, i, document, activeRuleSet.IgnoreCase))
                             continue;
                         mySpan = span;
                         break;
                     }
+
                     if (mySpan != null)
                     {
                         PushCurWord(document, ref markNext, words);
-                        string regex = GetRegString(currentLine, mySpan.Begin, i, document);
+                        var regex = GetRegString(currentLine, mySpan.Begin, i, document);
 
                         if (!OverrideSpan(regex, document, words, mySpan, ref i))
                         {
                             currentLength += regex.Length;
-                            words.Add(new TextWord(document, currentLine, currentOffset, currentLength, mySpan.BeginColor, false));
+                            words.Add(new TextWord(document, currentLine, currentOffset, currentLength, mySpan.BeginColor, hasDefaultColor: false));
                             currentOffset += currentLength;
                             currentLength = 0;
 
@@ -633,14 +651,17 @@ namespace ICSharpCode.TextEditor.Document
 
                             UpdateSpanStateVariables();
                         }
+
                         continue;
                     }
                 }
 
                 // check if the char is a delimiter
-                if (activeRuleSet != null && ch < 256 && activeRuleSet.Delimiters[ch]) {
+                if (activeRuleSet != null && ch < 256 && activeRuleSet.Delimiters[ch])
+                {
                     PushCurWord(document, ref markNext, words);
-                    if (currentOffset + currentLength +1 < currentLine.Length) {
+                    if (currentOffset + currentLength + 1 < currentLine.Length)
+                    {
                         ++currentLength;
                         PushCurWord(document, ref markNext, words);
                         continue;
@@ -667,217 +688,244 @@ namespace ICSharpCode.TextEditor.Document
         }
 
         /// <summary>
-        /// pushes the curWord string on the word list, with the
-        /// correct color.
+        ///     pushes the curWord string on the word list, with the
+        ///     correct color.
         /// </summary>
         private void PushCurWord(IDocument document, ref HighlightColor markNext, List<TextWord> words)
         {
             // Svante Lidman : Need to look through the next prev logic.
-            if (currentLength > 0) {
-                if (words.Count > 0 && activeRuleSet != null) {
+            if (currentLength > 0)
+            {
+                if (words.Count > 0 && activeRuleSet != null)
+                {
                     TextWord prevWord = null;
-                    int pInd = words.Count - 1;
-                    while (pInd >= 0) {
-                        if (!words[pInd].IsWhiteSpace) {
+                    var pInd = words.Count - 1;
+                    while (pInd >= 0)
+                    {
+                        if (!words[pInd].IsWhiteSpace)
+                        {
                             prevWord = words[pInd];
-                            if (prevWord.HasDefaultColor) {
-                                PrevMarker marker = (PrevMarker)activeRuleSet.PrevMarkers[document, currentLine, currentOffset, currentLength];
-                                if (marker != null) {
+                            if (prevWord.HasDefaultColor)
+                            {
+                                var marker = (PrevMarker)activeRuleSet.PrevMarkers[document, currentLine, currentOffset, currentLength];
+                                if (marker != null)
                                     prevWord.SyntaxColor = marker.Color;
-//                                    document.Caret.ValidateCaretPos();
-//                                    document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, document.GetLineNumberForOffset(document.Caret.Offset)));
-                                }
                             }
+
                             break;
                         }
+
                         pInd--;
                     }
                 }
 
-                if (inSpan) {
+                if (inSpan)
+                {
                     HighlightColor c = null;
-                    bool hasDefaultColor = true;
-                    if (activeSpan.Rule == null) {
+                    var hasDefaultColor = true;
+                    if (activeSpan.Rule == null)
+                    {
                         c = activeSpan.Color;
-                    } else {
+                    }
+                    else
+                    {
                         c = GetColor(activeRuleSet, document, currentLine, currentOffset, currentLength);
                         hasDefaultColor = false;
                     }
 
-                    if (c == null) {
+                    if (c == null)
+                    {
                         c = activeSpan.Color;
-                        if (c.Color == Color.Transparent) {
+                        if (c.Color == Color.Transparent)
                             c = DefaultTextColor;
-                        }
                         hasDefaultColor = true;
                     }
+
                     words.Add(new TextWord(document, currentLine, currentOffset, currentLength, markNext != null ? markNext : c, hasDefaultColor));
-                } else {
-                    HighlightColor c = markNext != null ? markNext : GetColor(activeRuleSet, document, currentLine, currentOffset, currentLength);
-                    if (c == null) {
-                        words.Add(new TextWord(document, currentLine, currentOffset, currentLength, DefaultTextColor, true));
-                    } else {
-                        words.Add(new TextWord(document, currentLine, currentOffset, currentLength, c, false));
-                    }
+                }
+                else
+                {
+                    var c = markNext != null ? markNext : GetColor(activeRuleSet, document, currentLine, currentOffset, currentLength);
+                    if (c == null)
+                        words.Add(new TextWord(document, currentLine, currentOffset, currentLength, DefaultTextColor, hasDefaultColor: true));
+                    else
+                        words.Add(new TextWord(document, currentLine, currentOffset, currentLength, c, hasDefaultColor: false));
                 }
 
-                if (activeRuleSet != null) {
-                    NextMarker nextMarker = (NextMarker)activeRuleSet.NextMarkers[document, currentLine, currentOffset, currentLength];
-                    if (nextMarker != null) {
-                        if (nextMarker.MarkMarker && words.Count > 0) {
-                            TextWord prevword = words[words.Count - 1];
+                if (activeRuleSet != null)
+                {
+                    var nextMarker = (NextMarker)activeRuleSet.NextMarkers[document, currentLine, currentOffset, currentLength];
+                    if (nextMarker != null)
+                    {
+                        if (nextMarker.MarkMarker && words.Count > 0)
+                        {
+                            var prevword = words[words.Count - 1];
                             prevword.SyntaxColor = nextMarker.Color;
                         }
+
                         markNext = nextMarker.Color;
-                    } else {
+                    }
+                    else
+                    {
                         markNext = null;
                     }
                 }
+
                 currentOffset += currentLength;
                 currentLength = 0;
             }
         }
 
         #region Matching
+
         /// <summary>
-        /// get the string, which matches the regular expression expr,
-        /// in string s2 at index
+        ///     get the string, which matches the regular expression expr,
+        ///     in string s2 at index
         /// </summary>
         private static string GetRegString(LineSegment lineSegment, char[] expr, int index, IDocument document)
         {
-            int j = 0;
-            StringBuilder regexpr = new StringBuilder();
+            var j = 0;
+            var regexpr = new StringBuilder();
 
-            for (int i = 0; i < expr.Length; ++i, ++j) {
+            for (var i = 0; i < expr.Length; ++i, ++j)
+            {
                 if (index + j >= lineSegment.Length)
                     break;
 
-                switch (expr[i]) {
+                switch (expr[i])
+                {
                     case '@': // "special" meaning
                         ++i;
                         if (i == expr.Length)
                             throw new HighlightingDefinitionInvalidException("Unexpected end of @ sequence, use @@ to look for a single @.");
-                        switch (expr[i]) {
+                        switch (expr[i])
+                        {
                             case '!': // don't match the following expression
-                                StringBuilder whatmatch = new StringBuilder();
+                                var whatmatch = new StringBuilder();
                                 ++i;
-                                while (i < expr.Length && expr[i] != '@') {
+                                while (i < expr.Length && expr[i] != '@')
                                     whatmatch.Append(expr[i++]);
-                                }
                                 break;
                             case '@': // matches @
                                 regexpr.Append(document.GetCharAt(lineSegment.Offset + index + j));
                                 break;
                         }
+
                         break;
                     default:
-                        if (expr[i] != document.GetCharAt(lineSegment.Offset + index + j)) {
+                        if (expr[i] != document.GetCharAt(lineSegment.Offset + index + j))
                             return regexpr.ToString();
-                        }
                         regexpr.Append(document.GetCharAt(lineSegment.Offset + index + j));
                         break;
                 }
             }
+
             return regexpr.ToString();
         }
 
         /// <summary>
-        /// returns true, if the get the string s2 at index matches the expression expr
+        ///     returns true, if the get the string s2 at index matches the expression expr
         /// </summary>
         private static bool MatchExpr(LineSegment lineSegment, char[] expr, int index, IDocument document, bool ignoreCase)
         {
-            for (int i = 0, j = 0; i < expr.Length; ++i, ++j) {
-                switch (expr[i]) {
+            for (int i = 0, j = 0; i < expr.Length; ++i, ++j)
+                switch (expr[i])
+                {
                     case '@': // "special" meaning
                         ++i;
                         if (i == expr.Length)
                             throw new HighlightingDefinitionInvalidException("Unexpected end of @ sequence, use @@ to look for a single @.");
-                        switch (expr[i]) {
+                        switch (expr[i])
+                        {
                             case 'C': // match whitespace or punctuation
-                                if (index + j == lineSegment.Offset || index + j >= lineSegment.Offset + lineSegment.Length) {
+                                if (index + j == lineSegment.Offset || index + j >= lineSegment.Offset + lineSegment.Length)
+                                {
                                     // nothing (EOL or SOL)
-                                } else {
-                                    char ch = document.GetCharAt(lineSegment.Offset + index + j);
-                                    if (!char.IsWhiteSpace(ch) && !char.IsPunctuation(ch)) {
-                                        return false;
-                                    }
                                 }
+                                else
+                                {
+                                    var ch = document.GetCharAt(lineSegment.Offset + index + j);
+                                    if (!char.IsWhiteSpace(ch) && !char.IsPunctuation(ch))
+                                        return false;
+                                }
+
                                 break;
                             case '!': // don't match the following expression
+                            {
+                                var whatmatch = new StringBuilder();
+                                ++i;
+                                while (i < expr.Length && expr[i] != '@')
+                                    whatmatch.Append(expr[i++]);
+                                if (lineSegment.Offset + index + j + whatmatch.Length < document.TextLength)
                                 {
-                                    StringBuilder whatmatch = new StringBuilder();
-                                    ++i;
-                                    while (i < expr.Length && expr[i] != '@') {
-                                        whatmatch.Append(expr[i++]);
+                                    var k = 0;
+                                    for (; k < whatmatch.Length; ++k)
+                                    {
+                                        var docChar = ignoreCase ? char.ToUpperInvariant(document.GetCharAt(lineSegment.Offset + index + j + k)) : document.GetCharAt(lineSegment.Offset + index + j + k);
+                                        var spanChar = ignoreCase ? char.ToUpperInvariant(whatmatch[k]) : whatmatch[k];
+                                        if (docChar != spanChar)
+                                            break;
                                     }
-                                    if (lineSegment.Offset + index + j + whatmatch.Length < document.TextLength) {
-                                        int k = 0;
-                                        for (; k < whatmatch.Length; ++k) {
-                                            char docChar = ignoreCase ? char.ToUpperInvariant(document.GetCharAt(lineSegment.Offset + index + j + k)) : document.GetCharAt(lineSegment.Offset + index + j + k);
-                                            char spanChar = ignoreCase ? char.ToUpperInvariant(whatmatch[k]) : whatmatch[k];
-                                            if (docChar != spanChar) {
-                                                break;
-                                            }
-                                        }
-                                        if (k >= whatmatch.Length) {
-                                            return false;
-                                        }
-                                    }
-//                                    --j;
-                                    break;
+
+                                    if (k >= whatmatch.Length)
+                                        return false;
                                 }
+
+//                                    --j;
+                                break;
+                            }
                             case '-': // don't match the  expression before
+                            {
+                                var whatmatch = new StringBuilder();
+                                ++i;
+                                while (i < expr.Length && expr[i] != '@')
+                                    whatmatch.Append(expr[i++]);
+                                if (index - whatmatch.Length >= 0)
                                 {
-                                    StringBuilder whatmatch = new StringBuilder();
-                                    ++i;
-                                    while (i < expr.Length && expr[i] != '@') {
-                                        whatmatch.Append(expr[i++]);
+                                    var k = 0;
+                                    for (; k < whatmatch.Length; ++k)
+                                    {
+                                        var docChar = ignoreCase ? char.ToUpperInvariant(document.GetCharAt(lineSegment.Offset + index - whatmatch.Length + k)) : document.GetCharAt(lineSegment.Offset + index - whatmatch.Length + k);
+                                        var spanChar = ignoreCase ? char.ToUpperInvariant(whatmatch[k]) : whatmatch[k];
+                                        if (docChar != spanChar)
+                                            break;
                                     }
-                                    if (index - whatmatch.Length >= 0) {
-                                        int k = 0;
-                                        for (; k < whatmatch.Length; ++k) {
-                                            char docChar = ignoreCase ? char.ToUpperInvariant(document.GetCharAt(lineSegment.Offset + index - whatmatch.Length + k)) : document.GetCharAt(lineSegment.Offset + index - whatmatch.Length + k);
-                                            char spanChar = ignoreCase ? char.ToUpperInvariant(whatmatch[k]) : whatmatch[k];
-                                            if (docChar != spanChar)
-                                                break;
-                                        }
-                                        if (k >= whatmatch.Length) {
-                                            return false;
-                                        }
-                                    }
+
+                                    if (k >= whatmatch.Length)
+                                        return false;
+                                }
+
 //                                    --j;
-                                    break;
-                                }
+                                break;
+                            }
                             case '@': // matches @
-                                if (index + j >= lineSegment.Length || '@' != document.GetCharAt(lineSegment.Offset + index + j)) {
+                                if (index + j >= lineSegment.Length || '@' != document.GetCharAt(lineSegment.Offset + index + j))
                                     return false;
-                                }
                                 break;
                         }
+
                         break;
                     default:
+                    {
+                        if (index + j >= lineSegment.Length)
+                            return false;
+                        var offset = lineSegment.Offset;
+                        var docChar = document.GetCharAt(offset + index + j);
+                        var spanChar = expr[i];
+                        if (ignoreCase)
                         {
-                            if (index + j >= lineSegment.Length)
-                            {
-                                return false;
-                            }
-                            int offset = lineSegment.Offset;
-                            char docChar = document.GetCharAt(offset + index + j);
-                            char spanChar = expr[i];
-                            if (ignoreCase)
-                            {
-                                docChar = char.ToUpperInvariant(docChar);
-                                spanChar = char.ToUpperInvariant(spanChar);
-                            }
-                            if (docChar != spanChar) {
-                                return false;
-                            }
-                            break;
+                            docChar = char.ToUpperInvariant(docChar);
+                            spanChar = char.ToUpperInvariant(spanChar);
                         }
+
+                        if (docChar != spanChar)
+                            return false;
+                        break;
+                    }
                 }
-            }
             return true;
         }
+
         #endregion
     }
 }

@@ -11,40 +11,40 @@ namespace ICSharpCode.TextEditor.Document
 {
     public class LineCountChangeEventArgs : EventArgs
     {
+        public LineCountChangeEventArgs(IDocument document, int lineStart, int linesMoved)
+        {
+            Document = document;
+            LineStart = lineStart;
+            LinesMoved = linesMoved;
+        }
+
         /// <returns>
-        /// always a valid Document which is related to the Event.
+        ///     always a valid Document which is related to the Event.
         /// </returns>
         public IDocument Document { get; }
 
         /// <returns>
-        /// -1 if no offset was specified for this event
+        ///     -1 if no offset was specified for this event
         /// </returns>
         public int LineStart { get; }
 
         /// <returns>
-        /// -1 if no length was specified for this event
+        ///     -1 if no length was specified for this event
         /// </returns>
         public int LinesMoved { get; }
-
-        public LineCountChangeEventArgs(IDocument document, int lineStart, int linesMoved)
-        {
-            Document = document;
-            LineStart    = lineStart;
-            LinesMoved    = linesMoved;
-        }
     }
 
     public class LineEventArgs : EventArgs
     {
-        public IDocument Document { get; }
-
-        public LineSegment LineSegment { get; }
-
         public LineEventArgs(IDocument document, LineSegment lineSegment)
         {
             Document = document;
             LineSegment = lineSegment;
         }
+
+        public IDocument Document { get; }
+
+        public LineSegment LineSegment { get; }
 
         public override string ToString()
         {
@@ -54,13 +54,13 @@ namespace ICSharpCode.TextEditor.Document
 
     public class LineLengthChangeEventArgs : LineEventArgs
     {
-        public int LengthDelta { get; }
-
         public LineLengthChangeEventArgs(IDocument document, LineSegment lineSegment, int moved)
             : base(document, lineSegment)
         {
             LengthDelta = moved;
         }
+
+        public int LengthDelta { get; }
 
         public override string ToString()
         {
