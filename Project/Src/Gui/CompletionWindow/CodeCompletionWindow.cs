@@ -183,7 +183,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
         private void CodeCompletionListViewSelectedItemChanged(object sender, EventArgs e)
         {
             var data = codeCompletionListView.SelectedCompletionData;
-            if (showDeclarationWindow && data != null && data.Description != null && data.Description.Length > 0)
+            if (showDeclarationWindow && !string.IsNullOrEmpty(data?.Description))
             {
                 declarationViewWindow.Description = data.Description;
                 SetDeclarationViewLocation();

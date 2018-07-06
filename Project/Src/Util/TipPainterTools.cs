@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription = null;
             string documentation = null;
 
-            if (IsVisibleText(description))
+            if (!string.IsNullOrEmpty(description))
             {
                 var splitDescription = description.Split(new[] {'\n'}, count: 2);
 
@@ -55,7 +55,7 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription = null;
             string documentation = null;
 
-            if (IsVisibleText(description))
+            if (!string.IsNullOrEmpty(description))
             {
                 var splitDescription = description.Split(new[] {'\n'}, count: 2);
 
@@ -81,7 +81,7 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription = null;
             string documentation = null;
 
-            if (IsVisibleText(description))
+            if (!string.IsNullOrEmpty(description))
             {
                 var splitDescription = description.Split
                     (new[] {'\n'}, count: 2);
@@ -110,7 +110,7 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription = null;
             string documentation = null;
 
-            if (IsVisibleText(description))
+            if (!string.IsNullOrEmpty(description))
             {
                 var splitDescription = description.Split
                     (new[] {'\n'}, count: 2);
@@ -136,18 +136,18 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription,
             string documentation)
         {
-            if (IsVisibleText(countMessage) ||
-                IsVisibleText(basicDescription) ||
-                IsVisibleText(documentation))
+            if (!string.IsNullOrEmpty(countMessage) ||
+                !string.IsNullOrEmpty(basicDescription) ||
+                !string.IsNullOrEmpty(documentation))
             {
                 // Create all the TipSection objects.
                 var countMessageTip = new CountTipText(graphics, font, countMessage);
 
-                var countSpacer = new TipSpacer(graphics, new SizeF(IsVisibleText(countMessage) ? 4 : 0, height: 0));
+                var countSpacer = new TipSpacer(graphics, new SizeF(!string.IsNullOrEmpty(countMessage) ? 4 : 0, height: 0));
 
                 var descriptionTip = new TipText(graphics, font, basicDescription);
 
-                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, IsVisibleText(documentation) ? 4 : 0));
+                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, !string.IsNullOrEmpty(documentation) ? 4 : 0));
 
                 var docTip = new TipText(graphics, font, documentation);
 
@@ -187,18 +187,18 @@ namespace ICSharpCode.TextEditor.Util
             string documentation,
             Point p)
         {
-            if (IsVisibleText(countMessage) ||
-                IsVisibleText(basicDescription) ||
-                IsVisibleText(documentation))
+            if (!string.IsNullOrEmpty(countMessage) ||
+                !string.IsNullOrEmpty(basicDescription) ||
+                !string.IsNullOrEmpty(documentation))
             {
                 // Create all the TipSection objects.
                 var countMessageTip = new CountTipText(graphics, font, countMessage);
 
-                var countSpacer = new TipSpacer(graphics, new SizeF(IsVisibleText(countMessage) ? 4 : 0, height: 0));
+                var countSpacer = new TipSpacer(graphics, new SizeF(!string.IsNullOrEmpty(countMessage) ? 4 : 0, height: 0));
 
                 var descriptionTip = new TipText(graphics, font, basicDescription);
 
-                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, IsVisibleText(documentation) ? 4 : 0));
+                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, !string.IsNullOrEmpty(documentation) ? 4 : 0));
 
                 var docTip = new TipText(graphics, font, documentation);
 
@@ -235,18 +235,18 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription,
             string documentation)
         {
-            if (IsVisibleText(countMessage) ||
-                IsVisibleText(basicDescription) ||
-                IsVisibleText(documentation))
+            if (!string.IsNullOrEmpty(countMessage) ||
+                !string.IsNullOrEmpty(basicDescription) ||
+                !string.IsNullOrEmpty(documentation))
             {
                 // Create all the TipSection objects.
                 var countMessageTip = new CountTipText(graphics, font, countMessage);
 
-                var countSpacer = new TipSpacer(graphics, new SizeF(IsVisibleText(countMessage) ? 4 : 0, height: 0));
+                var countSpacer = new TipSpacer(graphics, new SizeF(!string.IsNullOrEmpty(countMessage) ? 4 : 0, height: 0));
 
                 var descriptionTip = new TipText(graphics, font, basicDescription);
 
-                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, IsVisibleText(documentation) ? 4 : 0));
+                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, !string.IsNullOrEmpty(documentation) ? 4 : 0));
 
                 var docTip = new TipText(graphics, font, documentation);
 
@@ -285,18 +285,18 @@ namespace ICSharpCode.TextEditor.Util
             string basicDescription,
             string documentation)
         {
-            if (IsVisibleText(countMessage) ||
-                IsVisibleText(basicDescription) ||
-                IsVisibleText(documentation))
+            if (!string.IsNullOrEmpty(countMessage) ||
+                !string.IsNullOrEmpty(basicDescription) ||
+                !string.IsNullOrEmpty(documentation))
             {
                 // Create all the TipSection objects.
                 var countMessageTip = new CountTipText(graphics, font, countMessage);
 
-                var countSpacer = new TipSpacer(graphics, new SizeF(IsVisibleText(countMessage) ? 4 : 0, height: 0));
+                var countSpacer = new TipSpacer(graphics, new SizeF(!string.IsNullOrEmpty(countMessage) ? 4 : 0, height: 0));
 
                 var descriptionTip = new TipText(graphics, font, basicDescription);
 
-                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, IsVisibleText(documentation) ? 4 : 0));
+                var docSpacer = new TipSpacer(graphics, new SizeF(width: 0, !string.IsNullOrEmpty(documentation) ? 4 : 0));
 
                 var docTip = new TipText(graphics, font, documentation);
 
@@ -326,11 +326,6 @@ namespace ICSharpCode.TextEditor.Util
             }
 
             return Size.Empty;
-        }
-
-        private static bool IsVisibleText(string text)
-        {
-            return text != null && text.Length > 0;
         }
     }
 }

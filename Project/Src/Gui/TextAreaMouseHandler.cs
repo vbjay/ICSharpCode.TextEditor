@@ -179,7 +179,7 @@ namespace ICSharpCode.TextEditor
                     {
                         var text = selection.SelectedText;
                         var isReadOnly = SelectionManager.SelectionIsReadOnly(textArea.Document, selection);
-                        if (text != null && text.Length > 0)
+                        if (!string.IsNullOrEmpty(text))
                         {
                             var dataObject = new DataObject();
                             dataObject.SetData(DataFormats.UnicodeText, autoConvert: true, text);

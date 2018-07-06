@@ -49,7 +49,7 @@ namespace ICSharpCode.TextEditor.Util
 
         public override void Draw(PointF location)
         {
-            if (tipText != null && tipText.Length > 0)
+            if (!string.IsNullOrEmpty(tipText))
             {
                 base.Draw(new PointF(location.X + triWidth + 4, location.Y));
                 DrawingRectangle1 = new Rectangle(
@@ -69,7 +69,7 @@ namespace ICSharpCode.TextEditor.Util
 
         protected override void OnMaximumSizeChanged()
         {
-            if (IsTextVisible())
+            if (!string.IsNullOrEmpty(tipText))
             {
                 var tipSize = Graphics.MeasureString
                 (
@@ -135,7 +135,7 @@ namespace ICSharpCode.TextEditor.Util
 
         public override void Draw(PointF location)
         {
-            if (IsTextVisible())
+            if (!string.IsNullOrEmpty(tipText))
             {
                 var drawRectangle = new RectangleF(location, AllocatedSize);
 
@@ -159,7 +159,7 @@ namespace ICSharpCode.TextEditor.Util
         {
             base.OnMaximumSizeChanged();
 
-            if (IsTextVisible())
+            if (!string.IsNullOrEmpty(tipText))
             {
                 var tipSize = Graphics.MeasureString
                 (
@@ -184,11 +184,6 @@ namespace ICSharpCode.TextEditor.Util
             format.LineAlignment = verticalAlignment;
 
             return format;
-        }
-
-        protected bool IsTextVisible()
-        {
-            return tipText != null && tipText.Length > 0;
         }
     }
 }

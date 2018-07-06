@@ -142,7 +142,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
         public void SelectItemWithStart(string startText)
         {
-            if (startText == null || startText.Length == 0) return;
+            if (string.IsNullOrEmpty(startText)) return;
             var originalStartText = startText;
             startText = startText.ToLower();
             var bestIndex = -1;

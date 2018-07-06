@@ -99,7 +99,7 @@ namespace ICSharpCode.TextEditor
 
         public static float DrawDocumentWord(Graphics g, string word, PointF position, Font font, Color foreColor)
         {
-            if (word == null || word.Length == 0)
+            if (string.IsNullOrEmpty(word))
                 return 0f;
             var wordSize = g.MeasureString(word, font, width: 32768, sf);
 
@@ -165,7 +165,7 @@ namespace ICSharpCode.TextEditor
                         xPos = (int)((xPos + 2)/tabWidth)*tabWidth;
                         break;
                     case TextWordType.Word:
-                        if (word.Word != null && word.Word.Length > 0)
+                        if (!string.IsNullOrEmpty(word.Word))
                             xPos += g.MeasureString(word.Word, word.Bold ? boldMonospacedFont : monospacedFont, width: 32768, sf).Width;
                         break;
                 }

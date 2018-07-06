@@ -528,7 +528,7 @@ namespace ICSharpCode.TextEditor
 
         private int DrawDocumentWord(Graphics g, string word, Point position, Font font, Color foreColor, Brush backBrush)
         {
-            if (word == null || word.Length == 0)
+            if (string.IsNullOrEmpty(word))
                 return 0;
 
             if (word.Length > MaximumWordLength)
@@ -597,10 +597,9 @@ namespace ICSharpCode.TextEditor
 
         private int MeasureStringWidth(Graphics g, string word, Font font)
         {
-            int width;
-
-            if (word == null || word.Length == 0)
+            if (string.IsNullOrEmpty(word))
                 return 0;
+            int width;
             if (word.Length > MaximumWordLength)
             {
                 width = 0;
