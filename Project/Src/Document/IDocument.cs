@@ -144,7 +144,7 @@ namespace ICSharpCode.TextEditor.Document
         /// <remarks>
         ///     Returns a <see cref="LineSegment" /> for the given line number.
         ///     This function should be used to get a line instead of getting the
-        ///     line using the <see cref="ArrayList" />.
+        ///     line using the list.
         /// </remarks>
         /// <param name="lineNumber">
         ///     The line number which is requested.

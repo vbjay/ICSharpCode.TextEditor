@@ -17,8 +17,8 @@ namespace ICSharpCode.TextEditor.Document
         // hash table from extension name to highlighting definition,
         // OR from extension name to Pair SyntaxMode,ISyntaxModeFileProvider
 
-        private readonly Hashtable extensionsToName = new Hashtable();
-        private readonly ArrayList syntaxModeFileProviders = new ArrayList();
+        private readonly Dictionary<string, string> extensionsToName = new Dictionary<string, string>();
+        private readonly List<ISyntaxModeFileProvider> syntaxModeFileProviders = new List<ISyntaxModeFileProvider>();
 
         static HighlightingManager()
         {
@@ -31,7 +31,7 @@ namespace ICSharpCode.TextEditor.Document
             CreateDefaultHighlightingStrategy();
         }
 
-        public Hashtable HighlightingDefinitions { get; } = new Hashtable();
+        public Dictionary<string, object> HighlightingDefinitions { get; } = new Dictionary<string, object>();
 
         public static HighlightingManager Manager { get; }
 
@@ -111,28 +111,30 @@ namespace ICSharpCode.TextEditor.Document
             foreach (var mode in provider.SyntaxModes)
                 if (mode.Name == name)
                     return new KeyValuePair<SyntaxMode, ISyntaxModeFileProvider>(mode, provider);
-            return new KeyValuePair<SyntaxMode, ISyntaxModeFileProvider>(key: null, value: null);
+            return default;
         }
 
         public IHighlightingStrategy FindHighlighter(string name)
         {
-            var def = HighlightingDefinitions[name];
-            if (def is DictionaryEntry entry)
-                return LoadDefinition(entry);
-            return def == null ? DefaultHighlighting : (IHighlightingStrategy)def;
+            if (HighlightingDefinitions.TryGetValue(name, out var def))
+            {
+                switch (def)
+                {
+                    case DictionaryEntry entry:
+                        return LoadDefinition(entry);
+                    case IHighlightingStrategy strategy:
+                        return strategy;
+                }
+            }
+
+            return DefaultHighlighting;
         }
 
         public IHighlightingStrategy FindHighlighterForFile(string fileName)
         {
-            var highlighterName = (string)extensionsToName[Path.GetExtension(fileName).ToUpperInvariant()];
-            if (highlighterName != null)
-            {
-                var def = HighlightingDefinitions[highlighterName];
-                if (def is DictionaryEntry entry)
-                    return LoadDefinition(entry);
-                return def == null ? DefaultHighlighting : (IHighlightingStrategy)def;
-            }
-
+            var extension = Path.GetExtension(fileName).ToUpperInvariant();
+            if (extensionsToName.TryGetValue(extension, out var highlighterName))
+                return FindHighlighter(highlighterName);
             return DefaultHighlighting;
         }
 

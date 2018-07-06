@@ -5,7 +5,8 @@
 //     <version>$Revision$</version>
 // </file>
 
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using ICSharpCode.TextEditor.Util;
 
@@ -85,7 +86,7 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
-        public ArrayList Spans { get; private set; } = new ArrayList();
+        public List<Span> Spans { get; private set; } = new List<Span>();
 
         public LookupTable KeyWords { get; }
 
@@ -112,7 +113,7 @@ namespace ICSharpCode.TextEditor.Document
                 Delimiters[i] |= ruleSet.Delimiters[i];
             // insert merged spans in front of old spans
             var oldSpans = Spans;
-            Spans = (ArrayList)ruleSet.Spans.Clone();
+            Spans = ruleSet.Spans.ToList();
             Spans.AddRange(oldSpans);
             //keyWords.MergeFrom(ruleSet.keyWords);
             //prevMarkers.MergeFrom(ruleSet.prevMarkers);
