@@ -126,11 +126,10 @@ namespace ICSharpCode.TextEditor
 
         private void TextAreaClick(object sender, EventArgs e)
         {
-            Point mousepos;
-            mousepos = textArea.mousepos;
-
             if (dodragdrop)
                 return;
+
+            var mousepos = textArea.mousepos;
 
             if (clickedOnSelectedText && textArea.TextView.DrawingPosition.Contains(mousepos.X, mousepos.Y))
             {
@@ -201,8 +200,7 @@ namespace ICSharpCode.TextEditor
 
         private void ExtendSelectionToMouse()
         {
-            Point mousepos;
-            mousepos = textArea.mousepos;
+            var mousepos = textArea.mousepos;
             var realmousepos = textArea.TextView.GetLogicalPosition(
                 Math.Max(val1: 0, mousepos.X - textArea.TextView.DrawingPosition.X),
                 mousepos.Y - textArea.TextView.DrawingPosition.Y);
@@ -259,8 +257,7 @@ namespace ICSharpCode.TextEditor
 
         private void DoubleClickSelectionExtend()
         {
-            Point mousepos;
-            mousepos = textArea.mousepos;
+            var mousepos = textArea.mousepos;
 
             textArea.SelectionManager.ClearSelection();
             if (textArea.TextView.DrawingPosition.Contains(mousepos.X, mousepos.Y))
@@ -325,9 +322,8 @@ namespace ICSharpCode.TextEditor
 
         private void OnMouseDown(object sender, MouseEventArgs e)
         {
-            Point mousepos;
             textArea.mousepos = e.Location;
-            mousepos = e.Location;
+            var mousepos = e.Location;
 
             if (dodragdrop)
                 return;

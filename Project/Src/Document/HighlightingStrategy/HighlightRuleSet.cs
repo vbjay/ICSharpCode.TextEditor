@@ -25,8 +25,6 @@ namespace ICSharpCode.TextEditor.Document
 
         public HighlightRuleSet(XmlElement el)
         {
-            XmlNodeList nodes;
-
             if (el.Attributes["name"] != null)
                 Name = el.Attributes["name"].InnerText;
 
@@ -55,7 +53,7 @@ namespace ICSharpCode.TextEditor.Document
             PrevMarkers = new LookupTable(!IgnoreCase);
             NextMarkers = new LookupTable(!IgnoreCase);
 
-            nodes = el.GetElementsByTagName("KeyWords");
+            var nodes = el.GetElementsByTagName("KeyWords");
             foreach (XmlElement el2 in nodes)
             {
                 var color = new HighlightColor(el2);

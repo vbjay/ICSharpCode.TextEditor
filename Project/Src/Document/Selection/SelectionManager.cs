@@ -266,8 +266,7 @@ namespace ICSharpCode.TextEditor.Document
         /// </remarks>
         public void ClearSelection()
         {
-            Point mousepos;
-            mousepos = textArea.mousepos;
+            var mousepos = textArea.mousepos;
             // this is the most logical place to reset selection starting
             // positions because it is always called before a new selection
             selectFrom.first = selectFrom.where;

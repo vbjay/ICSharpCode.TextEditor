@@ -13,12 +13,11 @@ namespace ICSharpCode.TextEditor.Actions
     {
         public override void Execute(TextArea textArea)
         {
-            LineSegment curLine;
             var newPos = textArea.Caret.Position;
             bool jumpedIntoFolding;
             do
             {
-                curLine = textArea.Document.GetLineSegment(newPos.Y);
+                var curLine = textArea.Document.GetLineSegment(newPos.Y);
 
                 if (TextUtilities.IsEmptyLine(textArea.Document, newPos.Y))
                 {
