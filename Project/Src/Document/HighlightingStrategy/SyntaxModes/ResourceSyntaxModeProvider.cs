@@ -29,7 +29,8 @@ namespace ICSharpCode.TextEditor.Document
         public XmlTextReader GetSyntaxModeFile(SyntaxMode syntaxMode)
         {
             var assembly = typeof(SyntaxMode).Assembly;
-            return new XmlTextReader(assembly.GetManifestResourceStream("ICSharpCode.TextEditor.Resources." + syntaxMode.FileName));
+            var stream = assembly.GetManifestResourceStream($"ICSharpCode.TextEditor.Resources.{syntaxMode.FileName}");
+            return new XmlTextReader(stream);
         }
 
         public void UpdateSyntaxModeList()

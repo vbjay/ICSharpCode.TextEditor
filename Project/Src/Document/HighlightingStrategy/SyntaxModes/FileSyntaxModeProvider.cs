@@ -28,11 +28,13 @@ namespace ICSharpCode.TextEditor.Document
         public void UpdateSyntaxModeList()
         {
             var syntaxModeFile = Path.Combine(directory, "SyntaxModes.xml");
+
             if (File.Exists(syntaxModeFile))
             {
-                Stream s = File.OpenRead(syntaxModeFile);
-                syntaxModes = SyntaxMode.GetSyntaxModes(s);
-                s.Close();
+                using (var s = File.OpenRead(syntaxModeFile))
+                {
+                    syntaxModes = SyntaxMode.GetSyntaxModes(s);
+                }
             }
             else
             {
