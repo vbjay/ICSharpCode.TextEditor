@@ -194,7 +194,7 @@ namespace ICSharpCode.TextEditor.Document
             return Italic ? fontContainer.ItalicFont : fontContainer.RegularFont;
         }
 
-        private Color ParseColorString(string colorName)
+        private static Color ParseColorString(string colorName)
         {
             var cNames = colorName.Split('*');
             var myPropInfo = typeof(SystemColors).GetProperty(

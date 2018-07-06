@@ -188,7 +188,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private GraphicsPath CreateArrowGraphicsPath(Rectangle r)
+        private static GraphicsPath CreateArrowGraphicsPath(Rectangle r)
         {
             var gp = new GraphicsPath();
             var halfX = r.Width/2;
@@ -204,7 +204,7 @@ namespace ICSharpCode.TextEditor
             return gp;
         }
 
-        private GraphicsPath CreateRoundRectGraphicsPath(Rectangle r)
+        private static GraphicsPath CreateRoundRectGraphicsPath(Rectangle r)
         {
             var gp = new GraphicsPath();
             var radius = r.Width/2;
@@ -224,7 +224,7 @@ namespace ICSharpCode.TextEditor
             return gp;
         }
 
-        private void DrawRoundRect(Graphics g, Pen p, Rectangle r)
+        private static void DrawRoundRect(Graphics g, Pen p, Rectangle r)
         {
             using (var gp = CreateRoundRectGraphicsPath(r))
             {
@@ -232,7 +232,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private void FillRoundRect(Graphics g, Brush b, Rectangle r)
+        private static void FillRoundRect(Graphics g, Brush b, Rectangle r)
         {
             using (var gp = CreateRoundRectGraphicsPath(r))
             {
@@ -240,7 +240,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private void DrawArrow(Graphics g, Pen p, Rectangle r)
+        private static void DrawArrow(Graphics g, Pen p, Rectangle r)
         {
             using (var gp = CreateArrowGraphicsPath(r))
             {
@@ -248,7 +248,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private void FillArrow(Graphics g, Brush b, Rectangle r)
+        private static void FillArrow(Graphics g, Brush b, Rectangle r)
         {
             using (var gp = CreateArrowGraphicsPath(r))
             {

@@ -136,7 +136,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private void Handle(Exception ex)
+        private static void Handle(Exception ex)
         {
             Console.WriteLine(ex);
             if (!disableIME)

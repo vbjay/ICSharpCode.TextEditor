@@ -152,7 +152,7 @@ namespace ICSharpCode.TextEditor.Document
             return last;
         }
 
-        private bool AcceptAnyMarkPredicate(Bookmark mark)
+        private static bool AcceptAnyMarkPredicate(Bookmark mark)
         {
             return true;
         }

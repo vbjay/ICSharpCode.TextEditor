@@ -324,7 +324,7 @@ namespace ICSharpCode.TextEditor
         /// <param name="length">The length.</param>
         /// <param name="markers">All markers that have been found.</param>
         /// <returns>The Brush or null when no marker was found.</returns>
-        private Brush GetMarkerBrush(IList<TextMarker> markers, ref Color foreColor)
+        private static Brush GetMarkerBrush(IList<TextMarker> markers, ref Color foreColor)
         {
             foreach (var marker in markers)
                 if (marker.TextMarkerType == TextMarkerType.SolidBlock)
@@ -1032,13 +1032,13 @@ namespace ICSharpCode.TextEditor
 
         #region DrawHelper functions
 
-        private void DrawBracketHighlight(Graphics g, Rectangle rect)
+        private static void DrawBracketHighlight(Graphics g, Rectangle rect)
         {
             g.FillRectangle(BrushRegistry.GetBrush(Color.FromArgb(alpha: 50, red: 0, green: 0, blue: 255)), rect);
             g.DrawRectangle(Pens.Blue, rect);
         }
 
-        private void DrawString(Graphics g, string text, Font font, Color color, int x, int y)
+        private static void DrawString(Graphics g, string text, Font font, Color color, int x, int y)
         {
             TextRenderer.DrawText(g, text, font, new Point(x, y), color, textFormatFlags);
         }

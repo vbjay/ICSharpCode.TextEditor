@@ -455,7 +455,7 @@ namespace ICSharpCode.TextEditor.Document
             }
         }
 
-        private void CheckProperties(RedBlackTreeNode<RBNode> node)
+        private static void CheckProperties(RedBlackTreeNode<RBNode> node)
         {
             var count = 1;
             var totalLength = node.val.lineSegment.TotalLength;

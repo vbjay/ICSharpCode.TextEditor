@@ -50,7 +50,7 @@ namespace ICSharpCode.TextEditor.Document
             return new XmlTextReader(File.OpenRead(syntaxModeFile));
         }
 
-        private List<SyntaxMode> ScanDirectory(string directory)
+        private static List<SyntaxMode> ScanDirectory(string directory)
         {
             var files = Directory.GetFiles(directory);
             var modes = new List<SyntaxMode>();

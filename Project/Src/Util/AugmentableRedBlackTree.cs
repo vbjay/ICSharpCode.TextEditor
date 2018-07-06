@@ -103,7 +103,7 @@ namespace ICSharpCode.TextEditor.Util
         4. Both children of every red node are black. (So every red node must have a black parent.)
         5. Every simple path from a node to a descendant leaf contains the same number of black nodes. (Not counting the leaf node.)
          */
-        private void CheckNodeProperties(RedBlackTreeNode<T> node, RedBlackTreeNode<T> parentNode, bool parentColor, int blackCount, ref int expectedBlackCount)
+        private static void CheckNodeProperties(RedBlackTreeNode<T> node, RedBlackTreeNode<T> parentNode, bool parentColor, int blackCount, ref int expectedBlackCount)
         {
             if (node == null) return;
 
@@ -348,7 +348,7 @@ namespace ICSharpCode.TextEditor.Util
             host.UpdateAfterRotateRight(p);
         }
 
-        private RedBlackTreeNode<T> Sibling(RedBlackTreeNode<T> node)
+        private static RedBlackTreeNode<T> Sibling(RedBlackTreeNode<T> node)
         {
             if (node == node.parent.left)
                 return node.parent.right;

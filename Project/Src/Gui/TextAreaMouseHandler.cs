@@ -449,7 +449,7 @@ namespace ICSharpCode.TextEditor
             textArea.Focus();
         }
 
-        private int FindNext(IDocument document, int offset, char ch)
+        private static int FindNext(IDocument document, int offset, char ch)
         {
             var line = document.GetLineSegmentForOffset(offset);
             var endPos = line.Offset + line.Length;
@@ -459,12 +459,12 @@ namespace ICSharpCode.TextEditor
             return offset;
         }
 
-        private bool IsSelectableChar(char ch)
+        private static bool IsSelectableChar(char ch)
         {
             return char.IsLetterOrDigit(ch) || ch == '_';
         }
 
-        private int FindWordStart(IDocument document, int offset)
+        private static int FindWordStart(IDocument document, int offset)
         {
             var line = document.GetLineSegmentForOffset(offset);
 
@@ -487,7 +487,7 @@ namespace ICSharpCode.TextEditor
             return offset;
         }
 
-        private int FindWordEnd(IDocument document, int offset)
+        private static int FindWordEnd(IDocument document, int offset)
         {
             var line = document.GetLineSegmentForOffset(offset);
             if (line.Length == 0)

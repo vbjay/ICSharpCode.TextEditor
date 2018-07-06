@@ -534,7 +534,7 @@ namespace ICSharpCode.TextEditor
             MotherTextEditorControl.EndUpdate();
         }
 
-        private string GenerateWhitespaceString(int length)
+        private static string GenerateWhitespaceString(int length)
         {
             return new string(c: ' ', length);
         }

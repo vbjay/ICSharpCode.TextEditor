@@ -71,7 +71,7 @@ namespace ICSharpCode.TextEditor
 
         public bool EnableSelectAll => true;
 
-        private void DocumentSelectionChanged(object sender, EventArgs e)
+        private static void DocumentSelectionChanged(object sender, EventArgs e)
         {
 //            ((DefaultWorkbench)WorkbenchSingleton.Workbench).UpdateToolbars();
         }

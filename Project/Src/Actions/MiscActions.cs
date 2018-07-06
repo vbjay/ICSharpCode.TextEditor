@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor.Actions
             return indent.ToString();
         }
 
-        private void InsertTabs(IDocument document, ISelection selection, int y1, int y2)
+        private static void InsertTabs(IDocument document, ISelection selection, int y1, int y2)
         {
             var indentationString = GetIndentationString(document);
             for (var i = y2; i >= y1; --i)
@@ -62,7 +62,7 @@ namespace ICSharpCode.TextEditor.Actions
             }
         }
 
-        private void InsertTabAtCaretPosition(TextArea textArea)
+        private static void InsertTabAtCaretPosition(TextArea textArea)
         {
             switch (textArea.Caret.CaretMode)
             {
@@ -123,7 +123,7 @@ namespace ICSharpCode.TextEditor.Actions
 
     public class ShiftTab : AbstractEditAction
     {
-        private void RemoveTabs(IDocument document, ISelection selection, int y1, int y2)
+        private static void RemoveTabs(IDocument document, ISelection selection, int y1, int y2)
         {
             document.UndoStack.StartUndoGroup();
             for (var i = y2; i >= y1; --i)
@@ -458,13 +458,13 @@ namespace ICSharpCode.TextEditor.Actions
             return null;
         }
 
-        private void SetCommentAt(IDocument document, int offsetStart, int offsetEnd, string commentStart, string commentEnd)
+        private static void SetCommentAt(IDocument document, int offsetStart, int offsetEnd, string commentStart, string commentEnd)
         {
             document.Insert(offsetEnd, commentEnd);
             document.Insert(offsetStart, commentStart);
         }
 
-        private void RemoveComment(IDocument document, BlockCommentRegion commentRegion)
+        private static void RemoveComment(IDocument document, BlockCommentRegion commentRegion)
         {
             document.Remove(commentRegion.EndOffset, commentRegion.CommentEnd.Length);
             document.Remove(commentRegion.StartOffset, commentRegion.CommentStart.Length);
