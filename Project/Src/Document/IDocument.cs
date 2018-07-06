@@ -47,7 +47,7 @@ namespace ICSharpCode.TextEditor.Document
         IHighlightingStrategy HighlightingStrategy { get; set; }
 
         /// <summary>
-        ///     The <see cref="IBookMarkManager" /> attached to the <see cref="IDocument" /> instance
+        ///     The <see cref="BookmarkManager" /> attached to the <see cref="IDocument" /> instance
         /// </summary>
         BookmarkManager BookmarkManager { get; }
 
