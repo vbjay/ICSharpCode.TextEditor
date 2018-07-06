@@ -1,303 +1,256 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+Boo syntax highlighting
+Written by Ezra Altahan
+Created 08/08/2015 | Updated 16/10/2016
+Version 1.1
+
+hello@exr.be
+https://github.com/ei
+-->
 
 <SyntaxDefinition name="Boo" extensions=".boo">
 
-	<Environment>
-		<Custom name="LocalVariableCreation" bold="false" italic="false" color="#04ABAB" />
-	</Environment>
+    <Environment> 
+        <Default color="Black" bgcolor="#FFFFFF"/>
+        <Selection color="Black" bgcolor="#C3C3FF"/>
+        <LineNumbers color="Gray" bgcolor="#FFFFFF"/>
+        <CaretMarker color="#F0F0F1"/>
+        <VRuler color="#E0E0E5"/>
 
-	<Properties>
-		<Property name="LineComment" value="#"/>
-	</Properties>
+        <FoldLine color="#A0A0A0" bgcolor="#FFFFFF"/>
+        <FoldMarker color="Black" bgcolor="#FFFFFF"/>
+        <SelectedFoldLine color="Black" bgcolor="#FFFFFF"/>
+        
+        <EOLMarkers color="#CACAD2"/>
+        <SpaceMarkers color="#B6B6C0"/>
+        <TabMarkers color="#B6B6C0"/>
+        <InvalidLines color="#B6B6C0"/>
+    </Environment>
 
-	<Digits name="Digits" bold="false" italic="false" color="DarkBlue" />
+    <Properties>
+        <Property name="LineComment" value="#"/>
+        <Property name="BlockCommentBegin" value="/*"/>
+        <Property name="BlockCommentEnd" value="*/"/>
+    </Properties>
 
-	<RuleSets>
-		<RuleSet ignorecase="false" >
-			<Delimiters>&amp;&lt;&gt;~!@$%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
+    <Digits name="Digits" color="DarkBlue" bold="false" italic="false"/>
 
-			<Span name="DocLineComment" stopateol="false" bold="false" italic="false" color="Green">
-				<Begin >"""</Begin>
-				<End >"""</End>
-			</Span>
+    <RuleSets>
+        <RuleSet ignorecase="false">
+            <Delimiters>&amp;&lt;&gt;~!@$%^*()-+=|\#/{}[]:;"' , .?</Delimiters>
 
-			<Span name="LineComment" stopateol="true" bold="false" italic="false" color="Gray" >
-				<Begin >#</Begin>
-			</Span>
+            <Span name="DocComment" stopateol="false" color="Green" bold="false" italic="false">
+                <Begin>"""</Begin>
+                <End>"""</End>
+            </Span>
 
-			<Span name="LineComment2" stopateol="true" bold="false" italic="false" color="#999999" >
-				<Begin >//</Begin>
-			</Span>
+            <Span name="LineComment1" stopateol="true" color="Green" bold="false" italic="false">
+                <Begin>#</Begin>
+            </Span>
 
-			<Span name="BlockComment" rule="comments set" stopateol="false" bold="false" italic="false" color="Green" >
-				<Begin >/*</Begin>
-				<End >*/</End>
-			</Span>
+            <Span name="LineComment2" stopateol="true" color="Green" bold="false" italic="false">
+                <Begin>//</Begin>
+            </Span>
 
-			<Span name="String" rule="str formatting" stopateol="true" bold="false" italic="false" color="Blue" escapecharacter="\">
-				<Begin >"</Begin>
-				<End >"</End>
-			</Span>
+            <Span name="BlockComment" rule="CommentSet1" stopateol="false" color="Green" bold="false" italic="false">
+                <Begin>/*</Begin>
+                <End>*/</End>
+            </Span>
 
-			<Span name="MultiLineString" rule="str formatting" stopateol="false" bold="false" italic="false" color="Blue" >
-				<Begin >"""</Begin>
-				<End >"""</End>
-			</Span>
+            <Span name="String" rule="StringFormatting" stopateol="true" escapecharacter="\" color="#808080" bold="false" italic="false">
+                <Begin>"</Begin>
+                <End>"</End>
+            </Span>
 
-			<Span name="Char" stopateol="true" bold="false" italic="false" color="Blue" escapecharacter="\">
-				<Begin >'</Begin>
-				<End >'</End>
-			</Span>
+            <Span name="MultiLineString" rule="StringFormatting" stopateol="false" color="Blue" bold="false" italic="false">
+                <Begin>"""</Begin>
+                <End>"""</End>
+            </Span>
 
-			<Span name="MultiLineRegEx" stopateol="false" bold="false" italic="false" color="#FF6600">
-				<Begin>@@/</Begin>
-				<End>/</End>
-			</Span>
-			
-			<Span name="RegEx" stopateol="true" bold="false" italic="false" color="#FF6600">
-				<Begin>/@! @@!/@</Begin>
-				<End>/</End>
-			</Span>
+            <Span name="Char" stopateol="true" escapecharacter="\" color="#808080" bold="false" italic="false">
+                <Begin>'</Begin>
+                <End>'</End>
+            </Span>
 
-			<MarkPrevious bold="false" italic="false" color="MidnightBlue" >(</MarkPrevious>
+            <Span name="MultiLineRegexString" stopateol="false" color="#82751A" bold="false" italic="false">
+                <Begin>@@/</Begin>
+                <End>/</End>
+            </Span>
+            
+            <Span name="RegexString" stopateol="true" color="#82751A" bold="false" italic="false">
+                <Begin>/</Begin>
+                <End>/</End>
+            </Span>
+            
+            <MarkFollowing color="Black" bold="false" italic="false">class</MarkFollowing>
+            <MarkFollowing color="Black" bold="false" italic="true">def</MarkFollowing>
 
-			<KeyWords name="Punctuation" bold="false" italic="false" color="DarkGreen" >
-				<Key word="?"/>
-				<Key word=","/>
-				<Key word="."/>
-				<Key word=";"/>
-				<Key word="("/>
-				<Key word=")"/>
-				<Key word="["/>
-				<Key word="]"/>
-				<Key word="{"/>
-				<Key word="}"/>
-				<Key word="+"/>
-				<Key word="-"/>
-				<Key word="/"/>
-				<Key word="%"/>
-				<Key word="*"/>
-				<Key word="&lt;"/>
-				<Key word="&gt;"/>
-				<Key word="^"/>
-				<Key word="="/>
-				<Key word="~"/>
-				<Key word="!"/>
-				<Key word="|"/>
-				<Key word="&amp;"/>
-			</KeyWords>
+            <KeyWords name="Keywords1" color="Blue" bold="false" italic="false">
+                <Key word="abstract"/>
+                <Key word="and"/>
+                <Key word="as"/>
+                <Key word="break"/>
+                <Key word="callable"/>
+                <Key word="case"/>
+                <Key word="cast"/>
+                <Key word="class"/>
+                <Key word="constructor"/>
+                <Key word="continue"/>
+                <Key word="def"/>
+                <Key word="destructor"/>
+                <Key word="do"/>
+                <Key word="elif"/>
+                <Key word="else"/>
+                <Key word="ensure"/>
+                <Key word="enum"/>
+                <Key word="event"/>
+                <Key word="except"/>
+                <Key word="false"/>
+                <Key word="final"/>
+                <Key word="for"/>
+                <Key word="from"/>
+                <Key word="get"/>
+                <Key word="goto"/>
+                <Key word="if"/>
+                <Key word="import"/>
+                <Key word="in"/>
+                <Key word="include"/>
+                <Key word="interface"/>
+                <Key word="internal"/>
+                <Key word="is"/>
+                <Key word="isa"/>
+                <Key word="match"/>
+                <Key word="mixin"/>
+                <Key word="namespace"/>
+                <Key word="not"/>
+                <Key word="null"/>
+                <Key word="of"/>
+                <Key word="or"/>
+                <Key word="otherwise"/>
+                <Key word="override"/>
+                <Key word="partial"/>
+                <Key word="pass"/>
+                <Key word="private"/>
+                <Key word="protected"/>
+                <Key word="public"/>
+                <Key word="raise"/>
+                <Key word="ref"/>
+                <Key word="return"/>
+                <Key word="set"/>
+                <Key word="static"/>
+                <Key word="struct"/>
+                <Key word="then"/>
+                <Key word="transient"/>
+                <Key word="true"/>
+                <Key word="try"/>
+                <Key word="typeof"/>
+                <Key word="unless"/>
+                <Key word="virtual"/>
+                <Key word="while"/>
+                <Key word="yield"/>
+            </KeyWords>
+            
+            <KeyWords name="Keywords2" color="DarkViolet" bold="false" italic="false">
+                <Key word="bool"/>
+                <Key word="byte"/>
+                <Key word="char"/>
+                <Key word="date"/>
+                <Key word="decimal"/>
+                <Key word="double"/>
+                <Key word="duck"/>
+                <Key word="float"/>
+                <Key word="int"/>
+                <Key word="long"/>
+                <Key word="object"/>
+                <Key word="operator"/>
+                <Key word="regex"/>
+                <Key word="sbyte"/>
+                <Key word="short"/>
+                <Key word="single"/>
+                <Key word="string"/>
+                <Key word="timespan"/>
+                <Key word="uint"/>
+                <Key word="ulong"/>
+                <Key word="ushort"/>
+            </KeyWords>
+            
+            <KeyWords name="Keywords3" color="Teal" bold="false" italic="false">
+                <Key word="array"/>
+                <Key word="assert"/>
+                <Key word="cat"/>   
+                <Key word="checked"/>
+                <Key word="checked"/>
+                <Key word="debug"/>
+                <Key word="default"/>
+                <Key word="enumerate"/>
+                <Key word="filter"/>
+                <Key word="fixed"/>
+                <Key word="gets"/>
+                <Key word="getter"/>
+                <Key word="iterator"/>
+                <Key word="join"/>
+                <Key word="len"/>
+                <Key word="lock"/>
+                <Key word="map"/>
+                <Key word="matrix"/>
+                <Key word="meta"/>
+                <Key word="normalArrayIndexing"/>
+                <Key word="print"/>
+                <Key word="prompt"/>
+                <Key word="property"/>
+                <Key word="quack"/>
+                <Key word="range"/>
+                <Key word="rawArrayIndexing"/>
+                <Key word="required"/>
+                <Key word="reversed"/>
+                <Key word="self"/>
+                <Key word="shell"/>
+                <Key word="shellm"/>
+                <Key word="shellp"/>
+                <Key word="super"/>
+                <Key word="unchecked"/>
+                <Key word="unchecked"/>
+                <Key word="unsafe"/>
+                <Key word="using"/>
+                <Key word="yieldAll"/>
+                <Key word="zip"/>
+            </KeyWords>
+            
+            <KeyWords name="Keywords4" color="Brown" bold="false" italic="false">
+                <Key word="__addressof__"/>
+                <Key word="__eval__"/>
+                <Key word="__initobj__"/>
+                <Key word="__switch__"/>
+            </KeyWords>
+        </RuleSet>
 
-			<KeyWords name="AccessKeywords" bold="true" italic="false" color="Black" >
-				<Key word="self"/>
-				<Key word="super"/>
-			</KeyWords>
+        <RuleSet ignorecase="false" name="CommentSet1">
+            <Delimiters>&amp;&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,  .?</Delimiters>
 
-			<KeyWords name="OperatorKeywords" bold="true" italic="false" color="DarkCyan" >
-				<Key word="is"/>
-				<Key word="isa"/>
-				<Key word="and"/>
-				<Key word="or"/>
-				<Key word="not"/>
-			</KeyWords>
+            <Span name="BlockComment" rule="CommentSet2" stopateol="false" color="#339966" bold="false" italic="false">
+                <Begin >/*</Begin>
+                <End >*/</End>
+            </Span>
+        </RuleSet>
 
-			<KeyWords name="SelectionStatements" bold="true" italic="false" color="Blue" >
-				<Key word="else"/>
-				<Key word="elif"/>
-				<Key word="if"/>
-				<Key word="match"/>
-				<Key word="case"/>
-				<Key word="unless"/>
-				<Key word="otherwise"/>
-			</KeyWords>
+        <RuleSet ignorecase="false" name="CommentSet2">
+            <Delimiters>&amp;&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,  .?</Delimiters>
 
-			<KeyWords name="IterationStatements" bold="true" italic="false" color="Blue" >
-				<Key word="for"/>
-				<Key word="in"/>
-				<Key word="while"/>
-			</KeyWords>
+            <Span name="BlockComment" rule="CommentSet1" stopateol="false" color="Teal" bold="false" italic="false">
+                <Begin >/*</Begin>
+                <End >*/</End>
+            </Span>
+        </RuleSet>
 
-			<KeyWords name="JumpStatements" bold="false" italic="false" color="Navy" >
-				<Key word="break"/>
-				<Key word="continue"/>
-				<Key word="return"/>
-				<Key word="yield"/>
-				<Key word="goto" />
-			</KeyWords>
+        <RuleSet ignorecase="false" name="StringFormatting">
+            <Delimiters>&amp;&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,  .?</Delimiters>
 
-			<KeyWords name="ExceptionHandlingStatements" bold="true" italic="false" color="Teal" >
-				<Key word="try"/>
-				<Key word="raise"/>
-				<Key word="ensure"/>
-				<Key word="except"/>
-				<Key word="retry"/>
-				<Key word="success"/>
-			</KeyWords>
-
-			<KeyWords name="CheckedUncheckedStatements" bold="true" italic="false" color="DarkGray" >
-				<Key word="checked"/>
-				<Key word="unchecked"/>
-			</KeyWords>
-
-			<KeyWords name="UnsafeFixedStatements" bold="false" italic="false" color="Olive" >
-				<Key word="fixed"/>
-				<Key word="unsafe"/>
-			</KeyWords>
-
-			<KeyWords name="ValueTypes" bold="true" italic="false" color="Purple" >
-				<Key word="bool"/>
-				<Key word="double"/>
-				<Key word="single"/>
-				<Key word="byte"/>
-				<Key word="sbyte"/>
-				<Key word="short"/>
-				<Key word="ushort"/>
-				<Key word="int"/>
-				<Key word="uint"/>
-				<Key word="long"/>
-				<Key word="ulong"/>
-				<Key word="date"/>
-				<Key word="timespan" />
-				<Key word="decimal" />
-				<Key word="char" />
-			</KeyWords>
-
-			<KeyWords name="ReferenceTypes" bold="true" italic="false" color="Purple" >
-				<Key word="object"/>
-				<Key word="duck"/>
-				<Key word="string"/>
-				<Key word="regex"/>
-			</KeyWords>
-
-			<KeyWords name="Void" bold="false" italic="false" color="Red" >
-				<Key word="void"/>
-			</KeyWords>
-
-			<KeyWords name="ConversionKeyWords" bold="true" italic="false" color="Blue" >
-				<Key word="cast"/>
-				<Key word="as"/>
-			</KeyWords>
-
-			<KeyWords name="Modifiers" bold="false" italic="false" color="Brown" >
-				<Key word="override"/>
-				<Key word="static"/>
-				<Key word="virtual"/>
-				<Key word="abstract"/>
-				<Key word="final"/>
-				<Key word="transient"/>
-				<Key word="partial"/>
-			</KeyWords>
-
-			<KeyWords name="AccessModifiers" bold="true" italic="false" color="Blue" >
-				<Key word="public"/>
-				<Key word="protected"/>
-				<Key word="private"/>
-				<Key word="internal"/>
-			</KeyWords>
-
-			<KeyWords name="NameSpaces" bold="true" italic="false" color="Green" >
-				<Key word="namespace"/>
-				<Key word="import"/>
-				<Key word="from"/>
-			</KeyWords>
-
-			<KeyWords name="GetSet" bold="false" italic="false" color="SaddleBrown" >
-				<Key word="get"/>
-				<Key word="set"/>
-			</KeyWords>
-
-			<KeyWords name="Literals" bold="true" italic="false" color="Black" >
-				<Key word="null"/>
-				<Key word="value"/>
-				<Key word="true"/>
-				<Key word="false"/>
-				<Key word="ast" />
-			</KeyWords>
-
-			<KeyWords name="DefaultMacros" bold="false" italic="false" color="Maroon" >
-				<Key word="using"/>
-				<Key word="unchecked"/>
-				<Key word="checked"/>
-				<Key word="lock"/>
-				<Key word="getter"/>
-				<Key word="required"/>
-				<Key word="rawArrayIndexing"/>
-				<Key word="normalArrayIndexing"/>
-				<Key word="yieldAll" />
-			</KeyWords>
-
-			<KeyWords name="Builtins" bold="false" italic="false" color="Purple" >
-				<Key word="assert"/>
-				<Key word="array"/>
-				<Key word="matrix" />
-				<Key word="print"/>
-				<Key word="gets"/>
-				<Key word="prompt"/>
-				<Key word="enumerate"/>
-				<Key word="zip"/>
-				<Key word="filter"/>
-				<Key word="map"/>
-				<Key word="cat"/>
-				<Key word="__eval__" />
-				<Key word="__switch__" />
-			</KeyWords>
-
-			<KeyWords name="Methods" bold="true" italic="false" color="Blue" >
-				<Key word="constructor"/>
-				<Key word="destructor"/>
-				<Key word="def"/>
-				<Key word="include"/>
-				<Key word="event" />
-				<Key word="ref"/>
-			</KeyWords>
-
-			<KeyWords name="Pass" bold="false" italic="false" color="Gray" >
-				<Key word="pass"/>
-			</KeyWords>
-
-			<KeyWords name="TypesDef" bold="true" italic="false" color="Blue" >
-				<Key word="enum"/>
-				<Key word="class"/>
-				<Key word="struct" />
-				<Key word="interface"/>
-				<Key word="mixin"/>
-				<Key word="callable"/>
-				<Key word="do" />
-				<Key word="of" />
-			</KeyWords>
-
-		</RuleSet>
-
-		<RuleSet ignorecase="false" name="comments set" >
-			<Delimiters>&amp;&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
-
-			<Span name="BlockComment" rule="comment set 2" stopateol="false" bold="false" italic="false" color="#339966" >
-				<Begin >/*</Begin>
-				<End >*/</End>
-			</Span>
-
-		</RuleSet>
-
-		<RuleSet ignorecase="false" name="comment set 2" >
-			<Delimiters>&amp;&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
-
-			<Span name="BlockComment" rule="comments set" stopateol="false" bold="false" italic="false" color="Teal" >
-				<Begin >/*</Begin>
-				<End >*/</End>
-			</Span>
-
-		</RuleSet>
-
-		<RuleSet ignorecase="false" name="str formatting" >
-			<Delimiters>&amp;&lt;&gt;~!@%^*()-+=|\#/{}[]:;"' ,	.?</Delimiters>
-
-			<Span name="Formatting" stopateol="false" bold="false" italic="false" color="#993366" >
-				<Begin >${</Begin>
-				<End >}</End>
-			</Span>
-
-		</RuleSet>
-
-	</RuleSets>
-
+            <Span name="Formatting" stopateol="false" color="#993366" bold="false" italic="false">
+                <Begin >${</Begin>
+                <End >}</End>
+            </Span>
+        </RuleSet>
+    </RuleSets>
 </SyntaxDefinition>
-
