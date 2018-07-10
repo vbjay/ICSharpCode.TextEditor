@@ -38,15 +38,7 @@ namespace ICSharpCode.TextEditor.Document
         /// <summary>
         ///     Gets the total length of all line segments. Runs in O(1).
         /// </summary>
-        public int TotalLength
-        {
-            get
-            {
-                if (tree.root == null)
-                    return 0;
-                return tree.root.val.totalLength;
-            }
-        }
+        public int TotalLength => tree.root?.val.totalLength ?? 0;
 
         /// <summary>
         ///     Gets the number of items in the collections. Runs in O(1).
@@ -77,10 +69,7 @@ namespace ICSharpCode.TextEditor.Document
             return index;
         }
 
-        void IList<LineSegment>.RemoveAt(int index)
-        {
-            throw new NotSupportedException();
-        }
+        void IList<LineSegment>.RemoveAt(int index) => throw new NotSupportedException();
 
         /// <summary>
         ///     Clears the list. Runs in O(1).
@@ -101,10 +90,7 @@ namespace ICSharpCode.TextEditor.Document
         /// <summary>
         ///     Tests whether an item is in the list. Runs in O(n).
         /// </summary>
-        public bool Contains(LineSegment item)
-        {
-            return IndexOf(item) >= 0;
-        }
+        public bool Contains(LineSegment item) => IndexOf(item) >= 0;
 
         /// <summary>
         ///     Copies all elements from the list to the array.
@@ -116,35 +102,18 @@ namespace ICSharpCode.TextEditor.Document
                 array[arrayIndex++] = val;
         }
 
-        IEnumerator<LineSegment> IEnumerable<LineSegment>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        void IList<LineSegment>.Insert(int index, LineSegment item)
-        {
-            throw new NotSupportedException();
-        }
-
-        void ICollection<LineSegment>.Add(LineSegment item)
-        {
-            throw new NotSupportedException();
-        }
-
-        bool ICollection<LineSegment>.Remove(LineSegment item)
-        {
-            throw new NotSupportedException();
-        }
+        IEnumerator<LineSegment> IEnumerable<LineSegment>.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        void IList<LineSegment>.Insert(int index, LineSegment item) => throw new NotSupportedException();
+        void ICollection<LineSegment>.Add(LineSegment item) => throw new NotSupportedException();
+        bool ICollection<LineSegment>.Remove(LineSegment item) => throw new NotSupportedException();
 
         private RedBlackTreeNode<RBNode> GetNode(int index)
         {
+#if DATACONSISTENCYTEST
             if (index < 0 || index >= tree.Count)
                 throw new ArgumentOutOfRangeException(nameof(index), index, "index should be between 0 and " + (tree.Count - 1));
+#endif
             var node = tree.root;
             while (true)
                 if (node.left != null && index < node.left.val.count)
@@ -226,10 +195,7 @@ namespace ICSharpCode.TextEditor.Document
             return offset;
         }
 
-        public LineSegment GetByOffset(int offset)
-        {
-            return GetNodeByOffset(offset).val.lineSegment;
-        }
+        public LineSegment GetByOffset(int offset) => GetNodeByOffset(offset).val.lineSegment;
 
         /// <summary>
         ///     Updates the length of a line segment. Runs in O(lg n).
