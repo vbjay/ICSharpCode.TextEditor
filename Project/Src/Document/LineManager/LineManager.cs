@@ -70,7 +70,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public void Replace(int offset, int length, string text)
         {
-            Debug.WriteLine("Replace offset=" + offset + " length=" + length + " text.Length=" + text.Length);
+            //Debug.WriteLine("Replace offset=" + offset + " length=" + length + " text.Length=" + text.Length);
             var lineStart = GetLineNumberForOffset(offset);
             var oldNumberOfLines = TotalNumberOfLines;
             var deferredEventList = new DeferredEventList();
