@@ -374,8 +374,16 @@ namespace ICSharpCode.TextEditor
             {
                 if (TextEditorProperties.MouseWheelScrollDown)
                     scrollDistance = -scrollDistance;
-                var newValue = VScrollBar.Value + VScrollBar.SmallChange*scrollDistance;
-                VScrollBar.Value = Math.Max(VScrollBar.Minimum, Math.Min(VScrollBar.Maximum - VScrollBar.LargeChange + 1, newValue));
+                if (ModifierKeys.HasFlag(Keys.Shift))
+                {
+                    var newValue = HScrollBar.Value + HScrollBar.SmallChange*scrollDistance;
+                    HScrollBar.Value = Math.Max(HScrollBar.Minimum, Math.Min(HScrollBar.Maximum - HScrollBar.LargeChange + 1, newValue));
+                }
+                else
+                {
+                    var newValue = VScrollBar.Value + VScrollBar.SmallChange*scrollDistance;
+                    VScrollBar.Value = Math.Max(VScrollBar.Minimum, Math.Min(VScrollBar.Maximum - VScrollBar.LargeChange + 1, newValue));
+                }
             }
         }
 
