@@ -7,6 +7,8 @@ namespace ICSharpCode.TextEditor.Sample
         public SampleForm()
         {
             InitializeComponent();
+
+            textEditor.Document.TextEditorProperties.EnableFolding = false;
         }
     }
 }
