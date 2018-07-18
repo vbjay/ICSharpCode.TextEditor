@@ -43,7 +43,7 @@ namespace ICSharpCode.TextEditor
 
         public override Size Size => new Size(
             width: textArea.TextView.WideSpaceWidth
-                   * Math.Max(val1: 3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1),
+                   * Math.Max(4, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 4),
             height: -1);
 
         public override bool IsVisible => textArea.TextEditorProperties.ShowLineNumbers;
