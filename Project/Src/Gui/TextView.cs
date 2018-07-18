@@ -73,9 +73,11 @@ namespace ICSharpCode.TextEditor
 
         private static int GetFontHeight(Font font)
         {
-            var height1 = TextRenderer.MeasureText("_", font).Height;
-            var height2 = (int)Math.Ceiling(font.GetHeight());
-            return Math.Max(height1, height2) + 1;
+            var max = Math.Max(
+                TextRenderer.MeasureText("_", font).Height,
+                (int)Math.Ceiling(font.GetHeight()));
+
+            return max + 1;
         }
 
         public void OptionsChanged()

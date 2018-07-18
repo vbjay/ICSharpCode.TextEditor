@@ -25,7 +25,7 @@ namespace ICSharpCode.TextEditor
         InsertMode,
 
         /// <summary>
-        ///     If the caret is in overwirte mode typed characters will
+        ///     If the caret is in overwrite mode typed characters will
         ///     overwrite the character at the caret position
         /// </summary>
         OverwriteMode
@@ -51,8 +51,8 @@ namespace ICSharpCode.TextEditor
         public Caret(TextArea textArea)
         {
             this.textArea = textArea;
-            textArea.GotFocus += GotFocus;
-            textArea.LostFocus += LostFocus;
+            textArea.GotFocus += OnTextAreaGotFocus;
+            textArea.LostFocus += OnTextAreaLostFocus;
             if (Environment.OSVersion.Platform == PlatformID.Unix)
                 caretImplementation = new ManagedCaret(this);
             else
@@ -60,10 +60,10 @@ namespace ICSharpCode.TextEditor
         }
 
         /// <value>
-        ///     The 'prefered' xPos in which the caret moves, when it is moved
+        ///     The 'preferred' xPos in which the caret moves, when it is moved
         ///     up/down. Measured in pixels, not in characters!
         /// </value>
-        public int DesiredColumn { get; set; } = 0;
+        public int DesiredColumn { get; set; }
 
         /// <value>
         ///     The current caret mode.
@@ -121,9 +121,9 @@ namespace ICSharpCode.TextEditor
         {
             get
             {
-                var xpos = textArea.TextView.GetDrawingXPos(line, column);
+                var x = textArea.TextView.GetDrawingXPos(line, column);
                 return new Point(
-                    textArea.TextView.DrawingPosition.X + xpos,
+                    textArea.TextView.DrawingPosition.X + x,
                     textArea.TextView.DrawingPosition.Y
                     + textArea.Document.GetVisibleLine(line)*textArea.TextView.FontHeight
                     - textArea.TextView.TextArea.VirtualTop.Y);
@@ -132,8 +132,8 @@ namespace ICSharpCode.TextEditor
 
         public void Dispose()
         {
-            textArea.GotFocus -= GotFocus;
-            textArea.LostFocus -= LostFocus;
+            textArea.GotFocus -= OnTextAreaGotFocus;
+            textArea.LostFocus -= OnTextAreaLostFocus;
             textArea = null;
             caretImplementation.Dispose();
         }
@@ -207,7 +207,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private void GotFocus(object sender, EventArgs e)
+        private void OnTextAreaGotFocus(object sender, EventArgs e)
         {
             hidden = false;
             if (!textArea.MotherTextEditorControl.IsInUpdate)
@@ -217,7 +217,7 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private void LostFocus(object sender, EventArgs e)
+        private void OnTextAreaLostFocus(object sender, EventArgs e)
         {
             hidden = true;
             DisposeCaret();
