@@ -47,28 +47,25 @@ namespace ICSharpCode.TextEditor
 
                 if (rect.IntersectsWith(markerRectangle))
                 {
-                    // draw dotted separator line
-                    if (textArea.Document.TextEditorProperties.ShowLineNumbers)
-                    {
-                        g.FillRectangle(
-                            BrushRegistry.GetBrush(textArea.Enabled ? lineNumberPainterColor.BackgroundColor : SystemColors.InactiveBorder),
-                            markerRectangle);
+                    g.FillRectangle(BrushRegistry.GetBrush(textArea.Enabled
+                            ? lineNumberPainterColor.BackgroundColor
+                            : SystemColors.InactiveBorder),
+                        markerRectangle);
 
+                    if (textArea.Document.TextEditorProperties.EnableFolding)
+                    {
+                        // draw dotted separator line
                         g.DrawLine(
                             BrushRegistry.GetDotPen(lineNumberPainterColor.Color),
                             drawingPosition.X,
                             markerRectangle.Y,
                             drawingPosition.X,
                             markerRectangle.Bottom);
-                    }
-                    else
-                    {
-                        g.FillRectangle(BrushRegistry.GetBrush(textArea.Enabled ? lineNumberPainterColor.BackgroundColor : SystemColors.InactiveBorder), markerRectangle);
-                    }
 
-                    var currentLine = textArea.Document.GetFirstLogicalLine(textArea.TextView.FirstPhysicalLine + y);
-                    if (currentLine < textArea.Document.TotalNumberOfLines)
-                        PaintFoldMarker(g, currentLine, markerRectangle);
+                        var currentLine = textArea.Document.GetFirstLogicalLine(textArea.TextView.FirstPhysicalLine + y);
+                        if (currentLine < textArea.Document.TotalNumberOfLines)
+                            PaintFoldMarker(g, currentLine, markerRectangle);
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@ namespace ICSharpCode.TextEditor.Document
         protected SpanStack currentSpanStack;
 
         private HighlightRuleSet defaultRuleSet;
-        private Dictionary<string, HighlightColor> environmentColors = new Dictionary<string, HighlightColor>();
+        private Dictionary<string, HighlightColor> environmentColors;
 
         // Span state variables
         protected bool inSpan;
@@ -46,20 +46,23 @@ namespace ICSharpCode.TextEditor.Document
             DefaultTextColor = new HighlightColor(SystemColors.WindowText, bold: false, italic: false);
 
             // set small 'default color environment'
-            environmentColors["Default"] = new HighlightBackground("WindowText", "Window", bold: false, italic: false);
-            environmentColors["Selection"] = new HighlightColor("HighlightText", "Highlight", bold: false, italic: false);
-            environmentColors["VRuler"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
-            environmentColors["InvalidLines"] = new HighlightColor(Color.Red, bold: false, italic: false);
-            environmentColors["CaretMarker"] = new HighlightColor(Color.Yellow, bold: false, italic: false);
-            environmentColors["CaretLine"] = new HighlightBackground("ControlLight", "Window", bold: false, italic: false);
-            environmentColors["LineNumbers"] = new HighlightBackground("ControlDark", "Window", bold: false, italic: false);
+            environmentColors = new Dictionary<string, HighlightColor>
+            {
+                ["Default"] = new HighlightBackground(nameof(SystemColors.WindowText), nameof(SystemColors.Window), bold: false, italic: false),
+                ["Selection"] = new HighlightColor(nameof(SystemColors.HighlightText), nameof(SystemColors.Highlight), bold: false, italic: false),
+                ["VRuler"] = new HighlightColor(nameof(SystemColors.ControlLight), nameof(SystemColors.Window), bold: false, italic: false),
+                ["InvalidLines"] = new HighlightColor(Color.Red, bold: false, italic: false),
+                ["CaretMarker"] = new HighlightColor(Color.Yellow, bold: false, italic: false),
+                ["CaretLine"] = new HighlightBackground(nameof(SystemColors.ControlLight), nameof(SystemColors.Window), bold: false, italic: false),
+                ["LineNumbers"] = new HighlightBackground(nameof(SystemColors.GrayText), nameof(SystemColors.Window), bold: false, italic: false),
+                ["FoldLine"] = new HighlightColor(nameof(SystemColors.ControlDark), bold: false, italic: false),
+                ["FoldMarker"] = new HighlightColor(nameof(SystemColors.WindowText), nameof(SystemColors.Window), bold: false, italic: false),
+                ["SelectedFoldLine"] = new HighlightColor(nameof(SystemColors.WindowText), bold: false, italic: false),
+                ["EOLMarkers"] = new HighlightColor(nameof(SystemColors.ControlLight), nameof(SystemColors.Window), bold: false, italic: false),
+                ["SpaceMarkers"] = new HighlightColor(nameof(SystemColors.ControlLight), nameof(SystemColors.Window), bold: false, italic: false),
+                ["TabMarkers"] = new HighlightColor(nameof(SystemColors.ControlLight), nameof(SystemColors.Window), bold: false, italic: false)
+            };
 
-            environmentColors["FoldLine"] = new HighlightColor("ControlDark", bold: false, italic: false);
-            environmentColors["FoldMarker"] = new HighlightColor("WindowText", "Window", bold: false, italic: false);
-            environmentColors["SelectedFoldLine"] = new HighlightColor("WindowText", bold: false, italic: false);
-            environmentColors["EOLMarkers"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
-            environmentColors["SpaceMarkers"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
-            environmentColors["TabMarkers"] = new HighlightColor("ControlLight", "Window", bold: false, italic: false);
         }
 
         public HighlightColor DigitColor { get; set; }
