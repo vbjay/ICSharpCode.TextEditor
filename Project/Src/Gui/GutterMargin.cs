@@ -19,14 +19,17 @@ namespace ICSharpCode.TextEditor
     public class GutterMargin : AbstractMargin, IDisposable
     {
         public static Cursor RightLeftCursor;
+
         private readonly StringFormat numberStringFormat = (StringFormat)StringFormat.GenericTypographic.Clone();
 
         static GutterMargin()
         {
-            var cursorStream = Assembly.GetCallingAssembly().GetManifestResourceStream("ICSharpCode.TextEditor.Resources.RightArrow.cur");
-            if (cursorStream == null) throw new Exception("could not find cursor resource");
-            RightLeftCursor = new Cursor(cursorStream);
-            cursorStream.Close();
+            using (var cursorStream = Assembly.GetCallingAssembly().GetManifestResourceStream("ICSharpCode.TextEditor.Resources.RightArrow.cur"))
+            {
+                if (cursorStream == null)
+                    throw new Exception("could not find cursor resource");
+                RightLeftCursor = new Cursor(cursorStream);
+            }
         }
 
         public GutterMargin(TextArea textArea) : base(textArea)
@@ -39,8 +42,8 @@ namespace ICSharpCode.TextEditor
         public override Cursor Cursor => RightLeftCursor;
 
         public override Size Size => new Size(
-            textArea.TextView.WideSpaceWidth
-            *Math.Max(val1: 3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1),
+            width: textArea.TextView.WideSpaceWidth
+                   * Math.Max(val1: 3, (int)Math.Log10(textArea.Document.TotalNumberOfLines) + 1),
             height: -1);
 
         public override bool IsVisible => textArea.TextEditorProperties.ShowLineNumbers;
@@ -54,11 +57,15 @@ namespace ICSharpCode.TextEditor
         {
             if (rect.Width <= 0 || rect.Height <= 0)
                 return;
+
             var lineNumberPainterColor = textArea.Document.HighlightingStrategy.GetColorFor("LineNumbers");
             var fontHeight = textArea.TextView.FontHeight;
-            var fillBrush = textArea.Enabled ? BrushRegistry.GetBrush(lineNumberPainterColor.BackgroundColor) : SystemBrushes.InactiveBorder;
+            var fillBrush = textArea.Enabled
+                ? BrushRegistry.GetBrush(lineNumberPainterColor.BackgroundColor)
+                : SystemBrushes.InactiveBorder;
             var drawBrush = BrushRegistry.GetBrush(lineNumberPainterColor.Color);
-            for (var y = 0; y < (DrawingPosition.Height + textArea.TextView.VisibleLineDrawingRemainder)/fontHeight + 1; ++y)
+
+            for (var y = 0; y < (drawingPosition.Height + textArea.TextView.VisibleLineDrawingRemainder)/fontHeight + 1; ++y)
             {
                 var ypos = drawingPosition.Y + fontHeight*y - textArea.TextView.VisibleLineDrawingRemainder;
                 var backgroundRectangle = new Rectangle(drawingPosition.X, ypos, drawingPosition.Width, fontHeight);

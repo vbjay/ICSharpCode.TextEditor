@@ -84,8 +84,7 @@ namespace ICSharpCode.TextEditor.Document
 
         public HighlightColor GetColorFor(string name)
         {
-            HighlightColor color;
-            if (environmentColors.TryGetValue(name, out color))
+            if (environmentColors.TryGetValue(name, out var color))
                 return color;
             return DefaultTextColor;
         }
@@ -124,7 +123,7 @@ namespace ICSharpCode.TextEditor.Document
                 if (lineNumber >= document.LineSegmentCollection.Count)
                     break; // then the last line is not in the collection :)
 
-                currentSpanStack = previousLine != null && previousLine.HighlightSpanStack != null ? previousLine.HighlightSpanStack.Clone() : null;
+                currentSpanStack = previousLine?.HighlightSpanStack?.Clone();
 
                 if (currentSpanStack != null)
                 {

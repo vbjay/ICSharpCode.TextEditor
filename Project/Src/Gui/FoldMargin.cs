@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using ICSharpCode.TextEditor.Document;
 
@@ -72,19 +73,10 @@ namespace ICSharpCode.TextEditor
             }
         }
 
-        private bool SelectedFoldingFrom(List<FoldMarker> list)
-        {
-            if (list != null)
-                for (var i = 0; i < list.Count; ++i)
-                    if (selectedFoldLine == list[i].StartLine)
-                        return true;
-            return false;
-        }
-
         private void PaintFoldMarker(Graphics g, int lineNumber, Rectangle drawingRectangle)
         {
             var foldLineColor = textArea.Document.HighlightingStrategy.GetColorFor("FoldLine");
-            var selectedFoldLine = textArea.Document.HighlightingStrategy.GetColorFor("SelectedFoldLine");
+            var selectedLine = textArea.Document.HighlightingStrategy.GetColorFor("SelectedFoldLine");
 
             var foldingsWithStart = textArea.Document.FoldingManager.GetFoldingsWithStart(lineNumber);
             var foldingsBetween = textArea.Document.FoldingManager.GetFoldingsContainsLineNumber(lineNumber);
@@ -97,6 +89,9 @@ namespace ICSharpCode.TextEditor
             var isStartSelected = SelectedFoldingFrom(foldingsWithStart);
             var isBetweenSelected = SelectedFoldingFrom(foldingsBetween);
             var isEndSelected = SelectedFoldingFrom(foldingsWithEnd);
+
+            bool SelectedFoldingFrom(IEnumerable<FoldMarker> list)
+                => list?.Any(t => selectedFoldLine == t.StartLine) == true;
 
             var foldMarkerSize = (int)Math.Round(textArea.TextView.FontHeight*0.57f);
             foldMarkerSize -= foldMarkerSize%2;
@@ -131,7 +126,7 @@ namespace ICSharpCode.TextEditor
                 // draw line above fold marker
                 if (isBetween || isFoldEndFromUpperFold)
                     g.DrawLine(
-                        BrushRegistry.GetPen(isBetweenSelected ? selectedFoldLine.Color : foldLineColor.Color),
+                        BrushRegistry.GetPen(isBetweenSelected ? selectedLine.Color : foldLineColor.Color),
                         xPos,
                         drawingRectangle.Top,
                         xPos,
@@ -140,7 +135,7 @@ namespace ICSharpCode.TextEditor
                 // draw line below fold marker
                 if (isBetween || moreLinedOpenFold)
                     g.DrawLine(
-                        BrushRegistry.GetPen(isEndSelected || isStartSelected && isVisible || isBetweenSelected ? selectedFoldLine.Color : foldLineColor.Color),
+                        BrushRegistry.GetPen(isEndSelected || isStartSelected && isVisible || isBetweenSelected ? selectedLine.Color : foldLineColor.Color),
                         xPos,
                         foldMarkerYPos + foldMarkerSize + 1,
                         xPos,
@@ -154,7 +149,7 @@ namespace ICSharpCode.TextEditor
 
                     // draw fold end marker
                     g.DrawLine(
-                        BrushRegistry.GetPen(isEndSelected ? selectedFoldLine.Color : foldLineColor.Color),
+                        BrushRegistry.GetPen(isEndSelected ? selectedLine.Color : foldLineColor.Color),
                         xPos,
                         midy,
                         xPos + foldMarkerSize/2,
@@ -163,7 +158,7 @@ namespace ICSharpCode.TextEditor
                     // draw line above fold end marker
                     // must be drawn after fold marker because it might have a different color than the fold marker
                     g.DrawLine(
-                        BrushRegistry.GetPen(isBetweenSelected || isEndSelected ? selectedFoldLine.Color : foldLineColor.Color),
+                        BrushRegistry.GetPen(isBetweenSelected || isEndSelected ? selectedLine.Color : foldLineColor.Color),
                         xPos,
                         drawingRectangle.Top,
                         xPos,
@@ -172,7 +167,7 @@ namespace ICSharpCode.TextEditor
                     // draw line below fold end marker
                     if (isBetween)
                         g.DrawLine(
-                            BrushRegistry.GetPen(isBetweenSelected ? selectedFoldLine.Color : foldLineColor.Color),
+                            BrushRegistry.GetPen(isBetweenSelected ? selectedLine.Color : foldLineColor.Color),
                             xPos,
                             midy + 1,
                             xPos,
@@ -182,7 +177,7 @@ namespace ICSharpCode.TextEditor
                 {
                     // just draw the line :)
                     g.DrawLine(
-                        BrushRegistry.GetPen(isBetweenSelected ? selectedFoldLine.Color : foldLineColor.Color),
+                        BrushRegistry.GetPen(isBetweenSelected ? selectedLine.Color : foldLineColor.Color),
                         xPos,
                         drawingRectangle.Top,
                         xPos,
@@ -243,11 +238,11 @@ namespace ICSharpCode.TextEditor
         {
             var foldMarkerColor = textArea.Document.HighlightingStrategy.GetColorFor("FoldMarker");
             var foldLineColor = textArea.Document.HighlightingStrategy.GetColorFor("FoldLine");
-            var selectedFoldLine = textArea.Document.HighlightingStrategy.GetColorFor("SelectedFoldLine");
+            var selectedLine = textArea.Document.HighlightingStrategy.GetColorFor("SelectedFoldLine");
 
             var intRect = new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)rectangle.Width, (int)rectangle.Height);
             g.FillRectangle(BrushRegistry.GetBrush(foldMarkerColor.BackgroundColor), intRect);
-            g.DrawRectangle(BrushRegistry.GetPen(isSelected ? selectedFoldLine.Color : foldLineColor.Color), intRect);
+            g.DrawRectangle(BrushRegistry.GetPen(isSelected ? selectedLine.Color : foldLineColor.Color), intRect);
 
             var space = (int)Math.Round(rectangle.Height/8d) + 1;
             var mid = intRect.Height/2 + intRect.Height%2;
