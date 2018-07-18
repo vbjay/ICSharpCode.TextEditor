@@ -21,13 +21,11 @@ namespace ICSharpCode.TextEditor
     {
         private const int iconBarWidth = 18;
 
-        private static readonly Size iconBarSize = new Size(iconBarWidth, height: -1);
-
         public IconBarMargin(TextArea textArea) : base(textArea)
         {
         }
 
-        public override Size Size => iconBarSize;
+        public override int Width => iconBarWidth;
 
         public override bool IsVisible => textArea.TextEditorProperties.IsIconBarVisible;
 

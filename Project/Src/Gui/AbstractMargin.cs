@@ -44,7 +44,7 @@ namespace ICSharpCode.TextEditor
 
         public virtual Cursor Cursor { get; set; } = Cursors.Default;
 
-        public virtual Size Size => new Size(width: -1, height: -1);
+        public virtual int Width => -1;
 
         public virtual bool IsVisible => true;
 

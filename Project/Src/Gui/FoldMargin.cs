@@ -25,9 +25,7 @@ namespace ICSharpCode.TextEditor
         {
         }
 
-        public override Size Size => new Size(
-            textArea.TextView.FontHeight,
-            height: -1);
+        public override int Width => textArea.TextView.FontHeight;
 
         public override bool IsVisible => textArea.TextEditorProperties.EnableFolding;
 

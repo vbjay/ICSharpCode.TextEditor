@@ -463,7 +463,7 @@ namespace ICSharpCode.TextEditor
             foreach (var margin in leftMargins)
                 if (margin.IsVisible)
                 {
-                    var marginRectangle = new Rectangle(currentXPos, currentYPos, margin.Size.Width, Height - currentYPos);
+                    var marginRectangle = new Rectangle(currentXPos, currentYPos, margin.Width, Height - currentYPos);
                     if (marginRectangle != margin.DrawingPosition)
                     {
                         // margin changed size

@@ -205,7 +205,7 @@ namespace ICSharpCode.TextEditor
                 var h = scrollVisibilities.HasFlag(ScrollVisibilities.H);
                 var vScrollSize = v ? SystemInformation.VerticalScrollBarArrowHeight : 0;
                 var hScrollSize = h ? SystemInformation.HorizontalScrollBarArrowWidth : 0;
-                var x0 = TextArea.LeftMargins.Where(margin => margin.IsVisible).Sum(margin => margin.Size.Width);
+                var x0 = TextArea.LeftMargins.Where(margin => margin.IsVisible).Sum(margin => margin.Width);
 
                 var hRuleBounds = hRuler != null
                     ? new Rectangle(
