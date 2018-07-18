@@ -299,7 +299,7 @@ namespace ICSharpCode.TextEditor
                 HScrollBar.Minimum = 0;
                 HScrollBar.Maximum = Math.Max(maxColumn, visibleColumnCount - 1);
                 HScrollBar.LargeChange = Math.Max(0, visibleColumnCount - 1);
-                HScrollBar.SmallChange = Math.Max(0, view.SpaceWidth);
+                HScrollBar.SmallChange = 4;
                 HScrollBar.Visible = scrollVisibilities.HasFlag(ScrollVisibilities.H);
                 HScrollBar.Bounds = bounds.hScroll;
 
