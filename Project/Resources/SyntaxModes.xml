@@ -160,7 +160,7 @@
 
   <Mode file="JavaScript.xshd"
         name="JavaScript"
-        extensions=".js" />
+        extensions=".js;.jsm" />
 
   <Mode file="JSON.xshd"
         name="JSON"
