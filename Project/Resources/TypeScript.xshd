@@ -93,10 +93,13 @@ https://github.com/ei
                 <Key word="implements"/>
                 <Key word="import"/>
                 <Key word="in"/>
+                <Key word="infer"/>
                 <Key word="instanceof"/>
                 <Key word="interface"/>
+                <Key word="keyof"/>
                 <Key word="let"/>
                 <Key word="module"/>
+                <Key word="namespace"/>
                 <Key word="new"/>
                 <Key word="null"/>
                 <Key word="number"/>
@@ -105,6 +108,7 @@ https://github.com/ei
                 <Key word="private"/>
                 <Key word="protected"/>
                 <Key word="public"/>
+                <Key word="readonly"/>
                 <Key word="require"/>
                 <Key word="return"/>
                 <Key word="set"/>
@@ -119,6 +123,7 @@ https://github.com/ei
                 <Key word="try"/>
                 <Key word="type"/>
                 <Key word="typeof"/>
+                <Key word="undefined"/>
                 <Key word="var"/>
                 <Key word="void"/>
                 <Key word="while"/>
