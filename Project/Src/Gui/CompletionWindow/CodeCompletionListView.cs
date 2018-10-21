@@ -240,7 +240,7 @@ namespace ICSharpCode.TextEditor.Gui.CompletionWindow
 
                     // draw Icon
                     var xPos = 0;
-                    if (ImageList != null && completionData[curItem].ImageIndex < ImageList.Images.Count)
+                    if (completionData[curItem].ImageIndex < ImageList.Images.Count)
                     {
                         g.DrawImage(ImageList.Images[completionData[curItem].ImageIndex], new RectangleF(x: 1, yPos, imageWidth, itemHeight));
                         xPos = imageWidth;
