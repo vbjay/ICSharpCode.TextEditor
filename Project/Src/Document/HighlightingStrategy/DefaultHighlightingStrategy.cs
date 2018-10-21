@@ -751,7 +751,8 @@ namespace ICSharpCode.TextEditor.Document
                     var nextMarker = (NextMarker)activeRuleSet.NextMarkers[document, currentLine, currentOffset, currentLength];
                     if (nextMarker != null)
                     {
-                        if (nextMarker.MarkMarker && words.Count > 0)
+                        System.Diagnostics.Debug.Assert(words.Count > 0, "Logic changed, no longer words.Count > 0");
+                        if (nextMarker.MarkMarker)
                         {
                             var prevword = words[words.Count - 1];
                             prevword.SyntaxColor = nextMarker.Color;

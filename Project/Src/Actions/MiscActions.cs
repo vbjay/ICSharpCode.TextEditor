@@ -132,34 +132,35 @@ namespace ICSharpCode.TextEditor.Actions
                 if (i == y2 && line.Offset == selection.EndOffset)
                     continue;
                 if (line.Length > 0)
-                    if (line.Length > 0)
+                {
+                    var charactersToRemove = 0;
+                    if (document.GetCharAt(line.Offset) == '\t')
                     {
-                        var charactersToRemove = 0;
-                        if (document.GetCharAt(line.Offset) == '\t')
-                        {
-                            // first character is a tab - just remove it
-                            charactersToRemove = 1;
-                        }
-                        else if (document.GetCharAt(line.Offset) == ' ')
-                        {
-                            int leadingSpaces;
-                            var tabIndent = document.TextEditorProperties.IndentationSize;
-                            for (leadingSpaces = 1; leadingSpaces < line.Length && document.GetCharAt(line.Offset + leadingSpaces) == ' '; leadingSpaces++)
-                            {
-                                // deliberately empty
-                            }
-
-                            if (leadingSpaces >= tabIndent)
-                                charactersToRemove = tabIndent;
-                            else if (line.Length > leadingSpaces && document.GetCharAt(line.Offset + leadingSpaces) == '\t')
-                                charactersToRemove = leadingSpaces + 1;
-                            else
-                                charactersToRemove = leadingSpaces;
-                        }
-
-                        if (charactersToRemove > 0)
-                            document.Remove(line.Offset, charactersToRemove);
+                        // first character is a tab - just remove it
+                        charactersToRemove = 1;
                     }
+                    else if (document.GetCharAt(line.Offset) == ' ')
+                    {
+                        int leadingSpaces;
+                        var tabIndent = document.TextEditorProperties.IndentationSize;
+                        for (leadingSpaces = 1;
+                            leadingSpaces < line.Length && document.GetCharAt(line.Offset + leadingSpaces) == ' ';
+                            leadingSpaces++)
+                        {
+                            // deliberately empty
+                        }
+
+                        if (leadingSpaces >= tabIndent)
+                            charactersToRemove = tabIndent;
+                        else if (line.Length > leadingSpaces && document.GetCharAt(line.Offset + leadingSpaces) == '\t')
+                            charactersToRemove = leadingSpaces + 1;
+                        else
+                            charactersToRemove = leadingSpaces;
+                    }
+
+                    if (charactersToRemove > 0)
+                        document.Remove(line.Offset, charactersToRemove);
+                }
             }
 
             document.UndoStack.EndUndoGroup();
@@ -218,8 +219,7 @@ namespace ICSharpCode.TextEditor.Actions
 
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("LineComment"))
                 new ToggleLineComment().Execute(textArea);
-            else if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin") &&
-                     textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin"))
+            else if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin"))
                 new ToggleBlockComment().Execute(textArea);
         }
     }

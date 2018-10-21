@@ -697,8 +697,9 @@ namespace ICSharpCode.TextEditor
         /// </returns>
         protected internal virtual bool HandleKeyPress(char ch)
         {
-            if (KeyEventHandler != null)
-                return KeyEventHandler(ch);
+            KeyEventHandler handler = KeyEventHandler;
+            if (handler != null)
+                return handler(ch);
             return false;
         }
 
@@ -796,7 +797,8 @@ namespace ICSharpCode.TextEditor
         public bool ExecuteDialogKey(Keys keyData)
         {
             // try, if a dialog key processor was set to use this
-            if (DoProcessDialogKey != null && DoProcessDialogKey(keyData))
+            DialogKeyProcessor handler = DoProcessDialogKey;
+            if (handler != null && handler(keyData))
                 return true;
 
             // if not (or the process was 'silent', use the standard edit actions

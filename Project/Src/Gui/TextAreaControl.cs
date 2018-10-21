@@ -523,12 +523,12 @@ namespace ICSharpCode.TextEditor
                     if (x == -1 && y == -1)
                     {
                         var pos = Caret.ScreenPosition;
-                        ShowContextMenu(this, new MouseEventArgs(MouseButtons.None, clicks: 0, pos.X, pos.Y + TextArea.TextView.FontHeight, delta: 0));
+                        ShowContextMenu?.Invoke(this, new MouseEventArgs(MouseButtons.None, clicks: 0, pos.X, pos.Y + TextArea.TextView.FontHeight, delta: 0));
                     }
                     else
                     {
                         var pos = PointToClient(new Point(x, y));
-                        ShowContextMenu(this, new MouseEventArgs(MouseButtons.Right, clicks: 1, pos.X, pos.Y, delta: 0));
+                        ShowContextMenu?.Invoke(this, new MouseEventArgs(MouseButtons.Right, clicks: 1, pos.X, pos.Y, delta: 0));
                     }
                 }
 
