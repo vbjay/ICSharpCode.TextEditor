@@ -202,9 +202,6 @@ namespace ICSharpCode.TextEditor.Document
 
             var selection = selectionCollection[index: 0];
 
-            if (min == max)
-                return;
-
             // changed selection via gutter
             if (selectFrom.where == WhereFrom.Gutter)
                 newPosition.X = 0;
