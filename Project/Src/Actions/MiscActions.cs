@@ -218,8 +218,7 @@ namespace ICSharpCode.TextEditor.Actions
 
             if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("LineComment"))
                 new ToggleLineComment().Execute(textArea);
-            else if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin") &&
-                     textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin"))
+            else if (textArea.Document.HighlightingStrategy.Properties.ContainsKey("BlockCommentBegin"))
                 new ToggleBlockComment().Execute(textArea);
         }
     }
