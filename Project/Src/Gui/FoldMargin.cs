@@ -110,7 +110,7 @@ namespace ICSharpCode.TextEditor
 
                 DrawFoldMarker(
                     g, new RectangleF(
-                        drawingRectangle.X + (drawingRectangle.Width - foldMarkerSize)/2,
+                        drawingRectangle.X + (drawingRectangle.Width - foldMarkerSize)/2f,
                         foldMarkerYPos,
                         foldMarkerSize,
                         foldMarkerSize),
