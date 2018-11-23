@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 [assembly: StringFreezing]
 
 [assembly: AssemblyTitle("ICSharpCode.TextEditor")]
-[assembly: AssemblyDescription("A .NET text editor control")]
+[assembly: AssemblyDescription("This is a GitExtensions fork of SharpDevelop .NET text editor control")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

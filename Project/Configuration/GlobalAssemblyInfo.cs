@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(visibility: false)]
 [assembly: AssemblyCompany("ic#code")]
-[assembly: AssemblyProduct("SharpDevelop")]
+[assembly: AssemblyProduct("GitExtensions")]
 [assembly: AssemblyCopyright("2000-2010 AlphaSierraPapa")]
 [assembly: AssemblyVersion(RevisionClass.FullVersion)]
 [assembly: NeutralResourcesLanguage("en-US")]
