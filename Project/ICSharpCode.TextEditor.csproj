@@ -205,6 +205,7 @@
     </Compile>
     <Compile Include="Src\Document\BookmarkManager\Bookmark.cs" />
     <Compile Include="Src\Document\BookmarkManager\BookmarkEventHandler.cs" />
+    <Compile Include="Src\Util\Win32Util.cs" />
     <EmbeddedResource Include="Resources\ASPX.xshd" />
     <EmbeddedResource Include="Resources\ActionScript.xshd" />
     <EmbeddedResource Include="Resources\Ada.xshd" />
