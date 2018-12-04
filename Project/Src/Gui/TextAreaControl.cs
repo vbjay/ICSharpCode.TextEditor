@@ -517,17 +517,15 @@ namespace ICSharpCode.TextEditor
             if (m.Msg == 0x007B)
                 if (ShowContextMenu != null)
                 {
-                    var lParam = m.LParam.ToInt64();
-                    int x = unchecked((short)(lParam & 0xffff));
-                    int y = unchecked((short)((lParam & 0xffff0000) >> 16));
-                    if (x == -1 && y == -1)
+                    Point location = m.LParam.ToPoint();
+                    if (location.X == -1 && location.Y == -1)
                     {
                         var pos = Caret.ScreenPosition;
                         ShowContextMenu?.Invoke(this, new MouseEventArgs(MouseButtons.None, clicks: 0, pos.X, pos.Y + TextArea.TextView.FontHeight, delta: 0));
                     }
                     else
                     {
-                        var pos = PointToClient(new Point(x, y));
+                        var pos = PointToClient(location);
                         ShowContextMenu?.Invoke(this, new MouseEventArgs(MouseButtons.Right, clicks: 1, pos.X, pos.Y, delta: 0));
                     }
                 }
