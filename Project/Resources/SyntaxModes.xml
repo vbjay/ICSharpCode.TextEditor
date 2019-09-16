@@ -160,7 +160,7 @@
 
   <Mode file="JavaScript.xshd"
         name="JavaScript"
-        extensions=".js;.jsm" />
+        extensions=".js;.jsm;.jsx" />
 
   <Mode file="JSON.xshd"
         name="JSON"
@@ -308,7 +308,7 @@
 
   <Mode file="TypeScript.xshd"
         name="TypeScript"
-        extensions=".ts" />
+        extensions=".ts;.tsx" />
 
   <Mode file="Vala.xshd"
         name="Vala"
