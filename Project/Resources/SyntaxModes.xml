@@ -194,6 +194,10 @@
         name="Lua"
         extensions=".lua" />
 
+  <Mode file="Markdown.xshd"
+        name="Markdown"
+        extensions=".md" />
+
   <Mode file="Nemerle.xshd"
         name="Nemerle"
         extensions=".n" />

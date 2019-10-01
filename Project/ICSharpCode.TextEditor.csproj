@@ -302,6 +302,7 @@
     <EmbeddedResource Include="Resources\XC.xshd" />
     <EmbeddedResource Include="Resources\XML.xshd" />
     <EmbeddedResource Include="Resources\Xtend.xshd" />
+    <EmbeddedResource Include="Resources\Markdown.xshd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
