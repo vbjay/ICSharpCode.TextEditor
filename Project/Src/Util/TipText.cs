@@ -24,11 +24,11 @@ namespace ICSharpCode.TextEditor.Util
 
         private void DrawTriangle(float x, float y, bool flipped)
         {
-            var brush = BrushRegistry.GetBrush(Color.FromArgb(red: 192, green: 192, blue: 192));
+            var brush = SystemBrushes.Info;
             Graphics.FillRectangle(brush, new RectangleF(x, y, triHeight, triHeight));
             var triHeight2 = triHeight/2;
             var triHeight4 = triHeight/4;
-            brush = Brushes.Black;
+            brush = SystemBrushes.InfoText;
             if (flipped)
                 Graphics.FillPolygon(
                     brush, new[]

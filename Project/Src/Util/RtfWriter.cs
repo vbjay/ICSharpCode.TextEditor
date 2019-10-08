@@ -57,7 +57,7 @@ namespace ICSharpCode.TextEditor.Util
         {
             var rtf = new StringBuilder();
             var firstLine = true;
-            var curColor = Color.Black;
+            var curColor = SystemColors.WindowText;
             var oldItalic = false;
             var oldBold = false;
             var escapeSequence = false;

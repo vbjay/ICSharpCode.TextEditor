@@ -37,7 +37,7 @@ namespace ICSharpCode.TextEditor
                     else
                         words.Add(new SimpleTextWord(TextWordType.Word, word.Word, word.Bold, word.Color));
             else
-                words.Add(new SimpleTextWord(TextWordType.Word, document.GetText(line), Bold: false, Color.Black));
+                words.Add(new SimpleTextWord(TextWordType.Word, document.GetText(line), Bold: false, SystemColors.WindowText));
         }
 
         public int LineLength
@@ -174,8 +174,8 @@ namespace ICSharpCode.TextEditor
 
         private class SimpleTextWord
         {
-            internal static readonly SimpleTextWord Space = new SimpleTextWord(TextWordType.Space, " ", Bold: false, Color.Black);
-            internal static readonly SimpleTextWord Tab = new SimpleTextWord(TextWordType.Tab, "\t", Bold: false, Color.Black);
+            internal static readonly SimpleTextWord Space = new SimpleTextWord(TextWordType.Space, " ", Bold: false, SystemColors.WindowText);
+            internal static readonly SimpleTextWord Tab = new SimpleTextWord(TextWordType.Tab, "\t", Bold: false, SystemColors.WindowText);
             internal readonly Color Color;
             internal readonly TextWordType Type;
             internal bool Bold;
