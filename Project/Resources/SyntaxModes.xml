@@ -352,7 +352,7 @@
 
   <Mode file="XML.xshd"
         name="XML"
-        extensions=".xml;.xsl;.xslt;.xhtml;.xsd;.syn;.lang;.manifest;.config;.addin;.xshd;.wxs;.wxi;.wxl;.proj;.csproj;.vbproj;.vcproj;.vcxproj;.resx;.user;.ilproj;.booproj;.build;.xfrm;.targets;.props;.xaml;.xpt;.xft;.map;.wsdl;.disco;.ruleset;.settings;.DotSettings;.cd;.svg;.xlf;.fodp;.fods;.fodt;.arxml" />
+        extensions=".xml;.xsl;.xslt;.xhtml;.xsd;.syn;.lang;.manifest;.config;.addin;.xshd;.wxs;.wxi;.wxl;.proj;.csproj;.vbproj;.vcproj;.vcxproj;.vcxproj.filters;.resx;.user;.ilproj;.booproj;.build;.xfrm;.targets;.props;.xaml;.xpt;.xft;.map;.wsdl;.disco;.ruleset;.settings;.DotSettings;.cd;.svg;.xlf;.fodp;.fods;.fodt;.arxml" />
 
   <Mode file="Xtend.xshd"
         name="Xtend"
