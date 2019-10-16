@@ -120,7 +120,7 @@
 
   <Mode file="Groovy.xshd"
         name="Groovy"
-        extensions=".groovy" />
+        extensions=".groovy;.gradle" />
 
   <Mode file="Gui4Cli.xshd"
         name="Gui4Cli"

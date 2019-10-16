@@ -232,7 +232,7 @@
     <EmbeddedResource Include="Resources\Fantom.xshd" />
     <EmbeddedResource Include="Resources\Fortran95.xshd" />
     <EmbeddedResource Include="Resources\Go.xshd" />
-    <EmbeddedResource Include="Resources\Goovy.xshd" />
+    <EmbeddedResource Include="Resources\Groovy.xshd" />
     <EmbeddedResource Include="Resources\Gui4Cli.xshd" />
     <EmbeddedResource Include="Resources\Haskell.xshd" />
     <EmbeddedResource Include="Resources\Haxe.xshd" />
