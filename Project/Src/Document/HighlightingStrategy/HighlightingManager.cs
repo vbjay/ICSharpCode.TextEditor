@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ICSharpCode.TextEditor.Document
 {
@@ -132,10 +133,8 @@ namespace ICSharpCode.TextEditor.Document
 
         public IHighlightingStrategy FindHighlighterForFile(string fileName)
         {
-            var extension = Path.GetExtension(fileName).ToUpperInvariant();
-            if (extensionsToName.TryGetValue(extension, out var highlighterName))
-                return FindHighlighter(highlighterName);
-            return DefaultHighlighting;
+            var highlighterName = extensionsToName.FirstOrDefault(e => fileName.EndsWith(e.Key, StringComparison.OrdinalIgnoreCase));
+            return highlighterName.Key == null ? DefaultHighlighting : FindHighlighter(highlighterName.Value);
         }
 
         protected virtual void OnReloadSyntaxHighlighting(EventArgs e)
