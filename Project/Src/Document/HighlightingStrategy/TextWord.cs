@@ -74,7 +74,7 @@ namespace ICSharpCode.TextEditor.Document
             get
             {
                 if (color == null)
-                    return Color.Black;
+                    return SystemColors.WindowText;
                 return color.Color;
             }
         }
