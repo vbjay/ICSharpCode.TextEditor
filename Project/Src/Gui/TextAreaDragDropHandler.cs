@@ -63,12 +63,15 @@ namespace ICSharpCode.TextEditor
 
         protected void OnDragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(string)))
+            if (IsSupportedData(e.Data))
                 e.Effect = GetDragDropEffect(e);
         }
 
         private void InsertString(int offset, string str)
         {
+            if (str == null)
+                return;
+
             textArea.Document.Insert(offset, str);
 
             textArea.SelectionManager.SetSelection(
@@ -82,17 +85,21 @@ namespace ICSharpCode.TextEditor
 
         protected void OnDragDrop(object sender, DragEventArgs e)
         {
-//            var p = textArea.PointToClient(new Point(e.X, e.Y));
-
-            if (e.Data.GetDataPresent(typeof(string)))
+            if (!IsSupportedData(e.Data))
             {
-                textArea.BeginUpdate();
-                textArea.Document.UndoStack.StartUndoGroup();
+                return;
+            }
+
+            textArea.BeginUpdate();
+            textArea.Document.UndoStack.StartUndoGroup();
+            try
+            {
+                var offset = textArea.Caret.Offset;
+                if (textArea.IsReadOnly(offset))
+                    return;
+
                 try
                 {
-                    var offset = textArea.Caret.Offset;
-                    if (textArea.IsReadOnly(offset))
-                        return;
                     if (e.Data.GetDataPresent(typeof(DefaultSelection)))
                     {
                         var sel = (ISelection)e.Data.GetData(typeof(DefaultSelection));
@@ -108,16 +115,33 @@ namespace ICSharpCode.TextEditor
                                 offset -= len;
                         }
                     }
-
-                    textArea.SelectionManager.ClearSelection();
-                    InsertString(offset, (string)e.Data.GetData(typeof(string)));
-                    textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
                 }
-                finally
+                catch (System.InvalidCastException)
                 {
-                    textArea.Document.UndoStack.EndUndoGroup();
-                    textArea.EndUpdate();
+                    /*
+                        If GetDataPresent(typeof(DefaultSelection)) threw this
+                        exception, then it's an interprocess DefaultSelection
+                        COM object that is not serializable! In general,
+                        GetDataPresent(typeof(...)) throws InvalidCastException
+                        for drags and drops from other GitExt processes (maybe
+                        we need to make the data objects [Serializable]?). We
+                        can get around this exception by doing
+                        GetDataPresent(String s) [using the string of the type
+                        name seems to work fine!] Since it is interprocess
+                        data, just get the string data from it - special
+                        handling logic in try {} is only valid for selections
+                        within the current process's text editor!
+                    */
                 }
+                    
+                textArea.SelectionManager.ClearSelection();
+                InsertString(offset, (string)e.Data.GetData("System.String"));
+                textArea.Document.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+            }
+            finally
+            {
+                textArea.Document.UndoStack.EndUndoGroup();
+                textArea.EndUpdate();
             }
         }
 
@@ -137,7 +161,7 @@ namespace ICSharpCode.TextEditor
 
                 textArea.Caret.Position = new TextLocation(realmousepos.X, lineNr);
                 textArea.SetDesiredColumn();
-                if (e.Data.GetDataPresent(typeof(string)) && !textArea.IsReadOnly(textArea.Caret.Offset))
+                if (IsSupportedData(e.Data) && !textArea.IsReadOnly(textArea.Caret.Offset))
                     e.Effect = GetDragDropEffect(e);
                 else
                     e.Effect = DragDropEffects.None;
@@ -146,6 +170,13 @@ namespace ICSharpCode.TextEditor
             {
                 e.Effect = DragDropEffects.None;
             }
+        }
+
+        private static bool IsSupportedData(IDataObject data)
+        {
+            return data.GetDataPresent(DataFormats.StringFormat)
+                   || data.GetDataPresent(DataFormats.Text)
+                   || data.GetDataPresent(DataFormats.UnicodeText);
         }
     }
 }
