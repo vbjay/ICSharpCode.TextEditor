@@ -131,10 +131,11 @@ namespace ICSharpCode.TextEditor
             set
             {
                 var newVirtualTop = new Point(value.X, Math.Min(MaxVScrollValue, Math.Max(val1: 0, value.Y)));
-                if (virtualTop != newVirtualTop)
+                var scrollBar = MotherTextAreaControl.VScrollBar;
+                if (virtualTop != newVirtualTop && newVirtualTop.Y >= scrollBar.Minimum && newVirtualTop.Y <= scrollBar.Maximum )
                 {
                     virtualTop = newVirtualTop;
-                    MotherTextAreaControl.VScrollBar.Value = virtualTop.Y;
+                    scrollBar.Value = virtualTop.Y;
                     Invalidate();
                 }
 
