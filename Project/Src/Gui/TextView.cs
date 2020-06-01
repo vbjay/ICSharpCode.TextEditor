@@ -633,7 +633,7 @@ namespace ICSharpCode.TextEditor
         // Important: Some flags combinations work on WinXP, but not on Win2000.
         // Make sure to test changes here on all operating systems.
         private const TextFormatFlags textFormatFlags =
-            TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix | TextFormatFlags.PreserveGraphicsClipping;
+            TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix | TextFormatFlags.PreserveGraphicsClipping | TextFormatFlags.ExpandTabs;
 
         #endregion
 
