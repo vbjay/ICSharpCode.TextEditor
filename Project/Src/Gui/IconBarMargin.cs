@@ -104,29 +104,23 @@ namespace ICSharpCode.TextEditor
                 diameter,
                 diameter);
 
-            using (var path = new GraphicsPath())
-            {
-                path.AddEllipse(rect);
-                using (var pthGrBrush = new PathGradientBrush(path))
-                {
-                    pthGrBrush.CenterPoint = new PointF(rect.Left + rect.Width/3, rect.Top + rect.Height/3);
-                    pthGrBrush.CenterColor = Color.MistyRose;
-                    Color[] colors = {isHealthy ? Color.Firebrick : Color.Olive};
-                    pthGrBrush.SurroundColors = colors;
+            using var path = new GraphicsPath();
+            path.AddEllipse(rect);
+            using var pthGrBrush = new PathGradientBrush(path);
+            pthGrBrush.CenterPoint = new PointF(rect.Left + rect.Width / 3, rect.Top + rect.Height / 3);
+            pthGrBrush.CenterColor = Color.MistyRose;
+            Color[] colors = { isHealthy ? Color.Firebrick : Color.Olive };
+            pthGrBrush.SurroundColors = colors;
 
-                    if (isEnabled)
-                    {
-                        g.FillEllipse(pthGrBrush, rect);
-                    }
-                    else
-                    {
-                        g.FillEllipse(SystemBrushes.Control, rect);
-                        using (var pen = new Pen(pthGrBrush))
-                        {
-                            g.DrawEllipse(pen, new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2));
-                        }
-                    }
-                }
+            if (isEnabled)
+            {
+                g.FillEllipse(pthGrBrush, rect);
+            }
+            else
+            {
+                g.FillEllipse(SystemBrushes.Control, rect);
+                using var pen = new Pen(pthGrBrush);
+                g.DrawEllipse(pen, new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2));
             }
         }
 
@@ -153,10 +147,8 @@ namespace ICSharpCode.TextEditor
                 Color.SkyBlue,
                 Color.Blue))
             {
-                using (var pen = new Pen(brush))
-                {
-                    DrawRoundRect(g, pen, rect);
-                }
+                using var pen = new Pen(brush);
+                DrawRoundRect(g, pen, rect);
             }
         }
 
@@ -179,10 +171,8 @@ namespace ICSharpCode.TextEditor
                 Color.Yellow,
                 Color.Brown))
             {
-                using (var pen = new Pen(brush))
-                {
-                    DrawArrow(g, pen, rect);
-                }
+                using var pen = new Pen(brush);
+                DrawArrow(g, pen, rect);
             }
         }
 
@@ -224,34 +214,26 @@ namespace ICSharpCode.TextEditor
 
         private static void DrawRoundRect(Graphics g, Pen p, Rectangle r)
         {
-            using (var gp = CreateRoundRectGraphicsPath(r))
-            {
-                g.DrawPath(p, gp);
-            }
+            using var gp = CreateRoundRectGraphicsPath(r);
+            g.DrawPath(p, gp);
         }
 
         private static void FillRoundRect(Graphics g, Brush b, Rectangle r)
         {
-            using (var gp = CreateRoundRectGraphicsPath(r))
-            {
-                g.FillPath(b, gp);
-            }
+            using var gp = CreateRoundRectGraphicsPath(r);
+            g.FillPath(b, gp);
         }
 
         private static void DrawArrow(Graphics g, Pen p, Rectangle r)
         {
-            using (var gp = CreateArrowGraphicsPath(r))
-            {
-                g.DrawPath(p, gp);
-            }
+            using var gp = CreateArrowGraphicsPath(r);
+            g.DrawPath(p, gp);
         }
 
         private static void FillArrow(Graphics g, Brush b, Rectangle r)
         {
-            using (var gp = CreateArrowGraphicsPath(r))
-            {
-                g.FillPath(b, gp);
-            }
+            using var gp = CreateArrowGraphicsPath(r);
+            g.FillPath(b, gp);
         }
 
         #endregion

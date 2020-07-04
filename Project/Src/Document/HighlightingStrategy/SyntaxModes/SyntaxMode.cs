@@ -33,39 +33,37 @@ namespace ICSharpCode.TextEditor.Document
 
         public static List<SyntaxMode> GetSyntaxModes(Stream xmlSyntaxModeStream)
         {
-            using (var reader = new XmlTextReader(xmlSyntaxModeStream))
+            using var reader = new XmlTextReader(xmlSyntaxModeStream);
+            var syntaxModes = new List<SyntaxMode>();
+
+            while (reader.Read())
             {
-                var syntaxModes = new List<SyntaxMode>();
-
-                while (reader.Read())
+                switch (reader.NodeType)
                 {
-                    switch (reader.NodeType)
-                    {
-                        case XmlNodeType.Element:
-                            switch (reader.Name)
-                            {
-                                case "SyntaxModes":
-                                    var version = reader.GetAttribute("version");
-                                    if (version != "1.0")
-                                        throw new HighlightingDefinitionInvalidException("Unknown syntax mode file defininition with version " + version);
-                                    break;
-                                case "Mode":
-                                    syntaxModes.Add(
-                                        new SyntaxMode(
-                                            reader.GetAttribute("file"),
-                                            reader.GetAttribute("name"),
-                                            reader.GetAttribute("extensions")));
-                                    break;
-                                default:
-                                    throw new HighlightingDefinitionInvalidException("Unknown node in syntax mode file :" + reader.Name);
-                            }
+                    case XmlNodeType.Element:
+                        switch (reader.Name)
+                        {
+                            case "SyntaxModes":
+                                var version = reader.GetAttribute("version");
+                                if (version != "1.0")
+                                    throw new HighlightingDefinitionInvalidException("Unknown syntax mode file defininition with version " + version);
+                                break;
+                            case "Mode":
+                                syntaxModes.Add(
+                                    new SyntaxMode(
+                                        reader.GetAttribute("file"),
+                                        reader.GetAttribute("name"),
+                                        reader.GetAttribute("extensions")));
+                                break;
+                            default:
+                                throw new HighlightingDefinitionInvalidException("Unknown node in syntax mode file :" + reader.Name);
+                        }
 
-                            break;
-                    }
+                        break;
                 }
-
-                return syntaxModes;
             }
+
+            return syntaxModes;
         }
 
         public override string ToString()

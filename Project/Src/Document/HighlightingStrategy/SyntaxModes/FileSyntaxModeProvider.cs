@@ -31,10 +31,8 @@ namespace ICSharpCode.TextEditor.Document
 
             if (File.Exists(syntaxModeFile))
             {
-                using (var s = File.OpenRead(syntaxModeFile))
-                {
-                    syntaxModes = SyntaxMode.GetSyntaxModes(s);
-                }
+                using var s = File.OpenRead(syntaxModeFile);
+                syntaxModes = SyntaxMode.GetSyntaxModes(s);
             }
             else
             {

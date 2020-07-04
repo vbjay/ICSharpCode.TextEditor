@@ -291,10 +291,8 @@ namespace ICSharpCode.TextEditor
         /// <param name="autodetectEncoding">Automatically detect file encoding and set Encoding property to the detected encoding.</param>
         public void LoadFile(string fileName, bool autoLoadHighlighting, bool autodetectEncoding)
         {
-            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-            {
-                LoadFile(fileName, fs, autoLoadHighlighting, autodetectEncoding);
-            }
+            using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            LoadFile(fileName, fs, autoLoadHighlighting, autodetectEncoding);
         }
 
         /// <remarks>
@@ -334,10 +332,8 @@ namespace ICSharpCode.TextEditor
             }
             else
             {
-                using (var reader = new StreamReader(fileName, Encoding))
-                {
-                    Document.TextContent = reader.ReadToEnd();
-                }
+                using var reader = new StreamReader(fileName, Encoding);
+                Document.TextContent = reader.ReadToEnd();
             }
 
             FileName = fileName;

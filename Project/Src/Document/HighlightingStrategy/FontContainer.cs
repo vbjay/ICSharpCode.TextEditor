@@ -51,10 +51,8 @@ namespace ICSharpCode.TextEditor.Document
                 if (twipsPerPixelY == 0)
                     using (var bmp = new Bitmap(width: 1, height: 1))
                     {
-                        using (var g = Graphics.FromImage(bmp))
-                        {
-                            twipsPerPixelY = 1440/g.DpiY;
-                        }
+                        using var g = Graphics.FromImage(bmp);
+                        twipsPerPixelY = 1440 / g.DpiY;
                     }
 
                 return twipsPerPixelY;

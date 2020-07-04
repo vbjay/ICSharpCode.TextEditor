@@ -24,12 +24,10 @@ namespace ICSharpCode.TextEditor
 
         static GutterMargin()
         {
-            using (var cursorStream = Assembly.GetCallingAssembly().GetManifestResourceStream("ICSharpCode.TextEditor.Resources.RightArrow.cur"))
-            {
-                if (cursorStream == null)
-                    throw new Exception("could not find cursor resource");
-                RightLeftCursor = new Cursor(cursorStream);
-            }
+            using var cursorStream = Assembly.GetCallingAssembly().GetManifestResourceStream("ICSharpCode.TextEditor.Resources.RightArrow.cur");
+            if (cursorStream == null)
+                throw new Exception("could not find cursor resource");
+            RightLeftCursor = new Cursor(cursorStream);
         }
 
         public GutterMargin(TextArea textArea) : base(textArea)

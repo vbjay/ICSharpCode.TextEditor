@@ -25,20 +25,16 @@ namespace ICSharpCode.TextEditor.Util
 
         public static string ReadFileContent(Stream fs, ref Encoding encoding)
         {
-            using (var reader = OpenStream(fs, encoding))
-            {
-                reader.Peek();
-                encoding = reader.CurrentEncoding;
-                return reader.ReadToEnd();
-            }
+            using var reader = OpenStream(fs, encoding);
+            reader.Peek();
+            encoding = reader.CurrentEncoding;
+            return reader.ReadToEnd();
         }
 
         public static string ReadFileContent(string fileName, Encoding encoding)
         {
-            using (var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                return ReadFileContent(fs, ref encoding);
-            }
+            using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            return ReadFileContent(fs, ref encoding);
         }
 
         public static StreamReader OpenStream(Stream fs, Encoding defaultEncoding)
